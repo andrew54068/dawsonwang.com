@@ -1,0 +1,19 @@
+Editorial Magazine. Square 1:1 social media slide. A winding amber path traces from a tangled knot of daily-task icons on the left toward a single glowing cream capsule labelled as a packaged skill on the right, with waypoint markers along the way condensing the chaos into clean form.
+
+The path is the focal axis, sweeping diagonally from lower-left to upper-right. On the left, dozens of small cream task-glyphs (mail, calendar, document, terminal) are crammed into a chaotic cluster representing daily 80% workflow. Mid-path, a stylised funnel narrows the icons. On the right, a single polished capsule pulses in amber, clean and singular. Espresso background with a faint cream contour line marking the path. Reserve the upper band for the tagline and the lower band for the key point.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, amber): "蒸餾成 skill" anchored across the upper third of the frame, reading left to right, the dominant eye-catcher.
+
+  TIER 2 — key point (medium, cream, sits quieter than the tagline but still highly readable at thumbnail size, two tight lines): "把 80% 的既定流程封裝成 skill，老闆只看產出不看你怎麼做到" placed across the lower third as the supporting caption — the line that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, amber accent): "80% 流程" stamped beside the chaotic cluster on the left as a callout label.
+
+In the bottom-right corner, small cream monospace text: "Day 129 · 4/6".
+
+Color palette: Warm Amber — espresso #1C1917, amber #F59E0B, cream #FEF3C7.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

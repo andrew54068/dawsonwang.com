@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. A towering golden wall of stacked golf bags, club heads, and a calendar block dominates the right two-thirds of the frame, dwarfing a tiny matchstick figure standing at its base on the lower-left.
+
+The wall is built like a skyscraper of obstacles: at the bottom a stack of golf bags, in the middle a row of club heads, near the top a calendar grid showing "1 year". A thin red ribbon spirals up the wall like a stair. The tiny figure looks up — small, alone, faceless. The scale gap is the entire point: one human versus an enormous wall of cost and time.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red, anchored to the upper-left reading downward): "入場門檻"
+  positioned as the dominant eye-catcher, far larger than any other text on the slide.
+
+  TIER 2 — key point (medium, clean white, two tight lines across the lower third): "球具教練練習場下場費約 30–50 萬，會打 18 洞要練 1 年"
+  positioned as the supporting caption beneath the wall — quieter than the tagline but still highly readable at thumbnail size. This is the line that delivers the takeaway.
+
+  TIER 3 — hero element (mid-size, gold accent, stamped across the top of the wall): "30–50 萬"
+  positioned at the highest visible band of the wall, like a billboard above the climb.
+
+In the bottom-right corner, small white monospace text: "Day 133 · 4/6".
+
+Color palette: Danger Signal — black #18181B, red #DC2626, gold #FCD34D, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

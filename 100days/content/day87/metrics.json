@@ -1,0 +1,62 @@
+{
+  "day": 87,
+  "facebook": {
+    "snapshots": [
+      {
+        "interval": "1h",
+        "collected_at": "2026-03-28T19:21:43.721Z",
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "reach": null
+      },
+      {
+        "interval": "6h",
+        "collected_at": "2026-03-28T23:21:40.930Z",
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "reach": null
+      },
+      {
+        "interval": "24h",
+        "collected_at": "2026-03-30T10:01:39.226Z",
+        "reactions": null,
+        "comments": null,
+        "shares": null,
+        "reach": null
+      }
+    ]
+  },
+  "threads": {
+    "snapshots": [
+      {
+        "interval": "1h",
+        "collected_at": "2026-03-28T19:22:07.588Z",
+        "views": null,
+        "likes": null,
+        "replies": null,
+        "reposts": null,
+        "quotes": null
+      },
+      {
+        "interval": "6h",
+        "collected_at": "2026-03-28T23:22:04.189Z",
+        "views": null,
+        "likes": null,
+        "replies": null,
+        "reposts": null,
+        "quotes": null
+      },
+      {
+        "interval": "24h",
+        "collected_at": "2026-03-30T10:01:51.596Z",
+        "views": null,
+        "likes": 4,
+        "replies": null,
+        "reposts": 1,
+        "quotes": null
+      }
+    ]
+  }
+}

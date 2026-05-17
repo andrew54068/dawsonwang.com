@@ -1,0 +1,15 @@
+Dark Mode Tech. A long dark scroll of .jsonl session log unfurls diagonally across the frame, half buried in shadow, half illuminated by a single shaft of cold blue light.
+
+Where the light hits the scroll, lines of small monospace text become legible — and at irregular intervals, lime-green sparks erupt from specific lines, marking the failure points the Miner is hunting for. The unilluminated half recedes into the charcoal void, hinting at how much more is hidden. A faint magnifying lens outline floats above the brightest spark, its rim glowing lime.
+
+Three Chinese text elements: "負面訊號" sits in the upper-right in the largest bold white sans-serif, anchoring the slide. "就是線索" appears just beneath it in medium lime, slightly smaller. ".jsonl" floats as a small blue monospace tag near the bottom of the scroll.
+
+In the bottom-right corner, small white monospace text: "Day 103 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — 負面訊號 > 就是線索 > .jsonl.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

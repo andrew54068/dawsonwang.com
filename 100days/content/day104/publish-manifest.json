@@ -1,0 +1,38 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 104,
+  "facebook": {
+    "published_at": "2026-04-14T13:56:49.946Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26448726948124568",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true,
+    "stats": {
+      "views": 1489,
+      "reach": 867,
+      "reactions": 17,
+      "comments": 1,
+      "shares": 0,
+      "saves": 7,
+      "collected_at": "2026-04-17T05:40:10.639Z"
+    }
+  },
+  "threads": {
+    "published_at": "2026-04-14T14:03:28.035Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DXHV2wNmmux",
+    "post_count": 13,
+    "topic": "RAG",
+    "has_image": true,
+    "stats": {
+      "collected_at": "2026-04-17T05:39:56.839Z",
+      "views": 9398
+    }
+  }
+}

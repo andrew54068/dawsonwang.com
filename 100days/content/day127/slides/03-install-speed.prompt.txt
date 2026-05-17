@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. The frame is split vertically — on the left, a vibrant lime-green plugin marketplace hub glows, surrounded by small radiating orbs representing community-shared skills flowing freely toward a central terminal command line; on the right, a lone envelope icon sits next to a dimly lit file package labeled ".skill", with a slow dotted arrow pointing toward a distant figure — manual, isolated, tedious.
+
+The left side pulses with motion and connection — the marketplace ecosystem alive with exchange. The right side is static and enclosed — a single package waiting to be sent by hand. The contrast is immediate: networked abundance versus manual friction. A faint dividing line runs vertically between the two worlds.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent color): "社群 vs 打包傳檔"
+  anchored to the upper-left, the dominant eye-catcher, establishing the contrast immediately.
+
+  TIER 2 — key point (medium, white text, two tight lines): "CLI 有社群 marketplace，分享 skill 一行搞定；Cowork 要打包成檔案才能傳給朋友"
+  positioned across the lower third of the frame, quieter than the tagline but still highly readable at thumbnail size. This is the actual takeaway — the mechanism that makes CLI's sharing ecosystem frictionless.
+
+  TIER 3 — hero element (mid-size, lime accent): "一鍵裝 vs 手動傳"
+  floating between the two sides at the vertical dividing line, bridging the contrast as the proof.
+
+In the bottom-right corner, small white monospace text: "Day 127 · 3/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 + lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

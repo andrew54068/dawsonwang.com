@@ -1,0 +1,13 @@
+Bold Editorial. A monumental numeral "100" towers in coral-red across the right two-thirds of the frame, so tall it bleeds slightly off the top edge — unmissably the first thing the eye lands on, pulling all attention to the milestone.
+
+Receding into the navy darkness to the left of the "100", a small pale "99 篇" sits like a footnote, dwarfed by the giant next to it — the weight of the journey compressed into a tiny marker beside the achievement. Beneath the "100", a thin horizon line suggests the summit of a long climb, with faint milestone dots fading into the distance.
+
+Centered below the "100" in clean white type: "如何學習 AI". In the bottom-right corner, small white monospace text: "Day 100 · 1/5".
+
+Color palette: Midnight Authority — deep navy #0A1628, coral #E53E3E for the "100", white text.
+
+Typography: bold sans-serif, strong size hierarchy — "100" at maximum weight and size > "如何學習 AI" medium bold > "99 篇" and corner label small.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

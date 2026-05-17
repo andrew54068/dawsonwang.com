@@ -1,0 +1,19 @@
+Editorial Magazine. Square 1:1 social media slide. A large amber-tinted gift box dominates the right two-thirds of the frame, its lid lifted just enough to reveal a plain folded sheet of cream paper inside labeled "skill" — the box looks promising, but the contents look ordinary, hinting at the gap between hype and actual usefulness.
+
+A small cream silhouette of a hand reaches in from the lower-left, mid-pull, suggesting someone trying it for the first time. Behind the box, a faint editorial backdrop recedes into shadow, like a product feature spread. Leave the upper-left clear for the tagline block, and the lower band clear for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, amber accent #F59E0B, bold sans-serif): "skill 真的好用嗎" anchored to the upper-left, reading downward, dominating the eye as the principle name.
+
+  TIER 2 — key point (medium, cream, clean one or two tight lines): "自己寫或抄別人的 skill，好像也沒比較順手" sits across the lower third of the frame, directly beneath the gift box — clearly quieter than the tagline but highly readable at thumbnail size. Treat this as the line the viewer reads second; it delivers the takeaway.
+
+  TIER 3 — hero element (mid-size, cream, bold): "寫了沒用" stamped across the half-open lid, floating at the moment of disappointment it proves.
+
+In the bottom-right corner, small cream monospace text: "Day 123 · 4/8".
+
+Color palette: Warm Amber — espresso #1C1917 background, amber #F59E0B accent, cream #FEF3C7 text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

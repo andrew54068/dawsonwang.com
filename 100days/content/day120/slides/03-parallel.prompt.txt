@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. Two powerful beams of light collide at the center of the frame: from the upper-left, a blue beam labeled with a design-grid icon races downward; from the upper-right, a lime beam with an image-generation icon races to meet it. They collide at a burst point in the middle, exploding into a bright starburst.
+
+Both beams carry motion lines — they are moving simultaneously, not taking turns. The collision point radiates outward, implying combined output. The background is deep charcoal, making both beams electric and vivid.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "同時跑"
+  anchored to the upper-left corner, large and bold, the first thing the eye lands on.
+
+  TIER 2 — key point (medium, white, two tight lines): "兩個功能不互斥，視覺稿和封面圖可以同時生成"
+  positioned across the lower third, directly beneath the collision burst, clearly quieter than the tagline but still highly readable. The line that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "效率 ×2"
+  stamped at the collision starburst in the center of the frame.
+
+In the bottom-right corner, small white monospace text: "Day 120 · 3/7".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2, lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

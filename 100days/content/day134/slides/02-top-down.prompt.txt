@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A bold electric-blue arrow traces a curving path from a stack of exam-question cards on the upper-right downward and leftward toward a thick textbook block on the lower-left, reversing the conventional reading-then-testing flow.
+
+The exam-card stack at the upper-right glows with a lime-green edge, suggesting it is the starting point. The textbook on the lower-left is rendered as a chunky charcoal volume with thin blue spine details — the destination, not the origin. The arrow between them is the dominant graphic element, drawn as a thick lime path with small waypoint dots marking "stuck → look it up" moments. The deep charcoal background recedes, letting the path own the frame.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, lime-green accent): "top-down 念書" anchored to the upper-left of the frame, reading horizontally as the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, two tight lines allowed): "從歷屆考題反推回教材，碰到不會的再翻書" positioned across the lower third of the frame, beneath the curving path. Clearly quieter than the tagline but still highly readable at thumbnail size — this is the line the viewer reads second and delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, electric blue accent): "題目 → 教材" stamped beside the arrow's midpoint, labeling the direction of the flow.
+
+In the bottom-right corner, small white monospace text: "Day 134 · 2/5".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, accent lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

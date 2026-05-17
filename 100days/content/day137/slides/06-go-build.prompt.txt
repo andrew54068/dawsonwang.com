@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A single massive lime-green door stands at the centre of the frame, slightly ajar, with warm electric-blue light spilling out from behind it onto the charcoal floor. A small clean signpost beside the door reads "yourname.com" in white. The composition is sparse, almost meditative — one door, one signpost, one path of light. Nothing else competes for attention.
+
+The door is the unmissable focal point — oversized, glowing along its open edge, inviting the viewer to step through. The background charcoal recedes into deep shadow so the door's lime body and the spilled blue light feel like the only two things in the frame. Leave the upper-left clear for the title block and the lower-right clear for the corner signature.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — title (largest, bold white): "今天就開始" stacked above "蓋自己的網站" in two tight lines, anchored to the upper-left of the frame, reading downward. This is the dominant eye-catcher.
+
+  TIER 2 — closing line (medium, clean white, one line): "別人找你的時候，要找得到" positioned across the lower third of the frame, sitting quieter than the title but still highly readable at thumbnail size. Treat it as the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, lime accent): "半天搞定" stamped beside the door at the centre-right of the frame, like a label on the open threshold.
+
+In the bottom-right corner, small white monospace text: "Day 137 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

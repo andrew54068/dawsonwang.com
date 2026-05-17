@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A single massive terminal cursor — the blinking underline `_` — dominates the center of the frame, rendered in blazing lime against deep charcoal. It towers over everything else, electric and alive, as if waiting for the viewer to type.
+
+Around the cursor, the suggestion of a new universe opens up: faint geometric grids and glowing circuit lines recede into the deep background, suggesting hidden infrastructure and possibility. The word "Terminal" in soft monospace text arcs slightly below the cursor, small and quiet but grounding the image. The atmosphere is inviting rather than intimidating — this is a door, not a wall.
+
+Chinese text placement — two tiers:
+
+  TIER 1 — tagline (largest, boldest, lime accent color): "試試 Terminal"
+  anchored to the upper-left, the dominant text, reading as an invitation.
+
+  TIER 3 — hero element (mid-size, white): "新世界"
+  floating just below the massive cursor, positioned as if it's about to be typed.
+
+In the bottom-right corner, small white monospace text: "Day 127 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 + lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

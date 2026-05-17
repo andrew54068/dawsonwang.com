@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A clean horizontal path crosses the lower-middle of the frame with three glowing waypoint nodes — first a blue diamond labelled `Tailscale`, then a lime hexagon labelled `mosh`, then a white square labelled `tmux` — each connected by thin dashed lines that pulse outward like a network trace.
+
+Above each node floats a tiny vector icon hinting at its job: a globe with a private network ring above Tailscale, a broken-and-rejoined cable above mosh, a stack of layered terminal panes above tmux. The path leads the eye from left to right, ending at a small lime terminal window that reads `claude` — the destination. Background recedes into deep charcoal, leaving the path as the only lit element.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "三件式遙控" anchored to the upper-left, reading left to right, dominating the frame as the headline.
+
+  TIER 2 — key point (medium, clean white text, two tight lines across the lower third): "Tailscale 給位址、Mosh 自動重連、tmux 抓住長任務" sitting quieter than the tagline but still highly legible at thumbnail size — this is the line the viewer reads second, the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, sharp blue accent): "三件套" floating above the path as a label for the trio of waypoints.
+
+In the bottom-right corner, small white monospace text: "Day 125 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 accent, lime #AAFF00 accent, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

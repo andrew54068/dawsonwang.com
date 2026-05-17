@@ -1,0 +1,113 @@
+{
+  "day": 88,
+  "facebook": {
+    "snapshots": [
+      {
+        "interval": "1h",
+        "collected_at": "2026-03-30T10:02:07.721Z",
+        "reactions": 6,
+        "comments": 6,
+        "shares": null,
+        "reach": null
+      },
+      {
+        "interval": "6h",
+        "collected_at": "2026-03-30T10:02:32.897Z",
+        "reactions": 6,
+        "comments": 6,
+        "shares": null,
+        "reach": null
+      },
+      {
+        "interval": "1h",
+        "collected_at": "2026-03-30T10:04:48.914Z",
+        "reactions": 6,
+        "comments": 6,
+        "shares": null,
+        "reach": null
+      },
+      {
+        "interval": "6h",
+        "collected_at": "2026-03-30T10:05:19.730Z",
+        "reactions": 6,
+        "comments": 6,
+        "shares": null,
+        "reach": null
+      },
+      {
+        "interval": "1h",
+        "collected_at": "2026-03-30T10:40:27.262Z",
+        "reactions": 12,
+        "comments": 6,
+        "shares": 2,
+        "reach": null
+      },
+      {
+        "interval": "6h",
+        "collected_at": "2026-03-30T10:41:52.326Z",
+        "reactions": 14,
+        "comments": 6,
+        "shares": null,
+        "reach": null
+      }
+    ]
+  },
+  "threads": {
+    "snapshots": [
+      {
+        "interval": "1h",
+        "collected_at": "2026-03-30T10:02:16.792Z",
+        "views": 365,
+        "likes": 3,
+        "replies": null,
+        "reposts": 0,
+        "quotes": null
+      },
+      {
+        "interval": "6h",
+        "collected_at": "2026-03-30T10:02:41.815Z",
+        "views": 365,
+        "likes": 3,
+        "replies": null,
+        "reposts": 0,
+        "quotes": null
+      },
+      {
+        "interval": "1h",
+        "collected_at": "2026-03-30T10:04:57.868Z",
+        "views": 368,
+        "likes": 3,
+        "replies": null,
+        "reposts": 0,
+        "quotes": null
+      },
+      {
+        "interval": "6h",
+        "collected_at": "2026-03-30T10:05:28.738Z",
+        "views": 368,
+        "likes": 3,
+        "replies": null,
+        "reposts": 0,
+        "quotes": null
+      },
+      {
+        "interval": "1h",
+        "collected_at": "2026-03-30T10:40:34.009Z",
+        "views": 372,
+        "likes": 3,
+        "replies": 5,
+        "reposts": 0,
+        "quotes": null
+      },
+      {
+        "interval": "6h",
+        "collected_at": "2026-03-30T10:41:58.951Z",
+        "views": 372,
+        "likes": 3,
+        "replies": 5,
+        "reposts": 0,
+        "quotes": null
+      }
+    ]
+  }
+}

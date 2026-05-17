@@ -1,0 +1,32 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 111,
+  "facebook": {
+    "published_at": "2026-04-21T14:38:54.345Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26520988614231734",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  },
+  "linkedin": {
+    "published_at": "2026-04-21T14:39:11.028Z",
+    "post_url": "https://www.linkedin.com/feed/update/urn:li:activity:7452365252958003200/",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  },
+  "threads": {
+    "published_at": "2026-04-21T15:13:17.151Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DXZfdjJmvhJ",
+    "post_count": 6,
+    "topic": "oMLX",
+    "has_image": true
+  }
+}

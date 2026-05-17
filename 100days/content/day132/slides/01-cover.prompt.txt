@@ -1,0 +1,20 @@
+Bold Editorial. Square 1:1 social media slide. A massive jagged fissure cleaves the frame straight down the center, splitting the canvas into two contrasting halves. On the left side, a small dim silhouette of a figure hunched over a desk, a flat gray rectangular document floating limply away from them — the "lazy" world rendered in muted ash gray and dull charcoal. On the right side, a much larger luminous figure stands upright, arms spread, surrounded by floating gold sparks and a constellation of opening books, schematics, and circuit diagrams radiating outward — the "learner" world glowing in gold and red. The chasm between them is rendered as a deep black gash with a jagged red edge, unmistakable.
+
+The mood is confrontational and high-stakes — the opening shot of a manifesto. The right side is visibly taller, brighter, more populated; the left is dwarfed and fading. The viewer's eye lands first on the gold figure on the right, then crosses the gash to the dim figure on the left.
+
+Chinese text placement — cover slide, two tiers (cover is exempt from the key-point rule):
+
+  TIER 1 — title (largest, boldest, white): "用 AI 學東西的人"
+  anchored to the upper-left, reading downward across the top half as the dominant eye-catcher.
+  Directly below it on a second line, in red: "永遠贏過用 AI 偷懶的人".
+
+  TIER 2 — hero element (mid-size, gold accent): "學 vs 偷懶"
+  stamped boldly across the lower-center, straddling the central fissure, framing the contrast.
+
+In the bottom-right corner, small white monospace text: "Day 132 · 1/7".
+
+Color palette: Danger Signal — black #18181B background, red #DC2626 and gold #FCD34D accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — title > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

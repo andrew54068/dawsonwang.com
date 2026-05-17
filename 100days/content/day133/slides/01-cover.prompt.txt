@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. A massive golden golf club mid-swing collides head-on with a stark red exclamation mark at the dead center of the frame, sparks of fractured geometric shards bursting outward at the point of impact.
+
+The golf club shaft slices diagonally from the lower-left, its angular head dwarfed by the towering red mark that bleeds off the top edge. Behind the collision, a faint silhouette of a daydream cloud (a tiny CEO figure with a briefcase) shatters into shards that scatter toward the corners. The composition is split by the impact: dream on the left, harsh reality on the right. Leave generous black negative space around the collision so the title block breathes.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, white, anchored to the upper-left reading downward): "Day 133"
+  positioned as the dominant eye-catcher, dwarfing every other piece of text on the slide.
+
+  TIER 2 — key point (medium, clean white, single line across the lower third): "想用高爾夫陌生開發老闆？朋友一句戳破幻想"
+  positioned as the supporting caption beneath the collision — quieter than the tagline but still highly readable at thumbnail size. This line is the viewer's second read.
+
+  TIER 3 — hero element (mid-size, gold accent, stamped beside the exclamation mark): "一棒打醒"
+  positioned floating next to the red impact mark, like a stamp.
+
+In the bottom-right corner, small white monospace text: "Day 133 · 1/6".
+
+Color palette: Danger Signal — black #18181B, red #DC2626, gold #FCD34D, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

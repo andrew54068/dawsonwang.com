@@ -1,0 +1,19 @@
+Clean Minimalist. Square 1:1 social media slide. One massive orange folder labeled "素材" dominates the left half of the frame, towering over the composition. From its right edge, a single thick orange arrow shoots across to the right, where two compact small Workspace icons sit stacked side by side — a tiny Google Form labeled "forms" and a tiny Google Doc labeled "docs", both rendered the same modest size, dwarfed by the folder. The folder is the source; the outputs are interchangeable. The single arrow is the bridge — the universal pattern.
+
+The background is pure white with generous breathing room. The composition reads as proportion: the local folder is everything; the choice between forms and docs is just a swap of one CLI subcommand.
+
+Chinese text placement — closing slide, two tiers (closing insight is exempt from the key-point rule):
+
+  TIER 1 — title (largest, boldest, slate): "素材在本地，產出在 Workspace"
+  anchored to the upper-left, the dominant eye-catcher reading downward.
+
+  TIER 2 — hero element (mid-size, orange accent): "forms 換 docs 都通用"
+  stamped boldly across the lower-center of the frame, sitting between the folder and the two output icons, framing the universal pattern.
+
+In the bottom-right corner, small slate monospace text: "Day 130 · 6/6".
+
+Color palette: Surgical White — white #FFFFFF background, orange #F97316 accent, slate #0F172A text.
+
+Typography: bold sans-serif, strong size hierarchy — title > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

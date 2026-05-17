@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. Two geometric shapes collide at center — a bright blue multi-node cluster labeled "Teams" on the left, connected by edges, crashes into a single glowing lime diamond labeled "Subagent" on the right. The impact point sparks with electric blue fragments radiating outward.
+
+The composition is The Collision: two forces meeting at a point of impact. The blue cluster represents Agent Teams — multiple nodes linked by lines, suggesting rich inter-agent communication. The single lime diamond is isolated and self-contained. At the collision point, a bold "≠" glyph in white blazes between them. Behind the collision, faint text reads "vida-stack" in pale grey monospace, receding into the dark background as a secondary reference.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "Subagent ≠ Teams"
+  anchored to the upper-left, reading as a stark declaration that frames the whole slide.
+
+  TIER 2 — key point (medium, white, two tight lines): "Codex 只有 Subagent，Agent Teams 不在官方路線，需靠社群專案"
+  placed across the lower third as a supporting caption beneath the collision scene — white text on a semi-transparent dark panel, quieter than the tagline but still legible at thumbnail size.
+
+  TIER 3 — hero element (mid-size, electric blue #4A90E2): "vida-stack"
+  floating in the lower-right of the scene, referencing the community workaround.
+
+In the bottom-right corner, small white monospace text: "Day 117 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, text white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

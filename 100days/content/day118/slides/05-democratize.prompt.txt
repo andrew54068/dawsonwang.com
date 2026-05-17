@@ -1,0 +1,25 @@
+Dark Mode Tech. Square 1:1 social media slide. The Spotlight composition: a single towering prompt document stands at the center-top, radiating beams of lime and blue light downward and outward like a lighthouse.
+
+The prompt document is rendered as a luminous vertical rectangle in deep blue-white, with the words "system prompt" in small glowing monospace at the top. From its base, twelve thin radiating rays — alternating lime and blue — spread outward in a fan to the lower portion of the frame. At the tip of each ray, a tiny identical user icon in white, each one receiving the same light. The visual metaphor: one expert system prompt, democratized to everyone.
+
+The background is deep charcoal, fading to near-black at the edges, letting the central light source dominate completely. No clutter. Just the beacon and the receivers.
+
+Chinese text placement:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "民主化本質"
+  anchored to the upper-left above the document, the dominant eye-catcher.
+
+  TIER 2 — closing insight (medium, white #FFFFFF):
+  "把資深設計師的 SOP 轉成所有人的預設行為"
+  positioned across the lower third of the frame, beneath the radiating rays — the message the viewer leaves with.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "無限可能"
+  floating at the very bottom-center, like a signature beneath the insight.
+
+In the bottom-right corner, small white monospace text: "Day 118 · 5/5".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2, lime #AAFF00, white #FFFFFF text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

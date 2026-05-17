@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. A monumental gold stopwatch dominates the center-right of the frame, its dial frozen at the 12-minute mark with a sharp red minute-hand. Towering over a dwarfed gray calendar block on the lower-left labeled "1 週" with seven faint date squares, the stopwatch reduces the calendar to a footnote. Three small luminous icons orbit the stopwatch on its left side, stacked vertically — top: a price-comparison chart labeled "比價報告"; middle: a stylized blueprint sheet labeled "商業計畫書"; bottom: a balanced scale labeled "法律選項". Each icon is rendered in gold linework on the black background, clearly readable as three separate examples.
+
+The mood is awestruck and disproportionate — the stopwatch is so big it's almost absurd against the week-long calendar. The viewer's eye lands first on the stopwatch face, then traces left across the three orbiting icons.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red accent): "12 分鐘搞定"
+  anchored to the upper-left, the dominant eye-catcher reading across the top.
+
+  TIER 2 — key point (medium, clean white text, two tight lines): "比價報告、商業計畫書、法律選項——以前要一週，現在 12 分鐘"
+  positioned in the lower third running beneath the stopwatch, quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, gold accent): "1 週 → 12 分"
+  stamped across the stopwatch's face just under the 12-minute mark, framing the contrast.
+
+In the bottom-right corner, small white monospace text: "Day 132 · 3/7".
+
+Color palette: Danger Signal — black #18181B background, red #DC2626 and gold #FCD34D accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

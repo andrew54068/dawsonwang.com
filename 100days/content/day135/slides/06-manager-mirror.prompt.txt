@@ -1,0 +1,27 @@
+Bold Editorial. Square 1:1 social media slide. A single tall gold-rimmed mirror stands in dramatic isolation at the center of a black frame, its surface filled with a bright red reflection showing a stylized executive silhouette holding an oversized cleaver mid-swing. The mirror tilts slightly, catching a sharp gold highlight along its left edge.
+
+The floor beneath the mirror is a thin gold horizon line, with the silhouette's shadow stretching forward toward the viewer — the manager's decision projected into the room. The composition is pure spotlight: one dominant object, deep black negative space around it, the entire frame asking the viewer to look into the reflection. Leave the upper-left clear for the tagline block and the lower-right corner clear for the hero element.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red `#DC2626`): "照妖鏡"
+  anchored to the upper-left, reading downward as three stacked characters,
+  towering as the dominant eye-catcher.
+
+  TIER 2 — closing line (medium white, two tight lines):
+  "AI 不是淘汰員工，是照出管理層懂不懂手下在做什麼"
+  positioned across the lower third of the frame as the closing landing line,
+  clearly quieter than the tagline but highly readable at thumbnail size —
+  the message the viewer leaves with.
+
+  TIER 3 — hero element (mid-size, contrasting gold `#FCD34D`): "管理力"
+  stamped along the right edge of the mirror frame, vertical, like an
+  engraved label naming what the reflection reveals.
+
+In the bottom-right corner, small white monospace text: "Day 135 · 6/6".
+
+Color palette: Danger Signal — black `#18181B`, red `#DC2626`, gold `#FCD34D`, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

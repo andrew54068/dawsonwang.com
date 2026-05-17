@@ -1,0 +1,19 @@
+Editorial Magazine. Square 1:1 social media slide. Three glowing rectangular nameplate cards converge head-on at the visual center of the frame — labeled "Claude", "Gemini", "ChatGPT" — each card facing inward like editorial trading cards at a debate panel, locking together at a single bright amber pivot point.
+
+Above the collision, a single floating cream question mark hovers, suggesting the reader can't decide which one wins on what task. Behind the cards, a faint editorial grid recedes into shadow, evoking a magazine comparison spread. Leave the upper-left clear for the tagline block, and the lower band clear for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, amber accent #F59E0B, bold sans-serif): "要選哪個" anchored to the upper-left, reading downward, dominating the eye as the principle name.
+
+  TIER 2 — key point (medium, cream, clean one or two tight lines): "Claude、Gemini、ChatGPT 都用過，分不出誰強在哪" sits across the lower third of the frame, directly beneath the three cards — clearly quieter than the tagline but highly readable at thumbnail size. Treat this as the line the viewer reads second; it delivers the takeaway.
+
+  TIER 3 — hero element (mid-size, cream, bold): "三選一" stamped across the collision pivot at the visual center, glowing slightly as the proof of the trade-off.
+
+In the bottom-right corner, small cream monospace text: "Day 123 · 3/8".
+
+Color palette: Warm Amber — espresso #1C1917 background, amber #F59E0B accent, cream #FEF3C7 text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

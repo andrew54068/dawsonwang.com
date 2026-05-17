@@ -1,0 +1,21 @@
+Dark Mode Tech. Two lime-glowing terminal panels rest like stepping stones across a dark charcoal stage, leading the eye from a faint laptop on the left to a bright cloud-shaped URL plaque on the right.
+
+The first panel, nearest the laptop, displays "$ brew install cloudflared" in crisp lime monospace. The second, slightly elevated and brighter, displays "$ cloudflared tunnel --url http://localhost:8000" in lime monospace. A thin blue dotted arc rises above the panels, implying the outbound tunnel being born. The path ends at a glowing lime-outlined plaque that reads "https://xxx.trycloudflare.com" in monospace — the public URL plucked from the sky. The laptop is small and faintly lit; the URL plaque is bright and unmissable. Leave the upper-left for the tagline and the lower band for the key point.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "兩行搞定" anchored to the upper-left, dominating as the eye-catcher.
+
+  TIER 2 — key point (medium, clean white, one line): "brew 裝 cloudflared，一行指令拿到公開網址" positioned across the lower-middle of the frame, quieter than the tagline but still highly readable at thumbnail size — the line that tells the viewer what the two commands do.
+
+  TIER 3 — hero element (mid-size, sharp lime accent): "trycloudflare.com" stamped in monospace next to the URL plaque at the end of the path.
+
+In the bottom-right corner, small lime monospace text: "Day 109 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

@@ -1,0 +1,13 @@
+Dark Mode Tech. Two glowing pill-shapes meet at the dead center of the frame — an iPhone Dynamic Island leaning in from the left and a Mac notch leaning in from the right — colliding at a bright seam of lime light, as though the same design idea is handing itself off between two devices.
+
+The iPhone pill on the left is drawn small and crisp, anchored to a faint phone outline; the Mac notch on the right is wider, anchored to a faint laptop top edge. At the point of collision, a burst of fine lime-and-blue rays radiates outward, marking the moment when the interaction pattern jumps platforms. The background charcoal fades to black at the edges, pushing all attention to the meeting point.
+
+Floating above the collision in bold lime: "iPhone 先行". Floating below the collision in bold white: "macOS 跟上". Tucked in small blue monospace along the lower edge: "同一個設計". In the bottom-right corner, small white monospace text: "Day 101 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — the two colliding pills at maximum visual weight > "iPhone 先行" and "macOS 跟上" medium bold > "同一個設計" and corner label small.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

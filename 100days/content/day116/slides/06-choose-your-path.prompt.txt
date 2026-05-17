@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A massive set of scales dominates the center of the frame — one side towers high carrying a glowing blue shield icon (資安), the other side sinks low under a heavy lime-green trophy (結果). The scale is rendered as a dramatic geometric vector form, the fulcrum a sharp triangular accent. The heavier results side tips decisively downward, suggesting a pragmatic default choice.
+
+Behind the scales, a faint repeating circuit-board pattern textures the charcoal background. The tagline "選哪條？" floats large above the scales in lime, framing this as the decisive question. In the lower third, a clean two-column comparison floats in small white text: "Stop hook → 同 session｜CodexPotter → 獨立 round". The scales themselves are the dominant element — one tipped, one raised, a visual verdict.
+
+Chinese text placement:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "選哪條？"
+  anchored to the upper-center, towering above the scales scene — the dominant question mark of the slide.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "資安 vs 結果"
+  stamped across the fulcrum of the scales at center.
+
+In the bottom-right corner, small white monospace text: "Day 116 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

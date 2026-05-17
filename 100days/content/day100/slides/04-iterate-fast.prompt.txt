@@ -1,0 +1,13 @@
+Bold Editorial. A winding path rises diagonally from the bottom-left to the top-right of the frame, paved in glowing coral-red stones — the path itself is the dominant element, pulling the eye upward along the climb.
+
+At the very bottom-left where the path begins, a crude, half-broken stone marked "v1" sits in shadow, uneven and unpolished. Along the climb, progressively cleaner milestone stones punctuate the path — v2, v3, v5 — each a little more refined than the last. At the top-right where the path crests into light, a polished geometric monument marked "v10" stands tall, bathed in a soft white glow.
+
+Floating above the midpoint of the path in bold white: "先求有 · 再求好". In the bottom-right corner, small white monospace text: "Day 100 · 4/5".
+
+Color palette: Midnight Authority — deep navy #0A1628, coral #E53E3E for the glowing path stones, white text.
+
+Typography: bold sans-serif, strong size hierarchy — "v10" at maximum weight and size > "先求有 · 再求好" medium bold > "v1" and corner label small.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. A layered architecture diagram sits at the center. The largest and outermost shape is a bold rectangle labeled "Claude API" — glowing electric blue, the foundational engine. Inside it, a bright lime-green rectangle labeled "CLI" fills most of the Claude API space, almost as large, showing full access. In the corner outside the CLI box but still within Claude API, a much smaller dim blue rectangle labeled "Cowork" sits with dashed borders, showing it only touches a fraction of what Claude API offers. The visual message is clear: CLI has full access to the Claude API; Cowork is a limited window into the same engine.
+
+Faint grid lines and circuit-trace details radiate from the Claude API border, suggesting deep infrastructure. The CLI box glows warmly from within — alive, full, unrestricted. The Cowork box is muted, its borders dotted, smaller than CLI but still connected to the same API core.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent color): "同一個引擎，不同的方向盤"
+  anchored to the upper-left corner, the dominant eye-catcher and the article's core thesis.
+
+  TIER 2 — key point (medium, white text, one tight line): "CLI 完整存取 Claude API，Cowork 只用到一角"
+  positioned below the tagline, quieter but readable at thumbnail size.
+
+  TIER 3 — hero element (mid-size, lime accent): "CLI"
+  glowing at the center of the lime CLI rectangle, the brightest label on the slide.
+
+In the bottom-right corner, small white monospace text: "Day 127 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 + lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. A bold golden pathway sweeps diagonally from the lower-left to the upper-right of the frame, marked by three luminous waypoints. Waypoint one (lower-left) is a small storefront silhouette labeled "中小企業" with a faded checklist pinned to its door titled "拖半年的 to-do". Waypoint two (middle) is a glowing geometric agent-figure — a stylized gear-head robot icon outlined in gold — striding along the path. Waypoint three (upper-right) is a massive red dollar coin stamped with "$100/hr", towering above the path as the destination. Faint dotted lines connect the three waypoints, reinforcing the journey.
+
+The mood is purposeful and prescriptive — a concrete recipe rendered as a treasure map. The viewer's eye lands first on the gold $100 coin in the upper-right, then traces back down the path to the storefront origin.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red accent): "賣 agent"
+  anchored to the upper-left, the dominant eye-catcher reading across the top.
+
+  TIER 2 — key point (medium, clean white text, two tight lines): "跟小公司說那拖半年的 to-do 我用 agent 跑，一小時收 100 美金"
+  positioned in the lower third running beneath the diagonal path, quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, gold accent): "$100/hr"
+  stamped boldly across the giant coin in the upper-right, framing the proof.
+
+In the bottom-right corner, small white monospace text: "Day 132 · 4/7".
+
+Color palette: Danger Signal — black #18181B background, red #DC2626 and gold #FCD34D accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

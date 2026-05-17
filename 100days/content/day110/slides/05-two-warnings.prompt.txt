@@ -1,0 +1,21 @@
+Editorial Magazine. An espresso frame cleaved down the middle by a thin cream vertical chasm — on the left, a large amber padlock icon drawn with its shackle snapped open and a tiny cream URL ribbon slipping out, beside it a small cream speech-bubble fragment labelled with a screenshot-corner mark; on the right, a tall amber receipt tape unspooling downward into the espresso floor, a tiny amber robot icon at its head and a rising cream numeral trail climbing the tape as the bill swells.
+
+Both halves are visually heavy and warning-toned, amber against espresso, but the shapes are deliberately different — the lock on the left is sharp and open, the receipt on the right is long and unspooling — so the viewer reads two distinct risks, not two copies of one. A faint cream dotted line runs along the chasm floor connecting lock to receipt, hinting that one leak can cause the other. A small amber "OFF" switch glows above the chasm mid-frame, hovering like the single remedy, reinforcing the demo-then-shut-down rule. Leave the upper band free for the tagline and the lower band reserved for the key point.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, amber accent): "兩個提醒" anchored to the upper-left of the frame, reading horizontally, as the dominant eye-catcher naming that this slide carries a pair of warnings.
+
+  TIER 2 — key point (medium, clean cream text, one line or two tight lines): "網址不是密碼，接 AI 的工具外流帳單會爆" positioned as the supporting caption across the lower-middle band of the frame, stretched so the clause spans the chasm and names both risks in one breath. Sits clearly quieter than the tagline but still highly readable at thumbnail size — the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, contrasting amber): "demo 完就關" stamped across the amber OFF switch in the mid-frame, contrasting brightly against the espresso backdrop as the single rule that neutralises both warnings.
+
+In the bottom-right corner, small amber monospace text: "Day 110 · 5/6".
+
+Color palette: Warm Amber — espresso #1C1917, amber #F59E0B, cream #FEF3C7.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

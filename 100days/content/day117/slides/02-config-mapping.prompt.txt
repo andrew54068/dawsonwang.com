@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. Two vertical columns split the frame down the middle — the left column glows blue for Claude Code, the right column glows lime for Codex, separated by a thin white gap like a chasm between two systems.
+
+The composition is The Chasm: two worlds separated by a visible gap. In the left column, three stacked file labels recede upward — "CLAUDE.md", "~/.claude/", "settings.json" — rendered in monospace on dark blue panels. In the right column, matching lime-accented labels float at the same heights — "AGENTS.md", "~/.codex/", "config.toml" — each aligned to its counterpart. Three thin electric-blue arrows bridge the gap horizontally, one per pair.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "設定檔對應"
+  anchored at the top-center above both columns, commanding the composition.
+
+  TIER 2 — key point (medium, white, one tight line): "CLAUDE.md 換 AGENTS.md，~/.claude/ 換 ~/.codex/，基礎設定一對一搬移"
+  placed across the lower quarter of the frame, below the two columns, white text on a semi-transparent dark panel — clearly quieter than the tagline but still thumbnail-legible.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "3 個對應"
+  stamped at the center of the white gap, bridging the two columns.
+
+In the bottom-right corner, small white monospace text: "Day 117 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, text white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

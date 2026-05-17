@@ -1,0 +1,30 @@
+Dark Mode Tech. Square 1:1 social media slide. A glowing terminal window rises from the bottom third of the frame, two command lines lit in lime green against the charcoal void — "/plugin marketplace add" on the first line, "/plugin install skills-manager@andrew54068" on the second — each trailing a bright cursor.
+
+Above the terminal, a small abstract icon of a filing cabinet or package box glows faintly in electric blue, representing the plugin being installed. A path of two lime-green arrows leads downward from the icon into the terminal, tracing the journey from "marketplace" to "installed" — a clear two-step path with no branches.
+
+The composition is The Path: two waypoints connected by a directional line, showing progression without confusion.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime green `#AAFF00`): "2 條指令"
+  anchored to the upper-left, reading downward — the dominant eye-catcher
+  that frames the whole slide.
+
+  TIER 2 — key point (medium, white, one or two tight lines):
+  "兩條指令裝好 /skills-manager，進任何專案輸入就出互動選單"
+  positioned in the lower third of the frame, directly beneath the terminal
+  window, running the full width. This text sits quieter than the tagline
+  but is still highly readable at thumbnail size — it is the line the viewer
+  reads second and carries the actual takeaway.
+
+  TIER 3 — hero element (mid-size, electric blue `#4A90E2`, sharp accent):
+  "/plugin install" stamped to the right of the terminal, floating beside
+  the second command line as a label.
+
+In the bottom-right corner, small white monospace text: "Day 119 · 2/6".
+
+Color palette: Electric Dark — charcoal `#1A1A2E` background, blue `#4A90E2`, lime `#AAFF00`, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

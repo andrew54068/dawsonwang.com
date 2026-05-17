@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A large flat-vector folder labelled `~/.zprofile` sits half-hidden in shadow on the right side of the frame, its `brew shellenv` line glowing dimly inside. Across from it, a brighter folder labelled `~/.zshenv` sits exposed under a blue spotlight, currently empty. A thin lime arrow points from the shadowed file to the lit one, suggesting the line needs to move.
+
+In the centre, a stylised SSH connection comes in through a side tunnel, marked `non-interactive shell`, and visibly bypasses the shadowed `~/.zprofile` file — the path it takes only touches `~/.zshenv`. A small error glyph reading `mosh-server: command not found` floats faintly above the bypassed folder. The reveal: the file you assumed loads everything is being skipped on this code path.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "PATH 陷阱" anchored to the upper-left, reading left to right, dominating the frame.
+
+  TIER 2 — key point (medium, clean white text, two tight lines across the lower third): "非互動 zsh 只讀 zshenv，brew shellenv 沒載到" sitting quieter than the tagline but still highly readable at thumbnail size — this is the line the viewer reads second, the line that explains the bug.
+
+  TIER 3 — hero element (mid-size, sharp blue accent): "zshenv" stamped on the lit folder as the file that actually gets loaded.
+
+In the bottom-right corner, small white monospace text: "Day 125 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 accent, lime #AAFF00 accent, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

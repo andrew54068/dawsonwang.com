@@ -1,0 +1,15 @@
+Dark Mode Tech. Two parallel paths stretch across the frame, separated by a thin dark chasm down the middle, each path glowing in a different accent color and labelled with its own philosophy.
+
+The left path glows blue and is paved with small repeating "chat bubble" tiles, suggesting continuous in-conversation learning. The right path glows lime and is paved with larger "checkup clipboard" tiles, suggesting periodic structured review. The chasm between them is narrow but clearly visible — not a wall, just a seam — and a single thin white bridge arcs across the middle, hinting that the two approaches complement each other. The background recedes into deep charcoal.
+
+Three Chinese text elements: "邊用邊學" appears centered along the left blue path in bold white sans-serif. "定期體檢" appears centered along the right lime path in equally bold white sans-serif, the same size as its left twin. "不衝突" floats as a smaller lime tag directly above the white bridge in the center.
+
+In the bottom-right corner, small white monospace text: "Day 103 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — 邊用邊學 = 定期體檢 > 不衝突.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

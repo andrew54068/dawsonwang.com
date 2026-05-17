@@ -1,0 +1,21 @@
+Dark Mode Tech. A single oversized lime warning diamond hovers at the centre of the frame under a harsh lime spotlight, its face stencilled with the letters "SSE" in bold monospace, and below it three smaller blue warning diamonds recede into the shadow — each smaller diamond labelled in faint monospace with the other three quick-tunnel limits.
+
+The SSE diamond is the unmissable focal point: lime-outlined, brightly lit from above, dominating the upper-middle of the composition. Its prominence says "this is the one that actually breaks your AI chatbot demo". The three smaller supporting diamonds stand in a shallow arc behind it, dimmer and cooler — one labelled "200 並發", one labelled "子網域會變", one labelled "沒 SLA". Around the SSE diamond, thin lime lines trace the outline of a broken token-streaming ribbon, the tokens clumped into a single buffered blob instead of flowing — a visual cue for "沒有逐字效果". The spotlight cone recedes into charcoal void. Leave the upper-left free for the tagline and the lower band for the key point.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "四個地雷" anchored to the upper-left, reading horizontally, as the dominant eye-catcher that frames the slide as a warning list.
+
+  TIER 2 — key point (medium, clean white, one line or two tight lines): "200 並發上限、SSE 被擋、子網域會變、沒 SLA 保證" positioned as the supporting caption across the lower-middle of the frame, set as a single clean line if layout allows. Sits quieter than the tagline but still highly readable at thumbnail size — the line the viewer reads second that names all four traps.
+
+  TIER 3 — hero element (mid-size, sharp lime accent): "SSE 會壞" stamped directly across the front face of the big SSE diamond as the verdict, flagging the one that matters most for AI vibe coders.
+
+In the bottom-right corner, small lime monospace text: "Day 109 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

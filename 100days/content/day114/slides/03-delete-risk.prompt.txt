@@ -1,0 +1,21 @@
+Dark Mode Tech. The frame splits into two worlds by a jagged cracked canyon running top-to-bottom dead center. On the left: a calm blue chat bubble with a simple "hi" message, floating safely above solid charcoal ground — the chatbot side, harmless. On the right: a shattered folder icon labeled "個人資料夾" spilling fragments into the abyss, surrounded by terminal red warning lines and the ghostly text "rm -rf" echoing downward — the agent side, dangerous.
+
+The gap between them is a deep black fracture, uncrossable. A single lime arrow points from left to right across the chasm, labeling the jump from chatbot to agent. The viewer instantly reads: same tool, two risk tiers.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "agent 會刪檔" anchored to the upper-right above the shattered folder, in a dominant display weight — the first thing the eye hits.
+
+  TIER 2 — key point (medium, clean white, one or two tight lines): "Windows 上 Claude Code 曾把整個個人資料夾砍光連相鄰專案賠進去" positioned across the lower third of the frame as the supporting caption. Sits quieter than the tagline but still highly readable — this is the line the viewer reads second, the one that delivers the paragraph's actual insight.
+
+  TIER 3 — hero element (mid-size, terminal-red accent contrast): "rm -rf" stamped in monospace code font across the fracture line, glowing faintly like a warning.
+
+In the bottom-right corner, small white monospace text: "Day 114 · 3/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

@@ -1,0 +1,15 @@
+Dark Mode Tech. Five glowing lime-green waypoint nodes sit along a curved branching path, each node labeled in small white monospace text with a RAG variant name — "GraphRAG", "RAPTOR", "HippoRAG", "Self-RAG", "Agentic RAG" — all feeding thin electric-blue lines into a central pulsing blue hub at the right of the frame labeled "resolution flow".
+
+The path winds from the lower-left up to the central hub, each waypoint slightly larger and brighter than the last, suggesting progression and accumulation. The hub at the end glows with concentric rings, anchoring the composition. Faint lime grid lines fan out from the hub, as if its influence ripples across the entire charcoal void behind it.
+
+In the upper-left, bold lime Chinese text reads "強制形式化". Near the central hub, medium white Chinese text reads "補上留白". Along the path, a smaller white label reads "RAG 變形".
+
+In the bottom-right corner, small white monospace text: "Day 104 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, electric blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

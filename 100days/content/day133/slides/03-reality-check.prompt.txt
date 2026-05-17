@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. A massive golden trophy sits half-revealed behind a torn black curtain on the right, while the curtain peels back to reveal an empty pedestal with a stark red "0" stamped on its base on the left.
+
+The composition is built on contrast: the right side hints at glory (trophy partially exposed, gold gleam), the left side delivers the reveal (empty pedestal, big red zero). A thin diagonal tear runs across the frame where the curtain rips. Leave the lower third clean for the caption. Mood: the dream is shown for what it is.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red, anchored to the upper-left reading downward): "太傻太天真"
+  positioned as the dominant eye-catcher, far larger than any other text on the slide.
+
+  TIER 2 — key point (medium, clean white, two tight lines across the lower third): "朝國手發展的朋友，至今沒有球場陌生開發成功案例"
+  positioned as the supporting caption beneath the reveal — clearly quieter than the tagline but still highly readable at thumbnail size. This line is the viewer's second read and carries the actual insight.
+
+  TIER 3 — hero element (mid-size, gold accent, stamped across the empty pedestal): "0 案例"
+  positioned next to the giant red zero on the pedestal base.
+
+In the bottom-right corner, small white monospace text: "Day 133 · 3/6".
+
+Color palette: Danger Signal — black #18181B, red #DC2626, gold #FCD34D, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

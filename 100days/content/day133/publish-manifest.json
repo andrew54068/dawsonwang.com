@@ -1,0 +1,33 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 133,
+  "threads": {
+    "published_at": "2026-05-13T15:40:11.236Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DYSMC-Mmiyi",
+    "post_count": 4,
+    "topic": "創業",
+    "has_image": true,
+    "has_poll": false
+  },
+  "linkedin": {
+    "published_at": "2026-05-13T15:40:15.114Z",
+    "post_url": "https://www.linkedin.com/feed/update/urn:li:activity:7460353155256692736/",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": false
+  },
+  "facebook": {
+    "published_at": "2026-05-13T15:40:28.002Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26779488721715054",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  }
+}

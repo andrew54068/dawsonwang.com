@@ -1,0 +1,15 @@
+Dark Mode Tech. Four luminous hexagonal stations are strung along a glowing blue circuit path that winds from the lower-left of the frame to the upper-right, each station pulsing with a different shade of light.
+
+The first station, "Miner", glows cold blue and contains a tiny pickaxe icon. The second, "Mutator", glows lime and contains a stylized DNA fragment. The third, "Evaluator", glows lime-blue and shows two tiny opposing arrows. The fourth, "Reporter", glows white and shows a small document silhouette. The circuit path between them carries flowing particles, suggesting data moving from one stage to the next. The background is deep charcoal with a faint grid receding into shadow.
+
+Three Chinese text elements: "四階段" appears in the upper-left as the largest bold white sans-serif. "演化流程" sits just beneath in medium lime. "Miner→Reporter" floats as a small blue monospace tag along the lower edge of the circuit path.
+
+In the bottom-right corner, small white monospace text: "Day 103 · 3/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — 四階段 > 演化流程 > Miner→Reporter.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

@@ -1,0 +1,32 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 116,
+  "linkedin": {
+    "published_at": "2026-04-26T14:45:59.759Z",
+    "post_url": "https://www.linkedin.com/feed/update/urn:li:activity:7454178901490176000/",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  },
+  "facebook": {
+    "published_at": "2026-04-26T14:46:20.792Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26581392218191373",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  },
+  "threads": {
+    "published_at": "2026-04-26T14:46:29.079Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DXmUXSbGnA6",
+    "post_count": 8,
+    "topic": "ClaudeCode",
+    "has_image": true
+  }
+}

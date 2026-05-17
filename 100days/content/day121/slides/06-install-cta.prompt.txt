@@ -1,0 +1,24 @@
+Dark Mode Tech. Square 1:1 social media slide. A single dominant terminal window floats centered in the frame, occupying roughly the middle two-thirds — its lime-green prompt cursor blinks at the bottom of three stacked command lines glowing in monospace. The terminal sits in dramatic isolation against a charcoal void, with a faint grid receding behind it into shadow. A small accent square in the corner of the terminal frame matches the lime accent.
+
+The three command lines should read, in monospace, exactly:
+  /plugin marketplace add openai/codex-plugin-cc
+  /plugin install codex@openai-codex
+  /codex:setup
+
+Each line in clean monospace, the slash-commands tinted lime, the package paths in soft white. Leave the upper-left clear for the tagline block.
+
+Chinese text placement — CTA hierarchy:
+
+  TIER 1 — tagline (largest, lime accent #AAFF00, bold sans-serif): "三行裝好" anchored to the upper-left, reading downward, dominating the eye as the call-to-action.
+
+  TIER 2 — supporting line (medium, white): "Claude Code 直接呼叫 Codex" sits just beneath the tagline, in clean sans-serif.
+
+  TIER 3 — hero stamp (mid-size, blue accent #4A90E2, monospace): "Day 121" floats beside the terminal as a closing signature.
+
+In the bottom-right corner, small white monospace text: "Day 121 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > supporting line > hero stamp > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

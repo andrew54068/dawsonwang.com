@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. One massive lime-green wrench tightens a single bolt at the top of the frame, labelled `~/.zshenv`. Cascading down from that bolt, a wide fan of smaller blue command bubbles spread outward across the lower two thirds: `mosh`, `ssh m1pro 'brew xxx'`, `tmux`, `claude`, `git`, each one lit up as if newly working. The single fix at the top dwarfs the many downstream commands it unblocks.
+
+The composition is a clear scale relationship — one tiny mechanical action dominating a much larger field of consequences. Background recedes into deep charcoal so the wrench and its downstream fan are the only lit elements.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "一次修完" anchored to the upper-left, reading left to right, dominating the frame as the eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, two tight lines across the lower third): "brew shellenv 搬到 zshenv，往後 ssh one-liner 都受惠" sitting quieter than the tagline but still highly readable at thumbnail size — this is the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, sharp blue accent): "一次受惠" floating beside the fan of downstream commands as the proof of payoff.
+
+In the bottom-right corner, small white monospace text: "Day 125 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 accent, lime #AAFF00 accent, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

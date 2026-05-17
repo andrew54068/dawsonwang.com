@@ -1,0 +1,19 @@
+Bold Editorial. Square 1:1 social media slide. A deep navy field. A long horizontal coral path stretches from the left edge to the right edge of the frame, marked with small white footprints. Most of the footprints stop and scatter off to the sides early in the path — only one set of footprints continues all the way to the far right, ending under a single tall white flag planted at the very right edge of the frame. The single remaining flag is the dominant element, towering and isolated.
+
+The composition is The Spotlight on persistence — many started, almost everyone gave up, and the one who kept walking is the one standing at the end. The dropout footprints fade as they leave the path; the surviving footprints stay sharp. Leave the upper-left clear for the closing line and the lower-right clear for the corner signature. No characters or real people — just footprints and the flag.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — closing line (largest, bold white, two tight lines): "我們沒那麼特別" stacked above "但可以最後不放棄" anchored to the upper-left, reading downward — the dominant eye-catcher.
+
+  TIER 2 — supporting line (medium, clean white, one line): "前提是你還在跟用戶對話" placed across the lower third of the frame, sitting quieter than the closing line but still highly readable at thumbnail size.
+
+  TIER 3 — hero element (mid-size, coral accent, monospace flavour): "Day 136" stamped on the white flag at the right edge, like a marker on the finish line.
+
+In the bottom-right corner, small white monospace text: "Day 136 · 6/6".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

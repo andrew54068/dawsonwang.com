@@ -1,0 +1,24 @@
+Dark Mode Tech. A glowing blue road stretches from the lower-left corner deep into the frame's center, lined with five distinct illuminated signposts rising from the path's edge — each signpost carries a company initial in bold geometric lettering: I (IBM), O (OpenAI), G (Google), M (Microsoft), M (Meta). The signposts glow progressively brighter as they recede into depth, the furthest ones burning lime, suggesting a horizon of hiring demand that hasn't peaked yet.
+
+The road surface shimmers with subtle circuit-board patterns. Each signpost casts a short electric-blue shadow. The leftmost signpost (IBM) stands tallest and closest to the viewer, its glow intensified — representing the most striking data point: IBM tripling its entry-level recruitment. The Path archetype: a journey from present to future with named waypoints.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "誰在請人"
+  anchored to the upper-left, reading downward as the dominant first word, towering above the road scene.
+
+  TIER 2 — key point (medium, white, two tight lines): "IBM 入門招募量變三倍，OpenAI 掛著 650 個軟體工程職缺"
+  positioned across the lower third of the frame, beneath the road horizon, quieter than the tagline but fully legible — the specific companies and numbers that make this concrete.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "IBM × 3"
+  stamped beside the tallest (IBM) signpost, floating just above it as an annotation.
+
+In the bottom-right corner, small white monospace text: "Day 113 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 + lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

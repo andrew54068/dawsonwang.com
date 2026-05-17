@@ -1,0 +1,27 @@
+Bold Editorial. Square 1:1 social media slide. One enormous black pie chart fills the right two-thirds of the frame, its slices drawn as flat geometric wedges — a single tiny red sliver labeled "5%" pulled slightly outward, the rest of the pie a vast gold-outlined void marked "95%". The small red sliver is the only saturated color in the composition.
+
+A faint gold gridline runs across the lower portion, with a much smaller secondary chart in the upper-left — just a quarter slice in gold and a thin "16%" arc — sitting like a footnote next to the giant pie. The composition uses dramatic scale: the 95% mass dwarfs the 5% win. Leave the upper-left open for the tagline and reserve the lower third for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red `#DC2626`): "AI 還沒回本"
+  anchored to the upper-left, dominating as the eye-catcher above the small
+  quarter-slice chart.
+
+  TIER 2 — key point (medium white, two tight lines):
+  "IBM 訪 2000 位 CEO，只有 1/4 看到承諾的回報，16% 推到規模化"
+  positioned across the lower third of the frame as the supporting caption,
+  clearly quieter than the tagline but highly readable at thumbnail size —
+  the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, contrasting gold `#FCD34D`): "MIT: 5%"
+  stamped right next to the small red sliver of the big pie, like a label
+  pointing at the tiny share.
+
+In the bottom-right corner, small white monospace text: "Day 135 · 3/6".
+
+Color palette: Danger Signal — black `#18181B`, red `#DC2626`, gold `#FCD34D`, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

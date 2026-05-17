@@ -1,0 +1,42 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 90,
+  "facebook": {
+    "published_at": "2026-03-31T14:34:32.146Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/pfbid02LLM4hSygo6R9ZahryU5MMwc8FBypXPXppYyWxMWRVAAVcrWBhy69LP56rQeaTGSJl",
+    "has_image": true,
+    "has_first_comment": true,
+    "stats": {
+      "views": 2943,
+      "reach": 3566,
+      "reactions": 11,
+      "comments": 4,
+      "shares": 0,
+      "saves": 10,
+      "collected_at": "2026-04-17T05:56:04.180Z"
+    }
+  },
+  "threads": {
+    "published_at": "2026-03-31T14:49:06.663Z",
+    "post_count": 9,
+    "topic": "AI",
+    "has_image": true,
+    "post_url": "https://www.threads.com/@andrew54068/post/DWjYAXQGmIc",
+    "stats": {
+      "collected_at": "2026-04-17T05:55:48.950Z",
+      "views": 1173,
+      "likes": 7,
+      "replies": 9,
+      "quotes": 0,
+      "reposts": 0,
+      "follows": 1
+    }
+  }
+}

@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. A wide dark chasm splits the frame down the middle. On the left edge, a tiny lone matchstick figure stands with empty pockets shown as hollow gold outlines. On the right edge, a tight cluster of four CEO silhouettes walk together toward a flag marked "18".
+
+The gap between them is unbridged — a jagged black void. Above the lone figure on the left float two tiny empty boxes labeled with red "X" marks. The right-side cluster casts overlapping golden shadows, signaling "they come in groups". A red dotted line tries to reach across but breaks halfway. Mood: solitude meets pack — the wrong arena for solo cold outreach.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red, anchored to the upper-left reading downward): "為何失敗"
+  positioned as the dominant eye-catcher, far larger than any other text on the slide.
+
+  TIER 2 — key point (medium, clean white, two tight lines across the lower third): "菜逼八沒資源沒成就，老闆都揪人去不是單打獨鬥"
+  positioned as the supporting caption beneath the chasm — clearly quieter than the tagline but still highly readable at thumbnail size. This is the line that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, gold accent, floating beside the flag on the right cluster): "要 18 洞"
+  positioned next to the flag at the end of the CEO group's path.
+
+In the bottom-right corner, small white monospace text: "Day 133 · 5/6".
+
+Color palette: Danger Signal — black #18181B, red #DC2626, gold #FCD34D, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

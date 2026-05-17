@@ -1,0 +1,22 @@
+Retro Terminal. Square 1:1 social media slide. A huge blue security gate labeled runtime stands between a model console and a row of tool icons.
+
+The Scale composition makes the runtime gate dwarf everything else, showing that the session manager controls what the model can reach. Behind the gate, icons for file write, web search, GitHub, browser, and image_gen glow only if admitted. The model console waits on the left with a lime prompt, unable to bypass the gate by intelligence alone.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime): "現場配工具"
+  positioned across the upper-left as a command-line banner.
+
+  TIER 2 — key point (medium, white, one or two tight lines): "Runtime 決定這次 session 拿到哪些工具"
+  positioned beneath the gate as the explanatory caption, quieter than the tagline but still highly readable.
+
+  TIER 3 — hero element (mid-size, blue and lime): "image_gen"
+  glowing on one tool icon behind the gate.
+
+In the bottom-right corner, small white monospace text: "Day 124 · 4/6" with a tiny lime terminal cursor block beside it.
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

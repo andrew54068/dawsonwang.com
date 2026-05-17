@@ -1,0 +1,21 @@
+Dark Mode Tech. A single massive JSON code block dominates the center of the frame, rendered like an editor window with subtle line numbers on the left edge. Inside it, visible deny-list entries glow in lime monospace — "Bash(rm -rf *)", "Bash(sudo *)", "Bash(Remove-Item *)" — each one struck through with a red prohibition line, making the ban visible at a glance.
+
+Behind the code block, faint concentric shields radiate outward in dim blue, suggesting a perimeter being drawn. The background is nearly pure charcoal, pushing all attention to the code. A small label at the top of the editor reads "~/.claude/settings.json" in dim white monospace, grounding the scene in a real file path.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "deny list 三分鐘" anchored across the upper portion of the frame, floating above the code block — the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white, one or two tight lines): "在 settings.json 擋掉 rm -rf、Remove-Item、sudo 等危險指令" positioned across the lower third of the frame, just beneath the code block, as the supporting caption. Sits quieter than the tagline but still highly readable at thumbnail size — this is the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, blue accent contrast): "第一層防線" stamped diagonally across the right edge of the code block — like a shield badge, tilted slightly.
+
+In the bottom-right corner, small white monospace text: "Day 114 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

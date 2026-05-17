@@ -1,0 +1,51 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 117,
+  "linkedin": {
+    "published_at": "2026-04-27T15:47:17.638Z",
+    "post_url": "https://www.linkedin.com/feed/update/urn:li:activity:7454556718916706304/",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true,
+    "stats": {
+      "comments": 1,
+      "impressions": 60,
+      "collected_at": "2026-05-02T13:06:35.464Z"
+    }
+  },
+  "facebook": {
+    "published_at": "2026-04-27T15:47:25.235Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26593697823627479",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true,
+    "stats": {
+      "views": 2789,
+      "reach": 1784,
+      "reactions": 19,
+      "comments": 1,
+      "shares": 0,
+      "saves": 15,
+      "collected_at": "2026-05-02T13:06:54.090Z"
+    }
+  },
+  "threads": {
+    "published_at": "2026-04-27T15:47:34.301Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DXpAKInmp77",
+    "post_count": 7,
+    "topic": "ClaudeCode",
+    "has_image": true,
+    "has_first_comment": true,
+    "stats": {
+      "views": 51456,
+      "collected_at": "2026-05-02T13:06:17.636Z"
+    }
+  }
+}

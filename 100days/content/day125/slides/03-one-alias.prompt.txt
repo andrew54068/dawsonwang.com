@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A single massive flat-vector terminal window dominates the centre of the frame, its lime-green prompt cursor blinking at the start of one long line of monospace code. Inside the terminal, the command reads, on one wrapped line: `alias claude-remote='mosh dawson@dawsons-macbook-pro -- tmux new -As claude "claude --effort max"'`.
+
+The terminal floats on a deep charcoal background, lit by a soft blue glow underneath that suggests the command travelling out across the network. Tiny lime sparks trail off the right edge of the window, hinting at the session reconnecting on the host. Nothing else competes for attention — this slide is one command, isolated.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "一行 alias 搞定" anchored to the upper-left of the frame, reading left to right, dominating as the eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, one tight line across the lower third beneath the terminal): "mosh 進 Pro，tmux -As claude 接回原本的 session" sitting quieter than the tagline but still highly readable at thumbnail size — this is the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, sharp blue accent): "claude-remote" stamped just above the terminal window as the alias name being defined.
+
+In the bottom-right corner, small white monospace text: "Day 125 · 3/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 accent, lime #AAFF00 accent, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

@@ -1,0 +1,33 @@
+Dark Mode Tech. Square 1:1 social media slide. The Path composition: six numbered waypoint nodes are arranged in a flowing diagonal path from upper-left to lower-right, connected by bright blue #4A90E2 arrows.
+
+Each waypoint is a small circle or hex node in blue, containing a number (1 through 6) in white. Beside each node, a tiny monospace label in white describes the step:
+  1 — 問問題
+  2 — 找設計系統
+  3 — 列 todo
+  4 — 建資料夾
+  5 — 確認無 error
+  6 — 只說後續
+
+The path glows slightly, as if lit from within — it is the trail a skilled designer always walks, now hardcoded for everyone. At the start of the path (node 1), a faint outline of a generic user figure; at the end (node 6), the same figure is now labeled "資深設計師" in small lime text — implying the transformation. Between node 2 and 3, a short branch arrow in lime points to a quote bubble with tiny text: `"Good designs don't start from scratch"`.
+
+The background is deep charcoal with subtle grid lines, reinforcing the structured, systematic feel.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "SOP 硬編碼"
+  anchored to the upper-left, dominating and largest text on slide.
+
+  TIER 2 — key point (medium, white #FFFFFF, two tight lines):
+  "六步驟工作流 hardcode 進 prompt，強制每個使用者走資深設計師流程"
+  positioned in the upper area below the tagline, quieter but thumbnail-legible. This is the line the viewer reads to understand the mechanism.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "6 步驟"
+  stamped at the midpoint of the path, floating between node 3 and 4 as the count label.
+
+In the bottom-right corner, small white monospace text: "Day 118 · 4/5".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2, lime #AAFF00, white #FFFFFF text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

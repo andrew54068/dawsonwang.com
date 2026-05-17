@@ -1,0 +1,19 @@
+Data Visualization. Square 1:1 social media slide. A dark dashboard-like surface where a giant magnifying lens hovers over a dense cluster of tiny abstract user-avatars (small circular dots with simple geometric tags), revealing a smaller subset that glows lime green at the lens center while the rest fade into deep charcoal.
+
+The magnifying lens is the dominant element, taking up the right two-thirds of the frame, its glass illuminated with a faint blue-to-lime gradient. The user dots inside the lens are sharp, distinct, with hairline blue connection lines between a few of them — a sense of "these are the real readers". Outside the lens the dots recede into shadow. A faint scanning grid overlays the background like a radar sweep. Leave clear negative space along the upper-left for the title block.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — title (largest, boldest, white): "我以為會被自己的數據打臉" anchored to the upper-left, reading as two stacked lines, dominating that quadrant as the thumb-stopping headline.
+
+  TIER 2 — subtitle (medium, lime accent, one tight line): "結果發現我寫對了人" sitting directly below the title, clearly quieter than the tagline but still highly readable at thumbnail size.
+
+  TIER 3 — hero element (mid-size, lime accent contrast): "91% 還在學" stamped across the lens glass like a data readout, in monospace lime against the lens's blue glow.
+
+In the bottom-right corner, small white monospace text: "Day 126 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

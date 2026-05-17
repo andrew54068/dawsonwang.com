@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A glowing terminal cursor pulses at dead center — the word "Codex" blazes in large lime-green monospace type while a faint ghost of "Claude Code" fades behind it, half-dissolved into the dark background.
+
+The composition is The Spotlight: a single dominant element commands the frame. The lime glyph towers over everything, casting a soft electric halo. Below it, a diagonal arrow in electric blue traces the migration path — thick, confident, pointing right. The background is deep charcoal with faint circuit-board grid lines receding toward the edges.
+
+Chinese text placement — two tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "無痛轉移？"
+  anchored to the upper-left quadrant, reading as a bold question that hooks the viewer.
+
+  TIER 3 — hero element (mid-size, electric blue #4A90E2, monospace): "Claude Code → Codex"
+  stamped across the lower third, wide and confident, naming the migration journey.
+
+In the bottom-right corner, small white monospace text: "Day 117 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, text white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

@@ -1,0 +1,15 @@
+Dark Mode Tech. A deep chasm splits the frame vertically — on the left, a brightly lit zone with glowing skill documents stacked neatly, pulsing with blue energy. On the right, a dim forgotten zone where skill documents gather dust, untouched and dark.
+
+The chasm between them is a sharp void of pure black, with no bridge connecting the two sides. A faint lime-green question mark hovers above the gap, suggesting uncertainty. The lit side represents skills that got triggered and improved; the dark side represents skills that never got revisited.
+
+Bold white text "被動式改進" spans the top. Medium lime-green text "盲區" floats directly above the chasm. Smaller white text "沒有A/B" anchors near the bottom-center beneath the gap.
+
+In the bottom-right corner, small white monospace text: "Day 102 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

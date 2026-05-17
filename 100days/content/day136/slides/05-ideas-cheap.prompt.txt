@@ -1,0 +1,19 @@
+Bold Editorial. Square 1:1 social media slide. A deep navy field. Four identical white lightbulb shapes converge from the four corners of the frame toward a single bright coral collision point at the centre — three of them angled in from the top-left, top-right, and bottom-right, the fourth from the bottom-left, all aimed at the same coral burst. The collision point flares outward in sharp coral shards, suggesting that the same idea has been struck at the same moment by four different minds.
+
+The composition reads as simultaneous discovery — your idea isn't yours alone, three other people just thought of the exact same thing. The four bulbs are visually identical to underline that there's nothing special about any one of them. Leave the upper-left clear for the tagline and the lower-right clear for the corner signature. No characters or props beyond the four bulbs and the central coral burst.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, bold coral): "點子不值錢" anchored to the upper-left, reading horizontally — the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white, two tight lines): "你想到一個點子時，全世界同時有三個人想到同一件事" placed across the lower third of the frame, sitting quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, coral accent, monospace flavour): "1 + 3" stamped right onto the central coral collision burst, like a label on the impact point.
+
+In the bottom-right corner, small white monospace text: "Day 136 · 5/6".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

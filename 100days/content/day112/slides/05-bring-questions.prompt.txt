@@ -1,0 +1,21 @@
+Bold Editorial. A single enormous coral question mark dominates the center of the frame, towering and luminous against the navy void. It casts a subtle glow outward, illuminating the space around it. At the base of the question mark, a small open door shape glows white — an invitation, a threshold. A few tiny geometric figures (abstract, not human) drift toward the door from the edges of the frame, drawn inward.
+
+The composition is deliberately simple after four busier slides: one symbol, one door, one message. The negative space is the point — this slide breathes, it invites, it closes the set with clarity rather than complexity.
+
+Chinese text placement:
+
+  TIER 1 — title (largest, boldest, white): "帶問題來就好" anchored to the upper-left, reading as the dominant statement, enormous and clean.
+
+  TIER 2 — subtitle (medium, white): "不用一個人摸索" positioned beneath the title in the upper-left quadrant, clearly readable against the navy background.
+
+  TIER 3 — CTA (mid-size, coral accent): "私訊登記" floating beside the open door at the base of the question mark, acting as the call to action.
+
+In the bottom-right corner, small white monospace text: "Day 112 · 5/5".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — title > subtitle > CTA > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

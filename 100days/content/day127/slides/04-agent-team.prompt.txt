@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. Two clusters of abstract AI entities collide at the center of the frame — on the left, a single blue orb labeled "Cowork" sits alone in relative darkness; on the right, five lime-accented orbs labeled "CLI agent team" orbit each other in dynamic collision, lines of debate energy crackling between them.
+
+The collision point at center is the brightest spot on the slide, a burst of electric blue and lime where the two sides meet. The multi-agent cluster on the right is clearly more alive — orbits suggest debate, energy, iteration — while the single orb on the left is static, isolated. Abstract connecting lines between the right-side orbs suggest arguments being exchanged. The composition reads as one force meeting another, with the right side clearly winning.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent color): "多 agent 辯論"
+  anchored to the upper-left, the dominant eye-catcher, towering above the composition.
+
+  TIER 2 — key point (medium, white text, two tight lines): "CLI 能讓多個 AI 分身互相辯論收斂答案，Cowork 只有一個"
+  positioned below the tagline on the left side, quieter but still highly readable at thumbnail size. This is the line that delivers the actual takeaway — mechanism plus scope.
+
+  TIER 3 — hero element (mid-size, lime accent): "1 vs 多"
+  floating at the collision point in the center, positioned between the single blue orb and the cluster.
+
+In the bottom-right corner, small white monospace text: "Day 127 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 + lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

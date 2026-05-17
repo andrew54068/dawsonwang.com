@@ -1,0 +1,30 @@
+{
+  "day": 96,
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "facebook": {
+    "published_at": "2026-04-06T14:42:29.084Z",
+    "post_url": "https://www.facebook.com/",
+    "has_image": true,
+    "image_count": 1,
+    "has_first_comment": true
+  },
+  "threads": {
+    "published_at": "2026-04-06T15:09:32.741Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DWy3ImQmkFg",
+    "post_count": 4,
+    "topic": "AI",
+    "has_image": true,
+    "stats": {
+      "collected_at": "2026-04-17T05:58:35.003Z",
+      "views": 1,
+      "views_approximate": true
+    }
+  }
+}

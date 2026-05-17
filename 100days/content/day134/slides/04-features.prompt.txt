@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. Five distinct geometric icons fan out across the frame in a loose constellation — a shuffled-card stack, a target with rings, a keyboard key, a small browser-window with a tiny lock, and an open-folder branching outward — each rendered in electric-blue line art with lime-green accent highlights, partially overlapping a darker charcoal grid background.
+
+The icons sit at varying depths: the target-with-rings (weakness tracking) is the largest and most central, the shuffled-card stack and the keyboard key flank it at mid-scale, the locked browser window and the open-folder sit at the periphery — together they reveal five different facets of the same tool without any single one dominating the others. The composition gives The Reveal feel: each icon hints at one capability the viewer wouldn't guess from the screenshot alone.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, lime-green accent): "5 大功能" anchored to the upper-left of the frame, reading horizontally as the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, two tight lines allowed): "打亂選項、弱點追蹤、純鍵盤、本機儲存、open source" positioned across the lower third of the frame, beneath the icon constellation. Clearly quieter than the tagline but still highly readable at thumbnail size — the line the viewer reads second that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, electric blue accent): "不上雲端" stamped beside the locked-browser icon, labeling the privacy guarantee.
+
+In the bottom-right corner, small white monospace text: "Day 134 · 4/5".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, accent lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

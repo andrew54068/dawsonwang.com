@@ -1,0 +1,21 @@
+Dark Mode Tech. A navy frame is split into two vertical zones by a thin coral seam. On the left, inside a smaller coral-outlined room labeled as the subagent, a geometric gatekeeper figure stands at the doorway with a shield, stopping a shadowy "INSERT" and "DROP" command from passing — the shield marks a "PreToolUse" checkpoint. On the right, outside the room in the wider main conversation space, two larger sentinel posts flank the room from above and below.
+
+The upper sentinel is marked "SubagentStart" and is shown kicking off a small script scroll that lights up when the room opens; the lower sentinel is marked "SubagentStop" and is shown rolling up a log scroll as the room closes. A subtle coral label "frontmatter 內層" floats above the left room; a subtle coral label "settings.json 外層" floats above the right sentinels. Keep the upper-left open for the tagline and the lower third open for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, coral accent): "兩層 hook" anchored to the upper-left corner, reading in one line, dominating the top of the frame as the eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, one readable line across the lower third): "frontmatter 內管 PreToolUse，settings.json 外管 SubagentStart" — this text sits clearly quieter than the tagline but is large enough to read comfortably at thumbnail size. Treat it as the line the viewer reads second, the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, coral accent): "內外雙層" stamped across the coral seam where the two zones meet.
+
+In the bottom-right corner, small white monospace text: "Day 106 · 7/7".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

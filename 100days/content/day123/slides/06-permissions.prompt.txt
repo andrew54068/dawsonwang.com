@@ -1,0 +1,19 @@
+Editorial Magazine. Square 1:1 social media slide. A massive cream permission dialog box towers over a tiny espresso silhouette of a confused person at the lower-left of the frame — the dialog dwarfs them, with two oversized amber buttons "Allow" and "Deny" looming near the top, dominating the right two-thirds of the slide.
+
+Stacked behind this front dialog are faint outlines of three more permission dialogs receding into shadow, suggesting an endless queue of prompts. The little person tilts their head upward, overwhelmed. Leave the upper-left clear for the tagline block, and the lower band clear for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, amber accent #F59E0B, bold sans-serif): "一直問權限" anchored to the upper-left, reading downward, dominating the eye as the principle name.
+
+  TIER 2 — key point (medium, cream, clean one or two tight lines): "Claude Code 一連串權限提示，根本不知道在問什麼" sits across the lower third of the frame, directly beneath the towering dialog — clearly quieter than the tagline but highly readable at thumbnail size. Treat this as the line the viewer reads second; it delivers the takeaway.
+
+  TIER 3 — hero element (mid-size, cream, bold): "按下去？" stamped across the oversized Allow button, floating at the moment of decision it proves.
+
+In the bottom-right corner, small cream monospace text: "Day 123 · 6/8".
+
+Color palette: Warm Amber — espresso #1C1917 background, amber #F59E0B accent, cream #FEF3C7 text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

@@ -1,0 +1,15 @@
+Dark Mode Tech. A single glowing lime-green open book floats in dramatic isolation at the center of a vast charcoal void, its pages marked with a large numeral "100" in electric blue, thin lime threads stitching cross-references between its visible pages.
+
+The book is the only bright element in the frame — everything else recedes into darkness, tiny distant geometric particles drifting like ideas that have not yet been filed. A soft lime halo radiates from the book, suggesting it is both the light source and the entire knowledge universe. No competing elements, no clutter — this is the small-scale world where one glowing artifact holds everything.
+
+In the upper-left, bold white Chinese text reads "100 份來源". Below the book, medium lime-green Chinese text reads "小規模贏". In the lower-right, a smaller white label reads "LLM Wiki".
+
+In the bottom-right corner, small white monospace text: "Day 104 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, electric blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

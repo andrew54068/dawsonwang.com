@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. Two stark vertical panels separated by a thin red dividing line down the middle. Left panel rendered in flat ash gray: a slumped silhouette holding up a single limp document marked with a generic "report" symbol, sliding it across a desk — caption-feeling labels around it read "丟進去 → 貼出來". Right panel rendered in luminous gold-on-black: an upright silhouette surrounded by an expanding constellation of opening books, circuit diagrams, document stacks, and gear icons radiating outward in concentric arcs — labels read "翻過整個領域". The right panel is clearly larger in visual weight, brighter, and more layered.
+
+The mood is editorial and judgmental — the article's central diagnosis laid bare. The viewer's eye lands first on the gold-haloed figure on the right, then snaps left to the dim, narrow figure for contrast.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red accent): "兩種用法"
+  anchored to the upper-left, the dominant eye-catcher reading across the top.
+
+  TIER 2 — key point (medium, clean white text, two tight lines): "一種用 AI 不用學東西交差，一種拿 AI 把整個領域翻過一遍"
+  positioned in the lower third spanning both panels, sitting beneath the two figures, quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, gold accent): "永遠領先"
+  stamped near the top-right above the gold figure, framing who wins.
+
+In the bottom-right corner, small white monospace text: "Day 132 · 2/7".
+
+Color palette: Danger Signal — black #18181B background, red #DC2626 and gold #FCD34D accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

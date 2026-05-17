@@ -1,0 +1,24 @@
+Bold Editorial. Square 1:1 social media slide. A massive U-turn arrow dominates the canvas — a thick red curved arrow that exits the upper-left, swoops down across the frame, and points back into the left side, completing a reversal loop. The arrow is the single hero object on a stark black canvas, drawn in flat geometric vector style with a heavy red `#DC2626` stroke.
+
+Above the arrow's apex, a faint outline of a swivel office chair sits empty in muted gold — the implied "position" that just got vacated and is about to be re-filled. The composition is dramatic isolation — one dominant arrow shape, breathing room around it, no clutter. Leave the lower half open for the title block.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red `#DC2626`): "裁了又補"
+  anchored to the upper-left, reading downward in two stacked characters per line,
+  towering as the dominant eye-catcher.
+
+  TIER 2 — title block (medium white, two lines): "Day 135" on one line, then
+  "AI 裁員的公司一半要把人補回來" on the line beneath. Positioned across the lower
+  third of the frame, sitting quieter than the tagline but still thumbnail-legible.
+
+  TIER 3 — hero element (mid-size, contrasting gold `#FCD34D`): "50% 補回來"
+  stamped at the end of the U-turn arrow where it points back, like a destination label.
+
+In the bottom-right corner, small white monospace text: "Day 135 · 1/6".
+
+Color palette: Danger Signal — black `#18181B`, red `#DC2626`, gold `#FCD34D`, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

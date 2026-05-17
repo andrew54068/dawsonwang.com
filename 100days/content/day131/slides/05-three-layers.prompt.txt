@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. Three vertical columns stand side by side across the frame, separated by thin lime gaps — a clean chasm of negative space between each. Each column is a distinct rectangular block: the left column glows blue at its top bearing the bold label "MCP", the middle column glows white at its top bearing the bold label "skill", the right column glows lime at its top bearing the bold label "CLI". Beneath each label, inside its column, sits a small white monospace problem statement: under MCP "私有資料"; under skill "步驟"; under CLI "工具+知識". The three columns are visually parallel — equal width, equal weight, equal height — not a hierarchy.
+
+The background is deep charcoal with a barely-visible blue gridwork. The composition reads as three categories cleanly separated by gaps, each labeled with the single problem it solves.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, white): "各解一題"
+  anchored across the upper-left, the dominant eye-catcher reading across the top of the frame above the three columns.
+
+  TIER 2 — key point (medium, clean white text, two tight lines): "MCP 解私有資料、skill 解步驟、CLI 把工具與知識打包成一層"
+  positioned in the lower third, sitting beneath the three columns, quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, lime accent): "三題各有解"
+  stamped boldly between the lower edge of the columns and the key point line, framing the parallel structure.
+
+In the bottom-right corner, small white monospace text: "Day 131 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

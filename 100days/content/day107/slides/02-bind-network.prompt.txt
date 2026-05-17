@@ -1,0 +1,21 @@
+Dark Mode Tech. Three horizontal pipe-like network interfaces stack across the middle of the frame — two outer pipes labelled "Wi-Fi" and "Ethernet" lie charcoal-dark and inert, their ends sealed shut, while the central pipe labelled "utun" glows with a single blue stream of light running through it, lime energy spilling from its right end where a circular port marker "11434" pulses. The composition is a reveal: two interfaces dead, one interface alive — the listener exists on exactly one pipe.
+
+The three pipes stack vertically, the utun tunnel clearly brighter than its neighbors and visually centered; its lime glow bleeds into the surrounding dark void while the Wi-Fi and Ethernet pipes recede into near-black shadow. Small interface labels sit at the left end of each pipe. Behind the active utun tunnel's right end, the port glyph radiates outward with soft lime halo. Leave the upper-left clear for the tagline anchor, leave the lower third clear for the key-point caption, and place the hero element floating next to the active port.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "綁 tailnet IP" anchored to the upper-left, reading horizontally — the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white, one line or two tight lines): "綁到 Tailscale 介面 IP，只有 utun 上開 port，實體網卡掃不到" positioned across the lower third of the frame as the supporting caption beneath the pipe scene. This text sits clearly quieter than the tagline but is highly readable at thumbnail size — the line the viewer reads second, delivering the actual takeaway.
+
+  TIER 3 — hero element (mid-size, sharp blue accent in monospace): "100.x.y.z" stamped next to the glowing utun port, acting as proof of the specific IP the listener is bound to.
+
+In the bottom-right corner, small lime monospace text: "Day 107 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

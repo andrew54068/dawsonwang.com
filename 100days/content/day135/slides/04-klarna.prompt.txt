@@ -1,0 +1,27 @@
+Bold Editorial. Square 1:1 social media slide. A massive red signboard takes up the upper half of the black frame, the bold number "700" emblazoned across it, but the lower-right corner of the signboard is peeled back like a sticker, revealing rows of small gold human-figure silhouettes beneath — the workers being quietly hired back.
+
+The peeled section dominates the eye: the gold figures emerge in a neat grid that grows denser as it recedes toward the lower-right. A thin gold tear-line zig-zags between the "700" sign and the revealed grid, marking the moment the claim broke. The composition uses partial concealment — the headline number above, the inconvenient truth peeking out from underneath. Leave the upper-left open for the tagline and reserve the lower third for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red `#DC2626`): "700 人神話"
+  anchored to the upper-left, towering over the red signboard as the dominant
+  eye-catcher.
+
+  TIER 2 — key point (medium white, two tight lines):
+  "Klarna 2024 宣布 AI 等於 700 專員，2025 公開承認品質下降回補人力"
+  positioned across the lower third of the frame as the supporting caption,
+  clearly quieter than the tagline but highly readable at thumbnail size —
+  the line that delivers the actual reversal.
+
+  TIER 3 — hero element (mid-size, contrasting gold `#FCD34D`): "自打臉"
+  stamped diagonally across the peeled corner of the signboard, like a graffiti
+  overprint marking the moment of contradiction.
+
+In the bottom-right corner, small white monospace text: "Day 135 · 4/6".
+
+Color palette: Danger Signal — black `#18181B`, red `#DC2626`, gold `#FCD34D`, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

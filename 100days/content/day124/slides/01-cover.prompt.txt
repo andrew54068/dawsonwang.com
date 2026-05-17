@@ -1,0 +1,22 @@
+Retro Terminal. Square 1:1 social media slide. A glowing terminal window floats in deep charcoal darkness, with a disabled image icon flickering beside the word Spark.
+
+A massive lime command prompt dominates the left side, while a blue wireframe image frame on the right stays locked behind a small red error badge. The composition feels like a developer discovering that a fast model still cannot cross a missing-tool boundary. Leave clear negative space around the center for the title and hook.
+
+Chinese text placement — cover hierarchy:
+
+  TIER 1 — title (largest, boldest, lime): "模型不是工具"
+  positioned as the dominant eye-catcher across the upper-left, like a terminal command typed in large letters.
+
+  TIER 2 — hook (medium, white, highly readable): "Spark 不能靠自己產圖"
+  positioned directly beneath the title as the second line the viewer reads.
+
+  TIER 3 — hero contrast (mid-size, blue and lime): "text-only"
+  stamped on the locked image frame on the right.
+
+In the bottom-right corner, small white monospace text: "Day 124 · 1/6" with a tiny lime terminal cursor block beside it.
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

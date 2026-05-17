@@ -1,0 +1,13 @@
+Dark Mode Tech. A single luminous lime beacon glows at the dead center of the frame, so bright it casts a soft halo across the charcoal void — the eye immediately locks onto it as the one thing worth looking at, the gravitational center of the whole scene.
+
+Orbiting toward the beacon from all directions are small tool icons — a browser frame, a phone, a puzzle-piece extension, an editor pane, a menu-bar strip — each one tilted inward as if caught in the beacon's pull, their paths traced in faint blue arcs. The icons grow smaller and fainter the farther they are from the beacon, making the direction of travel unmistakable: everything moves toward the light.
+
+Anchored to the beacon in bold white: "工具往注意力靠". In the bottom-right corner, small white monospace text: "Day 101 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — the beacon at maximum visual weight > "工具往注意力靠" medium bold > corner label small.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

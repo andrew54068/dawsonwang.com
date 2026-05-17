@@ -1,0 +1,22 @@
+Retro Terminal. Square 1:1 social media slide. A bright lime text cursor towers over a dim, unreachable image canvas, making the text-only boundary visible.
+
+The Spotlight composition centers on the cursor as the only active object, while the image canvas recedes into blue shadow behind a transparent wall. Tiny terminal lines stream from Spark into text bubbles, but none become pixels. Leave room in the lower third for the key point as a real explanatory caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime): "只能文字"
+  positioned as the dominant eye-catcher in the upper-left, stacked like a terminal headline.
+
+  TIER 2 — key point (medium, white, one or two tight lines): "Spark 目前只能產文字，圖片要靠工具入口"
+  positioned across the lower third beneath the cursor, quieter than the tagline but still highly readable.
+
+  TIER 3 — hero element (mid-size, blue and lime): "text-only"
+  floating beside the transparent wall that blocks the image canvas.
+
+In the bottom-right corner, small white monospace text: "Day 124 · 2/6" with a tiny lime terminal cursor block beside it.
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

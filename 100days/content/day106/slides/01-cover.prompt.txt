@@ -1,0 +1,21 @@
+Dark Mode Tech. A deep navy frame is split down the middle by a sharp vertical chasm, and on either side of the chasm stands a massive geometric numeral — a towering white "61%" on the left, a leaner coral "22%" on the right — each sitting on its own terraced pedestal of stacked rectangles that read like condensed chat context blocks.
+
+The left pedestal bulges outward, overflowing with tightly packed rectangles that spill messily toward the chasm edge, some glowing coral at their frayed tops to suggest overheating. The right pedestal is clean, orderly, with large negative space around it and only a few neatly stacked rectangles. A thin coral line bridges the two numerals at their tops, subtly implying they came from the same source. The composition leaves the upper third open for the title band and the lower fifth open for the caption.
+
+Chinese text placement — cover (exempt from three-tier rule):
+
+  TITLE (largest, bold white, upper band): "Token 不夠用的解法" reading across the top in one bold line, with a smaller line beneath it reading "Subagent 才是治本" in coral, both stacked above the chasm.
+
+  HERO CONTRAST (mid-size, coral accent, integrated into the composition): "61% vs 22%" floating as a stamp-like label between the two numerals, right across the chasm, reading as the headline evidence.
+
+  HOOK CAPTION (quieter white, lower band): "同份工作量，context 佔用快三倍差距" sitting across the lower fifth of the frame, clearly smaller than the title but still thumbnail-legible.
+
+In the bottom-right corner, small white monospace text: "Day 106 · 1/7".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

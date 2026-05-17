@@ -1,0 +1,15 @@
+Dark Mode Tech. A colossal geometric brain-shaped vault, built from stacked glowing note cards and circuitry, towers over the frame against a deep charcoal void.
+
+The vault dominates the left two-thirds of the composition, each plate on its surface a thin lime-edged rectangle hinting at individual markdown notes. Three distinct conduits of electric blue light flow out of the vault toward a tiny silhouette of a terminal window on the lower right — one conduit labeled in subtle monospace as the fast layer, one as the semantic layer, one as the save layer. Wisps of blue data particles orbit the structure. The terminal is dwarfed, making the vault feel monumental.
+
+Chinese text placement: the phrase "第二大腦" appears largest, in bold white, floating in the upper-right dark space as the primary title; beneath it "三層機制" in slightly smaller bold lime; and a thin white monospace caption "Day 105" anchored just above the corner signature area.
+
+In the bottom-right corner, small white monospace text: "Day 105 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, electric blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

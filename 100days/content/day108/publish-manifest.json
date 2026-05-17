@@ -1,0 +1,32 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 108,
+  "linkedin": {
+    "published_at": "2026-04-18T15:51:29.468Z",
+    "post_url": "https://www.linkedin.com/feed/update/urn:li:activity:7451297398770827264",
+    "has_image": true,
+    "image_count": 1,
+    "has_first_comment": true
+  },
+  "facebook": {
+    "published_at": "2026-04-18T15:51:47.913Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26492232123774050",
+    "has_image": true,
+    "image_count": 1,
+    "has_first_comment": true
+  },
+  "threads": {
+    "published_at": "2026-04-18T15:51:58.571Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DXR1fULGrl3",
+    "post_count": 8,
+    "topic": "video-use",
+    "has_image": true
+  }
+}

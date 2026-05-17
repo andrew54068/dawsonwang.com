@@ -1,0 +1,33 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 125,
+  "linkedin": {
+    "published_at": "2026-05-05T18:32:18.967Z",
+    "post_url": "https://www.linkedin.com/feed/update/urn:li:activity:7457497356033429505/",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  },
+  "facebook": {
+    "published_at": "2026-05-05T18:32:39.928Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26684138301250097",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  },
+  "threads": {
+    "published_at": "2026-05-05T18:32:39.935Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DX95agUj3X2",
+    "post_count": 6,
+    "topic": "Mac",
+    "has_image": true,
+    "has_poll": false
+  }
+}

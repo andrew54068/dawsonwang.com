@@ -1,0 +1,15 @@
+Dark Mode Tech. Two glowing skill cards face each other across the center of the frame, a brilliant lime spark erupting at the precise point where they meet, while a larger blue all-seeing-eye silhouette looms above as the AI judge.
+
+The left card is labelled "v1" in cool blue, slightly muted. The right card is labelled "v2" in vivid lime, slightly larger as if it has just won a round. Between them, the impact spark fans outward into thin lime shards. Above them, the judge's eye is a blue geometric octagon with a single lime pupil, casting a faint downward beam onto the contest. The background recedes into deep charcoal with subtle scoreboard tick marks fading into shadow.
+
+Three Chinese text elements: "對照實驗" appears in the upper-left in the largest bold white sans-serif. "行為變好" sits in the middle-right in medium lime. "AI 當裁判" floats as a small white tag just beneath the judge eye.
+
+In the bottom-right corner, small white monospace text: "Day 103 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — 對照實驗 > 行為變好 > AI 當裁判.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

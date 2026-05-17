@@ -1,0 +1,36 @@
+{
+  "day": 89,
+  "threads": {
+    "published_at": "2026-03-30T14:48:35.531Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DWgzKMPmi1e",
+    "post_count": 5,
+    "topic": "程式設計",
+    "has_image": true,
+    "stats": {
+      "collected_at": "2026-04-17T05:55:42.941Z",
+      "views": 1121,
+      "likes": 8,
+      "replies": 4,
+      "quotes": 1,
+      "reposts": 0,
+      "follows": 1
+    }
+  },
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "facebook": {
+    "published_at": "2026-03-30T14:53:54.036Z",
+    "post_url": "https://www.facebook.com/",
+    "has_image": true,
+    "has_first_comment": true,
+    "stats": {
+      "collected_at": "2026-04-03T14:11:03.731Z"
+    }
+  }
+}

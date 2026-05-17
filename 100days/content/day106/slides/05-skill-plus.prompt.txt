@@ -1,0 +1,21 @@
+Dark Mode Tech. A massive coral-outlined frontmatter block dominates the right two-thirds of a navy frame, scaled like a skyscraper, with visible YAML-like lines inside — the line reading "skills:" glows brighter than the rest, and beneath it two bullet lines list small card icons labeled as team conventions.
+
+Dwarfed at the lower-left of the frame sits a tiny white briefcase labeled as a skill being pulled upward by a coral arrow, about to be absorbed into the skyscraper. A second parallel motif on the middle-left shows a smaller geometric doorway labeled "context: fork", with a skill-shaped figure stepping through it, indicating the reverse direction — the skill carrying itself into a new room. Keep the upper-left open for the tagline and the lower third open for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, coral accent): "疊加組合" anchored to the upper-left corner, reading in one line, dominating the top of the frame as the eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, one readable line across the lower third): "frontmatter 的 skills 欄位注入規範，context: fork 搬家做" — this text sits clearly quieter than the tagline but is large enough to read comfortably at thumbnail size. Treat it as the line the viewer reads second, the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, coral accent): "不互斥" stamped across the middle of the composition where the skill and subagent motifs meet.
+
+In the bottom-right corner, small white monospace text: "Day 106 · 5/7".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

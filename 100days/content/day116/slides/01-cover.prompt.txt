@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A glowing fork in the road splits at the center of the frame — one path labeled A curves left into a loop of connected nodes, the other path labeled B curves right into a compact external shell — both paths dissolve into deep charcoal darkness.
+
+Above the fork, the bold title block dominates the upper half: the large lime accent text "Day 116" anchors the top-center. Below it, a sharp subtitle "ralph-loop 三條路線" glows in white. The fork itself is rendered in electric blue lines on a charcoal background, suggesting a circuit-board aesthetic. In the lower third, a lime-accented badge reads "踩坑 02" — a small stamp that signals this is the second entry in a series. The overall composition is clean and geometric, drawing the eye from the title down through the fork to the badge.
+
+Chinese text placement:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "Day 116"
+  anchored at top-center, reading as the dominant headline.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "3 條路線"
+  stamped across the fork junction as a badge.
+
+In the bottom-right corner, small white monospace text: "Day 116 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

@@ -1,0 +1,43 @@
+{
+  "day": 99,
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "facebook": {
+    "published_at": "2026-04-09T14:59:08.108Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26397897589874171",
+    "has_image": true,
+    "image_count": 1,
+    "has_first_comment": true,
+    "stats": {
+      "views": 2237,
+      "reach": 1578,
+      "reactions": 9,
+      "comments": 1,
+      "shares": 0,
+      "saves": 4,
+      "collected_at": "2026-04-17T05:59:29.039Z"
+    }
+  },
+  "threads": {
+    "published_at": "2026-04-09T15:28:33.774Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DW6npvIGgt1",
+    "post_count": 8,
+    "topic": "AI諮詢",
+    "has_image": true,
+    "stats": {
+      "collected_at": "2026-04-17T05:59:14.423Z",
+      "views": 1078,
+      "likes": 4,
+      "replies": 7,
+      "quotes": 0,
+      "reposts": 0,
+      "follows": 2
+    }
+  }
+}

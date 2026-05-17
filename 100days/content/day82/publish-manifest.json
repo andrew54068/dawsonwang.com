@@ -1,0 +1,31 @@
+{
+  "day": 82,
+  "snapshots_due": [],
+  "snapshots_collected": [],
+  "threads": {
+    "published_at": "",
+    "post_url": "https://www.threads.com/@andrew54068/post/DWOmkIXml-Z",
+    "stats": {
+      "collected_at": "2026-04-17T05:51:53.499Z",
+      "views": 461,
+      "likes": 3,
+      "replies": 3,
+      "quotes": 0,
+      "reposts": 0,
+      "follows": 1
+    }
+  },
+  "facebook": {
+    "published_at": "",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/pfbid0jp6GQP9NwZn2CZKV1WFbUDiaWbN9oecDP7vpTMLCgbAHV1XoA6cztb5N7uck3y2Ul",
+    "stats": {
+      "views": 1103,
+      "reach": 616,
+      "reactions": 12,
+      "comments": 4,
+      "shares": 0,
+      "saves": 1,
+      "collected_at": "2026-04-17T05:52:15.219Z"
+    }
+  }
+}

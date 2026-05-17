@@ -1,0 +1,15 @@
+Dark Mode Tech. A single lime-glowing geometric lantern floats alone in a vast charcoal darkness, its light casting soft electric blue halos outward onto the faint ghosts of disconnected note cards scattered in the distance.
+
+The lantern is unmissable — dead center-left, dominant, the only truly bright object in the frame. The scattered note cards in the background are barely visible outlines, hinting at a vault waiting to be rewired. Thin blue threads try to form between the distant cards but fade before connecting, visualizing the missing "dream" mechanism. Around the lantern, a subtle question-mark shape is formed by the negative space of the halos, only visible on a second look. The rest of the frame is intentionally empty to leave room for contemplation.
+
+Chinese text placement: "做夢機制" in bold white, large, floating just above the lantern as the concept name; "怎麼控品質?" in bold lime beneath as the open question; and a smaller white monospace caption "Day 105" anchored lower in the frame.
+
+In the bottom-right corner, small white monospace text: "Day 105 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, electric blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

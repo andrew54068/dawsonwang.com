@@ -1,0 +1,13 @@
+Bold Editorial. A single glowing lantern hovers at the optical center of the frame, carved with the word "想法" in bold white — the lantern is the dominant element, commanding all attention with its warm coral-red light.
+
+Below the lantern, a row of tool icons — a gear, a wrench, a chat bubble, a magnifying glass — fade into the surrounding navy darkness, their edges dissolving into shadow the farther they sit from the lantern's glow. The light spills downward in a soft cone, illuminating only what's closest, leaving the tools as half-forgotten silhouettes at the edges of the beam.
+
+Floating just above the lantern in bold white: "想法 > 做法". To the lower-right of the lantern in small white type: "帶得走". In the bottom-right corner, small white monospace text: "Day 100 · 5/5".
+
+Color palette: Midnight Authority — deep navy #0A1628, coral #E53E3E for the lantern glow, white text.
+
+Typography: bold sans-serif, strong size hierarchy — "想法 > 做法" at maximum weight and size > lantern label "想法" medium bold > "帶得走" and corner label small.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

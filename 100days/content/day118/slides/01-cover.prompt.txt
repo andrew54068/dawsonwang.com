@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. A glowing system prompt document floats at the center of a deep charcoal void, its edges dissolving into faint code fragments and circuit-like lines radiating outward.
+
+The document itself is rendered as a luminous block of monospace text — the first line reads "You are an expert designer" in bright white, the rest fading into illegible shimmer. A single lime-green scalpel or magnifying lens overlaps the lower-right corner of the document, partially revealing hidden structure beneath — as if someone is mid-dissection. The composition is centered and dramatic: one blinding focal point surrounded by deep dark space.
+
+Chinese text placement:
+
+  TIER 1 — title (largest, white, bold sans-serif): "Claude Design 的本質"
+  anchored to the upper third of the frame, large and commanding.
+
+  TIER 2 — hook (medium, blue #4A90E2): "一份 system prompt 的解剖課"
+  positioned directly beneath the title, slightly smaller.
+
+  TIER 3 — hero (mid-size, lime #AAFF00, sharp accent): "掏金"
+  stamped boldly across the lower-left corner, like a verdict.
+
+In the bottom-right corner, small white monospace text: "Day 118 · 1/5".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2, lime #AAFF00, white #FFFFFF text.
+
+Typography: bold sans-serif, strong size hierarchy — title > hook > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

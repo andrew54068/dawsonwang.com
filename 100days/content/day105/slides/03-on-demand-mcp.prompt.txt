@@ -1,0 +1,15 @@
+Dark Mode Tech. A vast lattice of interconnected nodes hangs suspended in deep charcoal space, most of it dim, but a cluster at the center flares bright lime where a single invisible hand has just summoned it.
+
+The lattice fills the frame edge to edge, implying thousands of notes, but only the activated cluster is lit — the rest recedes into darkness so the viewer's eye locks onto the glow. Faint electric blue ley lines connect the bright cluster outward to a handful of loosely related dim nodes, visualizing semantic similarity. A small MCP-labeled hexagon floats near the cluster like a control valve. A thin dashed arc labeled "pull" curves into the cluster from off-frame, making clear this is called on demand, not continuously.
+
+Chinese text placement: "語意搜尋" large and bold white at the upper-left, floating over the dim lattice; "按需呼叫" in bold lime beneath as the mechanism phrase; and a smaller white monospace caption "370 篇" anchored near the lattice to ground the scale.
+
+In the bottom-right corner, small white monospace text: "Day 105 · 3/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, electric blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. A winding path curves from the bottom-left toward the upper-right, marked with weekly waypoints — each waypoint is a small flag alternating between blue (Claude) and lime (Codex), showing the lead switching back and forth as the path climbs.
+
+The path itself is a bright lime line against deep charcoal, curving like a stock chart that refuses to settle on one winner. The alternating flags tower slightly above the path, each one labeled "week N". The top of the frame suggests the path continues off-screen — no final winner in sight.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "誰強在換"
+  anchored upper-left, bold, dominant, the first visual stop.
+
+  TIER 2 — key point (medium, white, one line): "Claude vs Codex 排名每幾週更新，兩邊都用才能即時知道"
+  positioned across the lower quarter of the frame, clearly beneath the tagline, still highly legible at thumbnail. This is the line the viewer learns from.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "每幾週"
+  floating beside one of the mid-path waypoints, pointing at the rhythm of change.
+
+In the bottom-right corner, small white monospace text: "Day 120 · 4/7".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2, lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

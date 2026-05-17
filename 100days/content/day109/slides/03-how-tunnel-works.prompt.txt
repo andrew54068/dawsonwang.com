@@ -1,0 +1,21 @@
+Dark Mode Tech. A massive isometric router cube sits at the centre of the frame, its surface etched with a thin lime grid, and around it two sets of arrows tell the story — a bright lime arrow surges outward from inside the router toward a distant cloud icon in the upper-right, while a thick blocky blue arrow stabs inward from the outside and slams into a glowing red X stamped on the router's outer wall.
+
+The outbound lime arrow is confident, sharp, clean — it threads through the router wall effortlessly and continues into the cloud where a small lime badge reads "tunnel". The inbound blue arrow is visually halted, cracked at the point of impact with the X, its tail dissipating into dark haze. Behind the router a thin hex grid recedes to suggest infrastructure. Small monospace annotations float near each arrow: near the outbound arrow a tiny label "outbound → 放行", near the inbound arrow a tiny label "inbound → 擋". The router itself dominates the middle third of the composition so the viewer reads asymmetry at a glance. Leave the upper-left for the tagline and the lower band for the key point.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "不對稱路由" anchored to the upper-left, reading horizontally, dominating as the eye-catcher that names the mechanism.
+
+  TIER 2 — key point (medium, clean white, one line or two tight lines): "router 擋外面打進來，但從裡面往外連一律放行" positioned as the supporting caption across the lower-middle of the frame, wrapping if needed but kept highly readable at thumbnail size. Sits quieter than the tagline — the line the viewer reads second that delivers the actual mechanism.
+
+  TIER 3 — hero element (mid-size, sharp lime accent): "出可入不可" stamped in the upper-right sky next to the cloud, a compact four-character verdict that proves the asymmetry.
+
+In the bottom-right corner, small lime monospace text: "Day 109 · 3/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

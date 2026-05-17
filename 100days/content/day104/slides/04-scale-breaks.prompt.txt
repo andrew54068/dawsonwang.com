@@ -1,0 +1,15 @@
+Dark Mode Tech. A towering dark wall built from thousands of stacked rectangular document tiles rises from the ground to the top of the frame, dwarfing a tiny flickering electric-blue context window at its base — the window looks like a small lit terminal struggling to hold even a fragment of the wall above it.
+
+The wall occupies the right two-thirds of the frame, bleeding off the top edge to suggest it continues beyond view. A jagged lime-green crack zig-zags down the wall's face, splitting its tiles apart. The tiny context window at the base glows faintly, overwhelmed. Behind everything, the charcoal void is speckled with faint geometric particles drifting upward like ash from the structural failure.
+
+Near the top of the wall, bold white Chinese text reads "10 萬份". Along the crack, medium lime-green text reads "O(N²) 崩潰". Below the tiny context window, smaller white Chinese text reads "context 裝不下".
+
+In the bottom-right corner, small white monospace text: "Day 104 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, electric blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

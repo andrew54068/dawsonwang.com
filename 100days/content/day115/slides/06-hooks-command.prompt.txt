@@ -1,0 +1,19 @@
+Dark Mode Tech. A single terminal window dominates the center of the frame in dramatic isolation, its prompt glowing lime-green with the cursor mid-blink. The command "/hooks" is typed in oversized lime-green monospace, occupying the heart of the screen. Below the command, a clean tabular hook list materializes line-by-line, each row showing an event name, a matcher, and a "Plugin" column that highlights which entries came from plugins versus settings.json. The terminal is the only object on the frame; everything else recedes into pure charcoal void. The composition is The Spotlight — one tool, one command, all attention.
+
+Chinese text placement — two tiers (CTA slide is exempt from key-point rule):
+
+  TIER 1 — title (largest, bold white): "想看完整 hook 清單？" anchored to the upper-left, reading downward, dominating the upper frame as the first eye-catcher.
+
+  TIER 3 — hero element (mid-size, lime-green accent monospace, oversized): "/hooks" rendered as the command typed inside the terminal — the single answer the slide delivers.
+
+A short white sub-line beneath the terminal reads "顯示合併後的完整視圖，含 Plugin 欄位".
+
+In the bottom-right corner, small lime-green monospace text: "Day 115 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

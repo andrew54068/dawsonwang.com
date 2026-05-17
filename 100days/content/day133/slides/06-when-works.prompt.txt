@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. A clear golden path winds across the frame from the lower-left to the upper-right, with two figures walking side by side along it — both holding small golf club icons, connected by a glowing thin red line representing trust.
+
+Along the path there are three waypoint markers in sequence: a small handshake icon (already met), a golf flag icon (shared hobby discovered), and a contract icon at the destination. The two figures are roughly the same size — peers, not predator and prey. A faint stamp marked "cold outreach" with a thin red diagonal slash sits in the lower-left corner to indicate "not this route". The mood is warm partnership earned by prior connection, not by chasing strangers.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red, anchored to the upper-left reading downward): "何時有效"
+  positioned as the dominant eye-catcher, far larger than any other text on the slide.
+
+  TIER 2 — key point (medium, clean white, two tight lines across the lower third): "熟識老闆後因共同興趣加深信任，但都不是陌生開發"
+  positioned as the supporting caption beneath the path — quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second and the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, gold accent, stamped beside the contract icon at the destination): "信任 > 陌開"
+  positioned at the end of the path, like a destination tag.
+
+In the bottom-right corner, small white monospace text: "Day 133 · 6/6".
+
+Color palette: Danger Signal — black #18181B, red #DC2626, gold #FCD34D, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

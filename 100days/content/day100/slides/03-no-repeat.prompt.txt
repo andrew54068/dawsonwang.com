@@ -1,0 +1,13 @@
+Bold Editorial. Two scenes collide at the center of the frame along a jagged diagonal seam of electric-blue light — the collision itself is the dominant element, splitting the frame into two warring worlds.
+
+On the left, a weary silhouette hunches over a desk stacked with identical paperwork, and ghostly duplicates of the same figure fade behind it — the same tired person repeated endlessly into the navy darkness, each copy a little dimmer than the last. On the right, a single confident silhouette stands tall beside a glowing automated workflow, gears and arrows cycling on their own, the air around it clean and sharp.
+
+Centered along the collision seam in bold coral-red: "不重複". Above the right-side figure in small white type: "自動化". In the bottom-right corner, small white monospace text: "Day 100 · 3/5".
+
+Color palette: Midnight Authority — deep navy #0A1628, coral #E53E3E for the collision seam and "不重複", white text.
+
+Typography: bold sans-serif, strong size hierarchy — "不重複" at maximum weight and size > "自動化" medium > corner label small.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

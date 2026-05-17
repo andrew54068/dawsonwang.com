@@ -1,0 +1,15 @@
+Dark Mode Tech. From the deep charcoal shadows on the left, a small luminous agent figure emerges — half-revealed, half-hidden — its body made of geometric shards that glow blue at the edges.
+
+The agent's hand reaches toward a floating document labeled with code-like markings, representing a skill file being written. Behind the agent, faint conversation bubbles recede into darkness, the raw material it learned from. A bright lime-green highlight traces the agent's silhouette where it crosses from shadow into light, marking the moment of reflection becoming knowledge.
+
+Bold white text "自我改進" commands the upper-right area. Medium lime-green text "背景反省" sits at mid-height on the left. Smaller white text "寫成 skill" floats near the document on the right side.
+
+In the bottom-right corner, small white monospace text: "Day 102 · 3/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

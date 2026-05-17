@@ -1,0 +1,21 @@
+Bold Editorial. A winding path of coral stepping stones stretches from the bottom-left corner toward the upper-right, each stone a flat geometric hexagon glowing against the deep navy. Four waypoint markers rise from the path at intervals — the first shows a tiny microphone icon (meeting transcription), the second a subtitle bar icon (auto subtitles), the third a phone silhouette (phone automation), the fourth a rising bar chart (AI quality). Each marker is a small white geometric symbol, clean and iconic.
+
+At the origin of the path, a small flag reads "Day 1". At the destination, a larger flag glows coral, reading "Day 112". The path is long, deliberate, earned. The stepping stones recede in perspective, giving depth to the journey from beginner to experienced practitioner.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, coral accent): "112 天實戰" anchored to the upper-left, dominating the frame as the eye-catcher, enormous and bold.
+
+  TIER 2 — key point (medium, clean white, two tight lines): "從 Day 1 全職研究：會議逐字稿、自動字幕、手機自動化" positioned across the lower-left third beneath the tagline. This text is quieter than the tagline but still highly readable at thumbnail size — the line the viewer reads second, the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, coral accent): "Day 1 起" floating beside the origin flag at the start of the path, grounding the journey's beginning.
+
+In the bottom-right corner, small white monospace text: "Day 112 · 4/5".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

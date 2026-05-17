@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A wide chasm splits the frame down the middle — on the left, a stack of fragile glass apartment blocks labelled "Threads", "LinkedIn", "IG" lean dangerously, their foundations cracked and being chipped away by a hovering algorithm symbol shaped like a padlock; on the right, a single solid lime monolith engraved "yourname.com" stands alone on bedrock, no padlock above it, untouched.
+
+The left side feels precarious — every block teeters, glass cracks spreading outward from the padlock. The right side feels still, grounded, indifferent to the storm across the chasm. The chasm itself is rendered as a dark crevasse with a thin electric-blue glow at its base. Leave the upper-left clear for the tagline and the lower portion clear for the key point caption. Make the right-side monolith the single most prominent element in the frame.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, bold lime accent): "租來的房子" anchored to the upper-left of the frame, reading horizontally. This is the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white, two tight lines): "社群帳號被封你沒得選" above "自己的網域明天還能叫人來看" positioned across the lower third of the frame, sitting quieter than the tagline but still highly readable at thumbnail size. Treat it as the line the viewer reads second — the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, electric-blue accent): "封號風險" stamped above the cracked glass apartments on the left side, like a hazard label on the fragile structures.
+
+In the bottom-right corner, small white monospace text: "Day 137 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

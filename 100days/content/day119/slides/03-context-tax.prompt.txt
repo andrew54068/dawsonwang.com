@@ -1,0 +1,30 @@
+Dark Mode Tech. Square 1:1 social media slide. The frame is split by a deep invisible chasm running diagonally from upper-left to lower-right. On the left side: a dense, cluttered stack of glowing file icons — dozens of skill boxes piled high, all glowing electric blue, labeled "global skill × N" — radiating waste and weight. On the right side: a single slim, focused icon glowing lime green, labeled "relevant skill × 1" — clean and isolated.
+
+Between the two worlds, the chasm yawns as a dark void. A red "90%" label floats dead center over the left stack, stamped in a danger-signal red, quantifying the mass of irrelevant overhead. The contrast between the bloated left and the lean right is the entire visual argument.
+
+The composition is The Chasm: two opposing worlds separated by a visible gap, one heavy and wasteful, the other focused.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, electric blue `#4A90E2`): "context 稅"
+  anchored to the upper-left, dominant — the first thing the eye hits,
+  naming the problem.
+
+  TIER 2 — key point (medium, white, one or two tight lines):
+  "每次對話都付 context 稅——skill 掛太多 global 代價是 90% 浪費"
+  positioned across the lower third of the frame, spanning both sides of
+  the chasm. This text sits quieter than the tagline but is highly readable
+  at thumbnail size. It is the line that delivers the actual insight:
+  the mechanism of waste, its cause, and its magnitude.
+
+  TIER 3 — hero element (mid-size, danger red `#DC2626`, sharp accent):
+  "90% 浪費" stamped over the center of the cluttered left stack,
+  like a stamp of judgement.
+
+In the bottom-right corner, small white monospace text: "Day 119 · 3/6".
+
+Color palette: Electric Dark — charcoal `#1A1A2E` background, blue `#4A90E2`, lime `#AAFF00`, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

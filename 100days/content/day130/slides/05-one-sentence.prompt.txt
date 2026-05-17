@@ -1,0 +1,22 @@
+Clean Minimalist. Square 1:1 social media slide. A short orange speech bubble enters from the upper-left containing the literal command "use gws to create the google form", aimed downward at a central impact point — a small slate burst marker. From that impact point, two crisp orange arrows fan outward and downward into two stacked CLI command labels rendered in monospace: the upper one reads "gws forms forms create", the lower reads "gws forms forms batchUpdate". Beneath them, a single minimal Google-Form rectangle outlined in slate sits as the final result, with a thin orange arrow connecting the second CLI label to it. The composition reads as one sentence colliding with the system and resolving into two automatic CLI calls plus the finished form.
+
+The background is pure white with generous breathing room. The mood is mechanical clarity — input on top, automation in the middle, output on the bottom.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, orange accent): "一句話送出"
+  anchored to the upper-right, the dominant eye-catcher reading across the top, sitting beside the speech bubble.
+
+  TIER 2 — key point (medium, slate text, two tight lines): "「use gws to create the google form」AI 自動跑 create + batchUpdate"
+  positioned in the lower third, beneath the two CLI labels, quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, orange accent): "2 條指令"
+  stamped to the right of the two stacked CLI labels, framing the count.
+
+In the bottom-right corner, small slate monospace text: "Day 130 · 5/6".
+
+Color palette: Surgical White — white #FFFFFF background, orange #F97316 accent, slate #0F172A text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

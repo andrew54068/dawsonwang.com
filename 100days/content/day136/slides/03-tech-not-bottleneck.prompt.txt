@@ -1,0 +1,19 @@
+Bold Editorial. Square 1:1 social media slide. A deep navy field. A single colossal coral coin-shaped disc dominates the right two-thirds of the frame, towering and overscaled, stamped with the symbol "$". Tucked into the lower-left, dwarfed beneath the disc, sits a small white code-bracket icon and an even smaller architectural blueprint grid — both rendered tiny enough to look almost irrelevant against the coin.
+
+The scale is the message: business value is the giant; clean code and tidy architecture are footnotes underneath it. The disc casts a soft coral glow that washes out the small icons. Leave the upper-left clear for the tagline and the lower-right clear for the corner signature. No characters or props beyond the disc, the small code icon, and the small blueprint grid.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, bold coral): "技術不重要" anchored to the upper-left, reading horizontally — the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white, two tight lines): "程式寫得乾不乾淨，跟軟體有沒有商業價值一點關係都沒有" placed across the lower third of the frame, sitting quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, coral accent): "≠ 價值" stamped across the small code-bracket icon in the lower-left, like a strike-through label proving the contrast.
+
+In the bottom-right corner, small white monospace text: "Day 136 · 3/6".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

@@ -1,0 +1,19 @@
+Editorial Magazine. Square 1:1 social media slide. Two facing pages of an open magazine spread bisect the frame down a deep espresso gutter — the left page glows amber with a tall, dramatic skyscraper-shaped trophy labeled with stars and sparkles, while the right page sits in cream with a small, plain rectangular cardboard box. The visible gap between them is the focal point.
+
+A dotted question-mark trail rises out of the gutter, suggesting the reader's confusion about why the two pages look so different despite starting from the same brief. Behind both pages, faint editorial column rules recede into shadow. Leave the upper-left clear for the tagline block, and the lower band clear for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, amber accent #F59E0B, bold sans-serif): "差距感" anchored to the upper-left, reading downward, dominating the eye as the principle name.
+
+  TIER 2 — key point (medium, cream, clean one or two tight lines): "別人秀的成果很神，自己做出來卻差很多，到底差在哪" sits across the lower third of the frame, directly beneath the magazine spread — clearly quieter than the tagline but highly readable at thumbnail size. Treat this as the line the viewer reads second; it delivers the takeaway.
+
+  TIER 3 — hero element (mid-size, cream, bold): "神 vs 普通" stamped across the gutter between the two pages, floating at the gap it proves.
+
+In the bottom-right corner, small cream monospace text: "Day 123 · 2/8".
+
+Color palette: Warm Amber — espresso #1C1917 background, amber #F59E0B accent, cream #FEF3C7 text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

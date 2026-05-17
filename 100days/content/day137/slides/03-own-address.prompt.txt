@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A clean horizontal pipeline traverses the frame from left to right — three waypoint nodes connected by glowing electric-blue arrows. The leftmost node is a small Cloudflare-orange rounded square labelled "Cloudflare 網域", the middle node is a charcoal GitHub-style hexagon labelled "GitHub repo", the rightmost node is a tall lime-green pillar labelled "Vercel 部署" that emits a soft glow representing the live site. A small price tag "$10 / 年" floats beside the leftmost Cloudflare node.
+
+The viewer's eye follows the pipeline from left to right, ending at the glowing live site. The path feels frictionless, almost automatic — arrows pulse forward, nothing blocks the flow. Background charcoal recedes into shadow so the path dominates. Leave the upper portion clear for the tagline and the lower third for the key point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, bold lime accent): "自己的地址" anchored to the upper-left of the frame, reading horizontally. This is the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white, two tight lines): "Cloudflare 買網域加 Vercel 部署" above "GitHub 推一下就上線" positioned across the lower third of the frame, sitting quieter than the tagline but still highly readable at thumbnail size. Treat it as the line the viewer reads second — the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, electric-blue accent): "$10 / 年" floating beside the leftmost Cloudflare waypoint, like a stamp on the price tag.
+
+In the bottom-right corner, small white monospace text: "Day 137 · 3/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

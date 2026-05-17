@@ -1,0 +1,23 @@
+Dark Mode Tech. Square 1:1 social media slide. Two forces collide at the center of the frame: on the left, a blue Rust binary icon labeled "CodexPotter" hurtles rightward trailing a orange-red impact trail; on the right, a white hexagonal shield icon labeled "app-server" stands firm. At their collision point, a starburst of electric-blue and lime sparks radiates outward. Above the collision, a small diagram shows two separate "round" boxes — each labeled "Round N" and "Round N+1" — with a hard break between them, visually communicating that context does NOT flow between rounds.
+
+The collision point is the dominant element — bright, energetic, drawing the eye immediately. The "round" isolation diagram sits secondary but clearly legible above the impact zone. The charcoal background makes the collision colors pop dramatically.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "路線 B"
+  anchored to the upper-left, reading downward — the dominant label before the scene.
+
+  TIER 2 — key point (medium, white, one to two tight lines):
+  "CodexPotter 包住 app-server，每 round 清空 context 防污染"
+  positioned across the lower third beneath the collision — quieter than the tagline but fully legible at thumbnail size. This line explains what CodexPotter is, how it works, and why context resets.
+
+  TIER 3 — hero element (mid-size, blue #4A90E2 accent): "每輪重置"
+  stamped at the break between the two "round" boxes in the diagram.
+
+In the bottom-right corner, small white monospace text: "Day 116 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

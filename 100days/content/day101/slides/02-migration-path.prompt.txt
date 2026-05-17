@@ -1,0 +1,13 @@
+Dark Mode Tech. A wide horizontal path stretches across the frame like a migration route, punctuated by six glowing waypoint markers that step rightward from a humble browser window on the far left to a luminous Mac notch pill on the far right — the eye is immediately pulled along the journey from origin to destination.
+
+Each waypoint is a small geometric icon on a raised lime-and-blue platform: a browser frame, a phone silhouette, a puzzle-piece extension, an editor pane, a tiny menu-bar strip, and finally the glowing notch pill — the final waypoint rises taller than the others, bathed in lime light, as the clear endpoint of the trail. A thin dotted blue line connects the waypoints so the direction of travel is unmistakable, and the charcoal ground recedes into shadow behind them.
+
+Floating above the path in bold white: "一直在搬家". On the leftmost waypoint in small blue monospace: "網頁". On the rightmost waypoint in bold lime: "劉海". In the bottom-right corner, small white monospace text: "Day 101 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — "一直在搬家" at maximum weight > "網頁" and "劉海" medium bold > corner label small.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

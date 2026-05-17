@@ -1,0 +1,21 @@
+Editorial Magazine. A warm espresso frame traced by a single unbroken amber path that begins at a small cream envelope in the lower-right labeled with a friend icon, rises through a mid-frame amber silhouette of a friendly courier figure wearing a tiny amber cap labeled "cloudflared", and continues leftward into a small amber laptop in the lower-left — the tool that stays exactly where it started.
+
+The courier towers at the centre of the frame as the single focal point, one hand passing a cream envelope from the right toward the laptop on the left, the other hand returning a second cream envelope back to the right — the two-way delivery drawn as twin amber arcs overlapping the courier's silhouette. A faint cream dotted rectangle around the laptop labels "你電腦" in tiny cream type, reassuring the viewer that the tool never leaves home. A thin amber ribbon runs behind the courier labelled "專線" in small cream letters, reinforcing the single dedicated channel. Leave the upper band free for the tagline and the lower band reserved for the key point.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, amber accent): "請代理人" anchored to the upper-left of the frame, reading horizontally, as the dominant eye-catcher naming the move.
+
+  TIER 2 — key point (medium, clean cream text, one line or two tight lines): "工具留在你電腦，cloudflared 在外面幫你送件收件" positioned as the supporting caption across the lower-middle band, stretched so the clause spans from the laptop on the left to the envelope on the right. Sits clearly quieter than the tagline but still highly readable at thumbnail size — the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, contrasting amber): "一條專線" stamped along the amber ribbon behind the courier, contrasting brightly against the espresso backdrop as the grounding phrase for the tunnel concept.
+
+In the bottom-right corner, small amber monospace text: "Day 110 · 3/6".
+
+Color palette: Warm Amber — espresso #1C1917, amber #F59E0B, cream #FEF3C7.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

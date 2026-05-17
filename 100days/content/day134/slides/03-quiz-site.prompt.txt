@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A single oversized quiz card floats at the center of the frame, with a lime-green "為什麼？" panel expanding outward from its right edge, and a thin electric-blue line shooting from the panel toward a small PDF icon hovering in the upper-right corner.
+
+The central quiz card is rendered as a deep charcoal rectangle with four geometric A/B/C/D option bars stacked inside, one bar highlighted lime to mark the correct answer. The "為什麼？" explanation panel attached to its right is larger than the card itself, scaled up to dominate the right two-thirds of the frame — this is The Scale archetype: the explanation dwarfs the question. The PDF icon in the corner is small but connected by a thin blue jump-line, indicating the one-click jump to the study guide.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, lime-green accent): "195 題全解析" anchored to the upper-left of the frame, reading horizontally as the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, two tight lines allowed): "每題有對錯解析，旁邊一鍵跳學習指引 PDF" positioned across the lower third of the frame, beneath the central quiz card. Clearly quieter than the tagline but still highly readable at thumbnail size — the line the viewer reads second that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, electric blue accent): "預先生成" stamped inside or beside the oversized "為什麼？" panel, labeling that the explanations are pre-baked, not live-generated.
+
+In the bottom-right corner, small white monospace text: "Day 134 · 3/5".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, accent lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

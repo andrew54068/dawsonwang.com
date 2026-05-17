@@ -1,0 +1,21 @@
+Editorial Magazine. Two amber forms collide at the centre of an espresso frame — from the left, a large cream prompt-card edge-lit in amber carries a short prompt snippet in crisp amber monospace reading "裝 cloudflared / 跑 tunnel / 給我網址"; from the right, a large amber browser-address pill edge-lit in cream displays "https://…trycloudflare.com" in clean monospace — the two meeting at a bright amber impact-starburst at the centre.
+
+The collision starburst is the dominant focal point, unmistakably where the eye lands first; the prompt-card on the left tilts slightly inward, the URL pill on the right tilts inward to match, forming a visible V of energy converging on the centre. Tiny cream ticks mark three completed actions along the card's edge: "裝好 ✓ 跑起來 ✓ 網址 ✓" to show the single prompt did all three. Behind the collision, a faint cream-dotted envelope-to-friend icon in the lower-right hints at the final step — forwarding the URL. Leave the upper band free for the tagline and reserve the lower band for the hero element.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, amber accent): "一段就夠" anchored to the upper-left of the frame, reading horizontally, as the dominant eye-catcher that names the move.
+
+  TIER 2 — key point (medium, clean cream text, one line or two tight lines): "貼提示詞叫它裝 cloudflared、跑 tunnel、印公開網址" positioned as the supporting caption across the lower-middle band, stretched horizontally beneath the collision. Sits clearly quieter than the tagline but still highly readable at thumbnail size — the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, contrasting amber): "貼 → 收" stamped across the collision starburst itself, the arrow amber-bright, framing the input-to-output ritual as the thing the eye lands on last.
+
+In the bottom-right corner, small amber monospace text: "Day 110 · 4/6".
+
+Color palette: Warm Amber — espresso #1C1917, amber #F59E0B, cream #FEF3C7.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

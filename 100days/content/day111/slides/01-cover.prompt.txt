@@ -1,0 +1,21 @@
+Dark Mode Tech. A massive glowing chip icon — stylized Apple Silicon die — floats at dead center against a deep charcoal void, radiating concentric rings of electric blue light outward like a broadcast signal.
+
+The chip's surface is etched with thin lime-green circuit traces that pulse outward. Behind it, a faint grid of hexagonal cells recedes into shadow, suggesting a machine-learning matrix. The entire frame feels like peering into a server room lit only by the chip's own glow. The lower third is clear, breathing space for the title block.
+
+Chinese text placement — cover layout (two tiers):
+
+  TIER 1 — title (largest, boldest, white): "oMLX 是什麼？" anchored to the lower-left quadrant, reading left to right in a single commanding line.
+
+  TIER 2 — subtitle (medium, lime #AAFF00, one tight line): "Mac 跑 local LLM 該認識這條路" sitting directly beneath the title, quieter but still thumbnail-legible.
+
+  TIER 3 — hero accent (mid-size, electric blue #4A90E2, caps): "oMLX" stamped across the chip icon's surface, integrated into the circuit traces.
+
+In the bottom-right corner, small white monospace text: "Day 111 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2 + lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — title > subtitle > hero accent > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

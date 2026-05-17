@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. A glowing horizontal timeline path runs left to right across the middle of the frame, marked with four distinct waypoints: "送訊息前", "工具前", "工具後", "對話結束". At two of the waypoints, small lime-colored hook brackets snap downward, triggering glowing side-processes — one labeled "自動驗證", one labeled "整理筆記".
+
+The path is the dominant element, rendered as a thick electric blue pipeline with crisp waypoint nodes. The hook brackets are lime, sharp, mechanical — they suggest automation snapping into place at the right moment. The untriggered waypoints remain dim blue. The overall composition reads left to right as a journey with automatic checkpoints firing along the way, Cowork's absence of this system implied by a blank space on a shadow path below.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent color): "Hook 自動化"
+  anchored to the upper-left, the largest text, reading as the immediate principle.
+
+  TIER 2 — key point (medium, white text, two tight lines): "CLI 掛 hook 讓 Claude 在對話結束時自動驗證並整理筆記"
+  positioned below the tagline, quieter than the tagline but still highly readable at thumbnail size. This is the line that explains the mechanism — what gets triggered, when, and for what purpose.
+
+  TIER 3 — hero element (mid-size, lime accent): "自動執行"
+  stamped next to one of the triggered hook brackets along the timeline.
+
+In the bottom-right corner, small white monospace text: "Day 127 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 + lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

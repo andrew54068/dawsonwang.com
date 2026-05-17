@@ -1,0 +1,3 @@
+
+這幾天下來其實有個滿惱人的問題，我設定 Agent 只要不是在我的 allowlist 裡面的指令他應該都要跟我要授權，所謂授權其實是在 Web UI 上會跳出確認的視窗，但我常常看到 log 顯示他要授權，Web UI 上卻沒有任何反應，有一次是我 reload 頁面後才跳之前累積的很多 request，感覺應該是有些 bug，之後有遇到再慢慢修。
+今天我總算是體驗到龍蝦的驚人之處，我人在外面 moltbook agent 要我授權他執行 curl，因為他要 po 自介文到 moltbook 上，我請另一個 main agent 幫我 approve，telegram 顯示 Exec denied approval-timeout，原本想說要回到家才能操作，結果過了半小時後它說 I have successfully executed the curl commands！？因為我們有 HEARTBEAT.md 這個檔案所以一段時間他會活起來看看有沒有任務要執行，所以滿合理的，但你老兄怎麼就繞過我的授權了？還是說其實是 main agent 真的幫我 approve 的？就結果而言他直接幫我解決了平常我需要手動操作的事情，但其實同樣的他也繞過了我的控制，其實我覺得應該是他讀取設定有問題，因為有個檔案 exec-approvals.json 跟 openclaw.json 在同一層，負責記錄授權了哪些指令，在前一天晚上我就給過這個權限了，但不知道為什麼今天它又突然不認識，直到下一次的 HEARTBEAT 執行後才又恢復正常。

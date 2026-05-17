@@ -1,0 +1,15 @@
+Dark Mode Tech. Two massive geometric forces collide at the center of the frame — on the left, a sprawling hand-built machine of interlocking gears, pipes, and custom circuits, towering and complex, representing a 9500-line hand-rolled runtime. On the right, a sleek compact box with clean edges and a single glowing blue port, representing an SDK.
+
+At the point of collision, sparks of lime-green light scatter outward, and cracks radiate from the impact zone. The hand-built machine dwarfs the SDK box, making the scale mismatch visceral — you cannot fit one inside the other.
+
+Bold white text "9500行" dominates the upper-left at maximum scale. Medium lime-green text "手刻迴路" floats beside the sprawling machine. Smaller white text "重寫80%" sits near the bottom, beneath the collision point.
+
+In the bottom-right corner, small white monospace text: "Day 102 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

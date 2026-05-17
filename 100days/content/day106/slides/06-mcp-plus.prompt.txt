@@ -1,0 +1,21 @@
+Dark Mode Tech. A single small coral-edged room floats isolated at the center of a navy frame, and inside it a gluttonous geometric figure labeled "Playwright" is caged — fat, bloated, with oversized brackets and data blobs visibly bulging inside its belly. The room is sealed tight; none of the bulk leaks out to the surrounding space.
+
+Outside the sealed room, the main conversation is rendered as a clean, sparse horizontal strip along the lower edge — a thin pipeline of orderly dots, untouched by the chaos inside the room. A coral ribbon labeled as the mcpServers field wraps around the room like a padlock, visually explaining that the room exists because of that one config line. Two small coral tags float near the sealed door: one reads "schema" with a slashed circle, the other reads "回傳" with a slashed circle, both indicating containment. Keep the upper-left open for the tagline and the lower third above the pipeline open for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, coral accent): "關進小房間" anchored to the upper-left corner, reading in one line, dominating the top of the frame as the eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, one readable line across the lower third): "mcpServers 欄位把重 MCP 搬進 subagent，schema 和回傳都鎖住" — this text sits clearly quieter than the tagline but is large enough to read comfortably at thumbnail size. Treat it as the line the viewer reads second, the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, coral accent): "兩層疊加" stamped next to the padlocked door of the sealed room.
+
+In the bottom-right corner, small white monospace text: "Day 106 · 6/7".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

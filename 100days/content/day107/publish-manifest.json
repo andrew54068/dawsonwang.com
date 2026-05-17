@@ -1,0 +1,32 @@
+{
+  "day": 107,
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "facebook": {
+    "published_at": "2026-04-17T15:29:17.389Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/26481941411469788",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  },
+  "linkedin": {
+    "published_at": "2026-04-17T15:19:04.187Z",
+    "post_url": "https://www.linkedin.com/feed/update/urn:li:activity:7450925716394704896/",
+    "has_image": true,
+    "image_count": 6,
+    "has_first_comment": true
+  },
+  "threads": {
+    "published_at": "2026-04-17T15:25:52.572Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DXPNrS_msbZ",
+    "post_count": 13,
+    "topic": "Ollama",
+    "has_image": true
+  }
+}

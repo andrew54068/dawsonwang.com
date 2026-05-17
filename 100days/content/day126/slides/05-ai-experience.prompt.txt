@@ -1,0 +1,19 @@
+Data Visualization. Square 1:1 social media slide. A massive vertical stacked bar chart dominates the right half of the frame, segmented into four uneven blocks — a huge lime block at the bottom labeled with the largest share, a smaller blue block above it, a thin teal sliver, and a tiny accent cap on top — visualizing the AI-experience distribution among 73 followers.
+
+The stacked bar towers from bottom to top, anchoring the composition. The bottom lime segment is overwhelmingly the largest, clearly dwarfing every other layer. Each segment carries a small inline percentage label in monospace: 79%, 12%, 7%, 1% from bottom to top. A thin horizontal guide line crosses the chart where the 91% combined threshold sits, highlighted in lime. Leave generous negative space on the left for the text block.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "91% 還在學" anchored to the upper-left, reading downward, dominating that quadrant as the headline.
+
+  TIER 2 — key point (medium, clean white text, two tight lines): "73 個有 AI 經驗的人裡，新手加學習中佔 91%" positioned directly beneath the tagline, sitting quieter than the tagline but still highly readable as the supporting caption.
+
+  TIER 3 — hero element (mid-size, lime accent contrast): "91%" stamped across the lime threshold line on the chart, in large monospace lime as the proof number.
+
+In the bottom-right corner, small white monospace text: "Day 126 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

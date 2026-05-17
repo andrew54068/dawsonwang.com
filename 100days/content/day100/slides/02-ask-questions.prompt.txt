@@ -1,0 +1,13 @@
+Bold Editorial. A colossal coral-red question mark looms in the center of the frame, partially translucent — its curve is the dominant element, commanding the eye before anything else registers.
+
+Through the translucent body of the question mark, a dim workflow of solutions is revealed like a secret garden glimpsed through a keyhole — chat bubbles, terminal windows, and connected nodes faintly glow inside the curve, visible only because the question mark lets the light through. Around the question mark, dark navy fog conceals the rest of the scene, making the reveal feel intimate and earned.
+
+Floating just above the question mark's dot in bold white: "問對問題". To the lower-left of the curve, a small white label: "第一步". In the bottom-right corner, small white monospace text: "Day 100 · 2/5".
+
+Color palette: Midnight Authority — deep navy #0A1628, coral #E53E3E for the question mark, white text.
+
+Typography: bold sans-serif, strong size hierarchy — question mark at maximum weight and size > "問對問題" medium bold > "第一步" and corner label small.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

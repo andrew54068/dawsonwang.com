@@ -1,0 +1,24 @@
+Dark Mode Tech. A towering column of glowing job-listing cards erupts from the bottom of the frame and bleeds off the top edge, impossibly tall — each card stamped with a small blue circuit-board icon, stacking higher and higher until the topmost cards vanish into a bright lime haze.
+
+Flanking the column on the left, a small cluster of job cards from three years ago sits flat on the ground, dwarfed to near-insignificance by the erupting column beside it. The scale difference is unmissable — the past cluster is ankle-height, the present column is sky-scraper tall. In the mid-distance, faint lines trace the shapes of 9,000 company logos reduced to tiny geometric squares, suggesting the scope of TrueUp's tracking. The composition is The Scale archetype: one massive element dwarfing everything else.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "職缺三年新高"
+  anchored to the upper-left, reading downward, dominant eye-catcher before the viewer processes the column.
+
+  TIER 2 — key point (medium, white, one or two tight lines): "TrueUp 追蹤 9,000 家公司，軟體工程師職缺年增 30%"
+  positioned across the lower third of the frame, sitting quieter than the tagline but still highly readable at thumbnail size — the line that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, sharp blue #4A90E2 accent): "67,000+ 職位"
+  floating beside the midpoint of the towering column, as if labeling its current height.
+
+In the bottom-right corner, small white monospace text: "Day 113 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 + lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

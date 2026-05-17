@@ -1,0 +1,19 @@
+Editorial Magazine. Square 1:1 social media slide. A glowing amber path of stepping waypoints arcs from a small cream browser window in the lower-left up to the upper-right of the frame — each waypoint is a small geometric node, connected by a luminous amber trail that brightens as it moves forward. The path ends at a small cream silhouette of a smartphone showing a single chat-bubble icon, suggesting the link being handed to a friend.
+
+A faint dashed offshoot branches off the midpoint, labeled with a tiny URL-shape mark, hinting at "is this just a private link or can anyone open it?". Behind the path, a faint editorial grid recedes into shadow. Leave the upper-left clear for the tagline block, and the lower band clear for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, amber accent #F59E0B, bold sans-serif): "做完能給誰用" anchored to the upper-left, reading downward, dominating the eye as the principle name.
+
+  TIER 2 — key point (medium, cream, clean one or two tight lines): "Claude 做出來的網頁，可以直接丟連結給別人嗎" sits across the lower third of the frame, directly beneath the path's arc — clearly quieter than the tagline but highly readable at thumbnail size. Treat this as the line the viewer reads second; it delivers the takeaway.
+
+  TIER 3 — hero element (mid-size, cream, bold, monospace): "→ 朋友" stamped beside the smartphone at the path's end, floating next to the destination it proves.
+
+In the bottom-right corner, small cream monospace text: "Day 123 · 7/8".
+
+Color palette: Warm Amber — espresso #1C1917 background, amber #F59E0B accent, cream #FEF3C7 text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

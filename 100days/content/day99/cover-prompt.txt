@@ -1,0 +1,15 @@
+Bold Editorial. A jagged vertical chasm tears the frame in two — the absolute darkness between the cliff edges is the widest, most dominant element, pulling the eye into the void before anything else registers.
+
+On the left cliff edge, bathed in dim coral haze, a lone silhouette hunches over a single glowing chat bubble. A question mark pulses faintly inside it. Scattered icons — a search bar, a browser tab, a lonely cursor — drift like debris near the precipice, disconnected and inert. Small understated label near the base: "知道".
+
+On the right cliff edge, alive with electric blue radiance, the same silhouette stands tall, orchestrating a constellation of linked workflow nodes — terminal, browser, spreadsheet, automation engine — all connected by luminous arrows that orbit in purposeful motion. The air here crackles with organized energy. Small label near the base: "用得好".
+
+Suspended in the dead center of the void, rendered at heroic scale in heavy white slab type, the word "鴻溝" hangs like a verdict — the largest element in the composition by far.
+
+Color palette: Midnight Authority — deep navy #0A1628, coral #E53E3E warming the left cliff, electric blue #4A90E2 radiating from the right, white #FFFFFF text.
+
+Typography: bold sans-serif, extreme size hierarchy — "鴻溝" at maximum weight dominating the frame > cliff labels at understated medium weight > no other text.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

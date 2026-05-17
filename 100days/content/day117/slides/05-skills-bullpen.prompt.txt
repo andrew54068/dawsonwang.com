@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. A horizontal pipeline runs left to right across the middle of the frame — starting from a central glowing vault labeled "~/.agents/skills-bullpen/" in lime monospace, two diverging arrows branch outward: one curves up-right to a blue terminal icon labeled "Claude Code", one curves down-right to a lime terminal icon labeled "Codex". Thin dashed symlink lines connect the vault to both destinations.
+
+The composition is The Path: a journey from origin to two destinations with clear waypoints. The vault is the anchor — large, central, luminous — and the two branches radiate from it like a fork in a road. Small chain-link icons mark each symlink arrow. The background is deep charcoal with faint grid lines fading toward edges.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "Bullpen 共享"
+  anchored to the upper-left, reading downward, dominating that corner.
+
+  TIER 2 — key point (medium, white, two tight lines): "技能都搬到 ~/.agents/skills-bullpen/，用 symlink 讓兩個 AI 共用，用到才連結"
+  placed across the lower quarter of the frame, below the pipeline scene — white text on a dark panel, clearly quieter than the tagline but still highly readable.
+
+  TIER 3 — hero element (mid-size, electric blue #4A90E2): "skills-manager"
+  stamped at the center of the vault icon, naming the management tool.
+
+In the bottom-right corner, small white monospace text: "Day 117 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, text white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

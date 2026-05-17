@@ -1,0 +1,19 @@
+Neon Noir. Square 1:1 social media slide. A massive bold red label "skill" dominates the upper-center of the frame, half-covered by a thick gold caution-tape strip slashing diagonally across it. Behind the label, two glowing percentage numbers float in tense opposition — "94.1%" rendered in muted red on the left, "96.9%" rendered in bright gold on the right, with a thin gold arrow pointing from the higher number toward the lower. The composition reads as a warning sign half-revealed, half-redacted: something you trusted is being marked unsafe.
+
+The background is deep black with subtle electric scan lines, suggesting a forensic readout. A faint gold grid recedes into shadow behind the percentages, anchoring them as data points. The overall mood is cautionary — neon red and gold against pitch black, a single moment of revelation.
+
+Chinese text placement — cover slide, two tiers (cover is exempt from the key-point rule):
+
+  TIER 1 — title (largest, boldest, white): "不要迷信 skill"
+  anchored to the upper-left, the dominant eye-catcher reading downward.
+
+  TIER 2 — hero element (mid-size, gold accent): "94.1% < 96.9%"
+  stamped boldly across the lower-center of the frame, directly beneath the two percentage numbers, framing the contrast.
+
+In the bottom-right corner, small white monospace text: "Day 128 · 1/6".
+
+Color palette: Danger Signal — black #18181B background, red #DC2626 + gold #FCD34D accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — title > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

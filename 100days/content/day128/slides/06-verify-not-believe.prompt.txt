@@ -1,0 +1,19 @@
+Neon Noir. Square 1:1 social media slide. A single massive line of bold white text dominates the center of the frame: "skill 是要被驗證的，不應該是信仰". The text is the entire visual focal point — clean, declarative, framed by negative space. To its left, a small red icon of a crossed-out praying-hands silhouette suggests faith abandoned; to its right, a small gold checkmark inside a magnifying glass suggests verification embraced.
+
+A thin gold horizontal rule sits beneath the central text, anchoring it. The background is deep black with a faint receding grid that pulls the eye toward the text block. The composition is intentionally minimal — this is the landing slide, the line the reader carries away.
+
+Chinese text placement — closing insight slide, two tiers (closing is exempt from the key-point rule):
+
+  TIER 1 — landing line (largest, boldest, white text): "skill 是要被驗證的，不應該是信仰"
+  anchored across the center of the frame, the single dominant element.
+
+  TIER 2 — hero element (mid-size, gold accent): "驗證不迷信"
+  stamped beneath the gold horizontal rule, smaller but sharply contrasting, the four-character distillation.
+
+In the bottom-right corner, small white monospace text: "Day 128 · 6/6".
+
+Color palette: Danger Signal — black #18181B background, red #DC2626 + gold #FCD34D accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — landing line > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

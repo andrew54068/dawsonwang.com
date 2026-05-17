@@ -1,0 +1,21 @@
+Dark Mode Tech. Two stylized MacBook silhouettes face each other across a dark charcoal void, connected by a single glowing lime cable that arcs between them like a private tunnel — the larger Pro on the right pulses as the inference engine, the smaller Air on the left stays cool as the thin client. A faint blue grid recedes into the deep background, suggesting a private network mesh.
+
+The right machine towers slightly larger and emits a soft lime glow from its display, signalling it carries the GPU work; the left machine recedes into cooler blue light, signalling it just sends instructions. The cable between them is the focal anchor — bright, deliberate, the only thing that fully crosses the gap. Leave the upper-left corner reserved for the title block and the lower band reserved for the hero metric.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — title block (largest, bold white): "Day 107" anchored to the upper-left, reading downward in two stacked lines, dominating the upper third of the frame as the eye-catcher.
+
+  TIER 2 — subtitle (medium, clean white, one line beneath the title): "家裡另一台 Mac 當 LLM 伺服器" sitting quieter than the title but still highly readable, positioned directly under "Day 107" as the supporting caption — this is the line the viewer reads second.
+
+  TIER 3 — hero metric (mid-size, sharp lime accent): "半小時架完" stamped across the lime cable in the lower-middle of the frame, contrasting brightly against the dark void.
+
+In the bottom-right corner, small lime monospace text: "Day 107 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

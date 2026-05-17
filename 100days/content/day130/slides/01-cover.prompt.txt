@@ -1,0 +1,19 @@
+Clean Minimalist. Square 1:1 social media slide. A single bold orange speech bubble dominates the upper-center of the frame, containing the literal English command "use gws to create the google form" rendered in clean monospace. From the bottom of the bubble, a thin orange arrow drops downward to a small minimal Google-Form-shaped rectangle outlined in slate, sitting calm and complete in the lower third — implying the form materialized from one sentence. Generous white space surrounds both elements; the composition reads as effortless, almost suspiciously simple.
+
+The background is pure white with a barely-there slate grid receding into the corners — a clinical, precise feel. No clutter, no extra icons. The mood is calm confidence: this is what shipping looks like when the workflow clicks.
+
+Chinese text placement — cover slide, two tiers (cover is exempt from the key-point rule):
+
+  TIER 1 — title (largest, boldest, slate): "我怎麼用 gws 做 Google 表單"
+  anchored to the upper-left, the dominant eye-catcher reading downward.
+
+  TIER 2 — hero element (mid-size, orange accent): "一句話 = 表單"
+  stamped boldly across the lower-center of the frame, sitting just above the form rectangle, framing the punchline.
+
+In the bottom-right corner, small slate monospace text: "Day 130 · 1/6".
+
+Color palette: Surgical White — white #FFFFFF background, orange #F97316 accent, slate #0F172A text.
+
+Typography: bold sans-serif, strong size hierarchy — title > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

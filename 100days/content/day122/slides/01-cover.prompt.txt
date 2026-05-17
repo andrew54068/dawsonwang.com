@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. Two glowing geometric figures stand off head-on at the visual center of the frame — a luminous electric-blue panel labeled "Generator" approaches from the left, a sharp lime-green panel labeled "Discriminator" approaches from the right, locking against each other like opposing pistons at the slide's heart.
+
+Between them, a thin lime arrow flicks from the discriminator back to the generator, suggesting a feedback loop rather than a stalemate. Behind the two panels, a deep charcoal grid recedes into shadow, evoking a sleek developer terminal. A faint dashed phase track loops underneath the pair like a circular ralph-loop arena. Leave the upper-left clear for the title block.
+
+Chinese and English text placement — cover hierarchy:
+
+  TIER 1 — title (largest, white, bold sans-serif): "ralph-expert + GAN" on one line, "跑遷移半自動模板" on the line beneath, anchored to the upper-left of the frame, reading downward, dominating the eye first.
+
+  TIER 2 — hero contrast (mid-size, lime accent #AAFF00, monospace): "Generator vs Critic" stamped across the standoff joint at the visual center, glowing slightly so it reads as the proof line.
+
+  TIER 3 — small caption (small, blue accent #4A90E2): "Claude 寫 · Codex 點頭" sits just below the standoff in monospace, like a code label.
+
+In the bottom-right corner, small white monospace text: "Day 122 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — title > hero contrast > caption > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

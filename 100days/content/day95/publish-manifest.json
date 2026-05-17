@@ -1,0 +1,38 @@
+{
+  "snapshots_due": [
+    "1h",
+    "6h",
+    "24h",
+    "48h",
+    "7d"
+  ],
+  "snapshots_collected": [],
+  "day": 95,
+  "facebook": {
+    "published_at": "2026-04-05T12:50:30.575Z",
+    "post_url": "https://www.facebook.com/andrew.wang.716/posts/pfbid0m7EBmpQKfMmU7i6b4KYK12mnWH2rnjZTJBuaXtYAxoYh8J3yHhss8Y48135nvHoLl",
+    "has_image": true,
+    "image_count": 1,
+    "has_first_comment": true,
+    "stats": {
+      "views": 1097,
+      "reach": 599,
+      "reactions": 9,
+      "comments": 1,
+      "shares": 0,
+      "saves": 3,
+      "collected_at": "2026-04-17T05:57:26.596Z"
+    }
+  },
+  "threads": {
+    "published_at": "2026-04-05T12:55:09.875Z",
+    "post_url": "https://www.threads.com/@andrew54068/post/DWwC-QvmkeU",
+    "post_count": 2,
+    "topic": "OpenClaw",
+    "has_image": true,
+    "stats": {
+      "collected_at": "2026-04-17T05:57:13.138Z",
+      "views": 1851
+    }
+  }
+}

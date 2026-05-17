@@ -1,0 +1,29 @@
+Dark Mode Tech. Square 1:1 social media slide. A terminal window occupies the right two-thirds of the frame, partially revealing a glowing `ls -la` command output — symlink entries lit in lime green against the charcoal background, each line an arrow pointing to a skill path. The left third of the frame is dark, shrouded, as if the curtain is being pulled back to expose the hidden truth: the filesystem itself is the state.
+
+A subtle curtain or veil element half-covers the terminal from the left, being peeled away — revealing the ls output behind it. The metaphor: everything you need to know was always right here; you just had to look.
+
+The composition is The Reveal: dominant element partially hidden, partially exposed — the insight is that the state was always visible, just not recognized.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime green `#AAFF00`): "無 daemon"
+  anchored to the upper-left over the dark curtain area, the dominant
+  eye-catcher — names the design choice.
+
+  TIER 2 — key point (medium, white, two tight lines):
+  "沒有 daemon 沒有資料庫，ls 一行看 symlink 就知道哪些 skill 啟用中"
+  positioned across the lower third of the frame, below the terminal window.
+  Sits quieter than the tagline but is highly readable at thumbnail size.
+  This is the line that delivers the actual insight: zero infrastructure,
+  one command tells you everything.
+
+  TIER 3 — hero element (mid-size, electric blue `#4A90E2`, sharp accent):
+  "ls -la" stamped in the terminal output area, glowing as if actively running.
+
+In the bottom-right corner, small white monospace text: "Day 119 · 5/6".
+
+Color palette: Electric Dark — charcoal `#1A1A2E` background, blue `#4A90E2`, lime `#AAFF00`, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

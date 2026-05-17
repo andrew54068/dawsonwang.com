@@ -1,0 +1,22 @@
+Dark Mode Tech. Square 1:1 social media slide. A glowing blue cube labeled "MCP server" sits anchored center-left, with a thin lime cable arcing out of its right edge and snaking across the frame to a small distant rectangle labeled "Gmail API" floating in the upper-right, partially obscured by a faint blue lock icon dissolving open just as the cable connects. To the immediate right of the MCP cube, a soft silhouette of a user-account avatar glows faintly — implying the server is acting on behalf of "you". The reveal is the moment a private channel lights up; before this cable, the API was unreachable.
+
+The background is deep charcoal with a barely-there blue grid receding into the corners. A small lime spark sits at the contact point where the cable meets the API rectangle. Composition reads like a circuit diagram lit one wire at a time.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, blue accent): "MCP 接私料"
+  anchored to the upper-left, the dominant eye-catcher reading across the top.
+
+  TIER 2 — key point (medium, clean white text, two tight lines): "MCP server 用你的帳號跟 Gmail API 拿信，AI 才讀得到"
+  positioned in the lower third, sitting beneath the cable diagram, quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, lime accent): "沒登入拿不到"
+  stamped to the right of the user-account silhouette, framing why private data needs MCP.
+
+In the bottom-right corner, small white monospace text: "Day 131 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

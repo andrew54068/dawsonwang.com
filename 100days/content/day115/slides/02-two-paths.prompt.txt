@@ -1,0 +1,19 @@
+Dark Mode Tech. Two parallel pipelines run side by side across the frame, separated by a thin vertical chasm of charcoal void. On the left, a hand-typed scroll labeled "settings.json" — clean, white-edged, with manually inscribed hook entries. On the right, a sealed plugin capsule labeled "hooks.json" glowing electric blue, auto-streaming its hooks outward. Both pipelines bend toward a single converging node at the bottom center where the streams merge into one unified hook table — the visual proof that two ownership paths still feed one runtime list. The composition is The Chasm — two worlds, one destination.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, bold white, accent-underlined in lime): "兩條註冊路徑" anchored to the upper-left, reading across the top, dominating the frame as the first eye-catcher.
+
+  TIER 2 — key point (medium, clean white, one tight line, sitting quieter than the tagline but still highly readable at thumbnail size): "settings.json 手寫一條，plugin 的 hooks.json 自動載一條" positioned across the lower third of the frame, just above the corner signature, as the supporting caption that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, lime-green accent): "兩條合一張" floating beside the converging node at the bottom-center, where the two streams merge.
+
+In the bottom-right corner, small lime-green monospace text: "Day 115 · 2/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

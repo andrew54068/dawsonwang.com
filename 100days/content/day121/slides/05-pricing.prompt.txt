@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. Two stacked rectangular blocks sit on either side of a visible vertical chasm running down the middle of the frame. The left block is a small lime-green slab labeled "$20" — compact, bright, near. The right block is a much taller blue slab labeled "$200" — receding into shadow, distant, marked with a small "Pro" tag. A thin dotted bridge spans the chasm at the height of the smaller slab, with a tiny figure-icon mid-stride crossing toward the lime side.
+
+Behind both slabs, a faint charcoal grid recedes into shadow, hinting at a subscription dashboard. Leave the upper-left clear for the tagline and the lower band clear for the key-point caption.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, lime accent #AAFF00, bold sans-serif): "加 $20" anchored to the upper-left, reading downward, dominating the eye as the principle name.
+
+  TIER 2 — key point (medium, white, clean one or two tight lines): "訂 Claude 再加 ChatGPT $20 主要功能就到位" runs across the lower third of the frame, directly beneath the chasm — clearly quieter than the tagline but highly readable at thumbnail size. This is the line that delivers the takeaway.
+
+  TIER 3 — hero element (mid-size, blue accent #4A90E2, monospace): "$20 vs $200" stamped across the dotted bridge between the two slabs, glowing as the proof contrast.
+
+In the bottom-right corner, small white monospace text: "Day 121 · 5/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 and lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

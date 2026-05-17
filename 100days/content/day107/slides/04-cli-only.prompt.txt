@@ -1,0 +1,21 @@
+Dark Mode Tech. A massive bloated dark grey app bundle hovers on the left of the frame — bulging with redundant icons, a menu-bar chip, and a phantom daemon glow — while a tiny lime CLI prompt block sits compact and sharp on the right, dwarfing the bundle through clarity rather than size. A diagonal lime slash cuts through the bloated bundle, marking it for removal; a clean lime arrow points from the slash toward the small CLI block as the chosen path.
+
+The bloated bundle dominates the left-half through visual mass, but the eye travels right to land on the compact terminal — the contrast of bulk versus precision is the point. Leave the upper-left for the tagline, the lower third for the key-point caption, and place the hero command stamped across the small CLI block.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "砍掉 GUI" anchored to the upper-left, reading horizontally — the dominant eye-catcher.
+
+  TIER 2 — key point (medium, clean white, one line or two tight lines): "客戶端用 brew 裝 CLI-only ollama，省下 daemon 的 RAM" positioned across the lower third of the frame as the supporting caption. This text sits clearly quieter than the tagline but is highly readable at thumbnail size — the line the viewer reads second, delivering the actual takeaway.
+
+  TIER 3 — hero element (mid-size, sharp blue monospace): "brew install" stamped across the compact CLI block on the right, glowing as the proof of the chosen path.
+
+In the bottom-right corner, small lime monospace text: "Day 107 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, accent blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

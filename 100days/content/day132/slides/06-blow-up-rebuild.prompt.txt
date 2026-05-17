@@ -1,0 +1,22 @@
+Bold Editorial. Square 1:1 social media slide. Two angular building-block silhouettes collide at the center of the frame. On the left, a tall traditional office tower rendered in dim gray is mid-collapse — chunks breaking off and falling, a thin red detonation line slicing through its base in a sharp diagonal. Floating above the rubble on the right, a smaller but luminous gold reconstructed structure rises in stacked geometric tiers, with gold sparks at its corners and faint blueprint grid lines projecting upward from a small CEO-figure silhouette below it. The two structures are visibly counterposed — old crumbling, new rising — meeting at a hot red collision seam down the middle.
+
+The mood is decisive and high-stakes — a CEO mandate rendered as architectural drama. The viewer's eye lands first on the red detonation line, then travels up to the gold rebuilt tower on the right.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, red accent): "炸掉重建"
+  anchored to the upper-left, the dominant eye-catcher reading across the top.
+
+  TIER 2 — key point (medium, clean white text, two tight lines): "CEO 要敢用 AI 把公司打掉重練，不然被低成本對手取代"
+  positioned in the lower third running beneath the colliding towers, quieter than the tagline but still highly readable at thumbnail size. This is the line the viewer reads second — the actual takeaway.
+
+  TIER 3 — hero element (mid-size, gold accent): "兩種公司"
+  stamped between the collapsing and rising towers near the collision seam, framing the binary choice.
+
+In the bottom-right corner, small white monospace text: "Day 132 · 6/7".
+
+Color palette: Danger Signal — black #18181B background, red #DC2626 and gold #FCD34D accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

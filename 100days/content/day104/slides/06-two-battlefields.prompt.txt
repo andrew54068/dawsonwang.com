@@ -1,0 +1,15 @@
+Dark Mode Tech. Two distinct battlefields sit on opposite sides of a vast dark canyon that splits the frame vertically down the middle. On the left, a small compact lime-green fortress shaped like a single open book, neat and glowing, labeled "LLM Wiki". On the right, a massive electric-blue grid of interconnected document nodes stretching all the way to a distant horizon line, labeled "RAG".
+
+The canyon between them is deep charcoal, uncrossable, with faint geometric particles drifting in its emptiness. The left fortress is small but pristine, occupying maybe a fifth of the frame. The right grid dominates the rest of the frame, bleeding off the right edge to imply it continues forever. Both sides emit their own glow — neither dims the other. A thin horizontal lime line at the top of the frame labels both sides equally.
+
+Above the canyon, centered, bold white Chinese text reads "兩個戰場". Below the left fortress, small lime Chinese text reads "規模不同". Below the right grid, smaller white Chinese text reads "不是取代".
+
+In the bottom-right corner, small white monospace text: "Day 104 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, electric blue #4A90E2, lime #AAFF00, white.
+
+Typography: bold sans-serif, strong size hierarchy — principle > hero element > caption.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 16:9

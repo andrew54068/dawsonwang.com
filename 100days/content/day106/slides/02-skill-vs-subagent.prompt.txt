@@ -1,0 +1,21 @@
+Dark Mode Tech. Two geometric objects collide at the center of a navy frame — on the left, a translucent white briefcase stuffed with layered cards labeled as prompt snippets; on the right, a coral-outlined door ajar, revealing a smaller self-contained room with its own tiny desk and chat bubble inside.
+
+A single beam of coral light connects the two at the collision point, but the room behind the door is clearly sealed off — the chaos of the main conversation cannot bleed into it. The briefcase sits in the same flat plane as the main conversation; the room is a separate volume stepping backward in depth. Keep the upper-left corner open for the tagline and the lower third open for the key-point caption. The two objects should feel like peers from different categories, not competitors.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, coral accent): "不同層級" anchored to the upper-left corner, reading downward, dominating the top of the frame as the eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, one readable line across the lower third): "skill 打包知識，subagent 開新房間做完再回報結論" — this text sits clearly quieter than the tagline but is large enough to read comfortably at thumbnail size. Treat it as the line the viewer reads second, the one that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, coral accent): "知識 vs 房間" stamped across the collision beam between the briefcase and the door.
+
+In the bottom-right corner, small white monospace text: "Day 106 · 2/7".
+
+Color palette: Midnight Authority — navy #0A1628, coral #E53E3E, white.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

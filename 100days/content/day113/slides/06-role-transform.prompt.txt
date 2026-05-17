@@ -1,0 +1,24 @@
+Dark Mode Tech. Two engineering personas collide at the center of the frame — on the left, a stylized figure composed of brackets and semicolons, glowing faintly grey (the old engineer who only writes code); on the right, a figure assembled from neural network nodes and agent-flow arrows, blazing electric blue and lime (the new engineer who builds and commands AI systems). They meet at an impact point at the exact center, where a starburst of energy erupts in lime — not a fight, but a transformation in progress.
+
+Behind the left figure, a receding bar showing "10%" label in grey; behind the right figure, a surging bar labeled "50%" in lime, representing the shift in AI/ML job share from 2023 to 2026. The Collision archetype: two forces meeting at a point of impact, one clearly winning.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime #AAFF00): "角色在變形"
+  anchored to the top-center of the frame, spanning both figures, the dominant eye-catcher the viewer reads before anything else.
+
+  TIER 2 — key point (medium, white, two tight lines): "AI/ML 職缺佔比從 10% 衝到 50%，不是取代工程師而是換技能組合"
+  positioned across the lower third of the frame beneath the two figures, quieter than the tagline but still clearly legible at thumbnail size — the specific numbers and mechanism that make this claim stand alone.
+
+  TIER 3 — hero element (mid-size, sharp accent, grey on left / lime on right): "10% → 50%"
+  floating at the collision point starburst, bridging the two figures, proving the shift in one sharp label.
+
+In the bottom-right corner, small white monospace text: "Day 113 · 6/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 + lime #AAFF00 accents, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

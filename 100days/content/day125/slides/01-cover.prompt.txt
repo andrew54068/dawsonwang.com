@@ -1,0 +1,19 @@
+Dark Mode Tech. Square 1:1 social media slide. A wide horizontal chasm splits the dark frame in two — on the left, a small flat-vector silhouette of a MacBook Air glowing with a thin blue screen, drifting through scattered signal dots; on the right, a much larger MacBook Pro tower anchored on a solid lime-green pedestal, its screen alive with a stack of stylised terminal lines.
+
+A single bright lime arc bridges the two laptops across the chasm, suggesting a private tunnel. Beneath the bridge, faint vector glyphs of `Tailscale`, `mosh`, `tmux` recede into shadow as anchors of the connection. The scene reads as one small mobile device steered by the user, controlling a powerful stationary host that does the real work.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, lime accent): "把家裡 Mac 變成 Claude 主機" anchored across the upper third of the frame, reading left to right, dominating the composition as the eye-catcher.
+
+  TIER 2 — key point (medium, clean white text, one tight line beneath the tagline): "Air 出門遙控、Pro 在家跑 Claude Code 長任務" sitting quieter than the tagline but still highly readable at thumbnail size — this is the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, sharp blue accent): "Air ⇄ Pro" stamped across the lime bridge between the two laptops, as if labelling the tunnel itself.
+
+In the bottom-right corner, small white monospace text: "Day 125 · 1/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E background, blue #4A90E2 accent, lime #AAFF00 accent, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

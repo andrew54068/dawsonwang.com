@@ -1,0 +1,19 @@
+Dark Mode Tech. A massive vintage toggle switch dominates the right two-thirds of the frame, half-hidden in deep charcoal shadow, half-illuminated in electric blue. Beside it, a small file icon labeled ".claude/ralph-loop.local.md" hovers as the key that flips the switch. From the switch, a glowing wire spirals back to a perpetually running Stop hook on the left — a cycling green loop that always fires, but only triggers a re-injection when the state file exists; otherwise it harmlessly returns "exit 0". The composition is The Reveal — the hook itself isn't the secret; the file's presence or absence is what actually controls the loop.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, bold white, accent-edged in lime): "State 開關" anchored to the upper-left, reading downward, dominating the frame as the first eye-catcher.
+
+  TIER 2 — key point (medium, clean white, one or two tight lines, sitting quieter than the tagline but still highly readable at thumbnail size): "Stop hook 永遠在跑，找不到 state 檔就 exit 0 放行" positioned across the lower third of the frame as the supporting caption that delivers the actual takeaway.
+
+  TIER 3 — hero element (mid-size, lime-green accent monospace): "state = on/off" stamped beside the toggle switch like a label naming what it actually controls.
+
+In the bottom-right corner, small lime-green monospace text: "Day 115 · 4/6".
+
+Color palette: Electric Dark — charcoal #1A1A2E, blue #4A90E2, lime #AAFF00, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1

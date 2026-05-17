@@ -1,0 +1,25 @@
+Dark Mode Tech. Square 1:1 social media slide. Dead center of the charcoal frame, a bold lime-green GitHub mark icon floats in dramatic isolation — unmistakably the GitHub octocat silhouette, stylized as a flat vector in lime green, radiating a subtle glow. Below it, the word "開源了" sits in white, large and calm. The composition breathes — generous empty space surrounds the central icon, creating a sense of arrival and completion.
+
+The composition is The Spotlight: single dominant element (the GitHub icon) in dramatic isolation against the deep dark background. Everything else is negative space.
+
+Chinese text placement:
+
+  TIER 1 — tagline (largest, boldest, lime green `#AAFF00`): "開源了"
+  anchored to center-bottom of the composition, just below the GitHub icon —
+  dominant, celebratory, the final word.
+
+  TIER 2 — key point (medium, white, one line):
+  "andrew54068/claude-plugins — 兩條指令安裝"
+  positioned below the tagline, quieter but clearly readable. This is the
+  action the viewer takes: go find the repo.
+
+  TIER 3 — hero element (mid-size, electric blue `#4A90E2`, sharp accent):
+  "GitHub" rendered in electric blue above the octocat icon, as a platform label.
+
+In the bottom-right corner, small white monospace text: "Day 119 · 6/6".
+
+Color palette: Electric Dark — charcoal `#1A1A2E` background, blue `#4A90E2`, lime `#AAFF00`, white text.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.

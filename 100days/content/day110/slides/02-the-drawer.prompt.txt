@@ -1,0 +1,21 @@
+Editorial Magazine. A large amber-lit wooden desk drawer sits slightly pulled open in the left half of an espresso frame, and inside it glows a tiny amber laptop labeled "localhost" — visible, reachable, warm; across a narrow espresso gap on the right, a second identical drawer is pulled open but its interior is empty, dim, cream-dusted with faint cobweb strokes, and a small cream-coloured figure icon peers inside only to find nothing.
+
+The left drawer is crisp, amber-bright, clearly holding the working tool; the right drawer recedes into cooler espresso shadow, visibly hollow. A thin amber dotted line attempts to run from the right drawer back across the gap toward the left drawer, but it is drawn broken mid-way — the "無法連線" moment rendered as a severed thread. A tiny amber key icon rests beside the left drawer, reinforcing ownership: this drawer is yours, not theirs. Leave the upper band free for the tagline and the lower band reserved for the key point and hero element.
+
+Chinese text placement — three tiers, clearly differentiated in size:
+
+  TIER 1 — tagline (largest, boldest, amber accent): "鎖在抽屜" anchored to the upper-left of the frame, reading horizontally, as the dominant eye-catcher that names the metaphor.
+
+  TIER 2 — key point (medium, clean cream text, one line or two tight lines): "localhost 是你電腦自己的抽屜，同事打開是他的抽屜" positioned as the supporting caption across the lower-middle band of the frame, stretched so the clause reads as one continuous sentence beneath both drawers. Sits clearly quieter than the tagline but still highly readable at thumbnail size — the line the viewer reads second.
+
+  TIER 3 — hero element (mid-size, contrasting amber): "不是壞了" stamped beside the empty right drawer, amber against the espresso shadow, landing the punchline that the blank drawer is not a broken tool — just the wrong address.
+
+In the bottom-right corner, small amber monospace text: "Day 110 · 2/6".
+
+Color palette: Warm Amber — espresso #1C1917, amber #F59E0B, cream #FEF3C7.
+
+Typography: bold sans-serif, strong size hierarchy — tagline > key point > hero element > corner signature.
+
+Flat vector, geometric shapes, high contrast, no photographs, no real people.
+
+--ar 1:1
