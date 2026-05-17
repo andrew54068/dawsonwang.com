@@ -30,3 +30,12 @@ pnpm-debug.log*
 
 # Editor
 .vscode/
+
+# Cloudflare local dev
+.wrangler/
+
+# Dev PID tracking
+.dev-pid
+
+# Copied slide assets (generated at build time from submodule)
+public/content/
