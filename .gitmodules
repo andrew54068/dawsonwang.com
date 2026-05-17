@@ -1,0 +1,4 @@
+[submodule "100days"]
+	path = 100days
+	url = https://github.com/andrew54068/100Days.git
+	branch = main
