@@ -1,0 +1,26 @@
+import { defineCollection, z } from 'astro:content';
+import path from 'node:path';
+import { loadAllDays } from './lib/content-loader';
+
+const CONTENT_DIR = path.resolve(import.meta.dirname, '../../content');
+
+const days = defineCollection({
+  loader: async () => {
+    const all = await loadAllDays(CONTENT_DIR);
+    return all.map(d => ({
+      id: String(d.dayNumber),
+      ...d,
+    }));
+  },
+  schema: z.object({
+    dayNumber: z.number(),
+    subtitle: z.string(),
+    body: z.string(),
+    contentDir: z.string(),
+    slideFiles: z.array(z.string()),
+    coverImage: z.string().optional(),
+    manifest: z.any().optional(),
+  }),
+});
+
+export const collections = { days };

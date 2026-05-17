@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import { FEATURED_POSTS } from '../data/featured';
+
+const days = await getCollection('days');
+const allDays = days.length;
+const featured = FEATURED_POSTS
+  .map(f => {
+    const day = days.find(d => d.data.dayNumber === f.dayNumber);
+    if (!day) return null;
+    return { ...f, subtitle: day.data.subtitle };
+  })
+  .filter((x): x is NonNullable<typeof x> => x !== null);
+---
+{featured.length > 0 && (
+  <section class="max-w-3xl mx-auto px-6 py-12 border-t-2 border-teal">
+    <header class="eyebrow-pair">
+      <span class="ey-left">精選文章</span>
+      <span class="ey-right">選自 {allDays} 篇</span>
+    </header>
+    <div>
+      {featured.map(f => (
+        <a href={`/day/${f.dayNumber}`} class="toc-row">
+          <span class="toc-num">{f.dayNumber}</span>
+          <span class="toc-title">{f.customLabel}</span>
+          <span class="toc-meta">{f.subtitle}</span>
+        </a>
+      ))}
+    </div>
+    <div class="mt-4 text-right">
+      <a href="/days" class="font-sans text-xs uppercase tracking-[.14em] text-brick no-underline hover:text-ink transition-colors duration-150 font-semibold">看所有文章 →</a>
+    </div>
+  </section>
+)}

@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import { marked } from 'marked';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SlideCarousel from '../../components/SlideCarousel.astro';
+import MetricsBlock from '../../components/MetricsBlock.astro';
+import ExternalLinks from '../../components/ExternalLinks.astro';
+import { isTopPerformer } from '../../lib/metrics';
+import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
+import path from 'node:path';
+
+export async function getStaticPaths() {
+  const days = await getCollection('days');
+  return days.map(day => ({ params: { n: String(day.data.dayNumber) }, props: { day, allDays: days } }));
+}
+
+const { day, allDays } = Astro.props;
+const slides = day.data.slideFiles.map((p: string, i: number) => ({
+  src: `/content/day${String(day.data.dayNumber).padStart(2, '0')}/slides/${path.basename(p)}`,
+  alt: `Day ${day.data.dayNumber} slide ${i + 1}`,
+}));
+
+const bodyHtml = marked.parse(day.data.body);
+const topicSlugs = topicsForDay(day.data.dayNumber);
+const topics = topicSlugs.map(s => ({ slug: s, title: topicBySlug(s)?.title ?? s, variant: chipVariantFor(s) }));
+
+const otherDays = allDays
+  .filter((d: any) => d.data.dayNumber !== day.data.dayNumber)
+  .sort((a: any, b: any) => b.data.dayNumber - a.data.dayNumber);
+const sameTopic = topicSlugs.length > 0
+  ? otherDays.filter((d: any) => topicsForDay(d.data.dayNumber).some(s => topicSlugs.includes(s)))
+  : [];
+const fill = otherDays.filter((d: any) => !sameTopic.includes(d));
+const archive = [...sameTopic, ...fill].slice(0, 3);
+
+const publishDate: string | null = day.data.manifest?.threads?.publishedAt
+  ?? day.data.manifest?.facebook?.publishedAt
+  ?? day.data.manifest?.linkedin?.publishedAt
+  ?? null;
+---
+<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={day.data.body.slice(0, 140)}>
+  <article class="max-w-5xl mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_140px] gap-x-10 gap-y-6">
+
+      <div class="min-w-0 max-w-2xl">
+        <header class="eyebrow-pair">
+          <span class="ey-left">第 {day.data.dayNumber} 篇　·　台北{publishDate ? `　·　${publishDate.slice(0, 10)}` : ''}</span>
+          <span class="ey-right">一份持續書寫的工作日誌</span>
+        </header>
+        <h1 class="font-display text-ink leading-[0.98] tracking-[-0.02em] text-balance" style="font-size: clamp(2rem, 5vw, 3.5rem);">
+          {day.data.subtitle || `Day ${day.data.dayNumber}`}
+        </h1>
+
+        {topics.length > 0 && (
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            {topics.map(t => (
+              <a href={`/topics/${t.slug}`} class={`chip chip-${t.variant} no-underline`}>{t.title}</a>
+            ))}
+          </div>
+        )}
+
+        <div class="top-divider"></div>
+
+        <div class="prose prose-zinc max-w-none
+                    prose-headings:font-serif prose-headings:text-ink
+                    prose-h2:font-semibold prose-h2:text-lg prose-h2:relative prose-h2:pl-3 prose-h2:before:content-[''] prose-h2:before:absolute prose-h2:before:left-0 prose-h2:before:top-1.5 prose-h2:before:bottom-1.5 prose-h2:before:w-[3px] prose-h2:before:bg-brick
+                    prose-p:font-serif prose-p:text-ink prose-p:leading-[1.65] prose-p:text-[16px]
+                    prose-a:text-brick prose-a:no-underline prose-a:border-b prose-a:border-dotted prose-a:border-brick hover:prose-a:text-teal
+                    prose-strong:text-ink prose-strong:font-semibold
+                    prose-blockquote:font-display prose-blockquote:italic prose-blockquote:text-teal prose-blockquote:text-[22px] prose-blockquote:leading-tight prose-blockquote:border-t-2 prose-blockquote:border-teal prose-blockquote:border-l-0 prose-blockquote:border-b prose-blockquote:border-b-rule prose-blockquote:pl-0 prose-blockquote:py-3"
+             set:html={bodyHtml} />
+
+        {slides.length > 0 && <SlideCarousel slides={slides} />}
+
+        {day.data.manifest && isTopPerformer(day.data.dayNumber) && (
+          <MetricsBlock manifest={day.data.manifest} />
+        )}
+
+        <aside class="mt-12 px-6 py-7 bg-teal text-paper relative">
+          <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1.5 bg-ochre"></span>
+          <div class="font-sans text-[10px] tracking-[.22em] uppercase text-ochre font-semibold">作者</div>
+          <h3 class="font-display text-paper text-2xl mt-1 leading-tight">Dawson Wang</h3>
+          <p class="font-serif text-sm mt-2 leading-relaxed" style="color:#D8CFBE;">
+            我幫台灣團隊把 AI 工具落地到日常工作流。從 PoC 到上線、再到團隊接手。9 年新創、5 年 Blocto、iOS@Taipei 主辦人。
+          </p>
+          <a href="/#inquire" class="btn-ochre mt-4">聊聊合作 →</a>
+        </aside>
+
+        {archive.length > 0 && (
+          <section class="mt-10 pt-6 border-t-2 border-brick">
+            <header class="eyebrow-pair">
+              <span class="ey-left">延伸閱讀</span>
+              <span class="ey-right"><a href="/days" class="text-teal no-underline hover:text-brick">看完整 {allDays.length} 篇 →</a></span>
+            </header>
+            <div class="grid md:grid-cols-3 gap-6 mt-4">
+              {archive.map((d: any) => (
+                <a href={`/day/${d.data.dayNumber}`} class="block no-underline group">
+                  <span class="font-serif text-2xl font-semibold text-brick leading-none" style="font-variant-numeric: oldstyle-nums;">{d.data.dayNumber}</span>
+                  <h4 class="font-serif text-sm text-ink mt-1.5 leading-snug font-medium group-hover:text-teal transition-colors duration-150">{d.data.subtitle}</h4>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <aside class="md:sticky md:top-6 md:self-start order-first md:order-last md:pt-2">
+        <div class="flex md:block items-baseline gap-4 flex-wrap">
+          <div>
+            <span class="font-serif font-semibold text-brick leading-none block" style="font-size: 56px; font-variant-numeric: oldstyle-nums;">{day.data.dayNumber}</span>
+            <span class="font-sans text-[10px] tracking-[.14em] uppercase text-teal font-semibold mt-1 block">篇</span>
+          </div>
+          {isTopPerformer(day.data.dayNumber) && (
+            <div class="md:mt-5">
+              <span class="chip chip-ochre">熱門</span>
+            </div>
+          )}
+          {day.data.manifest && (
+            <div class="basis-full md:basis-auto md:mt-5 md:pt-4 md:border-t md:border-rule">
+              <ExternalLinks manifest={day.data.manifest} />
+            </div>
+          )}
+        </div>
+      </aside>
+
+    </div>
+  </article>
+</BaseLayout>

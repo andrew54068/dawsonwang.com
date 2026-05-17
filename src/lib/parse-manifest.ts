@@ -1,0 +1,64 @@
+import { z } from 'zod';
+
+const ThreadsStats = z.object({
+  views: z.number().optional(),
+  likes: z.number().optional(),
+  reposts: z.number().optional(),
+  replies: z.number().optional(),
+}).default({});
+
+const FacebookStats = z.object({
+  reactions: z.number().optional(),
+  comments: z.number().optional(),
+  shares: z.number().optional(),
+}).default({});
+
+const LinkedInStats = z.object({
+  impressions: z.number().optional(),
+  reactions: z.number().optional(),
+  comments: z.number().optional(),
+}).default({});
+
+const PlatformBlock = <T extends z.ZodType>(stats: T) =>
+  z.object({
+    published_at: z.string(),
+    post_url: z.string().url(),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    stats: stats.optional().default({} as any),
+  }).optional();
+
+const ManifestSchema = z.object({
+  day: z.number(),
+  threads: PlatformBlock(ThreadsStats),
+  facebook: PlatformBlock(FacebookStats),
+  linkedin: PlatformBlock(LinkedInStats),
+});
+
+export interface ParsedManifest {
+  day: number;
+  threads?: { publishedAt: string; postUrl: string; stats: z.infer<typeof ThreadsStats> };
+  facebook?: { publishedAt: string; postUrl: string; stats: z.infer<typeof FacebookStats> };
+  linkedin?: { publishedAt: string; postUrl: string; stats: z.infer<typeof LinkedInStats> };
+}
+
+export function parseManifest(raw: unknown): ParsedManifest {
+  const parsed = ManifestSchema.parse(raw);
+  return {
+    day: parsed.day,
+    threads: parsed.threads && {
+      publishedAt: parsed.threads.published_at,
+      postUrl: parsed.threads.post_url,
+      stats: parsed.threads.stats,
+    },
+    facebook: parsed.facebook && {
+      publishedAt: parsed.facebook.published_at,
+      postUrl: parsed.facebook.post_url,
+      stats: parsed.facebook.stats,
+    },
+    linkedin: parsed.linkedin && {
+      publishedAt: parsed.linkedin.published_at,
+      postUrl: parsed.linkedin.post_url,
+      stats: parsed.linkedin.stats,
+    },
+  };
+}

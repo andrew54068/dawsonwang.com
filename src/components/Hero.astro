@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+const days = await getCollection('days');
+const totalDays = days.length;
+---
+<section class="max-w-3xl mx-auto px-6 pt-16 pb-12">
+  <div class="grid grid-cols-1 md:grid-cols-[1fr_120px] gap-8 items-end">
+    <div>
+      <header class="eyebrow-pair">
+        <span class="ey-left">第 {totalDays} 篇　·　台北</span>
+        <span class="ey-right">一份持續書寫的工作日誌</span>
+      </header>
+      <h1 class="font-display text-ink leading-[0.98] tracking-[-0.02em] text-balance"
+          style="font-size: clamp(2.5rem, 5.5vw, 4.5rem);">
+        我幫台灣團隊<br />把 AI 工具<em class="italic text-teal">落地。</em>
+      </h1>
+      <p class="lede mt-5 max-w-xl">
+        9 年新創軟體開發經驗、5 年 Blocto（iOS → DevRel → Full Stack）、iOS@Taipei 社群主辦人。過去 {totalDays} 天每天公開實作 AI 工作流——現在幫你的團隊把這套方法搬進生產環境。
+      </p>
+      <div class="mt-6 flex flex-wrap gap-4 items-baseline">
+        <a href="#inquire" class="btn-ink">聊聊合作 →</a>
+        <a href="/days" class="btn-ghost">看看作品</a>
+      </div>
+    </div>
+    <aside class="text-right md:text-left">
+      <div class="font-serif font-semibold text-teal leading-none tracking-[-0.02em]"
+           style="font-size: clamp(3.5rem, 8vw, 6rem); font-variant-numeric: oldstyle-nums;">
+        {totalDays}
+      </div>
+      <div class="font-sans text-[10px] tracking-[.22em] uppercase text-muted mt-2 font-semibold">篇</div>
+    </aside>
+  </div>
+</section>

@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { topicBySlug, daysForTopic, allTopics, topicsForDay, chipVariantFor } from '../../lib/topics';
+import { isTopPerformer } from '../../lib/metrics';
+
+export async function getStaticPaths() {
+  return allTopics().map(t => ({ params: { slug: t.slug } }));
+}
+
+const { slug } = Astro.params;
+const topic = topicBySlug(slug as string);
+if (!topic) throw new Error(`Unknown topic: ${slug}`);
+
+const days = await getCollection('days');
+const tagged = daysForTopic(slug as string);
+const filtered = days.filter(d => tagged.includes(d.data.dayNumber))
+  .sort((a, b) => b.data.dayNumber - a.data.dayNumber);
+
+const variant = chipVariantFor(topic.slug);
+const stripeColor: Record<string, string> = {
+  teal: 'bg-teal', brick: 'bg-brick', ochre: 'bg-ochre', sage: 'bg-sage', outline: 'bg-ink',
+};
+---
+<BaseLayout title={topic.title} description={topic.blurb}>
+  <article class="max-w-3xl mx-auto px-6 py-12 relative">
+    <span aria-hidden="true" class={`block h-1.5 ${stripeColor[variant]} -mt-12 -mx-6 mb-10`}></span>
+    <header class="eyebrow-pair">
+      <span class="ey-left">主題　·　{filtered.length} 篇</span>
+      <span class="ey-right">{topic.blurb}</span>
+    </header>
+    <h1 class="font-display text-ink leading-tight tracking-[-0.02em] text-balance" style="font-size: clamp(2.25rem, 5vw, 3.5rem);">
+      {topic.title}
+    </h1>
+    <div class="top-divider"></div>
+    <div>
+      {filtered.map(day => (
+        <PostCard
+          dayNumber={day.data.dayNumber}
+          subtitle={day.data.subtitle}
+          topicSlugs={topicsForDay(day.data.dayNumber)}
+          isTopPerformer={isTopPerformer(day.data.dayNumber)}
+        />
+      ))}
+    </div>
+  </article>
+</BaseLayout>

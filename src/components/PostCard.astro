@@ -1,0 +1,26 @@
+---
+import { chipVariantFor, topicBySlug } from '../lib/topics';
+
+interface Props {
+  dayNumber: number;
+  subtitle: string;
+  topicSlugs: string[];
+  isTopPerformer?: boolean;
+}
+const { dayNumber, subtitle, topicSlugs, isTopPerformer = false } = Astro.props;
+const topics = topicSlugs.map(s => ({ slug: s, title: topicBySlug(s)?.title ?? s, variant: chipVariantFor(s) }));
+---
+<a href={`/day/${dayNumber}`} class="toc-row group">
+  <span class="toc-num">{dayNumber}</span>
+  <span class="toc-title">
+    {subtitle}
+    {isTopPerformer && <span class="ml-2 align-middle font-sans text-[9px] tracking-[.14em] uppercase font-bold text-ochre">熱門</span>}
+  </span>
+  <span class="toc-meta">
+    {topics.length > 0 && (
+      <span class="flex justify-end gap-1.5 flex-wrap">
+        {topics.map(t => <span class={`chip chip-${t.variant}`}>{t.title}</span>)}
+      </span>
+    )}
+  </span>
+</a>

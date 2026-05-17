@@ -1,0 +1,23 @@
+---
+import { formatViews } from '../lib/format';
+import type { ParsedManifest } from '../lib/parse-manifest';
+
+interface Props { manifest: ParsedManifest; }
+const { manifest } = Astro.props;
+const stats: { label: string; value: string }[] = [];
+if (manifest.threads?.stats.views) stats.push({ label: 'Threads 觀看', value: formatViews(manifest.threads.stats.views) });
+if (manifest.facebook?.stats.reactions) stats.push({ label: 'Facebook 互動', value: formatViews(manifest.facebook.stats.reactions) });
+if (manifest.linkedin?.stats.impressions) stats.push({ label: 'LinkedIn 曝光', value: formatViews(manifest.linkedin.stats.impressions) });
+
+const colClass = stats.length === 3 ? 'grid-cols-3' : stats.length === 2 ? 'grid-cols-2' : 'grid-cols-1';
+---
+{stats.length > 0 && (
+  <div class={`my-6 grid ${colClass} gap-px bg-rule border border-rule`}>
+    {stats.map(s => (
+      <div class="bg-paper px-4 py-4 text-center">
+        <div class="font-serif font-semibold text-teal leading-none text-3xl" style="font-variant-numeric: oldstyle-nums;">{s.value}</div>
+        <div class="font-sans text-[9px] tracking-[.22em] uppercase text-muted mt-2 font-semibold">{s.label}</div>
+      </div>
+    ))}
+  </div>
+)}

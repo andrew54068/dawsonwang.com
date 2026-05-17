@@ -1,0 +1,14 @@
+---
+import { chipVariantFor } from '../lib/topics';
+interface Props { slug: string; title: string; blurb: string; count: number; }
+const { slug, title, blurb, count } = Astro.props;
+const variant = chipVariantFor(slug);
+---
+<a href={`/topics/${slug}`} class="toc-row block group">
+  <span class={`chip chip-${variant} self-baseline`}>&nbsp;</span>
+  <span class="block">
+    <span class="font-serif text-base text-ink font-semibold group-hover:text-teal transition-colors duration-150">{title}</span>
+    <span class="block font-serif text-sm text-muted mt-1 leading-relaxed">{blurb}</span>
+  </span>
+  <span class="toc-meta">{count} 篇</span>
+</a>

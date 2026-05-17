@@ -1,0 +1,252 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-paper: #F4EFE6;
+  --color-ink: #1A1410;
+  --color-brick: #C2553D;
+  --color-teal: #2D5F66;
+  --color-ochre: #C99A3A;
+  --color-sage: #6B8458;
+  --color-rule: #D8CFBE;
+  --color-muted: #8B6F4E;
+
+  --font-display: "DM Serif Display", "Noto Serif TC", serif;
+  --font-serif: "Source Serif 4", "Noto Serif TC", Georgia, serif;
+  --font-sans: "IBM Plex Sans TC", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    font-optical-sizing: auto;
+  }
+  body {
+    font-feature-settings: "onum";
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* === Eyebrow pair === */
+  .eyebrow-pair {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .eyebrow-pair .ey-left {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--color-brick);
+    font-weight: 600;
+  }
+  .eyebrow-pair .ey-right {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--color-teal);
+    font-weight: 500;
+  }
+
+  /* === Drop cap === */
+  .lede {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--color-ink);
+  }
+  .lede::first-letter {
+    font-family: var(--font-display);
+    color: var(--color-brick);
+    font-size: 3em;
+    line-height: 0.85;
+    float: left;
+    padding: 6px 8px 0 0;
+    font-weight: 400;
+  }
+
+  /* === TOC row (used on homepage Selected Writings + /days + /topics/[slug]) === */
+  .toc-row {
+    display: grid;
+    grid-template-columns: 48px 1fr 70px;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px dotted var(--color-rule);
+    align-items: baseline;
+    text-decoration: none;
+    color: inherit;
+    transition: color 150ms ease;
+  }
+  .toc-row:last-child { border-bottom: 0; }
+  .toc-row:hover .toc-title { color: var(--color-teal); }
+  .toc-row .toc-num {
+    font-family: var(--font-serif);
+    font-variant-numeric: oldstyle-nums;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-brick);
+    line-height: 1;
+  }
+  .toc-row .toc-title {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+  .toc-row .toc-title em {
+    font-style: italic;
+    color: var(--color-teal);
+    font-weight: 500;
+  }
+  .toc-row .toc-meta {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--color-muted);
+    text-align: right;
+    letter-spacing: .04em;
+  }
+
+  /* === Top divider (between hero/article header and body) === */
+  .top-divider {
+    margin: 24px 0 20px;
+    border-top: 2px solid var(--color-teal);
+  }
+
+  /* === Magazine inputs === */
+  .mag-input {
+    border: 0;
+    border-bottom: 1px solid var(--color-ink);
+    background: transparent;
+    padding: 8px 0;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--color-ink);
+    width: 100%;
+    border-radius: 0;
+  }
+  .mag-input:focus {
+    outline: none;
+    border-bottom-color: var(--color-brick);
+    border-bottom-width: 2px;
+  }
+  .mag-input:focus-visible {
+    outline: 2px solid var(--color-brick);
+    outline-offset: 4px;
+  }
+  .mag-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  /* === Radio chip (used in InquiryForm) === */
+  .radio-chip {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    padding: 6px 14px;
+    border: 1px solid var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--color-ink);
+    cursor: pointer;
+    background: transparent;
+    transition: background 150ms ease, color 150ms ease;
+  }
+  .radio-chip input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .radio-chip:has(input:checked) {
+    background: var(--color-brick);
+    color: var(--color-paper);
+    border-color: var(--color-brick);
+  }
+
+  /* === Buttons === */
+  .btn-ink {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 10px 18px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 0;
+    border: 0;
+    cursor: pointer;
+    transition: background 150ms ease;
+  }
+  .btn-ink:hover { background: var(--color-teal); }
+  .btn-ochre {
+    background: var(--color-ochre);
+    color: var(--color-ink);
+    padding: 10px 18px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 0;
+    border: 0;
+    cursor: pointer;
+    transition: filter 150ms ease;
+  }
+  .btn-ochre:hover { filter: brightness(0.93); }
+  .btn-ghost {
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding: 10px 0;
+    display: inline-block;
+    transition: text-underline-offset 150ms ease;
+  }
+  .btn-ghost:hover { text-underline-offset: 2px; }
+  .btn-ink:focus-visible,
+  .btn-ochre:focus-visible {
+    outline: 2px solid var(--color-brick);
+    outline-offset: 2px;
+  }
+  .btn-ghost:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  /* === Topic chip (consumed by TopicCard, PostCard, /day chip row) === */
+  .chip {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .chip-teal    { background: var(--color-teal);  color: var(--color-paper); }
+  .chip-brick   { background: var(--color-brick); color: var(--color-paper); }
+  .chip-ochre   { background: var(--color-ochre); color: var(--color-ink); }
+  .chip-sage    { background: var(--color-sage);  color: var(--color-paper); }
+  .chip-outline { background: transparent;        color: var(--color-ink); border: 1px solid var(--color-ink); }
+}

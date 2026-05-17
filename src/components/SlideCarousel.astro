@@ -1,0 +1,45 @@
+---
+interface Props { slides: { src: string; alt: string }[]; }
+const { slides } = Astro.props;
+---
+{slides.length > 0 && (
+  <figure class="my-8 max-w-3xl mx-auto" data-slide-carousel>
+    <div class="font-sans text-[10px] tracking-[.22em] uppercase text-brick font-semibold mb-3">投影片</div>
+    <div class="relative aspect-[4/5] overflow-hidden border border-rule bg-paper">
+      {slides.map((slide, i) => (
+        <img
+          src={slide.src}
+          alt={slide.alt}
+          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-200"
+          style={`opacity: ${i === 0 ? 1 : 0}`}
+          data-slide-index={i}
+        />
+      ))}
+    </div>
+    <figcaption class="flex justify-between items-baseline mt-3 gap-4">
+      <button type="button" data-slide-prev class="font-sans text-xs uppercase tracking-[.14em] text-muted hover:text-ink transition-colors duration-150 font-semibold">← 上一張</button>
+      <span data-slide-counter class="font-serif italic text-teal text-sm">1 / {slides.length}</span>
+      <button type="button" data-slide-next class="font-sans text-xs uppercase tracking-[.14em] text-muted hover:text-ink transition-colors duration-150 font-semibold">下一張 →</button>
+    </figcaption>
+  </figure>
+)}
+<script>
+  document.querySelectorAll('[data-slide-carousel]').forEach((carousel) => {
+    const slides = carousel.querySelectorAll<HTMLImageElement>('[data-slide-index]');
+    const prev = carousel.querySelector<HTMLButtonElement>('[data-slide-prev]');
+    const next = carousel.querySelector<HTMLButtonElement>('[data-slide-next]');
+    const counter = carousel.querySelector<HTMLSpanElement>('[data-slide-counter]');
+    let i = 0;
+    const show = (n: number) => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, idx) => (s.style.opacity = idx === i ? '1' : '0'));
+      if (counter) counter.textContent = `${i + 1} / ${slides.length}`;
+    };
+    prev?.addEventListener('click', () => show(i - 1));
+    next?.addEventListener('click', () => show(i + 1));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(i - 1);
+      if (e.key === 'ArrowRight') show(i + 1);
+    });
+  });
+</script>
