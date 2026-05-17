@@ -6,7 +6,7 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONTENT_DIR = path.resolve(__dirname, '../../content');
+const CONTENT_DIR = path.resolve(__dirname, '../100days/content');
 
 test('loads at least 100 days from real content/', async () => {
   const days = await loadAllDays(CONTENT_DIR);

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const SRC = path.resolve(import.meta.dirname, '../../content');
+const SRC = path.resolve(import.meta.dirname, '../100days/content');
 const DEST = path.resolve(import.meta.dirname, '../public/content');
 
 async function copyDir(src: string, dest: string) {

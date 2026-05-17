@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import path from 'node:path';
 import { loadAllDays } from './lib/content-loader';
 
-const CONTENT_DIR = path.resolve(import.meta.dirname, '../../content');
+const CONTENT_DIR = path.resolve(import.meta.dirname, '../100days/content');
 
 const days = defineCollection({
   loader: async () => {
