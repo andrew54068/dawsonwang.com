@@ -46,3 +46,17 @@ test('parses lowercase day prefix', () => {
   expect(result.dayNumber).toBe(27);
   expect(result.subtitle).toBe('lowercase title');
 });
+
+test('parses full-width colon separator (zh-TW typography)', () => {
+  const raw = `Day 4：思考實驗\n\nBody.`;
+  const result = parseSource(raw);
+  expect(result.dayNumber).toBe(4);
+  expect(result.subtitle).toBe('思考實驗');
+});
+
+test('parses full-width pipe separator', () => {
+  const raw = `# Day 3｜Antigravity-Manager\n\nBody.`;
+  const result = parseSource(raw);
+  expect(result.dayNumber).toBe(3);
+  expect(result.subtitle).toBe('Antigravity-Manager');
+});

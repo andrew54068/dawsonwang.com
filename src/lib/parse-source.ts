@@ -4,7 +4,7 @@ export interface ParsedSource {
   body: string;
 }
 
-const TITLE_RE = /^#?\s*Day (\d+)(?:[\s:｜]+(.+?))?\s*$/i;
+const TITLE_RE = /^#?\s*Day (\d+)(?:[\s:：｜]+(.+?))?\s*$/i;
 
 export function parseSource(raw: string): ParsedSource {
   const lines = raw.split('\n');
