@@ -1,3 +1,5 @@
+Day 23｜Telegram 連線除錯
+
 今天開發時遇到一個奇怪的 bug。
 
 一開始是 Telegram Bot 沒有反應，重新 `docker compose up` 後恢復正常，但過一陣子後，無論怎麼重啟都無效。檢查後發現似乎是連不到 Telegram Server，於是寫了個 script 測試，果然發現從我電腦無法連接 Telegram Server，但其他網路連線卻正常。
