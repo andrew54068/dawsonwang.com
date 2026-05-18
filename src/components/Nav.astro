@@ -6,15 +6,20 @@ const links = [
   { href: '/search', label: '搜尋' },
 ];
 ---
-<nav class="border-b border-rule">
-  <div class="max-w-3xl mx-auto px-6 py-4 flex items-baseline justify-between gap-4">
-    <a href="/" class="font-serif font-bold text-ink text-lg no-underline whitespace-nowrap">Dawson Wang</a>
-    <ul class="flex gap-3 sm:gap-5 list-none p-0 m-0">
+<nav class="sticky top-0 z-40 border-b border-rule bg-paper/85 backdrop-blur-md">
+  <div class="max-w-5xl mx-auto px-8 h-14 flex items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-2.5 no-underline">
+      <span class="w-6 h-6 grid place-items-center rounded-md text-paper font-mono font-bold text-xs"
+            style="background: linear-gradient(135deg, var(--color-brick), var(--color-teal));">D</span>
+      <span class="font-display font-semibold text-ink text-sm tracking-tight">Dawson Wang</span>
+    </a>
+    <ul class="hidden sm:flex gap-1 list-none p-0 m-0 items-center">
       {links.map(l => (
-        <li class="whitespace-nowrap">
-          <a href={l.href} class="text-muted text-xs tracking-[.14em] uppercase hover:text-ink transition-colors duration-150 no-underline font-sans">{l.label}</a>
+        <li>
+          <a href={l.href} class="px-3 py-1.5 text-muted text-[13px] font-display hover:text-ink hover:bg-surface-1 rounded-md transition-colors duration-150 no-underline">{l.label}</a>
         </li>
       ))}
     </ul>
+    <a href="/#inquire" class="text-ink text-[13px] font-display font-medium bg-surface-1 hover:bg-surface-2 border border-rule px-3 py-1.5 rounded-md transition-colors duration-150 no-underline">預約諮詢 →</a>
   </div>
 </nav>

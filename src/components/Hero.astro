@@ -3,30 +3,43 @@ import { getCollection } from 'astro:content';
 const days = await getCollection('days');
 const totalDays = days.length;
 ---
-<section class="max-w-3xl mx-auto px-6 pt-16 pb-12">
-  <div class="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-8 md:gap-10 items-end">
+<section class="relative max-w-5xl mx-auto px-8 pt-20 pb-16 overflow-hidden">
+  <div aria-hidden="true" class="pointer-events-none absolute -top-40 -left-40 w-[640px] h-[640px] rounded-full opacity-60"
+       style="background: radial-gradient(circle at center, color-mix(in oklab, var(--color-brick) 22%, transparent), transparent 60%);"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute -bottom-40 -right-40 w-[560px] h-[560px] rounded-full opacity-50"
+       style="background: radial-gradient(circle at center, color-mix(in oklab, var(--color-teal) 18%, transparent), transparent 60%);"></div>
+
+  <div class="relative grid grid-cols-1 md:grid-cols-[1fr_280px] gap-10 md:gap-12 items-end">
     <div class="order-2 md:order-1">
-      <header class="eyebrow-pair">
-        <span class="ey-left">第 {totalDays} 篇</span>
-        <span class="ey-right">一份持續書寫的工作日誌</span>
-      </header>
-      <h1 class="font-display text-ink leading-[0.98] tracking-[-0.02em] text-balance"
-          style="font-size: clamp(2.5rem, 5.5vw, 4.5rem);">
-        我幫台灣團隊<br />把 AI 工具<em class="italic text-teal">落地。</em>
+      <span class="kicker">
+        <span class="dot"></span>
+        <span>Day {totalDays} · shipping daily</span>
+      </span>
+      <h1 class="font-display text-ink mt-6 mb-6"
+          style="font-size: clamp(2.75rem, 6vw, 5rem); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance;">
+        把 <span style="background: linear-gradient(90deg, var(--color-brick), var(--color-teal)); -webkit-background-clip: text; background-clip: text; color: transparent;">AI 工具</span><br />
+        搬進你的<br />實際工作流。
       </h1>
-      <p class="lede mt-5 max-w-xl">
-        9 年新創軟體開發經驗（iOS → DevRel → Full Stack）、前 iOS@Taipei 社群主持人。過去 {totalDays} 天每天公開實作 AI 工作流——現在幫你的團隊把這套方法搬進生產環境。
+      <p class="font-display text-muted text-lg leading-relaxed max-w-xl mb-9">
+        9 年新創軟體開發經驗（iOS → DevRel → Full Stack）、前 iOS@Taipei 社群主持人。過去 {totalDays} 天每天公開實作 AI 工作流 —— 現在幫你的團隊把這套方法搬進生產環境。
       </p>
-      <div class="mt-6 flex flex-wrap gap-4 items-baseline">
-        <a href="#inquire" class="btn-ink">聊聊合作 →</a>
-        <a href="/days" class="btn-ghost">看看作品</a>
+      <div class="flex flex-wrap gap-3 items-center">
+        <a href="#inquire" class="btn-ink">預約 30 分鐘 →</a>
+        <a href="/days" class="btn-ghost">查看 {totalDays} 篇實作</a>
+      </div>
+      <div class="mt-11 flex flex-wrap gap-x-9 gap-y-3 font-mono text-xs text-faint">
+        <span class="flex gap-2"><span class="text-ink font-medium">{totalDays}</span><span>連續產出天數</span></span>
+        <span class="flex gap-2"><span class="text-ink font-medium">9 yr</span><span>新創軟體經驗</span></span>
+        <span class="flex gap-2"><span class="text-ink font-medium">2 wk</span><span>最短交付週期</span></span>
+        <span class="flex gap-2"><span class="text-ink font-medium">100 %</span><span>原始碼公開</span></span>
       </div>
     </div>
 
-    <aside class="order-1 md:order-2 max-w-[260px] md:max-w-none">
+    <aside class="order-1 md:order-2 max-w-[280px] md:max-w-none">
       <figure>
         <div class="relative">
-          <span aria-hidden="true" class="absolute -top-2 -left-2 w-full h-full bg-ochre"></span>
+          <span aria-hidden="true" class="absolute -top-2 -left-2 w-full h-full rounded-md"
+                style="background: linear-gradient(135deg, color-mix(in oklab, var(--color-brick) 40%, transparent), color-mix(in oklab, var(--color-teal) 30%, transparent));"></span>
           <img
             src="/dawson.webp"
             alt="Dawson Wang"
@@ -35,12 +48,12 @@ const totalDays = days.length;
             loading="eager"
             fetchpriority="high"
             decoding="async"
-            class="relative block w-full aspect-[4/5] object-cover grayscale-[15%] border border-ink"
+            class="relative block w-full aspect-[4/5] object-cover rounded-md border border-rule"
           />
         </div>
-        <figcaption class="mt-3 font-sans text-[10px] tracking-[.22em] uppercase text-muted font-semibold flex justify-between items-baseline">
-          <span>Dawson Wang</span>
-          <span class="text-brick">已寫 {totalDays} 篇</span>
+        <figcaption class="mt-3 font-mono text-[11px] text-faint flex justify-between items-baseline">
+          <span>Dawson Wang · TPE</span>
+          <span class="text-teal">已寫 {totalDays} 篇</span>
         </figcaption>
       </figure>
     </aside>

@@ -4,11 +4,12 @@ interface Props { slug: string; title: string; blurb: string; count: number; }
 const { slug, title, blurb, count } = Astro.props;
 const variant = chipVariantFor(slug);
 ---
-<a href={`/topics/${slug}`} class="toc-row block group">
-  <span class={`chip chip-${variant} self-baseline`}>&nbsp;</span>
+<a href={`/topics/${slug}`}
+   class="grid grid-cols-[80px_1fr_60px] gap-5 px-5 py-4 border-b border-rule last:border-b-0 hover:bg-surface-1 transition-colors duration-150 no-underline items-center group">
+  <span class={`chip chip-${variant}`}>{slug}</span>
   <span class="block">
-    <span class="font-serif text-base text-ink font-semibold group-hover:text-teal transition-colors duration-150">{title}</span>
-    <span class="block font-serif text-sm text-muted mt-1 leading-relaxed">{blurb}</span>
+    <span class="font-display text-ink text-[15px] font-medium group-hover:text-teal transition-colors duration-150">{title}</span>
+    <span class="block font-display text-muted text-sm mt-1 leading-relaxed">{blurb}</span>
   </span>
-  <span class="toc-meta">{count} 篇</span>
+  <span class="font-mono text-xs text-faint text-right">{count} 篇</span>
 </a>

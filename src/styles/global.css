@@ -2,26 +2,43 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-paper: #F4EFE6;
-  --color-ink: #1A1410;
-  --color-brick: #C2553D;
-  --color-teal: #2D5F66;
-  --color-ochre: #C99A3A;
-  --color-sage: #6B8458;
-  --color-rule: #D8CFBE;
-  --color-muted: #8B6F4E;
+  /* Linear-dark surfaces */
+  --color-paper: #0A0A0B;      /* base background */
+  --color-surface-1: #131316;  /* card / panel */
+  --color-surface-2: #1B1B20;  /* elevated surface */
+  --color-rule: #26262C;       /* hairline border */
 
-  --font-display: "DM Serif Display", "Noto Serif TC", serif;
-  --font-serif: "Source Serif 4", "Noto Serif TC", Georgia, serif;
-  --font-sans: "IBM Plex Sans TC", system-ui, sans-serif;
+  /* Type */
+  --color-ink: #F4F4F5;        /* primary text */
+  --color-muted: #8B8B95;      /* secondary text */
+  --color-faint: #5C5C66;      /* tertiary / metadata */
+
+  /* Accents */
+  --color-brick: #7B61FF;      /* primary accent (was terracotta) */
+  --color-teal: #59E6C9;       /* secondary accent / success-ish */
+  --color-ochre: #FFC56A;      /* warning / highlight */
+  --color-sage: #59E6C9;       /* alias for teal */
+
+  --font-display: "Space Grotesk", "Noto Sans TC", system-ui, sans-serif;
+  --font-serif:   "Space Grotesk", "Noto Sans TC", system-ui, sans-serif;
+  --font-sans:    "Space Grotesk", "Noto Sans TC", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
 }
 
 @layer base {
   html {
-    font-optical-sizing: auto;
+    background: var(--color-paper);
+    color-scheme: dark;
   }
   body {
-    font-feature-settings: "onum";
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-brick) 35%, transparent);
+    color: var(--color-ink);
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -34,7 +51,34 @@
 }
 
 @layer components {
-  /* === Eyebrow pair === */
+  /* === Kicker pill (replaces eyebrow-pair) === */
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 11px;
+    border: 1px solid var(--color-rule);
+    border-radius: 999px;
+    background: var(--color-surface-1);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-muted);
+    line-height: 1.2;
+  }
+  .kicker .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-teal);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-teal) 18%, transparent);
+    animation: kicker-pulse 2s ease-in-out infinite;
+  }
+  @keyframes kicker-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.45; }
+  }
+
+  /* Legacy: eyebrow-pair kept as compact two-line lockup for list headers */
   .eyebrow-pair {
     display: flex;
     justify-content: space-between;
@@ -43,45 +87,36 @@
     margin-bottom: 14px;
   }
   .eyebrow-pair .ey-left {
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: .22em;
+    letter-spacing: .08em;
     text-transform: uppercase;
-    color: var(--color-brick);
-    font-weight: 600;
-  }
-  .eyebrow-pair .ey-right {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 14px;
     color: var(--color-teal);
     font-weight: 500;
   }
-
-  /* === Drop cap === */
-  .lede {
-    font-family: var(--font-serif);
-    font-size: 17px;
-    line-height: 1.55;
-    color: var(--color-ink);
-  }
-  .lede::first-letter {
-    font-family: var(--font-display);
-    color: var(--color-brick);
-    font-size: 3em;
-    line-height: 0.85;
-    float: left;
-    padding: 6px 8px 0 0;
+  .eyebrow-pair .ey-right {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-faint);
     font-weight: 400;
+    font-style: normal;
   }
 
-  /* === TOC row (used on homepage Selected Writings + /days + /topics/[slug]) === */
+  /* === Lede (plain large paragraph; drop drop-cap) === */
+  .lede {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  /* === Case-row (replaces toc-row) === */
   .toc-row {
     display: grid;
-    grid-template-columns: 48px 1fr 70px;
-    gap: 14px;
-    padding: 12px 0;
-    border-bottom: 1px dotted var(--color-rule);
+    grid-template-columns: 64px 1fr auto;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--color-rule);
     align-items: baseline;
     text-decoration: none;
     color: inherit;
@@ -90,77 +125,79 @@
   .toc-row:last-child { border-bottom: 0; }
   .toc-row:hover .toc-title { color: var(--color-teal); }
   .toc-row .toc-num {
-    font-family: var(--font-serif);
-    font-variant-numeric: oldstyle-nums;
+    font-family: var(--font-mono);
     font-size: 22px;
-    font-weight: 600;
-    color: var(--color-brick);
+    font-weight: 500;
+    color: var(--color-ink);
     line-height: 1;
   }
   .toc-row .toc-title {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 16px;
     line-height: 1.4;
     color: var(--color-ink);
     font-weight: 500;
+    transition: color 150ms ease;
   }
   .toc-row .toc-title em {
-    font-style: italic;
+    font-style: normal;
     color: var(--color-teal);
     font-weight: 500;
   }
   .toc-row .toc-meta {
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--color-muted);
+    color: var(--color-faint);
     text-align: right;
-    letter-spacing: .04em;
+    letter-spacing: .02em;
   }
 
-  /* === Magazine inputs === */
+  /* === Form inputs (dark) === */
   .mag-input {
     border: 0;
-    border-bottom: 1px solid var(--color-ink);
+    border-bottom: 1px solid var(--color-rule);
     background: transparent;
-    padding: 8px 0;
-    font-family: var(--font-serif);
-    font-size: 16px;
+    padding: 10px 0;
+    font-family: var(--font-display);
+    font-size: 15px;
     color: var(--color-ink);
     width: 100%;
     border-radius: 0;
   }
+  .mag-input::placeholder { color: var(--color-faint); }
   .mag-input:focus {
     outline: none;
     border-bottom-color: var(--color-brick);
     border-bottom-width: 2px;
   }
   .mag-input:focus-visible {
-    outline: 2px solid var(--color-brick);
+    outline: 2px solid color-mix(in oklab, var(--color-brick) 50%, transparent);
     outline-offset: 4px;
   }
   .mag-label {
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: 10px;
-    letter-spacing: .22em;
+    letter-spacing: .14em;
     text-transform: uppercase;
-    color: var(--color-muted);
-    font-weight: 600;
+    color: var(--color-faint);
+    font-weight: 500;
     margin-bottom: 6px;
   }
 
-  /* === Radio chip (used in InquiryForm) === */
+  /* === Radio chip === */
   .radio-chip {
     display: inline-flex;
     position: relative;
     align-items: center;
-    padding: 6px 14px;
-    border: 1px solid var(--color-ink);
-    font-family: var(--font-sans);
+    padding: 7px 14px;
+    border: 1px solid var(--color-rule);
+    border-radius: 999px;
+    font-family: var(--font-display);
     font-size: 13px;
     color: var(--color-ink);
+    background: var(--color-surface-1);
     cursor: pointer;
-    background: transparent;
-    transition: background 150ms ease, color 150ms ease;
+    transition: background 150ms ease, border-color 150ms ease;
   }
   .radio-chip input[type="radio"] {
     position: absolute;
@@ -169,78 +206,88 @@
   }
   .radio-chip:has(input:checked) {
     background: var(--color-brick);
-    color: var(--color-paper);
+    color: white;
     border-color: var(--color-brick);
+  }
+  .radio-chip:hover:not(:has(input:checked)) {
+    background: var(--color-surface-2);
+    border-color: color-mix(in oklab, var(--color-rule) 70%, var(--color-ink));
   }
 
   /* === Buttons === */
   .btn-ink {
     background: var(--color-ink);
     color: var(--color-paper);
-    padding: 10px 18px;
-    font-family: var(--font-sans);
-    font-size: 13px;
+    padding: 11px 18px;
+    font-family: var(--font-display);
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: .04em;
+    letter-spacing: 0;
     display: inline-block;
     text-decoration: none;
-    border-radius: 0;
+    border-radius: 8px;
     border: 0;
     cursor: pointer;
-    transition: background 150ms ease;
+    transition: opacity 150ms ease;
   }
-  .btn-ink:hover { background: var(--color-teal); }
+  .btn-ink:hover { opacity: 0.9; }
   .btn-ochre {
-    background: var(--color-ochre);
-    color: var(--color-ink);
-    padding: 10px 18px;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: .04em;
+    background: var(--color-brick);
+    color: white;
+    padding: 11px 18px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
     display: inline-block;
     text-decoration: none;
-    border-radius: 0;
+    border-radius: 8px;
     border: 0;
     cursor: pointer;
-    transition: filter 150ms ease;
+    transition: opacity 150ms ease;
   }
-  .btn-ochre:hover { filter: brightness(0.93); }
+  .btn-ochre:hover { opacity: 0.9; }
   .btn-ghost {
     color: var(--color-ink);
-    font-family: var(--font-sans);
-    font-size: 13px;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    padding: 10px 0;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 11px 18px;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-rule);
+    border-radius: 8px;
     display: inline-block;
-    transition: text-underline-offset 150ms ease;
+    transition: background 150ms ease;
   }
-  .btn-ghost:hover { text-underline-offset: 2px; }
+  .btn-ghost:hover { background: var(--color-surface-2); }
   .btn-ink:focus-visible,
-  .btn-ochre:focus-visible {
-    outline: 2px solid var(--color-brick);
-    outline-offset: 2px;
-  }
+  .btn-ochre:focus-visible,
   .btn-ghost:focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid color-mix(in oklab, var(--color-brick) 60%, transparent);
     outline-offset: 2px;
   }
 
-  /* === Topic chip (consumed by TopicCard, PostCard, /day chip row) === */
+  /* === Tag chip (Linear-styled) === */
   .chip {
-    font-family: var(--font-sans);
-    font-size: 11px;
-    padding: 3px 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 9px;
     border-radius: 999px;
     font-weight: 500;
     letter-spacing: .04em;
     display: inline-block;
     text-decoration: none;
+    text-transform: uppercase;
+    border: 1px solid var(--color-rule);
+    background: var(--color-surface-1);
+    color: var(--color-muted);
+    transition: color 150ms ease, border-color 150ms ease;
   }
-  .chip-teal    { background: var(--color-teal);  color: var(--color-paper); }
-  .chip-brick   { background: var(--color-brick); color: var(--color-paper); }
-  .chip-ochre   { background: var(--color-ochre); color: var(--color-ink); }
-  .chip-sage    { background: var(--color-sage);  color: var(--color-paper); }
-  .chip-outline { background: transparent;        color: var(--color-ink); border: 1px solid var(--color-ink); }
+  .chip:hover { color: var(--color-ink); border-color: color-mix(in oklab, var(--color-rule) 50%, var(--color-ink)); }
+  .chip-teal    { color: var(--color-teal); border-color: color-mix(in oklab, var(--color-teal) 35%, var(--color-rule)); }
+  .chip-brick   { color: var(--color-brick); border-color: color-mix(in oklab, var(--color-brick) 35%, var(--color-rule)); }
+  .chip-ochre   { color: var(--color-ochre); border-color: color-mix(in oklab, var(--color-ochre) 35%, var(--color-rule)); }
+  .chip-sage    { color: var(--color-teal); border-color: color-mix(in oklab, var(--color-teal) 35%, var(--color-rule)); }
+  .chip-outline { color: var(--color-muted); }
 }

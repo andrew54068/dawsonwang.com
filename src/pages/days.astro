@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
-import Divider from '../components/Divider.astro';
 import { topicsForDay } from '../lib/topics';
 import { isTopPerformer } from '../lib/metrics';
 
@@ -11,17 +10,17 @@ const sorted = days.sort((a, b) => b.data.dayNumber - a.data.dayNumber);
 const firstDay = sorted[sorted.length - 1]?.data.dayNumber ?? 1;
 const lastDay = sorted[0]?.data.dayNumber ?? days.length;
 ---
-<BaseLayout title="所有文章" description="121+ 天 AI 學習實作日記">
-  <article class="max-w-3xl mx-auto px-6 py-12">
-    <header class="eyebrow-pair">
-      <span class="ey-left">第 {firstDay} — {lastDay} 篇</span>
-      <span class="ey-right">依日期倒序</span>
-    </header>
-    <h1 class="font-display text-ink leading-tight tracking-[-0.02em] text-balance" style="font-size: clamp(2.25rem, 5vw, 3.5rem);">
-      所有<em class="italic text-teal">文章</em>。
+<BaseLayout title="所有文章" description={`${days.length} 天 AI 學習實作日記`}>
+  <article class="max-w-5xl mx-auto px-8 py-16">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">ALL POSTS · {firstDay}—{lastDay}</div>
+    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] font-semibold"
+        style="font-size: clamp(2.5rem, 5vw, 4rem);">
+      所有<span class="text-teal">文章</span>。
     </h1>
-    <Divider class="my-7" />
-    <div>
+    <p class="font-display text-muted text-lg leading-relaxed mt-3 max-w-xl">
+      共 {days.length} 篇，依日期倒序。
+    </p>
+    <div class="mt-10 border-t border-rule">
       {sorted.map(day => (
         <PostCard
           dayNumber={day.data.dayNumber}

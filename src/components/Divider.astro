@@ -4,32 +4,4 @@ interface Props {
 }
 const { class: cls = '' } = Astro.props;
 ---
-<div class={`ornament-divider ${cls}`} role="separator" aria-hidden="true">
-  <span class="rule"></span>
-  <svg viewBox="0 0 36 6" class="ornament" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-    <polygon points="3,0 6,3 3,6 0,3" />
-    <polygon points="18,0 21,3 18,6 15,3" />
-    <polygon points="33,0 36,3 33,6 30,3" />
-  </svg>
-  <span class="rule"></span>
-</div>
-
-<style>
-  .ornament-divider {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    color: var(--color-teal);
-  }
-  .ornament-divider .rule {
-    flex: 1;
-    height: 1px;
-    background: var(--color-rule);
-  }
-  .ornament-divider .ornament {
-    width: 48px;
-    height: 8px;
-    flex-shrink: 0;
-    color: var(--color-teal);
-  }
-</style>
+<div class={`h-px bg-rule ${cls}`} role="separator" aria-hidden="true"></div>

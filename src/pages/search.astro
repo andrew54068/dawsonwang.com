@@ -1,24 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Divider from '../components/Divider.astro';
 import { getCollection } from 'astro:content';
 
 const days = await getCollection('days');
 const total = days.length;
 ---
 <BaseLayout title="搜尋" description={`從 ${total} 篇日誌中以關鍵字或語意查找`}>
-  <article class="max-w-3xl mx-auto px-6 py-12" data-pagefind-ignore="all">
-    <header class="eyebrow-pair">
-      <span class="ey-left">搜尋 · {total} 篇</span>
-      <span class="ey-right">關鍵字＋語意</span>
-    </header>
-    <h1 class="font-display text-ink leading-tight tracking-[-0.02em] text-balance" style="font-size: clamp(2.25rem, 5vw, 3.5rem);">
-      在<em class="italic text-teal">日誌</em>裡找東西。
+  <article class="max-w-5xl mx-auto px-8 py-16" data-pagefind-ignore="all">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">SEARCH · {total} POSTS</div>
+    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
+        style="font-size: clamp(2.5rem, 5vw, 4rem);">
+      在<span class="text-teal">日誌</span>裡找東西。
     </h1>
 
-    <Divider class="my-7" />
-
-    <form id="search-form" class="space-y-5" autocomplete="off">
+    <form id="search-form" class="mt-10 max-w-2xl space-y-6" autocomplete="off">
       <div>
         <label for="q" class="mag-label block">查詢</label>
         <input
@@ -42,15 +37,15 @@ const total = days.length;
           <input type="radio" name="mode" value="semantic" />
           <span>語意</span>
         </label>
-        <span id="search-mode-hint" class="font-serif italic text-teal text-sm ml-auto">
-          關鍵字本地索引；語意走雲端嵌入（首查約 1 秒）
+        <span id="search-mode-hint" class="font-mono text-xs text-faint ml-auto">
+          關鍵字本地索引 · 語意走雲端嵌入（首查約 1 秒）
         </span>
       </fieldset>
     </form>
 
-    <div id="search-status" class="mt-6 font-serif italic text-muted text-sm min-h-[1.5em]"></div>
+    <div id="search-status" class="mt-6 font-mono text-xs text-faint min-h-[1.5em]"></div>
 
-    <section id="search-results" class="mt-2"></section>
+    <section id="search-results" class="mt-2 max-w-3xl"></section>
   </article>
 
   <script>

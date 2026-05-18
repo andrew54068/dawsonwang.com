@@ -3,9 +3,9 @@ interface Props { slides: { src: string; alt: string }[]; }
 const { slides } = Astro.props;
 ---
 {slides.length > 0 && (
-  <figure class="my-8 max-w-3xl mx-auto" data-slide-carousel>
-    <div class="font-sans text-[10px] tracking-[.22em] uppercase text-brick font-semibold mb-3">投影片</div>
-    <div class="relative aspect-square overflow-hidden border border-rule bg-paper">
+  <figure class="my-10" data-slide-carousel>
+    <div class="font-mono text-[11px] tracking-[.08em] uppercase text-teal mb-3">SLIDES · {slides.length}</div>
+    <div class="relative aspect-square overflow-hidden border border-rule rounded-lg bg-surface-1">
       {slides.map((slide, i) => (
         <img
           src={slide.src}
@@ -16,10 +16,10 @@ const { slides } = Astro.props;
         />
       ))}
     </div>
-    <figcaption class="flex justify-between items-baseline mt-3 gap-4">
-      <button type="button" data-slide-prev class="font-sans text-xs uppercase tracking-[.14em] text-muted hover:text-ink transition-colors duration-150 font-semibold">← 上一張</button>
-      <span data-slide-counter class="font-serif italic text-teal text-sm">1 / {slides.length}</span>
-      <button type="button" data-slide-next class="font-sans text-xs uppercase tracking-[.14em] text-muted hover:text-ink transition-colors duration-150 font-semibold">下一張 →</button>
+    <figcaption class="flex justify-between items-baseline mt-3 gap-4 font-mono text-xs">
+      <button type="button" data-slide-prev class="text-muted hover:text-ink transition-colors duration-150">← 上一張</button>
+      <span data-slide-counter class="text-teal">1 / {slides.length}</span>
+      <button type="button" data-slide-next class="text-muted hover:text-ink transition-colors duration-150">下一張 →</button>
     </figcaption>
   </figure>
 )}

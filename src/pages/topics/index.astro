@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopicCard from '../../components/TopicCard.astro';
-import Divider from '../../components/Divider.astro';
 import { allTopics, daysForTopic } from '../../lib/topics';
 
 const topics = allTopics().map(t => ({
@@ -10,16 +9,13 @@ const topics = allTopics().map(t => ({
 }));
 ---
 <BaseLayout title="主題" description="依主題瀏覽所有 AI 實作文章">
-  <article class="max-w-3xl mx-auto px-6 py-12">
-    <header class="eyebrow-pair">
-      <span class="ey-left">主題</span>
-      <span class="ey-right">依主題瀏覽 {topics.length} 個分類</span>
-    </header>
-    <h1 class="font-display text-ink leading-tight tracking-[-0.02em] text-balance" style="font-size: clamp(2.25rem, 5vw, 3.5rem);">
-      依<em class="italic text-teal">主題</em>瀏覽。
+  <article class="max-w-5xl mx-auto px-8 py-16">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPICS · {topics.length} CATEGORIES</div>
+    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
+        style="font-size: clamp(2.5rem, 5vw, 4rem);">
+      依<span class="text-teal">主題</span>瀏覽。
     </h1>
-    <Divider class="my-7" />
-    <div>
+    <div class="mt-10 border border-rule rounded-xl overflow-hidden bg-surface-1">
       {topics.map(t => <TopicCard {...t} />)}
     </div>
   </article>

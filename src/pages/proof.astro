@@ -10,66 +10,83 @@ const stats = computeStatsSummary(days);
 const totalDays = stats.totalDays;
 ---
 <BaseLayout title="作品集" description={`${totalDays} 天 AI 實作公開記錄`}>
-  <article class="max-w-3xl mx-auto px-6 py-12">
-    <header class="eyebrow-pair">
-      <span class="ey-left">作品集　·　{totalDays} 篇</span>
-      <span class="ey-right">一份持續書寫的工作日誌</span>
-    </header>
-    <h1 class="font-display text-ink leading-[0.98] tracking-[-0.02em] text-balance" style="font-size: clamp(2.5rem, 6vw, 4rem);">
-      {totalDays} 天 AI <em class="italic text-teal">內容</em>。
+  <article class="max-w-5xl mx-auto px-8 py-16">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">PROOF · {totalDays} DAYS</div>
+    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
+        style="font-size: clamp(2.5rem, 5vw, 4rem);">
+      {totalDays} 天 AI <span class="text-teal">內容</span>。
     </h1>
-
-    <p class="lede mt-6 max-w-xl">
+    <p class="font-display text-muted text-lg leading-relaxed mt-4 max-w-2xl">
       從 Claude Code skill 到 Threads bot、再到資安研究。完整公開：源碼、流程、踩雷、結果。這頁整理我這 {totalDays} 天裡留下的東西，以及背後的方法。
     </p>
 
-    <div class="my-10 grid grid-cols-1 md:grid-cols-[140px_1fr] gap-x-10 gap-y-8 items-start">
-      <aside class="md:border-r md:border-rule md:pr-6">
-        <div class="font-serif font-semibold text-teal leading-none" style="font-size: clamp(3rem, 6vw, 4.5rem); font-variant-numeric: oldstyle-nums;">
+    <div class="my-12 grid grid-cols-1 md:grid-cols-[160px_1fr] gap-8 items-start">
+      <aside class="bg-surface-1 border border-rule rounded-xl p-5">
+        <div class="font-mono font-medium text-ink leading-none mb-3" style="font-size: 40px;">
           {totalDays}
         </div>
-        <div class="font-sans text-[10px] tracking-[.22em] uppercase text-muted mt-2 font-semibold">天連續產出</div>
+        <div class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">天連續產出</div>
       </aside>
       <StatsCharts stats={stats} variant="expanded" />
     </div>
 
     <PullQuote attribution="Day 098 隨機 AI 落地筆記">把 AI 工具落地不是裝外掛，是改流程。</PullQuote>
 
-    <section class="mt-12">
-      <header class="eyebrow-pair">
-        <span class="ey-left">公開實作項目</span>
-        <span class="ey-right">五件代表作</span>
-      </header>
-      <ul class="font-serif text-base text-ink leading-relaxed mt-2">
-        <li class="border-b border-rule py-3"><strong class="text-teal">Threads 海巡 Bot</strong> — SDD/BDD/TDD + Puppeteer + 本地 LLM Osaurus + Telegram 通知（Day 12–21）</li>
-        <li class="border-b border-rule py-3"><strong class="text-teal">Permission Guardian Skill</strong> — Claude Code 權限白名單擴充，已開源（Day 7、19）</li>
-        <li class="border-b border-rule py-3"><strong class="text-teal">/security-scan</strong> — 6-agent 並行掃描指令，三方專案安全審查（Day 32、85、92）</li>
-        <li class="border-b border-rule py-3"><strong class="text-teal">Antigravity-Manager Fork</strong> — 加入 Strategy Pool 並發佈 Homebrew Tap（Day 57、74）</li>
-        <li class="py-3"><strong class="text-teal">iPhone↔Mac 自動化系統</strong> — App 廣告自動點擊系統（Day 28）</li>
-      </ul>
+    <section class="mt-14">
+      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">SHIPPED · 5 PROJECTS</div>
+      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-5">公開實作項目</h2>
+      <div class="border border-rule rounded-xl overflow-hidden bg-surface-1">
+        <div class="border-b border-rule px-5 py-4">
+          <div class="font-display text-ink font-medium">Threads 海巡 Bot</div>
+          <div class="font-display text-muted text-sm mt-1">SDD/BDD/TDD + Puppeteer + 本地 LLM Osaurus + Telegram 通知 · Day 12–21</div>
+        </div>
+        <div class="border-b border-rule px-5 py-4">
+          <div class="font-display text-ink font-medium">Permission Guardian Skill</div>
+          <div class="font-display text-muted text-sm mt-1">Claude Code 權限白名單擴充，已開源 · Day 7、19</div>
+        </div>
+        <div class="border-b border-rule px-5 py-4">
+          <div class="font-display text-ink font-medium">/security-scan</div>
+          <div class="font-display text-muted text-sm mt-1">6-agent 並行掃描指令，三方專案安全審查 · Day 32、85、92</div>
+        </div>
+        <div class="border-b border-rule px-5 py-4">
+          <div class="font-display text-ink font-medium">Antigravity-Manager Fork</div>
+          <div class="font-display text-muted text-sm mt-1">加入 Strategy Pool 並發佈 Homebrew Tap · Day 57、74</div>
+        </div>
+        <div class="px-5 py-4">
+          <div class="font-display text-ink font-medium">iPhone↔Mac 自動化系統</div>
+          <div class="font-display text-muted text-sm mt-1">App 廣告自動點擊系統 · Day 28</div>
+        </div>
+      </div>
     </section>
 
-    <section class="mt-12">
-      <header class="eyebrow-pair">
-        <span class="ey-left">1:1 諮詢紀錄</span>
-        <span class="ey-right">每場諮詢都附完整對話紀錄</span>
-      </header>
-      <ul class="font-serif text-base text-ink leading-relaxed mt-2">
-        <li class="border-b border-rule py-2.5">醫師：PDF SOP 自動化（Day 96）</li>
-        <li class="border-b border-rule py-2.5">YouTuber：AI 初體驗與流程除錯（Day 97）</li>
-        <li class="border-b border-rule py-2.5">企業社群經理：KOL 流程整合（Day 98）</li>
-        <li class="py-2.5">LINE 對話整合需求（Day 99）</li>
-      </ul>
+    <section class="mt-14">
+      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">CONSULTATIONS · 4 SESSIONS</div>
+      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-5">1:1 諮詢紀錄</h2>
+      <div class="border border-rule rounded-xl overflow-hidden bg-surface-1 font-display text-sm">
+        <div class="border-b border-rule px-5 py-3 flex justify-between text-muted">
+          <span>醫師：PDF SOP 自動化</span><span class="font-mono text-faint">Day 096</span>
+        </div>
+        <div class="border-b border-rule px-5 py-3 flex justify-between text-muted">
+          <span>YouTuber：AI 初體驗與流程除錯</span><span class="font-mono text-faint">Day 097</span>
+        </div>
+        <div class="border-b border-rule px-5 py-3 flex justify-between text-muted">
+          <span>企業社群經理：KOL 流程整合</span><span class="font-mono text-faint">Day 098</span>
+        </div>
+        <div class="px-5 py-3 flex justify-between text-muted">
+          <span>LINE 對話整合需求</span><span class="font-mono text-faint">Day 099</span>
+        </div>
+      </div>
     </section>
 
-    <aside class="mt-12 px-6 py-7 bg-teal text-paper relative">
-      <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1.5 bg-ochre"></span>
-      <div class="font-sans text-[10px] tracking-[.22em] uppercase text-ochre font-semibold">想合作？</div>
-      <h3 class="font-display text-paper text-2xl mt-1 leading-tight">看完覺得我能幫到你的團隊</h3>
-      <p class="font-serif text-sm mt-2 leading-relaxed" style="color:#D8CFBE;">
+    <aside class="mt-14 bg-surface-1 border border-rule rounded-xl p-7 relative overflow-hidden">
+      <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-px"
+            style="background: linear-gradient(90deg, var(--color-brick), var(--color-teal));"></span>
+      <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">想合作？</div>
+      <h3 class="font-display text-ink text-xl font-semibold tracking-tight">看完覺得我能幫到你的團隊</h3>
+      <p class="font-display text-muted text-sm leading-relaxed mt-3 max-w-md">
         填表跟我說說情境。1–2 個工作日內回信。
       </p>
-      <a href="/#inquire" class="btn-ochre mt-4">填表諮詢 →</a>
+      <a href="/#inquire" class="btn-ochre mt-5">填表諮詢 →</a>
     </aside>
   </article>
 </BaseLayout>

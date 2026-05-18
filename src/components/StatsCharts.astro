@@ -55,21 +55,21 @@ const fbPeak = facebookSeries[fbPeakIdx] ?? null;
 <div class="stats-charts grid gap-8" data-variant={variant}>
   <figure class="m-0">
     <figcaption class="flex items-baseline justify-between mb-2 gap-3">
-      <span class="font-sans text-[11px] tracking-[.22em] uppercase text-brick font-semibold">Threads · 每日觀看</span>
-      <span class="font-serif text-sm text-muted italic">{threadsSeries.length} / {totalDays} 篇有資料</span>
+      <span class="font-mono text-[11px] tracking-[.08em] uppercase text-teal">Threads · daily views</span>
+      <span class="font-mono text-xs text-faint">{threadsSeries.length} / {totalDays}</span>
     </figcaption>
     <svg viewBox={`0 0 ${SP_W} ${SP_H}`} class={`block w-full ${variant === 'expanded' ? 'h-[110px]' : 'h-[80px]'}`} preserveAspectRatio="none" aria-hidden="true">
-      <path d={sparkArea} fill="var(--color-teal)" fill-opacity="0.08" />
+      <path d={sparkArea} fill="var(--color-teal)" fill-opacity="0.16" />
       <path d={sparkPath} fill="none" stroke="var(--color-teal)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
       {threadsPeak && (
         <circle cx={threadsPeakX} cy={threadsPeakY} r="3" fill="var(--color-brick)" />
       )}
     </svg>
-    <div class="mt-2 flex items-baseline justify-between font-sans text-[11px] text-muted tracking-[.04em] gap-3">
-      <span>累計 <span class="text-ink font-semibold">{formatCount(totalThreadsViews)}</span> 觀看</span>
+    <div class="mt-2 flex items-baseline justify-between font-mono text-[11px] text-faint gap-3">
+      <span>累計 <span class="text-ink">{formatCount(totalThreadsViews)}</span> 觀看</span>
       {threadsPeak && (
-        <span class="italic font-serif text-brick">
-          Day {threadsPeak.day} · {formatCount(threadsPeak.value)} 高峰
+        <span class="text-brick">
+          peak day {threadsPeak.day} · {formatCount(threadsPeak.value)}
         </span>
       )}
     </div>
@@ -77,27 +77,27 @@ const fbPeak = facebookSeries[fbPeakIdx] ?? null;
 
   <figure class="m-0">
     <figcaption class="flex items-baseline justify-between mb-2 gap-3">
-      <span class="font-sans text-[11px] tracking-[.22em] uppercase text-brick font-semibold">Facebook · 每日觸及</span>
-      <span class="font-serif text-sm text-muted italic">{facebookSeries.length} 篇有資料</span>
+      <span class="font-mono text-[11px] tracking-[.08em] uppercase text-teal">Facebook · daily reach</span>
+      <span class="font-mono text-xs text-faint">{facebookSeries.length}</span>
     </figcaption>
     <svg viewBox={`0 0 ${BAR_W} ${BAR_H}`} class={`block w-full ${variant === 'expanded' ? 'h-[110px]' : 'h-[80px]'}`} preserveAspectRatio="none" aria-hidden="true">
       {bars.map(b => (
         <rect x={b.x} y={b.y} width={b.w} height={b.h} fill="var(--color-ochre)" />
       ))}
     </svg>
-    <div class="mt-2 flex items-baseline justify-between font-sans text-[11px] text-muted tracking-[.04em] gap-3">
-      <span>累計 <span class="text-ink font-semibold">{formatCount(totalFacebookReach)}</span> 觸及</span>
+    <div class="mt-2 flex items-baseline justify-between font-mono text-[11px] text-faint gap-3">
+      <span>累計 <span class="text-ink">{formatCount(totalFacebookReach)}</span> 觸及</span>
       {fbPeak && (
-        <span class="italic font-serif text-ochre" style="color: var(--color-ochre);">
-          Day {fbPeak.day} · {formatCount(fbPeak.value)} 高峰
+        <span class="text-ochre">
+          peak day {fbPeak.day} · {formatCount(fbPeak.value)}
         </span>
       )}
     </div>
   </figure>
 
   {totalLinkedInImpressions > 0 && (
-    <div class="font-sans text-[11px] text-muted tracking-[.04em] -mt-4">
-      LinkedIn 另曝光 <span class="text-ink font-semibold">{formatCount(totalLinkedInImpressions)}</span> 次
+    <div class="font-mono text-[11px] text-faint -mt-4">
+      LinkedIn 另曝光 <span class="text-ink">{formatCount(totalLinkedInImpressions)}</span> 次
     </div>
   )}
 </div>

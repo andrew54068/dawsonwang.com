@@ -2,16 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="收到了" description="諮詢表單送出成功">
-  <article class="max-w-xl mx-auto px-6 py-24 text-center">
-    <header class="eyebrow-pair justify-center">
-      <span class="ey-left">已收到您的訊息</span>
-    </header>
-    <h1 class="font-display text-ink mt-2 leading-tight tracking-[-0.02em]" style="font-size: clamp(3rem, 7vw, 5rem);">
-      <em class="italic text-teal">謝謝</em>。
+  <article class="max-w-xl mx-auto px-8 py-24 text-center">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">RECEIVED · OK</div>
+    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] font-semibold"
+        style="font-size: clamp(2.5rem, 6vw, 4rem);">
+      <span class="text-teal">謝謝</span>。
     </h1>
-    <p class="font-serif text-base text-ink mt-6 leading-relaxed">
+    <p class="font-display text-muted text-lg mt-6 leading-relaxed">
       我會在 1–2 個工作日內回信。如果適合進一步聊，會附上 Google Calendar 預約連結。
     </p>
-    <a href="/" class="btn-ghost mt-8">回首頁</a>
+    <a href="/" class="btn-ghost mt-8 inline-block">← 回首頁</a>
   </article>
 </BaseLayout>
