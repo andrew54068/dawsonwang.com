@@ -9,14 +9,14 @@ const days = await getCollection('days');
 const stats = computeStatsSummary(days);
 const totalDays = stats.totalDays;
 ---
-<BaseLayout title="作品集" description={`${totalDays} 天 zh-TW AI 實作公開記錄`}>
+<BaseLayout title="作品集" description={`${totalDays} 天 AI 實作公開記錄`}>
   <article class="max-w-3xl mx-auto px-6 py-12">
     <header class="eyebrow-pair">
       <span class="ey-left">作品集　·　{totalDays} 篇</span>
       <span class="ey-right">一份持續書寫的工作日誌</span>
     </header>
     <h1 class="font-display text-ink leading-[0.98] tracking-[-0.02em] text-balance" style="font-size: clamp(2.5rem, 6vw, 4rem);">
-      {totalDays} 天 zh-TW AI <em class="italic text-teal">內容</em>。
+      {totalDays} 天 AI <em class="italic text-teal">內容</em>。
     </h1>
 
     <p class="lede mt-6 max-w-xl">

@@ -44,7 +44,7 @@ const publishDate: string | null = day.data.manifest?.threads?.publishedAt
 
       <div class="min-w-0 max-w-2xl">
         <header class="eyebrow-pair">
-          <span class="ey-left">第 {day.data.dayNumber} 篇　·　台北{publishDate ? `　·　${publishDate.slice(0, 10)}` : ''}</span>
+          <span class="ey-left">第 {day.data.dayNumber} 篇{publishDate ? `　·　${publishDate.slice(0, 10)}` : ''}</span>
           <span class="ey-right">一份持續書寫的工作日誌</span>
         </header>
         <h1 class="font-display text-ink leading-[0.98] tracking-[-0.02em] text-balance" style="font-size: clamp(2rem, 5vw, 3.5rem);">
