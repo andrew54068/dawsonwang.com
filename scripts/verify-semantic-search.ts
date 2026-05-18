@@ -1,14 +1,16 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { pipeline, env } from '@huggingface/transformers';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const META_PATH = path.join(ROOT, 'public/search/semantic-meta.json');
 const VEC_PATH = path.join(ROOT, 'public/search/semantic-vectors.bin');
-const CACHE_DIR = path.join(ROOT, '.cache/transformers');
 
-env.cacheDir = CACHE_DIR;
-env.allowLocalModels = false;
+const accountId = process.env.CF_ACCOUNT_ID;
+const apiToken = process.env.CF_API_TOKEN;
+if (!accountId || !apiToken) {
+  console.error('CF_ACCOUNT_ID and CF_API_TOKEN must be set');
+  process.exit(1);
+}
 
 const QUERIES = process.argv.slice(2);
 if (QUERIES.length === 0) {
@@ -33,11 +35,32 @@ if (vectors.length !== meta.count * meta.dim) {
 }
 console.log(`Loaded ${meta.count} docs × ${meta.dim} dim from ${meta.model}\n`);
 
-const extractor = await pipeline('feature-extraction', meta.model, { dtype: 'fp32' });
+const CF_URL = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${meta.model}`;
+
+function normalize(v: number[]): Float32Array {
+  let sum = 0;
+  for (const x of v) sum += x * x;
+  const norm = Math.sqrt(sum) || 1;
+  const out = new Float32Array(v.length);
+  for (let i = 0; i < v.length; i++) out[i] = v[i] / norm;
+  return out;
+}
+
+async function embed(query: string): Promise<Float32Array> {
+  const resp = await fetch(CF_URL, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${apiToken}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ text: [query] }),
+  });
+  if (!resp.ok) throw new Error(`CF ${resp.status}: ${await resp.text()}`);
+  const data = (await resp.json()) as { result?: { data?: number[][] } };
+  const v = data?.result?.data?.[0];
+  if (!Array.isArray(v)) throw new Error('Unexpected CF response');
+  return normalize(v);
+}
 
 for (const q of QUERIES) {
-  const out = await extractor(q, { pooling: 'mean', normalize: true });
-  const qv = out.data as Float32Array;
+  const qv = await embed(q);
   const scored = meta.docs.map((d, i) => {
     let s = 0;
     const base = i * meta.dim;

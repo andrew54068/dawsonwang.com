@@ -1,11 +1,8 @@
 /**
  * Browser-side semantic search.
- * Loads the precomputed BGE embedding index, embeds the user's query with
- * transformers.js, and ranks documents by cosine similarity.
- * Both index and model are lazy-loaded on first call.
+ * Loads precomputed BGE-M3 embeddings; embeds queries via /api/embed
+ * (proxied to Cloudflare Workers AI). No model download on the client.
  */
-
-const MODEL = 'Xenova/bge-small-zh-v1.5';
 
 export interface SemanticDocMeta {
   day: number;
@@ -26,7 +23,6 @@ interface LoadedIndex {
 }
 
 let indexPromise: Promise<LoadedIndex> | null = null;
-let extractorPromise: Promise<any> | null = null;
 
 async function loadIndex(): Promise<LoadedIndex> {
   if (indexPromise) return indexPromise;
@@ -51,31 +47,43 @@ async function loadIndex(): Promise<LoadedIndex> {
   return indexPromise;
 }
 
-async function loadExtractor() {
-  if (extractorPromise) return extractorPromise;
-  extractorPromise = (async () => {
-    const { pipeline } = await import('@huggingface/transformers');
-    // Must match the dtype used by scripts/build-semantic-index.ts so passage
-    // and query embeddings come from identical weights.
-    return pipeline('feature-extraction', MODEL, { dtype: 'q8' });
-  })();
-  return extractorPromise;
-}
-
 export async function warmUpSemantic(
   onProgress?: (stage: 'index' | 'model', done: boolean) => void,
 ): Promise<void> {
-  const idxP = loadIndex().then(() => onProgress?.('index', true));
-  const mdlP = loadExtractor().then(() => onProgress?.('model', true));
-  await Promise.all([idxP, mdlP]);
+  // No client-side model anymore. We still expose the same shape so the
+  // search page UI does not need a rewrite; "model" is marked done immediately.
+  onProgress?.('model', true);
+  await loadIndex();
+  onProgress?.('index', true);
+}
+
+async function embedQuery(query: string): Promise<Float32Array> {
+  const resp = await fetch('/api/embed', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ query }),
+  });
+  if (!resp.ok) {
+    const err = await resp.text().catch(() => '');
+    throw new Error(`查詢向量化失敗 (${resp.status}) ${err}`.trim());
+  }
+  const data = (await resp.json()) as { vector?: unknown };
+  if (!Array.isArray(data.vector)) throw new Error('Unexpected /api/embed response');
+  const v = data.vector as number[];
+  // Re-normalize defensively so cosine-as-dot-product is correct regardless
+  // of upstream behavior.
+  let sum = 0;
+  for (const x of v) sum += x * x;
+  const norm = Math.sqrt(sum) || 1;
+  const out = new Float32Array(v.length);
+  for (let i = 0; i < v.length; i++) out[i] = v[i] / norm;
+  return out;
 }
 
 export async function semanticSearch(query: string, topK = 15): Promise<SemanticHit[]> {
   const trimmed = query.trim();
   if (!trimmed) return [];
-  const [idx, extractor] = await Promise.all([loadIndex(), loadExtractor()]);
-  const out = await extractor(trimmed, { pooling: 'mean', normalize: true });
-  const q = out.data as Float32Array;
+  const [idx, q] = await Promise.all([loadIndex(), embedQuery(trimmed)]);
   if (q.length !== idx.dim) {
     throw new Error(`Query dim ${q.length} ≠ index dim ${idx.dim}`);
   }

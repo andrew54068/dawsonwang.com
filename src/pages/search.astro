@@ -43,7 +43,7 @@ const total = days.length;
           <span>語意</span>
         </label>
         <span id="search-mode-hint" class="font-serif italic text-teal text-sm ml-auto">
-          關鍵字較快；語意首次載入需下載 ~30MB 模型
+          關鍵字本地索引；語意走雲端嵌入（首查約 1 秒）
         </span>
       </fieldset>
     </form>
@@ -108,8 +108,12 @@ const total = days.length;
       if (!pagefindPromise) {
         pagefindPromise = (async () => {
           try {
-            // @ts-expect-error - emitted at build time by pagefind CLI
-            const mod = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+            // Pagefind is emitted at build time by the pagefind CLI; in dev it
+            // does not exist. Build the URL dynamically so Vite's static
+            // analyzer skips resolution and the runtime fetch is what fails
+            // (caught below) instead of the dev transform step.
+            const pagefindUrl = `${window.location.origin}/pagefind/pagefind.js`;
+            const mod = await import(/* @vite-ignore */ pagefindUrl);
             await mod.options?.({ excerptLength: 30 });
             return mod;
           } catch (err) {
@@ -147,10 +151,8 @@ const total = days.length;
     let semanticWarmed = false;
     async function ensureSemantic() {
       if (semanticWarmed) return;
-      setStatus('正在載入語意模型（首次約需 20–40 秒）…');
-      await warmUpSemantic((stage, done) => {
-        if (done) setStatus(stage === 'index' ? '索引已就緒，等待模型…' : '模型已就緒，等待索引…');
-      });
+      setStatus('正在載入語意索引…');
+      await warmUpSemantic();
       semanticWarmed = true;
     }
 

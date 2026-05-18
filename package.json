@@ -7,10 +7,11 @@
   },
   "scripts": {
     "copy-assets": "tsx scripts/copy-content-assets.ts",
-    "search:semantic": "tsx scripts/build-semantic-index.ts",
+    "search:semantic": "tsx --env-file-if-exists=.env scripts/build-semantic-index.ts",
+    "search:verify": "tsx --env-file-if-exists=.env scripts/verify-semantic-search.ts",
     "search:keyword": "pagefind --site dist",
     "dev": "tsx scripts/copy-content-assets.ts && astro dev",
-    "build": "tsx scripts/copy-content-assets.ts && tsx scripts/build-semantic-index.ts && astro build && pagefind --site dist && tsx scripts/sync-pagefind-to-vercel.ts",
+    "build": "tsx scripts/copy-content-assets.ts && tsx --env-file-if-exists=.env scripts/build-semantic-index.ts && astro build && pagefind --site dist && tsx scripts/sync-pagefind-to-vercel.ts",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
