@@ -101,9 +101,15 @@ describe('POST /api/inquiry — Notion payload', () => {
     expect(emailsSendMock).toHaveBeenCalledTimes(1);
   });
 
-  test('rejects payload with goal shorter than 5 chars', async () => {
-    const res = await POST({ request: buildRequest({ goal: 'asdf' }, '4.4.4.4') } as any);
+  test('rejects payload with empty goal', async () => {
+    const res = await POST({ request: buildRequest({ goal: '' }, '4.4.4.4') } as any);
     expect(res.status).toBe(400);
     expect(pagesCreateMock).not.toHaveBeenCalled();
+  });
+
+  test('accepts short non-empty goal', async () => {
+    const res = await POST({ request: buildRequest({ goal: 'hi' }, '5.5.5.5') } as any);
+    expect(res.status).toBe(303);
+    expect(pagesCreateMock).toHaveBeenCalledTimes(1);
   });
 });
