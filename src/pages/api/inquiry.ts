@@ -105,14 +105,14 @@ export const POST: APIRoute = async ({ request }) => {
     await notion.pages.create({
       parent: { database_id: notionDb },
       properties: {
-        Name: { title: [{ text: { content: inquiry.name } }] },
-        Email: { email: inquiry.email },
+        Email: { title: [{ text: { content: inquiry.email } }] },
+        Name: { rich_text: [{ text: { content: inquiry.name } }] },
         Company: { rich_text: [{ text: { content: inquiry.company } }] },
-        TeamSize: { select: { name: inquiry.team_size } },
+        'Team Size': { select: { name: inquiry.team_size } },
         Budget: { select: { name: BUDGET_LABELS[inquiry.budget] } },
         Timeline: { select: { name: TIMELINE_LABELS[inquiry.timeline] } },
         Goal: { rich_text: [{ text: { content: inquiry.goal } }] },
-        ReceivedAt: { date: { start: new Date().toISOString() } },
+        'Received At': { date: { start: new Date().toISOString() } },
       },
     });
   } catch (err) {
