@@ -5,12 +5,12 @@ const { slides } = Astro.props;
 {slides.length > 0 && (
   <figure class="my-8 max-w-3xl mx-auto" data-slide-carousel>
     <div class="font-sans text-[10px] tracking-[.22em] uppercase text-brick font-semibold mb-3">投影片</div>
-    <div class="relative aspect-[4/5] overflow-hidden border border-rule bg-paper">
+    <div class="relative aspect-square overflow-hidden border border-rule bg-paper">
       {slides.map((slide, i) => (
         <img
           src={slide.src}
           alt={slide.alt}
-          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-200"
+          class="absolute inset-0 w-full h-full object-contain transition-opacity duration-200"
           style={`opacity: ${i === 0 ? 1 : 0}`}
           data-slide-index={i}
         />
