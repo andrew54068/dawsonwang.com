@@ -39,3 +39,7 @@ pnpm-debug.log*
 
 # Copied slide assets (generated at build time from 100days/content/)
 public/content/
+
+# Generated search artifacts
+public/search/
+.cache/

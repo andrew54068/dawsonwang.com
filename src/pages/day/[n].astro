@@ -39,7 +39,7 @@ const publishDate: string | null = day.data.manifest?.threads?.publishedAt
   ?? null;
 ---
 <BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={day.data.body.slice(0, 140)}>
-  <article class="max-w-5xl mx-auto px-6 py-12">
+  <article class="max-w-5xl mx-auto px-6 py-12" data-pagefind-body data-pagefind-meta={`day:${day.data.dayNumber}`}>
     <div class="grid grid-cols-1 md:grid-cols-[1fr_140px] gap-x-10 gap-y-6">
 
       <div class="min-w-0 max-w-2xl">
@@ -76,7 +76,7 @@ const publishDate: string | null = day.data.manifest?.threads?.publishedAt
           <MetricsBlock manifest={day.data.manifest} />
         )}
 
-        <aside class="mt-12 px-6 py-7 bg-teal text-paper relative">
+        <aside class="mt-12 px-6 py-7 bg-teal text-paper relative" data-pagefind-ignore>
           <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1.5 bg-ochre"></span>
           <div class="font-sans text-[10px] tracking-[.22em] uppercase text-ochre font-semibold">作者</div>
           <h3 class="font-display text-paper text-2xl mt-1 leading-tight">Dawson Wang</h3>
@@ -87,7 +87,7 @@ const publishDate: string | null = day.data.manifest?.threads?.publishedAt
         </aside>
 
         {archive.length > 0 && (
-          <section class="mt-10 pt-6 border-t-2 border-brick">
+          <section class="mt-10 pt-6 border-t-2 border-brick" data-pagefind-ignore>
             <header class="eyebrow-pair">
               <span class="ey-left">延伸閱讀</span>
               <span class="ey-right"><a href="/days" class="text-teal no-underline hover:text-brick">看完整 {allDays.length} 篇 →</a></span>

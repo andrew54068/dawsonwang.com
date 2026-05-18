@@ -7,8 +7,10 @@
   },
   "scripts": {
     "copy-assets": "tsx scripts/copy-content-assets.ts",
+    "search:semantic": "tsx scripts/build-semantic-index.ts",
+    "search:keyword": "pagefind --site dist",
     "dev": "tsx scripts/copy-content-assets.ts && astro dev",
-    "build": "tsx scripts/copy-content-assets.ts && astro build",
+    "build": "tsx scripts/copy-content-assets.ts && tsx scripts/build-semantic-index.ts && astro build && pagefind --site dist && tsx scripts/sync-pagefind-to-vercel.ts",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
@@ -16,6 +18,7 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^10.0.6",
+    "@huggingface/transformers": "^4.2.0",
     "@notionhq/client": "^5.20.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.4",
@@ -28,6 +31,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@types/node": "^25.6.0",
+    "pagefind": "^1.5.2",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.5"

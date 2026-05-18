@@ -16,6 +16,13 @@ export default defineConfig({
         allow: [path.resolve('.')],
       },
     },
+    build: {
+      rollupOptions: {
+        // Pagefind emits /pagefind/pagefind.js post-build; the runtime fetches
+        // it directly so Rollup must not try to resolve it at bundle time.
+        external: [/^\/pagefind\//],
+      },
+    },
   },
   publicDir: 'public',
 });

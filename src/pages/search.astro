@@ -1,0 +1,210 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Divider from '../components/Divider.astro';
+import { getCollection } from 'astro:content';
+
+const days = await getCollection('days');
+const total = days.length;
+---
+<BaseLayout title="搜尋" description={`從 ${total} 篇日誌中以關鍵字或語意查找`}>
+  <article class="max-w-3xl mx-auto px-6 py-12" data-pagefind-ignore="all">
+    <header class="eyebrow-pair">
+      <span class="ey-left">搜尋 · {total} 篇</span>
+      <span class="ey-right">關鍵字＋語意</span>
+    </header>
+    <h1 class="font-display text-ink leading-tight tracking-[-0.02em] text-balance" style="font-size: clamp(2.25rem, 5vw, 3.5rem);">
+      在<em class="italic text-teal">日誌</em>裡找東西。
+    </h1>
+
+    <Divider class="my-7" />
+
+    <form id="search-form" class="space-y-5" autocomplete="off">
+      <div>
+        <label for="q" class="mag-label block">查詢</label>
+        <input
+          id="q"
+          name="q"
+          type="search"
+          class="mag-input"
+          placeholder="輸入關鍵字或概念，例如：自動化、創業心法、prompt 設計…"
+          aria-describedby="search-mode-hint"
+          autofocus
+        />
+      </div>
+
+      <fieldset class="flex flex-wrap items-baseline gap-3">
+        <legend class="mag-label mr-2">模式</legend>
+        <label class="radio-chip">
+          <input type="radio" name="mode" value="keyword" checked />
+          <span>關鍵字</span>
+        </label>
+        <label class="radio-chip">
+          <input type="radio" name="mode" value="semantic" />
+          <span>語意</span>
+        </label>
+        <span id="search-mode-hint" class="font-serif italic text-teal text-sm ml-auto">
+          關鍵字較快；語意首次載入需下載 ~30MB 模型
+        </span>
+      </fieldset>
+    </form>
+
+    <div id="search-status" class="mt-6 font-serif italic text-muted text-sm min-h-[1.5em]"></div>
+
+    <section id="search-results" class="mt-2"></section>
+  </article>
+
+  <script>
+    import { semanticSearch, warmUpSemantic, type SemanticHit } from '../lib/semantic-search-client';
+
+    const form = document.getElementById('search-form') as HTMLFormElement;
+    const input = document.getElementById('q') as HTMLInputElement;
+    const statusEl = document.getElementById('search-status') as HTMLDivElement;
+    const resultsEl = document.getElementById('search-results') as HTMLDivElement;
+    const modeRadios = form.querySelectorAll<HTMLInputElement>('input[name="mode"]');
+
+    function getMode(): 'keyword' | 'semantic' {
+      const checked = form.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+      return (checked?.value as 'keyword' | 'semantic') ?? 'keyword';
+    }
+
+    function setStatus(text: string) {
+      statusEl.textContent = text;
+    }
+
+    function escapeHtml(s: string): string {
+      return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function renderEmpty(msg = '尚無結果') {
+      resultsEl.innerHTML = `<p class="font-serif italic text-muted text-sm py-6">${escapeHtml(msg)}</p>`;
+    }
+
+    function renderResults(rows: Array<{ day: number; subtitle: string; excerpt?: string; meta?: string }>) {
+      if (!rows.length) return renderEmpty();
+      const html = rows
+        .map(r => {
+          const excerpt = r.excerpt
+            ? `<span class="block font-serif text-sm text-muted leading-relaxed mt-1">${r.excerpt}</span>`
+            : '';
+          const meta = r.meta
+            ? `<span class="toc-meta">${escapeHtml(r.meta)}</span>`
+            : `<span class="toc-meta"></span>`;
+          return `<a href="/day/${r.day}" class="toc-row group">
+            <span class="toc-num">${r.day}</span>
+            <span class="toc-title">${escapeHtml(r.subtitle || '')}${excerpt}</span>
+            ${meta}
+          </a>`;
+        })
+        .join('');
+      resultsEl.innerHTML = html;
+    }
+
+    // ---------- pagefind (keyword) ----------
+    let pagefindPromise: Promise<any> | null = null;
+    function loadPagefind() {
+      if (!pagefindPromise) {
+        pagefindPromise = (async () => {
+          try {
+            // @ts-expect-error - emitted at build time by pagefind CLI
+            const mod = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+            await mod.options?.({ excerptLength: 30 });
+            return mod;
+          } catch (err) {
+            throw new Error('關鍵字索引尚未產生。請執行 `yarn build` 後在 preview 模式測試。');
+          }
+        })();
+      }
+      return pagefindPromise;
+    }
+
+    async function runKeyword(q: string) {
+      setStatus('搜尋中…');
+      try {
+        const pf = await loadPagefind();
+        const search = await pf.search(q);
+        const top = await Promise.all(search.results.slice(0, 15).map((r: any) => r.data()));
+        const rows = top.map(d => {
+          const day = parseInt(d.meta?.day ?? '0', 10);
+          const subtitle = (d.meta?.title || '').replace(/\s*\|\s*Dawson Wang.*$/, '');
+          return {
+            day,
+            subtitle,
+            excerpt: d.excerpt as string,
+          };
+        });
+        renderResults(rows);
+        setStatus(`找到 ${search.results.length} 篇相關文章 · 關鍵字`);
+      } catch (err: any) {
+        renderEmpty(err?.message ?? '搜尋失敗');
+        setStatus('');
+      }
+    }
+
+    // ---------- semantic ----------
+    let semanticWarmed = false;
+    async function ensureSemantic() {
+      if (semanticWarmed) return;
+      setStatus('正在載入語意模型（首次約需 20–40 秒）…');
+      await warmUpSemantic((stage, done) => {
+        if (done) setStatus(stage === 'index' ? '索引已就緒，等待模型…' : '模型已就緒，等待索引…');
+      });
+      semanticWarmed = true;
+    }
+
+    async function runSemantic(q: string) {
+      try {
+        await ensureSemantic();
+        setStatus('語意比對中…');
+        const hits = await semanticSearch(q, 15);
+        const rows = hits.map((h: SemanticHit) => ({
+          day: h.doc.day,
+          subtitle: h.doc.subtitle,
+          excerpt: h.doc.snippet,
+          meta: `相似度 ${(h.score * 100).toFixed(0)}%`,
+        }));
+        renderResults(rows);
+        setStatus(`找到 ${rows.length} 篇相近文章 · 語意`);
+      } catch (err: any) {
+        renderEmpty(err?.message ?? '語意搜尋失敗');
+        setStatus('');
+      }
+    }
+
+    // ---------- input handling ----------
+    let debounce: number | undefined;
+    function schedule() {
+      const q = input.value.trim();
+      if (debounce) window.clearTimeout(debounce);
+      if (!q) {
+        renderEmpty('輸入查詢字以開始');
+        setStatus('');
+        return;
+      }
+      const mode = getMode();
+      const delay = mode === 'semantic' ? 350 : 120;
+      debounce = window.setTimeout(() => {
+        if (mode === 'keyword') runKeyword(q);
+        else runSemantic(q);
+      }, delay);
+    }
+
+    input.addEventListener('input', schedule);
+    modeRadios.forEach(r => r.addEventListener('change', () => {
+      if (input.value.trim()) schedule();
+    }));
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      schedule();
+    });
+
+    // Initial state
+    renderEmpty('輸入查詢字以開始');
+
+    // Pre-fetch the active mode's index in the background so the first
+    // search feels instant (semantic stays lazy until user picks it).
+    loadPagefind().catch(() => { /* graceful in dev */ });
+  </script>
+</BaseLayout>
