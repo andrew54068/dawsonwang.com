@@ -1,4 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "git config --global url.\"https://${GITHUB_TOKEN}@github.com/\".insteadOf \"https://github.com/\" && git submodule sync --recursive && git -c submodule.recurse=false submodule update --init --depth=1 && git -C 100days sparse-checkout set --no-cone '/content/**' && yarn install --immutable"
+  "installCommand": "bash scripts/vercel-install.sh"
 }
