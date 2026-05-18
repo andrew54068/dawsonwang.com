@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design Systems · Dawson Wang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;700&display=swap" />
+<style>
+  /* =========================================================
+     Shared shell
+     ========================================================= */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; }
+
+  /* switcher */
+  .switcher {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: #0a0a0a; color: #fafafa;
+    padding: 8px 16px; display: flex; gap: 12px; align-items: center;
+    font: 12px "JetBrains Mono", monospace;
+    border-bottom: 1px solid #222;
+  }
+  .switcher .label { color: #888; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+  .switcher .tabs { display: flex; }
+  .switcher .tab {
+    padding: 4px 14px; background: transparent; color: #fafafa;
+    border: 1px solid #2a2a2a; border-right-width: 0;
+    font: inherit; cursor: pointer;
+    transition: background 120ms ease;
+  }
+  .switcher .tab:last-child { border-right-width: 1px; }
+  .switcher .tab[aria-selected="true"] {
+    background: #fafafa; color: #0a0a0a; border-color: #fafafa;
+  }
+  .switcher .tab:hover:not([aria-selected="true"]) { background: #1a1a1a; }
+  .switcher .name { color: #888; margin-left: 8px; }
+  .switcher .hint { margin-left: auto; color: #666; }
+
+  main { padding-top: 38px; }
+  .system { display: none; min-height: 100vh; }
+  .system.active { display: block; }
+
+  /* =========================================================
+     SYSTEM A — Linear-style dark
+     ========================================================= */
+  .sys-linear {
+    --bg:       #0A0A0B;
+    --bg-2:     #131316;
+    --bg-3:     #1B1B20;
+    --border:   #26262C;
+    --text:     #F4F4F5;
+    --text-mute: #8B8B95;
+    --text-low: #5C5C66;
+    --accent:   #7B61FF;
+    --accent-2: #59E6C9;
+    --warn:     #FFC56A;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Space Grotesk", "Noto Sans TC", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .sys-linear .container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  .sys-linear .mono { font-family: "JetBrains Mono", monospace; }
+  .sys-linear a:hover { color: var(--accent-2); }
+
+  .sys-linear .nav {
+    position: sticky; top: 38px;
+    background: rgba(10,10,11,.78);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 50;
+  }
+  .sys-linear .nav-inner {
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1180px; margin: 0 auto; padding: 0 32px;
+  }
+  .sys-linear .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600;
+  }
+  .sys-linear .brand-glyph {
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 6px;
+    display: grid; place-items: center;
+    color: var(--bg);
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .sys-linear .nav-links { display: flex; gap: 6px; }
+  .sys-linear .nav-links a {
+    padding: 6px 12px;
+    color: var(--text-mute);
+    font-size: 14px;
+    border-radius: 6px;
+  }
+  .sys-linear .nav-links a:hover { background: var(--bg-2); color: var(--text); }
+  .sys-linear .cta-pill {
+    padding: 7px 14px;
+    background: var(--text); color: var(--bg);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .sys-linear .cta-pill:hover { background: var(--text); color: var(--bg); opacity: .9; }
+
+  .sys-linear .hero { padding: 96px 0 64px; position: relative; overflow: hidden; }
+  .sys-linear .hero::before {
+    content: ""; position: absolute; inset: -200px 0 auto -200px;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle at center, rgba(123,97,255,.18), transparent 60%);
+    pointer-events: none;
+  }
+  .sys-linear .hero::after {
+    content: ""; position: absolute; right: -300px; bottom: -300px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle at center, rgba(89,230,201,.12), transparent 60%);
+    pointer-events: none;
+  }
+  .sys-linear .hero-inner { position: relative; z-index: 1; max-width: 920px; }
+  .sys-linear .kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 11px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg-2);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-bottom: 28px;
+  }
+  .sys-linear .kicker .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent-2);
+    box-shadow: 0 0 0 4px rgba(89,230,201,.18);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .sys-linear h1 {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -.03em;
+    font-weight: 600;
+    margin: 0 0 24px;
+    text-wrap: balance;
+  }
+  .sys-linear h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .sys-linear .lede {
+    font-size: 19px;
+    color: var(--text-mute);
+    max-width: 660px;
+    margin: 0 0 36px;
+    line-height: 1.6;
+  }
+  .sys-linear .hero-ctas { display: flex; gap: 12px; align-items: center; }
+  .sys-linear .btn-primary {
+    padding: 11px 18px;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .sys-linear .btn-secondary {
+    padding: 11px 18px;
+    background: var(--bg-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .sys-linear .btn-secondary:hover { background: var(--bg-3); }
+
+  .sys-linear .hero-meta {
+    margin-top: 44px;
+    display: flex; gap: 32px; flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--text-low);
+  }
+  .sys-linear .hero-meta span { display: flex; gap: 6px; }
+  .sys-linear .hero-meta strong { color: var(--text); font-weight: 500; }
+
+  .sys-linear .section { padding: 80px 0; border-top: 1px solid var(--border); }
+  .sys-linear .section h2 {
+    font-size: 36px; line-height: 1.1;
+    font-weight: 600;
+    margin: 0 0 12px;
+    letter-spacing: -.02em;
+  }
+  .sys-linear .section .deck {
+    color: var(--text-mute);
+    font-size: 17px;
+    max-width: 540px;
+    margin: 0 0 48px;
+  }
+  .sys-linear .section-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--accent-2);
+    letter-spacing: .08em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .sys-linear .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .sys-linear .tier {
+    background: var(--bg-2);
+    padding: 28px 26px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .sys-linear .tier.featured { background: linear-gradient(180deg, rgba(123,97,255,.14), transparent 60%), var(--bg-3); }
+  .sys-linear .tier .label { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--text-mute); letter-spacing: .08em; text-transform: uppercase; }
+  .sys-linear .tier h3 {
+    font-size: 22px;
+    margin: 14px 0 6px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+  }
+  .sys-linear .tier .price {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    color: var(--text);
+  }
+  .sys-linear .tier .duration {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--text-low);
+    margin: 4px 0 22px;
+  }
+  .sys-linear .tier ul { list-style: none; padding: 0; margin: 0 0 24px; flex: 1; font-size: 14px; color: var(--text-mute); }
+  .sys-linear .tier li { padding: 6px 0; padding-left: 22px; position: relative; line-height: 1.5; }
+  .sys-linear .tier li::before {
+    content: ""; position: absolute; left: 0; top: 12px;
+    width: 12px; height: 1px; background: var(--accent-2);
+  }
+  .sys-linear .tier .footer {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+  }
+  .sys-linear .tier .footer .slots { color: var(--warn); }
+  .sys-linear .tier .footer .go {
+    color: var(--accent-2);
+    font-size: 13px;
+  }
+
+  .sys-linear .case-table {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-2);
+  }
+  .sys-linear .case-row {
+    display: grid;
+    grid-template-columns: 100px 1.4fr 2fr 1fr;
+    gap: 24px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .sys-linear .case-row:last-child { border-bottom: 0; }
+  .sys-linear .case-row:hover { background: var(--bg-3); }
+  .sys-linear .case-row .day {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    color: var(--text-low);
+  }
+  .sys-linear .case-row .day strong { display: block; color: var(--text); font-size: 24px; font-weight: 600; margin-bottom: 2px; }
+  .sys-linear .case-row .title { font-weight: 500; font-size: 15px; }
+  .sys-linear .case-row .desc { color: var(--text-mute); font-size: 14px; }
+  .sys-linear .case-row .outcome {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--accent-2);
+    text-align: right;
+  }
+
+  .sys-linear .booking {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+    align-items: center;
+  }
+  .sys-linear .booking h2 { margin-bottom: 16px; }
+  .sys-linear .booking-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .sys-linear .booking-card .row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+  }
+  .sys-linear .booking-card .row:last-of-type { border-bottom: 0; }
+  .sys-linear .booking-card .row time { color: var(--text); }
+  .sys-linear .booking-card .row .slots-mini { color: var(--accent-2); }
+  .sys-linear .booking-card .row:hover { color: var(--accent-2); cursor: pointer; }
+  .sys-linear .booking-card .cta-btn {
+    margin-top: 18px;
+    width: 100%;
+    padding: 12px;
+    background: var(--text);
+    color: var(--bg);
+    border: 0; border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  /* =========================================================
+     SYSTEM B — Brutalist Monospace
+     ========================================================= */
+  .sys-brut {
+    --bg:    #F2EDE0;
+    --bg-2:  #E5DECC;
+    --ink:   #0E0E0E;
+    --brick: #B6422D;
+    --teal:  #1F4E55;
+    --rule:  #0E0E0E;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .sys-brut a:hover { color: var(--brick); text-decoration: underline; }
+
+  .sys-brut .container { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+  .sys-brut .nav {
+    border-bottom: 2px solid var(--ink);
+    background: var(--bg);
+  }
+  .sys-brut .nav-inner {
+    display: flex; align-items: stretch;
+    max-width: 1240px; margin: 0 auto;
+  }
+  .sys-brut .brand {
+    padding: 18px 32px;
+    border-right: 2px solid var(--ink);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -.02em;
+  }
+  .sys-brut .nav-links { display: flex; flex: 1; }
+  .sys-brut .nav-links a {
+    padding: 18px 24px;
+    border-right: 1px solid var(--ink);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+  .sys-brut .nav-links a:last-child { border-right: 2px solid var(--ink); }
+  .sys-brut .nav-status {
+    padding: 18px 32px;
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--teal);
+  }
+  .sys-brut .nav-status::before { content: "● "; color: var(--brick); }
+
+  .sys-brut .hero {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .sys-brut .hero-left {
+    padding: 56px 40px;
+    border-right: 2px solid var(--ink);
+  }
+  .sys-brut .hero-right {
+    padding: 56px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sys-brut .hero .ascii {
+    font-size: 11px;
+    color: var(--brick);
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+  .sys-brut h1 {
+    font-family: "Instrument Serif", "Noto Serif TC", serif;
+    font-style: normal;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 0.92;
+    letter-spacing: -.03em;
+    font-weight: 400;
+    margin: 0 0 32px;
+    text-wrap: balance;
+  }
+  .sys-brut h1 em {
+    font-style: italic;
+    color: var(--brick);
+  }
+  .sys-brut .lede {
+    font-size: 14px;
+    color: var(--ink);
+    max-width: 560px;
+    margin: 0 0 32px;
+    line-height: 1.65;
+  }
+  .sys-brut .data-line {
+    font-size: 12px;
+    color: var(--ink);
+    border-top: 1px dashed var(--ink);
+    border-bottom: 1px dashed var(--ink);
+    padding: 14px 0;
+    margin: 0 0 24px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .sys-brut .data-line span { display: flex; gap: 8px; }
+  .sys-brut .data-line .key { color: #6b6660; text-transform: uppercase; letter-spacing: .04em; }
+  .sys-brut .data-line .val { font-weight: 600; }
+
+  .sys-brut .btn-block {
+    display: inline-flex;
+    padding: 14px 22px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-right: 8px;
+  }
+  .sys-brut .btn-block:hover { background: var(--brick); color: var(--bg); }
+  .sys-brut .btn-line {
+    display: inline-flex;
+    padding: 14px 22px;
+    background: transparent;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+  .sys-brut .btn-line:hover { background: var(--ink); color: var(--bg); }
+
+  .sys-brut .portrait-cell {
+    border: 2px solid var(--ink);
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    position: relative;
+    background: var(--bg-2);
+  }
+  .sys-brut .portrait-cell img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%) contrast(115%);
+    display: block;
+  }
+  .sys-brut .portrait-cell::after {
+    content: "DAWSON.WANG / 1986—";
+    position: absolute;
+    bottom: 12px; left: 12px; right: 12px;
+    font-size: 11px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 4px 8px;
+    letter-spacing: .08em;
+  }
+  .sys-brut .portrait-meta {
+    margin-top: 16px;
+    font-size: 11px;
+    color: #6b6660;
+    line-height: 1.5;
+  }
+  .sys-brut .portrait-meta strong { color: var(--ink); }
+
+  .sys-brut .section {
+    border-bottom: 2px solid var(--ink);
+    padding: 56px 0;
+  }
+  .sys-brut .section-head {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 32px;
+    margin-bottom: 40px;
+    padding: 0 40px;
+  }
+  .sys-brut .section-head .num {
+    font-size: 11px;
+    color: var(--brick);
+    letter-spacing: .12em;
+  }
+  .sys-brut .section-head h2 {
+    font-family: "Instrument Serif", "Noto Serif TC", serif;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 400;
+    margin: 0;
+    line-height: 1;
+    letter-spacing: -.02em;
+  }
+
+  .sys-brut .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 2px solid var(--ink);
+  }
+  .sys-brut .tier {
+    padding: 28px 24px 32px;
+    border-right: 2px solid var(--ink);
+    display: flex; flex-direction: column;
+  }
+  .sys-brut .tier:last-child { border-right: 0; }
+  .sys-brut .tier.featured {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .sys-brut .tier .head {
+    display: flex; justify-content: space-between;
+    font-size: 11px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+  .sys-brut .tier .head .id { color: var(--brick); }
+  .sys-brut .tier.featured .head .id { color: #C99A3A; }
+  .sys-brut .tier h3 {
+    font-family: "Instrument Serif", "Noto Serif TC", serif;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.05;
+    margin: 0 0 10px;
+  }
+  .sys-brut .tier .price-row {
+    display: flex; justify-content: space-between;
+    border-top: 1px dashed currentColor;
+    border-bottom: 1px dashed currentColor;
+    padding: 10px 0;
+    margin: 16px 0 20px;
+    font-size: 13px;
+  }
+  .sys-brut .tier ul {
+    list-style: none; padding: 0; margin: 0 0 24px;
+    font-size: 13px;
+    line-height: 1.7;
+    flex: 1;
+  }
+  .sys-brut .tier li::before { content: "── "; color: var(--brick); }
+  .sys-brut .tier.featured li::before { color: #C99A3A; }
+  .sys-brut .tier .cta {
+    border-top: 2px solid currentColor;
+    padding-top: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+  .sys-brut .tier .cta a { text-decoration: underline; }
+
+  .sys-brut .cases {
+    padding: 0 40px;
+  }
+  .sys-brut .case-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 1.4fr 1fr;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px dashed var(--ink);
+    align-items: baseline;
+  }
+  .sys-brut .case-row:last-child { border-bottom: 0; }
+  .sys-brut .case-row .day {
+    font-family: "Instrument Serif", "Noto Serif TC", serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--teal);
+  }
+  .sys-brut .case-row .title { font-size: 15px; font-weight: 600; }
+  .sys-brut .case-row .desc { font-size: 13px; line-height: 1.6; }
+  .sys-brut .case-row .outcome { font-size: 12px; color: var(--brick); text-transform: uppercase; letter-spacing: .04em; text-align: right; }
+
+  .sys-brut .book {
+    padding: 56px 40px 72px;
+  }
+  .sys-brut .book .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 2px solid var(--ink);
+  }
+  .sys-brut .book .left {
+    padding: 32px;
+    border-right: 2px solid var(--ink);
+  }
+  .sys-brut .book .left h3 {
+    font-family: "Instrument Serif", "Noto Serif TC", serif;
+    font-size: 38px;
+    margin: 0 0 16px;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .sys-brut .book .left p { font-size: 14px; line-height: 1.6; margin: 0 0 16px; }
+  .sys-brut .book .right { padding: 32px; }
+  .sys-brut .book .slot-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--ink);
+    font-size: 13px;
+    align-items: center;
+  }
+  .sys-brut .book .slot-row:last-of-type { border-bottom: 0; }
+  .sys-brut .book .slot-row .date { color: var(--teal); }
+  .sys-brut .book .slot-row .times { letter-spacing: .04em; }
+  .sys-brut .book .slot-row .arrow { color: var(--brick); }
+  .sys-brut .book .slot-row:hover { background: var(--bg-2); cursor: pointer; }
+  .sys-brut .book .book-cta {
+    margin-top: 18px;
+    width: 100%;
+    padding: 14px;
+    background: var(--brick);
+    color: var(--bg);
+    border: 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  /* =========================================================
+     SYSTEM C — Stripe-clean info-dense
+     ========================================================= */
+  .sys-stripe {
+    --bg:       #FFFFFF;
+    --bg-soft:  #F6F9FC;
+    --bg-grad:  linear-gradient(180deg, #F6F9FC 0%, #FFFFFF 100%);
+    --ink:      #0A2540;
+    --ink-2:    #425466;
+    --ink-3:    #8898AA;
+    --line:     #E3E8EE;
+    --accent:   #635BFF;
+    --accent-soft: #EFF0FF;
+    --positive: #00A859;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Plus Jakarta Sans", "Noto Sans TC", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .sys-stripe .container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  .sys-stripe a:hover { color: var(--accent); }
+
+  .sys-stripe .nav {
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .sys-stripe .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px;
+    max-width: 1180px; margin: 0 auto;
+  }
+  .sys-stripe .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .sys-stripe .brand-glyph {
+    width: 26px; height: 26px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .sys-stripe .nav-links { display: flex; gap: 4px; }
+  .sys-stripe .nav-links a {
+    padding: 8px 14px;
+    color: var(--ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+  .sys-stripe .nav-links a:hover { background: var(--bg-soft); }
+  .sys-stripe .nav-cta {
+    background: var(--ink);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .sys-stripe .hero {
+    background: var(--bg-grad);
+    padding: 80px 0 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sys-stripe .hero::before {
+    content: "";
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(99,91,255,.15) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .sys-stripe .hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 64px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .sys-stripe .hero-grid .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white;
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-2);
+    margin-bottom: 20px;
+  }
+  .sys-stripe .hero-grid .badge .pill {
+    background: var(--positive);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  .sys-stripe h1 {
+    font-size: clamp(2.6rem, 5vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -.025em;
+    font-weight: 700;
+    margin: 0 0 20px;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .sys-stripe .lede {
+    font-size: 19px;
+    color: var(--ink-2);
+    max-width: 560px;
+    margin: 0 0 32px;
+    line-height: 1.55;
+  }
+  .sys-stripe .hero-ctas { display: flex; gap: 12px; align-items: center; margin-bottom: 32px; }
+  .sys-stripe .btn-fill {
+    background: var(--ink);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    display: inline-flex; gap: 8px; align-items: center;
+  }
+  .sys-stripe .btn-fill:hover { background: #0d2d50; }
+  .sys-stripe .btn-line {
+    background: white;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .sys-stripe .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+
+  .sys-stripe .quick-bar {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .sys-stripe .quick-bar .stat { font-size: 13px; color: var(--ink-3); }
+  .sys-stripe .quick-bar .num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .sys-stripe .hero-card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    box-shadow:
+      0 30px 60px -20px rgba(50,50,93,.15),
+      0 18px 36px -18px rgba(0,0,0,.12);
+    padding: 24px;
+  }
+  .sys-stripe .hero-card-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 16px;
+  }
+  .sys-stripe .hero-card-head .title {
+    font-weight: 700; font-size: 14px;
+  }
+  .sys-stripe .hero-card-head .ok {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--positive);
+    background: rgba(0,168,89,.08);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .sys-stripe .hero-card .metric-row {
+    display: flex; justify-content: space-between;
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .sys-stripe .hero-card .metric-row .k { color: var(--ink-3); }
+  .sys-stripe .hero-card .metric-row .v {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .sys-stripe .hero-card .sparkline {
+    margin-top: 8px;
+    height: 56px;
+    background: linear-gradient(180deg, rgba(99,91,255,.15), transparent);
+    border-bottom: 2px solid var(--accent);
+    position: relative;
+    border-radius: 4px;
+  }
+  .sys-stripe .hero-card .sparkline svg { width: 100%; height: 100%; display: block; }
+  .sys-stripe .hero-card .cta-mini {
+    margin-top: 14px;
+    width: 100%;
+    padding: 9px;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    border: 0;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+
+  .sys-stripe .section { padding: 80px 0; }
+  .sys-stripe .section.soft { background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .sys-stripe .section-head { max-width: 720px; margin: 0 0 48px; }
+  .sys-stripe .section-eyebrow {
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 12px;
+  }
+  .sys-stripe .section h2 {
+    font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    margin: 0 0 14px;
+    font-weight: 700;
+  }
+  .sys-stripe .section .deck {
+    font-size: 17px;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  .sys-stripe .tier-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .sys-stripe .tier {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 28px 24px;
+    display: flex; flex-direction: column;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  .sys-stripe .tier:hover { transform: translateY(-2px); box-shadow: 0 14px 40px -12px rgba(50,50,93,.15); }
+  .sys-stripe .tier.featured {
+    background: linear-gradient(180deg, var(--accent-soft) 0%, white 30%);
+    border-color: var(--accent);
+    position: relative;
+  }
+  .sys-stripe .tier.featured::after {
+    content: "最熱門";
+    position: absolute;
+    top: -10px; right: 20px;
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .sys-stripe .tier .label {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 10px;
+  }
+  .sys-stripe .tier h3 { font-size: 22px; margin: 0 0 6px; font-weight: 700; }
+  .sys-stripe .tier .price {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 28px;
+    color: var(--ink);
+    font-weight: 700;
+    margin: 12px 0 4px;
+  }
+  .sys-stripe .tier .duration { font-size: 13px; color: var(--ink-3); margin-bottom: 20px; }
+  .sys-stripe .tier ul { list-style: none; padding: 0; margin: 0 0 24px; font-size: 14px; color: var(--ink-2); flex: 1; }
+  .sys-stripe .tier li { padding: 6px 0 6px 24px; position: relative; }
+  .sys-stripe .tier li::before {
+    content: "✓";
+    position: absolute; left: 0;
+    color: var(--positive);
+    font-weight: 700;
+  }
+  .sys-stripe .tier .cta {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px;
+  }
+  .sys-stripe .tier .slot-count {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--ink-3);
+  }
+  .sys-stripe .tier .cta-link { color: var(--accent); font-weight: 600; }
+
+  .sys-stripe .cases {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .sys-stripe .case {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sys-stripe .case .head {
+    background: var(--bg-soft);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .sys-stripe .case .head .day { color: var(--accent); font-weight: 600; }
+  .sys-stripe .case .body { padding: 20px; }
+  .sys-stripe .case h3 { font-size: 18px; margin: 0 0 10px; font-weight: 700; }
+  .sys-stripe .case .desc { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+  .sys-stripe .case .outcome {
+    display: flex; justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .sys-stripe .case .outcome .label { color: var(--ink-3); }
+  .sys-stripe .case .outcome .value {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--positive);
+    font-weight: 600;
+  }
+
+  .sys-stripe .book {
+    display: grid; grid-template-columns: 1fr 480px; gap: 64px;
+    padding: 80px 0;
+    align-items: center;
+  }
+  .sys-stripe .book-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 12px 36px -12px rgba(50,50,93,.12);
+  }
+  .sys-stripe .book-card h4 {
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em;
+    color: var(--ink-3);
+    margin: 0 0 16px;
+  }
+  .sys-stripe .book-card .slot {
+    display: grid; grid-template-columns: 1fr auto auto; gap: 16px;
+    align-items: center;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 100ms ease;
+  }
+  .sys-stripe .book-card .slot:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .sys-stripe .book-card .slot .date { font-weight: 600; }
+  .sys-stripe .book-card .slot .time {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--ink-2);
+  }
+  .sys-stripe .book-card .slot .go {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .sys-stripe .book-card .all {
+    margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    background: var(--ink);
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+
+  /* Mobile */
+  @media (max-width: 920px) {
+    .sys-linear .booking,
+    .sys-stripe .hero-grid,
+    .sys-stripe .book {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .sys-linear .tier-grid,
+    .sys-stripe .tier-grid,
+    .sys-stripe .cases,
+    .sys-stripe .quick-bar { grid-template-columns: 1fr; gap: 16px; }
+    .sys-brut .hero,
+    .sys-brut .tiers,
+    .sys-brut .book .grid { grid-template-columns: 1fr; }
+    .sys-brut .hero-right,
+    .sys-brut .tier { border-right: 0; border-bottom: 2px solid var(--ink); }
+    .sys-brut .book .left { border-right: 0; border-bottom: 2px solid var(--ink); }
+    .sys-brut .case-row { grid-template-columns: 1fr; gap: 8px; }
+    .sys-linear .case-row { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- variant switcher -->
+<div class="switcher" role="tablist" aria-label="Design system switcher">
+  <span class="label">Design system</span>
+  <div class="tabs">
+    <button class="tab" data-sys="linear" role="tab">A · Linear</button>
+    <button class="tab" data-sys="brut" role="tab">B · Brutalist</button>
+    <button class="tab" data-sys="stripe" role="tab">C · Stripe</button>
+  </div>
+  <span class="name" id="sys-name"></span>
+  <span class="hint">?sys=linear|brut|stripe · ←→ to switch</span>
+</div>
+
+<main>
+
+<!-- ============================================================
+     SYSTEM A — Linear-style dark
+     ============================================================ -->
+<section class="system sys-linear" id="sys-linear">
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-glyph">D</span>
+        <span>Dawson Wang</span>
+      </a>
+      <div class="nav-links">
+        <a href="#">服務</a>
+        <a href="#">案例</a>
+        <a href="#">文章</a>
+        <a href="#">關於</a>
+      </div>
+      <a class="cta-pill" href="#">預約諮詢 →</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <span class="kicker">
+          <span class="dot"></span>
+          <span>Day 137 · shipped 14m ago</span>
+        </span>
+        <h1>把 <span class="grad">AI 工具</span><br/>搬進你的<br/>實際工作流。</h1>
+        <p class="lede">
+          137 天每天公開實作 AI 工作流。從半天工作坊到四週上線，幫台灣團隊把 PoC 變成可維運的系統。
+        </p>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="#">預約 30 分鐘 →</a>
+          <a class="btn-secondary" href="#">查看 137 篇實作 ↓</a>
+        </div>
+        <div class="hero-meta">
+          <span><span class="mono">137</span><strong>連續產出天數</strong></span>
+          <span><span class="mono">9 yr</span><strong>新創軟體經驗</strong></span>
+          <span><span class="mono">2 wk</span><strong>最短交付週期</strong></span>
+          <span><span class="mono">100 %</span><strong>原始碼公開</strong></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-eyebrow">SERVICES · 3 TIERS</div>
+      <h2>三種長度，<br/>同一套方法。</h2>
+      <p class="deck">每個方案都會把產出 commit 到你們的 repo —— 沒有黑盒子，可驗收。</p>
+
+      <div class="tier-grid">
+        <div class="tier">
+          <div class="label">01 · workshop</div>
+          <h3>半天工具落地</h3>
+          <div class="price">NT$ 35,000</div>
+          <div class="duration">4h · 線上或台北</div>
+          <ul>
+            <li>Claude Code / Codex 上手</li>
+            <li>三個團隊真實情境的 prompt 設計</li>
+            <li>Hook + Skill 客製範例</li>
+            <li>事後 1 週 Slack 問答</li>
+          </ul>
+          <div class="footer">
+            <span class="slots">slots/月 · 2 left</span>
+            <a class="go" href="#">book →</a>
+          </div>
+        </div>
+
+        <div class="tier featured">
+          <div class="label">02 · poc</div>
+          <h3>兩週導入 + 首個自動化</h3>
+          <div class="price">NT$ 240,000</div>
+          <div class="duration">10 days · 同步</div>
+          <ul>
+            <li>選定一個團隊的真實工作流</li>
+            <li>從 PoC 到可上線的 Agent</li>
+            <li>Skills / Hooks / Eval 整套</li>
+            <li>交接文件 + 1 場團隊培訓</li>
+            <li>後續 30 天 Slack 支援</li>
+          </ul>
+          <div class="footer">
+            <span class="slots">starts · jun 1</span>
+            <a class="go" href="#">book →</a>
+          </div>
+        </div>
+
+        <div class="tier">
+          <div class="label">03 · deploy</div>
+          <h3>四週上線 + 維運交接</h3>
+          <div class="price">NT$ 580,000</div>
+          <div class="duration">20 days · 含 onsite</div>
+          <ul>
+            <li>多 Agent 編排與 fail-safe</li>
+            <li>內部 LLM 評估管線</li>
+            <li>Production 監控 + cost 控管</li>
+            <li>三場培訓 + Runbook</li>
+            <li>後續 90 天每月 review</li>
+          </ul>
+          <div class="footer">
+            <span class="slots">Q3 · 2 cases</span>
+            <a class="go" href="#">book →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-eyebrow">CASE STUDIES · 3 of 137</div>
+      <h2>真實片段。</h2>
+      <p class="deck">每一篇都附完整 source 與我做這件事時的思考過程。</p>
+
+      <div class="case-table">
+        <div class="case-row">
+          <div class="day"><strong>005</strong>Agent 初探</div>
+          <div class="title">邁向自動化一人公司</div>
+          <div class="desc">把 Claude Code 包成可遞給其他人重複使用的 Skill，並用 Hook 串資料源。</div>
+          <div class="outcome">每週 6h → 90min</div>
+        </div>
+        <div class="case-row">
+          <div class="day"><strong>077</strong>Prompt → Harness</div>
+          <div class="title">Prompt Engineering → Context Engineering → Harness Engineering</div>
+          <div class="desc">把 prompt 工程的三層演化拆給工程團隊，並現場改一個內部工具。</div>
+          <div class="outcome">2 wk · integrated to PR review</div>
+        </div>
+        <div class="case-row">
+          <div class="day"><strong>122</strong>codebase 遷移</div>
+          <div class="title">ralph-expert + GAN 跑遷移</div>
+          <div class="desc">半自動 codebase 遷移模板，給 Claude Code 重度使用者。</div>
+          <div class="outcome">3d → 4h</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="booking">
+      <div>
+        <div class="section-eyebrow">CONSULTATION · FREE 30 MIN</div>
+        <h2>30 分鐘對話<br/>就能判斷合不合作。</h2>
+        <p class="deck">聊聊團隊規模、目前痛點、想優先解決什麼。如果合適，會給你具體提案；如果不合適，會直接說。</p>
+        <a class="btn-primary" href="#">view all slots →</a>
+      </div>
+      <div class="booking-card">
+        <div class="row">
+          <time>週三 · 5/20</time>
+          <span class="slots-mini">14:00 · 15:30</span>
+        </div>
+        <div class="row">
+          <time>週四 · 5/21</time>
+          <span class="slots-mini">10:00 · 16:00</span>
+        </div>
+        <div class="row">
+          <time>週五 · 5/22</time>
+          <span class="slots-mini">09:30</span>
+        </div>
+        <div class="row">
+          <time>下週 · 5/25–5/29</time>
+          <span class="slots-mini">8 slots</span>
+        </div>
+        <button class="cta-btn">查看完整行事曆 →</button>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SYSTEM B — Brutalist Monospace
+     ============================================================ -->
+<section class="system sys-brut" id="sys-brut">
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#">DAWSON.WANG</a>
+      <div class="nav-links">
+        <a href="#">SERVICES</a>
+        <a href="#">CASES</a>
+        <a href="#">LOG/137</a>
+        <a href="#">ABOUT</a>
+      </div>
+      <div class="nav-status">SHIPPING · DAY 137</div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="ascii">
+        ┌──────────────────────────────┐<br/>
+        │  AI · LANDING · TPE · 2026   │<br/>
+        └──────────────────────────────┘
+      </div>
+      <h1>把 AI 工具<br/>搬進你的<br/><em>實際工作流。</em></h1>
+      <p class="lede">
+        9 年新創軟體經驗。137 天每天公開實作 AI 工作流。<br/>
+        從半天工作坊到四週上線——幫台灣團隊把 PoC 變成可維運系統。
+      </p>
+      <div class="data-line">
+        <span><span class="key">days</span><span class="val">137</span></span>
+        <span><span class="key">exp</span><span class="val">9 yr</span></span>
+        <span><span class="key">min-eta</span><span class="val">2 wk</span></span>
+        <span><span class="key">source</span><span class="val">100 % open</span></span>
+        <span><span class="key">tz</span><span class="val">GMT+8</span></span>
+      </div>
+      <a class="btn-block" href="#">BOOK 30 MIN →</a>
+      <a class="btn-line" href="#">READ 137 LOGS</a>
+    </div>
+    <div class="hero-right">
+      <div class="portrait-cell">
+        <img src="dawson.webp" alt="Dawson Wang" width="640" height="800" />
+      </div>
+      <div class="portrait-meta">
+        <strong>// Last shipped</strong><br/>
+        Day 137 · 蓋一個自己的網站<br/>
+        <strong>// Next slot</strong><br/>
+        wed 5/20 · 14:00–14:30
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="num">— 01 —</span>
+      <h2>Three lengths,<br/>one method.</h2>
+    </div>
+    <div class="tiers">
+      <div class="tier">
+        <div class="head"><span class="id">id · workshop</span><span>4 H</span></div>
+        <h3>半天工作坊</h3>
+        <div class="price-row">
+          <span>NT$ 35,000</span>
+          <span>2 / 月</span>
+        </div>
+        <ul>
+          <li>Claude Code / Codex 上手</li>
+          <li>三個情境的 prompt 設計</li>
+          <li>Hook + Skill 客製</li>
+          <li>事後 1 週 Slack 問答</li>
+        </ul>
+        <div class="cta">
+          <span>2 SLOTS LEFT</span>
+          <a href="#">→ BOOK</a>
+        </div>
+      </div>
+      <div class="tier featured">
+        <div class="head"><span class="id">id · poc · ★</span><span>10 D</span></div>
+        <h3>兩週導入</h3>
+        <div class="price-row">
+          <span>NT$ 240,000</span>
+          <span>FEATURED</span>
+        </div>
+        <ul>
+          <li>選定團隊真實工作流</li>
+          <li>PoC → 可上線 Agent</li>
+          <li>Skills / Hooks / Eval 整套</li>
+          <li>交接文件 + 培訓</li>
+          <li>30 天 Slack 支援</li>
+        </ul>
+        <div class="cta">
+          <span>STARTS · JUN 1</span>
+          <a href="#">→ BOOK</a>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="head"><span class="id">id · deploy</span><span>20 D</span></div>
+        <h3>四週上線</h3>
+        <div class="price-row">
+          <span>NT$ 580,000</span>
+          <span>Q3 · 2 / 季</span>
+        </div>
+        <ul>
+          <li>多 Agent + fail-safe</li>
+          <li>內部 LLM 評估管線</li>
+          <li>監控 + cost 控管</li>
+          <li>培訓 + Runbook</li>
+          <li>90 天每月 review</li>
+        </ul>
+        <div class="cta">
+          <span>2 CASES LEFT</span>
+          <a href="#">→ BOOK</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="num">— 02 —</span>
+      <h2>3 fragments<br/>from 137 days.</h2>
+    </div>
+    <div class="cases">
+      <div class="case-row">
+        <div class="day">005</div>
+        <div>
+          <div class="title">邁向自動化一人公司</div>
+          <div class="desc">把 Claude Code 包成 Skill + Hook，遞給團隊重複使用。</div>
+        </div>
+        <div class="desc">每週 6 小時的內容處理流程，壓到 90 分鐘——後 90 天零失敗運行。</div>
+        <div class="outcome">→ 6h → 90min</div>
+      </div>
+      <div class="case-row">
+        <div class="day">077</div>
+        <div>
+          <div class="title">Prompt → Harness Engineering</div>
+          <div class="desc">三層演化拆給團隊，現場改一個內部工具。</div>
+        </div>
+        <div class="desc">半天工作坊後，團隊兩週內把 Claude Code 整合進 PR review 流程。</div>
+        <div class="outcome">→ 2 wk · integrated</div>
+      </div>
+      <div class="case-row">
+        <div class="day">122</div>
+        <div>
+          <div class="title">ralph-expert + GAN 遷移</div>
+          <div class="desc">給 Claude Code 重度使用者的半自動 codebase 遷移模板。</div>
+        </div>
+        <div class="desc">傳統 3 天的遷移工作壓到 4 小時內完成；模板可重複使用。</div>
+        <div class="outcome">→ 3d → 4h</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="num">— 03 —</span>
+      <h2>Book a slot.</h2>
+    </div>
+    <div class="book">
+      <div class="grid">
+        <div class="left">
+          <h3>FREE / 30 MIN<br/>探索性對話。</h3>
+          <p>聊聊團隊規模、目前痛點、想優先解決什麼。如果合適會給你具體提案；如果不合適，會直接說。</p>
+          <p>// 沒有 newsletter，沒有自動加群組。</p>
+        </div>
+        <div class="right">
+          <div class="slot-row"><span class="date">WED 5/20</span><span class="times">14:00 · 15:30</span><span class="arrow">→</span></div>
+          <div class="slot-row"><span class="date">THU 5/21</span><span class="times">10:00 · 16:00</span><span class="arrow">→</span></div>
+          <div class="slot-row"><span class="date">FRI 5/22</span><span class="times">09:30</span><span class="arrow">→</span></div>
+          <div class="slot-row"><span class="date">5/25–29</span><span class="times">8 SLOTS</span><span class="arrow">→</span></div>
+          <button class="book-cta">VIEW FULL CALENDAR →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SYSTEM C — Stripe-style info-dense
+     ============================================================ -->
+<section class="system sys-stripe" id="sys-stripe">
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-glyph">D</span>
+        <span>Dawson Wang</span>
+      </a>
+      <div class="nav-links">
+        <a href="#">服務方案</a>
+        <a href="#">案例研究</a>
+        <a href="#">137 篇日誌</a>
+        <a href="#">關於</a>
+      </div>
+      <a class="nav-cta" href="#">預約諮詢</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <span class="badge">
+            <span class="pill">SHIPPING</span>
+            <span>Day 137 · 100% 公開實作</span>
+          </span>
+          <h1>把 AI 工具<br/>搬進你的<br/>實際工作流。</h1>
+          <p class="lede">
+            9 年新創經驗 + 137 天公開實作。從半天工作坊到四週上線，幫台灣團隊把 PoC 變成可維運系統。
+          </p>
+          <div class="hero-ctas">
+            <a class="btn-fill" href="#">預約免費諮詢 →</a>
+            <a class="btn-line" href="#">查看服務方案</a>
+          </div>
+          <div class="quick-bar">
+            <div class="stat"><div class="num">137</div>連續產出</div>
+            <div class="stat"><div class="num">9 yr</div>軟體經驗</div>
+            <div class="stat"><div class="num">2 wk</div>最短交付</div>
+            <div class="stat"><div class="num">100%</div>原始碼公開</div>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <div class="hero-card-head">
+            <span class="title">Active Engagement</span>
+            <span class="ok">ON TRACK</span>
+          </div>
+          <div class="metric-row">
+            <span class="k">Engagement</span>
+            <span class="v">PoC · Week 1 / 2</span>
+          </div>
+          <div class="metric-row">
+            <span class="k">Agent shipped</span>
+            <span class="v">3 / 5 modules</span>
+          </div>
+          <div class="metric-row">
+            <span class="k">Eval pass rate</span>
+            <span class="v">92.4%</span>
+          </div>
+          <div class="metric-row">
+            <span class="k">Cost / week</span>
+            <span class="v">$24.10</span>
+          </div>
+          <div class="sparkline">
+            <svg viewBox="0 0 200 56" preserveAspectRatio="none">
+              <polyline points="0,40 20,38 40,42 60,30 80,28 100,22 120,18 140,20 160,12 180,8 200,5" stroke="#635BFF" stroke-width="2" fill="none" />
+            </svg>
+          </div>
+          <button class="cta-mini">看完整案例 →</button>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">SERVICES · 3 TIERS</div>
+        <h2>三種長度，同一套方法。</h2>
+        <p class="deck">每個方案的產出都會 commit 到你們的 repo —— 沒有黑盒子，可驗收。</p>
+      </div>
+
+      <div class="tier-grid">
+        <div class="tier">
+          <div class="label">01 · WORKSHOP</div>
+          <h3>半天工具落地</h3>
+          <div class="price">NT$ 35K</div>
+          <div class="duration">4 小時 · 線上或台北實體</div>
+          <ul>
+            <li>Claude Code / Codex 上手</li>
+            <li>三個情境的 prompt 設計</li>
+            <li>Hook + Skill 客製範例</li>
+            <li>事後 1 週 Slack 問答</li>
+          </ul>
+          <div class="cta">
+            <span class="slot-count">本月剩 2 場</span>
+            <a class="cta-link" href="#">預約 →</a>
+          </div>
+        </div>
+        <div class="tier featured">
+          <div class="label">02 · POC</div>
+          <h3>兩週導入 + 首個自動化</h3>
+          <div class="price">NT$ 240K</div>
+          <div class="duration">10 個工作天 · 線上同步</div>
+          <ul>
+            <li>選定一個團隊真實工作流</li>
+            <li>從 PoC 到可上線的 Agent</li>
+            <li>Skills / Hooks / Eval 整套</li>
+            <li>交接文件 + 1 場培訓</li>
+            <li>後續 30 天 Slack 支援</li>
+          </ul>
+          <div class="cta">
+            <span class="slot-count">6/1 起接案</span>
+            <a class="cta-link" href="#">預約 →</a>
+          </div>
+        </div>
+        <div class="tier">
+          <div class="label">03 · DEPLOY</div>
+          <h3>四週上線 + 維運交接</h3>
+          <div class="price">NT$ 580K</div>
+          <div class="duration">20 個工作天 · 含 onsite</div>
+          <ul>
+            <li>多 Agent 編排與 fail-safe</li>
+            <li>內部 LLM 評估管線</li>
+            <li>Production 監控 + cost 控管</li>
+            <li>三場培訓 + Runbook</li>
+            <li>90 天每月 review</li>
+          </ul>
+          <div class="cta">
+            <span class="slot-count">本季限 2 案</span>
+            <a class="cta-link" href="#">預約 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">CASE STUDIES · 3 OF 137</div>
+        <h2>從 137 天裡挑三個真實片段。</h2>
+        <p class="deck">每一篇都附完整 source 與當下的思考過程。</p>
+      </div>
+
+      <div class="cases">
+        <article class="case">
+          <div class="head">
+            <span class="day">DAY 005</span>
+            <span>AGENT</span>
+          </div>
+          <div class="body">
+            <h3>邁向自動化一人公司</h3>
+            <p class="desc">把 Claude Code 包成 Skill，並用 Hook 串接資料源——遞給團隊重複使用。</p>
+            <div class="outcome">
+              <span class="label">交付時間 / 結果</span>
+              <span class="value">6h/週 → 90min</span>
+            </div>
+          </div>
+        </article>
+        <article class="case">
+          <div class="head">
+            <span class="day">DAY 077</span>
+            <span>WORKSHOP</span>
+          </div>
+          <div class="body">
+            <h3>Prompt → Harness</h3>
+            <p class="desc">把 prompt 工程的三層演化拆給工程團隊，現場改一個內部工具。</p>
+            <div class="outcome">
+              <span class="label">整合進 PR review</span>
+              <span class="value">2 週內完成</span>
+            </div>
+          </div>
+        </article>
+        <article class="case">
+          <div class="head">
+            <span class="day">DAY 122</span>
+            <span>DEPLOY</span>
+          </div>
+          <div class="body">
+            <h3>ralph-expert + GAN 遷移</h3>
+            <p class="desc">半自動 codebase 遷移模板，給 Claude Code 重度使用者。</p>
+            <div class="outcome">
+              <span class="label">遷移時間</span>
+              <span class="value">3 days → 4h</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft">
+    <div class="container">
+      <div class="book">
+        <div>
+          <div class="section-eyebrow">FREE 30-MIN CONSULTATION</div>
+          <h2>30 分鐘對話<br/>就能判斷合不合作。</h2>
+          <p class="deck">先聊聊團隊規模、目前痛點、想優先解決什麼。合適會給你具體提案；不合適會直接說。</p>
+        </div>
+        <div class="book-card">
+          <h4>本週可預約時段</h4>
+          <div class="slot">
+            <span class="date">週三 · 5/20</span>
+            <span class="time">14:00 · 15:30</span>
+            <span class="go">→</span>
+          </div>
+          <div class="slot">
+            <span class="date">週四 · 5/21</span>
+            <span class="time">10:00 · 16:00</span>
+            <span class="go">→</span>
+          </div>
+          <div class="slot">
+            <span class="date">週五 · 5/22</span>
+            <span class="time">09:30</span>
+            <span class="go">→</span>
+          </div>
+          <div class="slot">
+            <span class="date">下週 · 5/25–5/29</span>
+            <span class="time">8 slots</span>
+            <span class="go">→</span>
+          </div>
+          <button class="all">查看完整行事曆 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+</main>
+
+<script>
+  const STORAGE_KEY = 'dw_design_sys';
+  const systems = ['linear', 'brut', 'stripe'];
+  const names = {
+    linear: 'Linear-style · dark · Space Grotesk',
+    brut:   'Brutalist · mono · Instrument Serif',
+    stripe: 'Stripe-style · clean · Plus Jakarta'
+  };
+
+  function getInitial() {
+    const url = new URL(window.location.href);
+    const fromUrl = url.searchParams.get('sys');
+    if (systems.includes(fromUrl)) return fromUrl;
+    const fromLs = localStorage.getItem(STORAGE_KEY);
+    if (systems.includes(fromLs)) return fromLs;
+    return 'linear';
+  }
+  function setSys(s) {
+    if (!systems.includes(s)) s = 'linear';
+    systems.forEach(n => {
+      const el = document.getElementById('sys-' + n);
+      const tab = document.querySelector(`.tab[data-sys="${n}"]`);
+      if (el) el.classList.toggle('active', n === s);
+      if (tab) tab.setAttribute('aria-selected', n === s ? 'true' : 'false');
+    });
+    document.getElementById('sys-name').textContent = names[s] || '';
+    localStorage.setItem(STORAGE_KEY, s);
+    const url = new URL(window.location.href);
+    url.searchParams.set('sys', s);
+    window.history.replaceState({}, '', url);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => setSys(tab.dataset.sys));
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (document.activeElement && /input|textarea|select/i.test(document.activeElement.tagName)) return;
+    const cur = localStorage.getItem(STORAGE_KEY) || 'linear';
+    const idx = systems.indexOf(cur);
+    const next = e.key === 'ArrowRight'
+      ? systems[(idx + 1) % systems.length]
+      : systems[(idx - 1 + systems.length) % systems.length];
+    setSys(next);
+  });
+  setSys(getInitial());
+</script>
+
+</body>
+</html>
