@@ -43,3 +43,6 @@ public/content/
 # Generated search artifacts
 public/search/
 .cache/
+
+# Claude Code worktrees (local-only branch sandboxes)
+.claude/worktrees/
