@@ -8,7 +8,9 @@ import path from 'node:path';
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   vite: {
     plugins: [tailwindcss()],
     server: {
