@@ -1,27 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
+import { computeStatsSummary } from '../lib/metrics';
+import StatsCharts from './StatsCharts.astro';
+import Divider from './Divider.astro';
 
 const days = await getCollection('days');
-const totalDays = days.length;
-
-let totalThreadsViews = 0;
-let totalLinkedInImpressions = 0;
-for (const day of days) {
-  const m = day.data.manifest;
-  if (!m) continue;
-  totalThreadsViews += m.threads?.stats.views ?? 0;
-  totalLinkedInImpressions += m.linkedin?.stats.impressions ?? 0;
-}
-
-const stats = [
-  { value: String(totalDays), label: '天連續產出' },
-  { value: `${Math.floor(totalThreadsViews / 1000)}K`, label: 'Threads 總觀看' },
-  { value: `${Math.floor(totalLinkedInImpressions / 1000)}K`, label: 'LinkedIn 總曝光' },
-];
+const stats = computeStatsSummary(days);
 ---
-<section class="max-w-3xl mx-auto px-6 py-12 border-t-2 border-teal">
+<div class="max-w-3xl mx-auto px-6"><Divider /></div>
+<section class="max-w-3xl mx-auto px-6 py-12">
   <header class="eyebrow-pair">
-    <span class="ey-left">{totalDays} 天 zh-TW AI 內容</span>
+    <span class="ey-left">{stats.totalDays} 天 zh-TW AI 內容</span>
     <span class="ey-right">公開實作日記</span>
   </header>
   <h2 class="font-display text-ink leading-tight tracking-[-0.01em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem);">
@@ -30,15 +19,19 @@ const stats = [
   <p class="font-serif text-base text-ink leading-relaxed mt-4 max-w-xl">
     從 Claude Code skill 到 Threads bot、再到資安研究。完整公開：源碼、流程、踩雷、結果。
   </p>
-  <div class="mt-8 grid grid-cols-3 gap-px bg-rule">
-    {stats.map(s => (
-      <div class="bg-paper px-4 py-5">
-        <div class="font-serif font-semibold text-teal leading-none" style="font-size: clamp(2rem, 4vw, 3rem); font-variant-numeric: oldstyle-nums;">{s.value}</div>
-        <div class="font-sans text-[10px] tracking-[.22em] uppercase text-muted mt-3 font-semibold">{s.label}</div>
+
+  <div class="mt-10 grid grid-cols-1 md:grid-cols-[120px_1fr] gap-x-10 gap-y-10 items-start">
+    <aside class="md:border-r md:border-rule md:pr-6">
+      <div class="font-serif font-semibold text-teal leading-none" style="font-size: clamp(3rem, 6vw, 4.5rem); font-variant-numeric: oldstyle-nums;">
+        {stats.totalDays}
       </div>
-    ))}
+      <div class="font-sans text-[10px] tracking-[.22em] uppercase text-muted mt-2 font-semibold">天連續產出</div>
+    </aside>
+
+    <StatsCharts stats={stats} />
   </div>
-  <div class="mt-6 text-right">
+
+  <div class="mt-8 text-right">
     <a href="/proof" class="font-sans text-xs uppercase tracking-[.14em] text-brick no-underline hover:text-ink transition-colors duration-150 font-semibold">看完整作品集 →</a>
   </div>
 </section>

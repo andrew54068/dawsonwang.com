@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import Divider from '../../components/Divider.astro';
 import { topicBySlug, daysForTopic, allTopics, topicsForDay, chipVariantFor } from '../../lib/topics';
 import { isTopPerformer } from '../../lib/metrics';
 
@@ -33,7 +34,7 @@ const stripeColor: Record<string, string> = {
     <h1 class="font-display text-ink leading-tight tracking-[-0.02em] text-balance" style="font-size: clamp(2.25rem, 5vw, 3.5rem);">
       {topic.title}
     </h1>
-    <div class="top-divider"></div>
+    <Divider class="my-7" />
     <div>
       {filtered.map(day => (
         <PostCard

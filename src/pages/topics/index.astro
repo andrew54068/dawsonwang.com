@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopicCard from '../../components/TopicCard.astro';
+import Divider from '../../components/Divider.astro';
 import { allTopics, daysForTopic } from '../../lib/topics';
 
 const topics = allTopics().map(t => ({
@@ -17,7 +18,7 @@ const topics = allTopics().map(t => ({
     <h1 class="font-display text-ink leading-tight tracking-[-0.02em] text-balance" style="font-size: clamp(2.25rem, 5vw, 3.5rem);">
       依<em class="italic text-teal">主題</em>瀏覽。
     </h1>
-    <div class="top-divider"></div>
+    <Divider class="my-7" />
     <div>
       {topics.map(t => <TopicCard {...t} />)}
     </div>

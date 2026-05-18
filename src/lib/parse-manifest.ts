@@ -5,12 +5,17 @@ const ThreadsStats = z.object({
   likes: z.number().optional(),
   reposts: z.number().optional(),
   replies: z.number().optional(),
+  quotes: z.number().optional(),
+  follows: z.number().optional(),
 }).default({});
 
 const FacebookStats = z.object({
+  views: z.number().optional(),
+  reach: z.number().optional(),
   reactions: z.number().optional(),
   comments: z.number().optional(),
   shares: z.number().optional(),
+  saves: z.number().optional(),
 }).default({});
 
 const LinkedInStats = z.object({

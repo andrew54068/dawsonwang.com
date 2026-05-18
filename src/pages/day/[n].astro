@@ -7,6 +7,7 @@ import MetricsBlock from '../../components/MetricsBlock.astro';
 import ExternalLinks from '../../components/ExternalLinks.astro';
 import { isTopPerformer } from '../../lib/metrics';
 import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
+import Divider from '../../components/Divider.astro';
 
 export async function getStaticPaths() {
   const days = await getCollection('days');
@@ -58,7 +59,7 @@ const publishDate: string | null = day.data.manifest?.threads?.publishedAt
           </div>
         )}
 
-        <div class="top-divider"></div>
+        <Divider class="my-7" />
 
         <div class="prose prose-zinc max-w-none
                     prose-headings:font-serif prose-headings:text-ink

@@ -117,12 +117,6 @@
     letter-spacing: .04em;
   }
 
-  /* === Top divider (between hero/article header and body) === */
-  .top-divider {
-    margin: 24px 0 20px;
-    border-top: 2px solid var(--color-teal);
-  }
-
   /* === Magazine inputs === */
   .mag-input {
     border: 0;

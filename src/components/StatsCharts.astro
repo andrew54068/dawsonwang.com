@@ -1,0 +1,103 @@
+---
+import type { StatsSummary } from '../lib/metrics';
+import { formatCount } from '../lib/metrics';
+
+interface Props {
+  stats: StatsSummary;
+  variant?: 'inline' | 'expanded';
+}
+const { stats, variant = 'inline' } = Astro.props;
+const { threadsSeries, facebookSeries, totalDays, totalThreadsViews, totalFacebookReach, totalLinkedInImpressions } = stats;
+
+const SP_W = 600;
+const SP_H = variant === 'expanded' ? 110 : 80;
+const SP_PAD = 2;
+const threadsMax = Math.max(...threadsSeries.map(p => p.value), 1);
+const sparkPath = threadsSeries.map((p, i) => {
+  const x = SP_PAD + (i / Math.max(threadsSeries.length - 1, 1)) * (SP_W - SP_PAD * 2);
+  const y = SP_H - SP_PAD - (p.value / threadsMax) * (SP_H - SP_PAD * 2);
+  return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+}).join(' ');
+const sparkArea = sparkPath
+  ? `${sparkPath} L${(SP_W - SP_PAD).toFixed(1)},${(SP_H - SP_PAD).toFixed(1)} L${SP_PAD.toFixed(1)},${(SP_H - SP_PAD).toFixed(1)} Z`
+  : '';
+const peakIdx = threadsSeries.reduce(
+  (bestIdx, p, i, arr) => (p.value > arr[bestIdx].value ? i : bestIdx),
+  0,
+);
+const threadsPeak = threadsSeries[peakIdx] ?? null;
+const threadsPeakX = threadsPeak
+  ? SP_PAD + (peakIdx / Math.max(threadsSeries.length - 1, 1)) * (SP_W - SP_PAD * 2)
+  : 0;
+const threadsPeakY = threadsPeak
+  ? SP_H - SP_PAD - (threadsPeak.value / threadsMax) * (SP_H - SP_PAD * 2)
+  : 0;
+
+const BAR_W = 600;
+const BAR_H = variant === 'expanded' ? 110 : 80;
+const BAR_GAP = 2;
+const facebookMax = Math.max(...facebookSeries.map(p => p.value), 1);
+const barWidth = facebookSeries.length > 0
+  ? (BAR_W - BAR_GAP * (facebookSeries.length - 1)) / facebookSeries.length
+  : 0;
+const bars = facebookSeries.map((p, i) => {
+  const h = (p.value / facebookMax) * BAR_H;
+  const x = i * (barWidth + BAR_GAP);
+  const y = BAR_H - h;
+  return { x, y, w: barWidth, h, day: p.day, value: p.value };
+});
+const fbPeakIdx = facebookSeries.reduce(
+  (bestIdx, p, i, arr) => (p.value > arr[bestIdx].value ? i : bestIdx),
+  0,
+);
+const fbPeak = facebookSeries[fbPeakIdx] ?? null;
+---
+<div class="stats-charts grid gap-8" data-variant={variant}>
+  <figure class="m-0">
+    <figcaption class="flex items-baseline justify-between mb-2 gap-3">
+      <span class="font-sans text-[11px] tracking-[.22em] uppercase text-brick font-semibold">Threads · 每日觀看</span>
+      <span class="font-serif text-sm text-muted italic">{threadsSeries.length} / {totalDays} 篇有資料</span>
+    </figcaption>
+    <svg viewBox={`0 0 ${SP_W} ${SP_H}`} class={`block w-full ${variant === 'expanded' ? 'h-[110px]' : 'h-[80px]'}`} preserveAspectRatio="none" aria-hidden="true">
+      <path d={sparkArea} fill="var(--color-teal)" fill-opacity="0.08" />
+      <path d={sparkPath} fill="none" stroke="var(--color-teal)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+      {threadsPeak && (
+        <circle cx={threadsPeakX} cy={threadsPeakY} r="3" fill="var(--color-brick)" />
+      )}
+    </svg>
+    <div class="mt-2 flex items-baseline justify-between font-sans text-[11px] text-muted tracking-[.04em] gap-3">
+      <span>累計 <span class="text-ink font-semibold">{formatCount(totalThreadsViews)}</span> 觀看</span>
+      {threadsPeak && (
+        <span class="italic font-serif text-brick">
+          Day {threadsPeak.day} · {formatCount(threadsPeak.value)} 高峰
+        </span>
+      )}
+    </div>
+  </figure>
+
+  <figure class="m-0">
+    <figcaption class="flex items-baseline justify-between mb-2 gap-3">
+      <span class="font-sans text-[11px] tracking-[.22em] uppercase text-brick font-semibold">Facebook · 每日觸及</span>
+      <span class="font-serif text-sm text-muted italic">{facebookSeries.length} 篇有資料</span>
+    </figcaption>
+    <svg viewBox={`0 0 ${BAR_W} ${BAR_H}`} class={`block w-full ${variant === 'expanded' ? 'h-[110px]' : 'h-[80px]'}`} preserveAspectRatio="none" aria-hidden="true">
+      {bars.map(b => (
+        <rect x={b.x} y={b.y} width={b.w} height={b.h} fill="var(--color-ochre)" />
+      ))}
+    </svg>
+    <div class="mt-2 flex items-baseline justify-between font-sans text-[11px] text-muted tracking-[.04em] gap-3">
+      <span>累計 <span class="text-ink font-semibold">{formatCount(totalFacebookReach)}</span> 觸及</span>
+      {fbPeak && (
+        <span class="italic font-serif text-ochre" style="color: var(--color-ochre);">
+          Day {fbPeak.day} · {formatCount(fbPeak.value)} 高峰
+        </span>
+      )}
+    </div>
+  </figure>
+
+  {totalLinkedInImpressions > 0 && (
+    <div class="font-sans text-[11px] text-muted tracking-[.04em] -mt-4">
+      LinkedIn 另曝光 <span class="text-ink font-semibold">{formatCount(totalLinkedInImpressions)}</span> 次
+    </div>
+  )}
+</div>

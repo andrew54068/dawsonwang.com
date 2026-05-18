@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { FEATURED_POSTS } from '../data/featured';
+import Divider from './Divider.astro';
 
 const days = await getCollection('days');
 const allDays = days.length;
@@ -13,7 +14,9 @@ const featured = FEATURED_POSTS
   .filter((x): x is NonNullable<typeof x> => x !== null);
 ---
 {featured.length > 0 && (
-  <section class="max-w-3xl mx-auto px-6 py-12 border-t-2 border-teal">
+  <Fragment>
+    <div class="max-w-3xl mx-auto px-6"><Divider /></div>
+    <section class="max-w-3xl mx-auto px-6 py-12">
     <header class="eyebrow-pair">
       <span class="ey-left">精選文章</span>
       <span class="ey-right">選自 {allDays} 篇</span>
@@ -30,5 +33,6 @@ const featured = FEATURED_POSTS
     <div class="mt-4 text-right">
       <a href="/days" class="font-sans text-xs uppercase tracking-[.14em] text-brick no-underline hover:text-ink transition-colors duration-150 font-semibold">看所有文章 →</a>
     </div>
-  </section>
+    </section>
+  </Fragment>
 )}
