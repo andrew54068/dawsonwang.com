@@ -1,17 +1,16 @@
 ---
 const links = [
-  { href: '/', label: '首頁' },
+  { href: '/proof', label: '作品集' },
   { href: '/days', label: '所有文章' },
   { href: '/topics', label: '主題' },
-  { href: '/proof', label: '作品集' },
 ];
 ---
 <nav class="border-b border-rule">
-  <div class="max-w-3xl mx-auto px-6 py-4 flex items-baseline justify-between gap-6">
-    <a href="/" class="font-serif font-bold text-ink text-lg no-underline">Dawson Wang</a>
-    <ul class="flex gap-5 list-none p-0 m-0">
+  <div class="max-w-3xl mx-auto px-6 py-4 flex items-baseline justify-between gap-4">
+    <a href="/" class="font-serif font-bold text-ink text-lg no-underline whitespace-nowrap">Dawson Wang</a>
+    <ul class="flex gap-3 sm:gap-5 list-none p-0 m-0">
       {links.map(l => (
-        <li>
+        <li class="whitespace-nowrap">
           <a href={l.href} class="text-muted text-xs tracking-[.14em] uppercase hover:text-ink transition-colors duration-150 no-underline font-sans">{l.label}</a>
         </li>
       ))}
