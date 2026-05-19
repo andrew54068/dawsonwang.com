@@ -26,7 +26,23 @@ const fullTitle = title === 'Dawson Wang' ? title : `${title} | Dawson Wang`;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+    <script is:inline>
+      // Apply persisted theme before first paint to avoid a flash of the
+      // wrong palette. Only "stripe" is opt-in; the default (linear) needs
+      // no attribute. URL ?theme=... overrides localStorage for one visit.
+      (function () {
+        try {
+          const url = new URL(window.location.href);
+          const fromUrl = url.searchParams.get('theme');
+          const fromLs = localStorage.getItem('dw_theme');
+          const theme = fromUrl || fromLs;
+          if (theme === 'stripe') {
+            document.documentElement.dataset.theme = 'stripe';
+          }
+        } catch (_) { /* SSR / private mode — silently fall back to default */ }
+      })();
+    </script>
   </head>
   <body class="bg-paper text-ink font-sans">
     <Nav />

@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  /* Linear-dark surfaces */
+  /* === Linear-dark (default) === */
   --color-paper: #0A0A0B;      /* base background */
   --color-surface-1: #131316;  /* card / panel */
   --color-surface-2: #1B1B20;  /* elevated surface */
@@ -14,7 +14,7 @@
   --color-faint: #5C5C66;      /* tertiary / metadata */
 
   /* Accents */
-  --color-brick: #7B61FF;      /* primary accent (was terracotta) */
+  --color-brick: #7B61FF;      /* primary accent (Linear purple) */
   --color-teal: #59E6C9;       /* secondary accent / success-ish */
   --color-ochre: #FFC56A;      /* warning / highlight */
   --color-sage: #59E6C9;       /* alias for teal */
@@ -25,10 +25,34 @@
   --font-mono:    "JetBrains Mono", ui-monospace, monospace;
 }
 
+/* === Stripe-clean light theme — opt-in via [data-theme="stripe"] === */
+:root[data-theme="stripe"] {
+  --color-paper: #FFFFFF;
+  --color-surface-1: #FFFFFF;  /* white cards on bg-soft sections */
+  --color-surface-2: #F6F9FC;  /* Stripe's signature off-white */
+  --color-rule: #E3E8EE;
+
+  --color-ink: #0A2540;        /* navy primary text */
+  --color-muted: #425466;
+  --color-faint: #8898AA;
+
+  --color-brick: #635BFF;      /* Stripe indigo */
+  --color-teal: #00A859;       /* success green for "positive" accents */
+  --color-ochre: #FF8F00;
+  --color-sage: #00A859;
+
+  --font-display: "Plus Jakarta Sans", "Noto Sans TC", system-ui, sans-serif;
+  --font-serif:   "Plus Jakarta Sans", "Noto Sans TC", system-ui, sans-serif;
+  --font-sans:    "Plus Jakarta Sans", "Noto Sans TC", system-ui, sans-serif;
+}
+
 @layer base {
   html {
     background: var(--color-paper);
     color-scheme: dark;
+  }
+  html[data-theme="stripe"] {
+    color-scheme: light;
   }
   body {
     background: var(--color-paper);
@@ -290,4 +314,42 @@
   .chip-ochre   { color: var(--color-ochre); border-color: color-mix(in oklab, var(--color-ochre) 35%, var(--color-rule)); }
   .chip-sage    { color: var(--color-teal); border-color: color-mix(in oklab, var(--color-teal) 35%, var(--color-rule)); }
   .chip-outline { color: var(--color-muted); }
+}
+
+/* === Stripe-theme component overrides ============================
+   Cards in stripe-mode need a soft shadow to separate from the
+   white background (in linear-mode the surface tint already does
+   that job). Surface-1 is used exclusively for card-like elements
+   across the codebase, so a single selector covers them all. */
+:root[data-theme="stripe"] .bg-surface-1 {
+  box-shadow:
+    0 1px 2px rgba(50, 50, 93, 0.05),
+    0 4px 12px -4px rgba(50, 50, 93, 0.08);
+}
+:root[data-theme="stripe"] .bg-surface-1.hover\:bg-surface-2:hover {
+  box-shadow:
+    0 2px 4px rgba(50, 50, 93, 0.06),
+    0 12px 28px -10px rgba(50, 50, 93, 0.12);
+  transform: translateY(-1px);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+:root[data-theme="stripe"] .kicker {
+  box-shadow: 0 1px 2px rgba(50, 50, 93, 0.05);
+}
+:root[data-theme="stripe"] .btn-ghost {
+  box-shadow: 0 1px 2px rgba(50, 50, 93, 0.05);
+}
+:root[data-theme="stripe"] .btn-ghost:hover {
+  background: var(--color-surface-2);
+  box-shadow: 0 4px 12px -4px rgba(50, 50, 93, 0.12);
+}
+:root[data-theme="stripe"] .chip {
+  box-shadow: 0 1px 1px rgba(50, 50, 93, 0.03);
+}
+
+/* Hover bg on day-list rows: surface-2 (#F6F9FC) reads as a clean
+   Stripe-style row highlight on white. */
+:root[data-theme="stripe"] .toc-row:hover {
+  background: var(--color-surface-2);
 }
