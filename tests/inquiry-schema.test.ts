@@ -28,7 +28,21 @@ test('rejects when honeypot is filled', () => {
   expect(() => InquirySchema.parse({ ...valid, hp_field: 'spam' })).toThrow(/honeypot/);
 });
 
-test('truncates goal to 300 chars', () => {
-  const result = InquirySchema.parse({ ...valid, goal: 'x'.repeat(500) });
+test('rejects goal longer than 300 chars', () => {
+  // The HTML form already enforces maxlength=300; if a client bypasses that,
+  // reject rather than silently truncate (which would lose context).
+  expect(() => InquirySchema.parse({ ...valid, goal: 'x'.repeat(301) })).toThrow();
+});
+
+test('accepts goal of exactly 300 chars', () => {
+  const result = InquirySchema.parse({ ...valid, goal: 'x'.repeat(300) });
   expect(result.goal.length).toBe(300);
+});
+
+test('rejects newlines in name', () => {
+  expect(() => InquirySchema.parse({ ...valid, name: 'A\r\nBcc: x@y.com' })).toThrow();
+});
+
+test('rejects newlines in company', () => {
+  expect(() => InquirySchema.parse({ ...valid, company: 'Acme\nEvil' })).toThrow();
 });

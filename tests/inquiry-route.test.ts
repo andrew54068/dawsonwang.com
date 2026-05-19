@@ -31,11 +31,12 @@ function buildRequest(overrides: Record<string, string> = {}, ip = '1.2.3.4'): R
     hp_field: '',
     ...overrides,
   });
-  return new Request('https://test.local/api/inquiry', {
+  return new Request('https://www.dawsonwang.com/api/inquiry', {
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
       'x-forwarded-for': ip,
+      origin: 'https://www.dawsonwang.com',
     },
     body: body.toString(),
   });

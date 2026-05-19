@@ -131,7 +131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/vercel@npm:^10.0.6":
+"@astrojs/vercel@npm:^10.0.7":
   version: 10.0.7
   resolution: "@astrojs/vercel@npm:10.0.7"
   dependencies:
@@ -1967,9 +1967,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^6.3.0":
-  version: 6.3.3
-  resolution: "astro@npm:6.3.3"
+"astro@npm:^6.3.4":
+  version: 6.3.4
+  resolution: "astro@npm:6.3.4"
   dependencies:
     "@astrojs/compiler": "npm:^4.0.0"
     "@astrojs/internal-helpers": "npm:0.9.1"
@@ -2032,7 +2032,7 @@ __metadata:
       optional: true
   bin:
     astro: ./bin/astro.mjs
-  checksum: 10c0/13d04e75d08aa7993f2e5b4949912f86f81f2b3143f28009ff7acb9d192949a80e111d490cec60c08bcc4708a1e5c68a7ebc8eb99a5cfee769b2d71936b0b13d
+  checksum: 10c0/688d73a1d45cef1442f3265691152f36bbb6772f18e6b8e0d3888e6ca0a565a97b2f71d3d0e6cac439abc8f0b8e5f24635e4622c76ed6c9f49e7e726c5577a84
   languageName: node
   linkType: hard
 
@@ -2355,10 +2355,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devalue@npm:^5.6.3":
-  version: 5.8.0
-  resolution: "devalue@npm:5.8.0"
-  checksum: 10c0/85512cca4524537e018f0e72486382acaf082f58c1d80f1c8245ea2f3a833988b3a35c274c40a9cae3e7bd652680570c532335e8044f9d03ec324dce843b26f0
+"devalue@npm:^5.8.1":
+  version: 5.8.1
+  resolution: "devalue@npm:5.8.1"
+  checksum: 10c0/fad0c5aeb615e0ddea3385923389991652b285cd2adcd84e10f07a930f735127d94621751f7ef5249a7fe2c7c666ec7c02bb95c3901da337c91f45ef4da18dea
   languageName: node
   linkType: hard
 
@@ -2662,10 +2662,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-uri@npm:^3.0.1":
-  version: 3.1.0
-  resolution: "fast-uri@npm:3.1.0"
-  checksum: 10c0/44364adca566f70f40d1e9b772c923138d47efeac2ae9732a872baafd77061f26b097ba2f68f0892885ad177becd065520412b8ffeec34b16c99433c5b9e2de7
+"fast-uri@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "fast-uri@npm:3.1.2"
+  checksum: 10c0/5b35641895959f3f7ab7a7b1b5542bded159346f25ec9f256817b206d50b64eda5828e90d605a2e2fc645c90519a7259c2bab2c942ee728c88b88e5be21b090d
   languageName: node
   linkType: hard
 
@@ -4106,17 +4106,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp-updated@npm:path-to-regexp@6.3.0":
+"path-to-regexp-updated@npm:path-to-regexp@6.3.0, path-to-regexp@npm:^6.3.0":
   version: 6.3.0
   resolution: "path-to-regexp@npm:6.3.0"
   checksum: 10c0/73b67f4638b41cde56254e6354e46ae3a2ebc08279583f6af3d96fe4664fc75788f74ed0d18ca44fa4a98491b69434f9eee73b97bb5314bd1b5adb700f5c18d6
-  languageName: node
-  linkType: hard
-
-"path-to-regexp@npm:6.1.0":
-  version: 6.1.0
-  resolution: "path-to-regexp@npm:6.1.0"
-  checksum: 10c0/0c22bce52528452ee5717d71c2dc2b273d065a633de25c959d684980d1ff0891225a3dc94095421fe508aaa76f8b26a173954a3aef3c841a2a824bd6bf849963
   languageName: node
   linkType: hard
 
@@ -4767,13 +4760,13 @@ __metadata:
   resolution: "site@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.9"
-    "@astrojs/vercel": "npm:^10.0.6"
+    "@astrojs/vercel": "npm:^10.0.7"
     "@notionhq/client": "npm:^5.20.0"
     "@tailwindcss/typography": "npm:^0.5.19"
     "@tailwindcss/vite": "npm:^4.2.4"
     "@types/node": "npm:^25.6.0"
     "@vercel/analytics": "npm:^2.0.1"
-    astro: "npm:^6.3.0"
+    astro: "npm:^6.3.4"
     marked: "npm:^18.0.3"
     pagefind: "npm:^1.5.2"
     resend: "npm:^6.12.2"
