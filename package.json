@@ -7,6 +7,7 @@
   },
   "scripts": {
     "copy-assets": "tsx scripts/copy-content-assets.ts",
+    "icons": "tsx scripts/build-icons.ts",
     "search:semantic": "tsx --env-file-if-exists=.env scripts/build-semantic-index.ts",
     "search:verify": "tsx --env-file-if-exists=.env scripts/verify-semantic-search.ts",
     "search:keyword": "pagefind --site dist",
