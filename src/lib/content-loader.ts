@@ -37,9 +37,12 @@ async function loadOne(dir: string): Promise<DayEntry | null> {
     return null;
   }
 
+  const dirMatch = path.basename(dir).match(/^day(\d+)$/);
+  const fallbackDayNumber = dirMatch ? parseInt(dirMatch[1], 10) : undefined;
+
   let parsed: ParsedSource;
   try {
-    parsed = parseSource(raw);
+    parsed = parseSource(raw, fallbackDayNumber);
   } catch (err) {
     console.warn(`[content-loader] Skipping ${path.basename(dir)}: ${(err as Error).message}`);
     return null;

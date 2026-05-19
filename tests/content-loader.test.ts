@@ -17,9 +17,17 @@ test('every loaded day has a parseable title', async () => {
   const days = await loadAllDays(CONTENT_DIR);
   for (const day of days) {
     expect(day.dayNumber).toBeGreaterThan(0);
-    // subtitle may legitimately be empty for early days (day01, day02 use just "# Day 1")
+    expect(day.subtitle.length).toBeGreaterThan(0);
     expect(day.body.length).toBeGreaterThan(10);
   }
+});
+
+test('loads days whose source.md does not start with "Day N"', async () => {
+  const days = await loadAllDays(CONTENT_DIR);
+  const dayNumbers = new Set(days.map(d => d.dayNumber));
+  // day12 starts with "Vibe Coding"; day23 starts with "今天開發時遇到..."
+  expect(dayNumbers.has(12)).toBe(true);
+  expect(dayNumbers.has(23)).toBe(true);
 });
 
 test('skips directories with empty source.md', async () => {

@@ -60,3 +60,38 @@ test('parses full-width pipe separator', () => {
   expect(result.dayNumber).toBe(3);
   expect(result.subtitle).toBe('Antigravity-Manager');
 });
+
+test('falls back to first body line when title line has no subtitle', () => {
+  const raw = `# Day 1\n今天是今年的第一天\n也是正式失業的第一天`;
+  const result = parseSource(raw);
+  expect(result.dayNumber).toBe(1);
+  expect(result.subtitle).toBe('今天是今年的第一天');
+});
+
+test('truncates long body-line fallback subtitle', () => {
+  const longLine = '一'.repeat(120);
+  const raw = `Day 2\n${longLine}`;
+  const result = parseSource(raw);
+  expect(result.subtitle.endsWith('…')).toBe(true);
+  expect([...result.subtitle].length).toBeLessThanOrEqual(61);
+});
+
+test('scans past leading prelude lines to find a Day N title', () => {
+  const raw = `Vibe Coding\nDay 12 自製 Thread 發文機器人 (上)\n\nBody starts here.`;
+  const result = parseSource(raw);
+  expect(result.dayNumber).toBe(12);
+  expect(result.subtitle).toBe('自製 Thread 發文機器人 (上)');
+  expect(result.body).toBe('Body starts here.');
+});
+
+test('uses fallback dayNumber when title line is not "Day N"', () => {
+  const raw = `今天開發時遇到一個奇怪的 bug。\n\nMore body.`;
+  const result = parseSource(raw, 23);
+  expect(result.dayNumber).toBe(23);
+  expect(result.subtitle).toBe('今天開發時遇到一個奇怪的 bug。');
+  expect(result.body).toBe('More body.');
+});
+
+test('throws on non-Day first line when no fallback dayNumber is provided', () => {
+  expect(() => parseSource('Vibe Coding\n\nBody.')).toThrow(/title line/);
+});
