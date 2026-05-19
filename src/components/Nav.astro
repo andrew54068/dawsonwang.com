@@ -20,6 +20,80 @@ const links = [
         </li>
       ))}
     </ul>
-    <a href="/#inquire" class="text-ink text-[13px] font-display font-medium bg-surface-1 hover:bg-surface-2 border border-rule px-3 py-1.5 rounded-md transition-colors duration-150 no-underline">預約諮詢 →</a>
+    <div class="flex items-center gap-2">
+      <button id="theme-toggle" type="button" aria-label="切換主題"
+              class="w-8 h-8 grid place-items-center rounded-md bg-surface-1 hover:bg-surface-2 border border-rule text-muted hover:text-ink transition-colors duration-150">
+        <svg class="theme-sun" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="theme-moon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+      <a href="/#inquire"
+         class="nav-cta text-white text-[13px] font-display font-semibold px-3.5 py-1.5 rounded-md transition-transform duration-150 no-underline">
+        預約諮詢 →
+      </a>
+    </div>
   </div>
 </nav>
+
+<style>
+  /* Icon swap: show what will happen on click.
+     Default (Linear/dark) → show SUN (click → switch to light).
+     Stripe (light)        → show MOON (click → switch to dark). */
+  #theme-toggle .theme-sun  { display: block; }
+  #theme-toggle .theme-moon { display: none; }
+  :root[data-theme="stripe"] #theme-toggle .theme-sun  { display: none; }
+  :root[data-theme="stripe"] #theme-toggle .theme-moon { display: block; }
+
+  /* Saturated CTA — high contrast against both Linear and Stripe surfaces.
+     Uses brick (Linear: purple, Stripe: indigo) so it's the most visible
+     interactive element on the page in either theme. */
+  .nav-cta {
+    background: var(--color-brick);
+    box-shadow:
+      0 1px 2px color-mix(in oklab, var(--color-brick) 30%, transparent),
+      0 4px 12px -4px color-mix(in oklab, var(--color-brick) 35%, transparent);
+  }
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 2px 4px color-mix(in oklab, var(--color-brick) 35%, transparent),
+      0 8px 18px -4px color-mix(in oklab, var(--color-brick) 45%, transparent);
+  }
+  .nav-cta:active { transform: translateY(0); }
+  .nav-cta:focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--color-brick) 60%, transparent);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  (function () {
+    const STORAGE_KEY = 'dw_theme';
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+
+    function apply(theme: 'linear' | 'stripe', el: HTMLElement) {
+      if (theme === 'stripe') {
+        document.documentElement.dataset.theme = 'stripe';
+      } else {
+        delete document.documentElement.dataset.theme;
+      }
+      try { localStorage.setItem(STORAGE_KEY, theme); } catch (_) {}
+      el.setAttribute('aria-label', theme === 'stripe' ? '切換為暗色主題' : '切換為明亮主題');
+    }
+
+    btn.setAttribute(
+      'aria-label',
+      document.documentElement.dataset.theme === 'stripe' ? '切換為暗色主題' : '切換為明亮主題',
+    );
+
+    btn.addEventListener('click', () => {
+      const cur = document.documentElement.dataset.theme === 'stripe' ? 'stripe' : 'linear';
+      apply(cur === 'stripe' ? 'linear' : 'stripe', btn);
+    });
+  })();
+</script>
