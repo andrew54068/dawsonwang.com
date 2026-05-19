@@ -2,11 +2,17 @@ import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { Client as NotionClient } from '@notionhq/client';
 import { InquirySchema } from '../../lib/inquiry-schema';
+import { isAllowedOrigin, trustedClientIp } from '../../lib/origin-guard';
 
 export const prerender = false;
 
+// Best-effort per-instance rate limit. Vercel functions are stateless across
+// cold starts and concurrent instances, so a determined attacker can bypass
+// this. The real defenses are the Origin allowlist and the honeypot field.
+// Upgrade to Vercel KV / Upstash if real abuse appears.
 const HITS = new Map<string, number[]>();
 const WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const MAX_BODY_BYTES = 8 * 1024;
 
 function rateLimited(ip: string, limit: number): boolean {
   const now = Date.now();
@@ -31,8 +37,23 @@ const TIMELINE_LABELS: Record<string, string> = {
   exploring: '只是先了解',
 };
 
-export const POST: APIRoute = async ({ request }) => {
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown';
+function redactEmail(email: string): string {
+  const [local, domain] = email.split('@');
+  if (!domain) return '***';
+  return `${local.slice(0, 2)}***@${domain}`;
+}
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  if (!isAllowedOrigin(request)) {
+    return new Response('Forbidden', { status: 403 });
+  }
+
+  const contentLength = parseInt(request.headers.get('content-length') ?? '0', 10);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return new Response('Payload too large', { status: 413 });
+  }
+
+  const ip = trustedClientIp(clientAddress, request);
   const limit = parseInt(import.meta.env.INQUIRY_RATE_LIMIT_PER_HOUR ?? '10', 10);
   if (rateLimited(ip, limit)) {
     return new Response('Too many requests', { status: 429 });
@@ -116,10 +137,12 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
   } catch (err) {
-    // Last-chance recovery: log full inquiry so the lead is not lost
-    // if both Resend and Notion failed. Recover from Vercel function logs.
-    console.error('Notion write failed', err, { inquiry });
-    // Even if both sinks fail, return 303 to user — we don't want them retrying.
+    // Redacted breadcrumb only — full inquiry payload doesn't belong in
+    // function logs. Resend email is the recovery channel when Notion is down.
+    console.error('Notion write failed', err, {
+      email: redactEmail(inquiry.email),
+      company: inquiry.company.slice(0, 40),
+    });
   }
 
   return new Response('OK', {
