@@ -1,6 +1,7 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import '../styles/global.css';
 
 interface Props {
@@ -48,5 +49,6 @@ const fullTitle = title === 'Dawson Wang' ? title : `${title} | Dawson Wang`;
     <Nav />
     <main><slot /></main>
     <Footer />
+    <SpeedInsights />
   </body>
 </html>
