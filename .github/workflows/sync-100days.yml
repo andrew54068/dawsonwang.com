@@ -1,0 +1,69 @@
+name: Sync 100Days content submodule
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-100days
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dawsonwang.com (skip submodules; we fetch 100Days ourselves with a deploy key)
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Configure SSH deploy key for 100Days
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.DAY100_DEPLOY_KEY }}" > ~/.ssh/100days
+          chmod 600 ~/.ssh/100days
+          ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+          cat >> ~/.ssh/config <<'EOF'
+          Host github.com
+            IdentityFile ~/.ssh/100days
+            IdentitiesOnly yes
+          EOF
+          chmod 600 ~/.ssh/config
+          # Make any HTTPS clone of 100Days route through SSH so the deploy key is used.
+          git config --global \
+            url."git@github.com:andrew54068/100Days.git".insteadOf \
+            "https://github.com/andrew54068/100Days.git"
+
+      - name: Compare current pin vs upstream main
+        id: bump
+        run: |
+          OLD_SHA=$(git rev-parse :100days)
+          NEW_SHA=$(git ls-remote git@github.com:andrew54068/100Days.git refs/heads/main | cut -f1)
+          echo "current pin    : $OLD_SHA"
+          echo "upstream main  : $NEW_SHA"
+          if [ "$OLD_SHA" = "$NEW_SHA" ]; then
+            echo "No new commits — nothing to do."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "old=${OLD_SHA:0:7}" >> "$GITHUB_OUTPUT"
+            echo "new=${NEW_SHA:0:7}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump submodule pointer
+        if: steps.bump.outputs.changed == 'true'
+        run: git submodule update --init --remote 100days
+
+      - name: Commit + push
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 100days
+          git commit -m "chore(content): bump 100days submodule (${{ steps.bump.outputs.old }} → ${{ steps.bump.outputs.new }})"
+          git push
