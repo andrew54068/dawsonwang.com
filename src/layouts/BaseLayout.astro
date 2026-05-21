@@ -2,16 +2,44 @@
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE,
+  SITE_LOCALE,
+  SITE_NAME,
+  absoluteUrl,
+  canonicalPath,
+  cleanDescription,
+  jsonLd,
+  personJsonLd,
+  websiteJsonLd,
+} from '../lib/seo';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  type?: 'website' | 'article';
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description = 'Dawson Wang — AI 工具落地實踐者', ogImage = '/og-default.png' } = Astro.props;
-const fullTitle = title === 'Dawson Wang' ? title : `${title} | Dawson Wang`;
+const {
+  title,
+  description = DEFAULT_DESCRIPTION,
+  ogImage = DEFAULT_OG_IMAGE,
+  type = 'website',
+  structuredData,
+} = Astro.props;
+const fullTitle = title === SITE_NAME ? `${SITE_NAME} — AI 工具落地實踐者` : `${title} | ${SITE_NAME}`;
+const metaDescription = cleanDescription(description);
+const canonicalUrl = absoluteUrl(canonicalPath(Astro.url.pathname));
+const ogImageUrl = absoluteUrl(ogImage);
+const baseStructuredData = Astro.url.pathname === '/' ? [personJsonLd, websiteJsonLd] : [];
+const pageStructuredData = structuredData
+  ? Array.isArray(structuredData) ? structuredData : [structuredData]
+  : [];
+const allStructuredData = [...baseStructuredData, ...pageStructuredData];
 ---
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
@@ -19,13 +47,23 @@ const fullTitle = title === 'Dawson Wang' ? title : `${title} | Dawson Wang`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content="Dawson Wang" />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content={SITE_LOCALE} />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:type" content="website" />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content={type} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <meta name="theme-color" content="#0A0A0B" />
+    <link rel="alternate" type="text/plain" title="Dawson Wang AI-readable site summary" href="/llms.txt" />
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" sizes="32x32" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -48,6 +86,9 @@ const fullTitle = title === 'Dawson Wang' ? title : `${title} | Dawson Wang`;
         } catch (_) { /* SSR / private mode — silently fall back to default */ }
       })();
     </script>
+    {allStructuredData.length > 0 && (
+      <script type="application/ld+json" is:inline set:html={jsonLd(allStructuredData.length === 1 ? allStructuredData[0] : allStructuredData)} />
+    )}
   </head>
   <body class="bg-paper text-ink font-sans">
     <Nav />
