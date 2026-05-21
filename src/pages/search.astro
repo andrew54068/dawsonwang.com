@@ -197,8 +197,15 @@ const total = days.length;
       schedule();
     });
 
-    // Initial state
-    renderEmpty('輸入查詢字以開始');
+    // Honor ?q= so links from search engines (and the WebSite SearchAction
+    // JSON-LD) land directly on a populated result set.
+    const initialQuery = new URLSearchParams(window.location.search).get('q')?.trim() ?? '';
+    if (initialQuery) {
+      input.value = initialQuery;
+      schedule();
+    } else {
+      renderEmpty('輸入查詢字以開始');
+    }
 
     // Pre-fetch the active mode's index in the background so the first
     // search feels instant (semantic stays lazy until user picks it).
