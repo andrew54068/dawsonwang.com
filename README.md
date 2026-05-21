@@ -1,43 +1,46 @@
-# Astro Starter Kit: Minimal
+# dawsonwang.com
+
+Astro site for `dawsonwang.com`, backed by the `100days` content submodule.
+
+## Prerequisites
+
+- Node.js `>=22.12.0` (Vercel will use Node 24 for serverless functions)
+- Corepack-enabled Yarn 4 (`packageManager` is pinned in `package.json`)
+- The `100days` submodule initialized before running tests or builds
+
+## Setup
 
 ```sh
-yarn create astro@latest -- --template minimal
+git clone --recurse-submodules https://github.com/andrew54068/dawsonwang.com.git
+cd dawsonwang.com
+corepack enable
+yarn install --immutable
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+If you cloned without submodules:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+git submodule update --init --recursive
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Command | Action |
+| --- | --- |
+| `yarn dev` | Copy slide assets and start the Astro dev server |
+| `yarn test` | Run the Vitest test suite |
+| `yarn astro check` | Run Astro/TypeScript diagnostics |
+| `yarn build` | Build the site, generate Pagefind search, and sync output for Vercel |
+| `yarn search:semantic` | Generate semantic-search vectors with Cloudflare Workers AI credentials |
+| `yarn search:verify` | Verify the generated semantic-search index |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Environment
 
-## 🧞 Commands
+Semantic search generation uses Cloudflare Workers AI:
 
-All commands are run from the root of the project, from a terminal:
+- `CF_ACCOUNT_ID`
+- `CF_API_TOKEN`
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `yarn install`             | Installs dependencies                            |
-| `yarn dev`             | Starts local dev server at `localhost:4321`      |
-| `yarn build`           | Build your production site to `./dist/`          |
-| `yarn preview`         | Preview your build locally, before deploying     |
-| `yarn astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `yarn astro -- --help` | Get help using the Astro CLI                     |
+`yarn build` skips semantic index generation when these variables are absent so local builds and CI can still validate the site. Set `SEMANTIC_SEARCH_REQUIRED=true` to make missing Cloudflare credentials fail the build.
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The inquiry API uses additional deployment secrets documented in `.env.example`.

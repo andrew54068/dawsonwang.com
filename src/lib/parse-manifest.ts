@@ -27,7 +27,7 @@ const LinkedInStats = z.object({
 const PlatformBlock = <T extends z.ZodType>(stats: T) =>
   z.object({
     published_at: z.string(),
-    post_url: z.string().url(),
+    post_url: z.url(),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     stats: stats.optional().default({} as any),
   }).optional();

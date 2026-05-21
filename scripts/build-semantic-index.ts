@@ -12,8 +12,13 @@ const VEC_PATH = path.join(OUT_DIR, 'semantic-vectors.bin');
 const accountId = process.env.CF_ACCOUNT_ID;
 const apiToken = process.env.CF_API_TOKEN;
 if (!accountId || !apiToken) {
-  console.error('[semantic-index] CF_ACCOUNT_ID and CF_API_TOKEN must be set');
-  process.exit(1);
+  const message = '[semantic-index] CF_ACCOUNT_ID and CF_API_TOKEN not set; skipping semantic index generation.';
+  if (process.env.SEMANTIC_SEARCH_REQUIRED === 'true') {
+    console.error(`${message} Set SEMANTIC_SEARCH_REQUIRED=false to allow builds without an index.`);
+    process.exit(1);
+  }
+  console.warn(message);
+  process.exit(0);
 }
 const CF_URL = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${MODEL}`;
 
