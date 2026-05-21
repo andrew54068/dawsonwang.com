@@ -9,7 +9,7 @@ const days = await getCollection('days');
 const stats = computeStatsSummary(days);
 const totalDays = stats.totalDays;
 ---
-<BaseLayout title="作品集" description={`${totalDays} 天 AI 實作公開記錄`}>
+<BaseLayout title="AI 工具落地作品集" description={`${totalDays} 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果。`}>
   <article class="max-w-5xl mx-auto px-8 py-16">
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">PROOF · {totalDays} DAYS</div>
     <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
