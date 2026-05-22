@@ -14,6 +14,7 @@
     "search:keyword": "pagefind --site dist",
     "dev": "tsx scripts/copy-content-assets.ts && astro dev",
     "build": "tsx scripts/copy-content-assets.ts && tsx --env-file-if-exists=.env scripts/build-semantic-index.ts && astro build && pagefind --site dist && tsx scripts/sync-pagefind-to-vercel.ts",
+    "check:seo": "tsx scripts/check-seo-output.ts",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",

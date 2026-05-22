@@ -1,0 +1,53 @@
+name: SEO generated output
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  check-seo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dawsonwang.com (skip submodules; fetch 100Days with deploy key)
+        uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - name: Configure SSH deploy key for 100Days
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.DAY100_DEPLOY_KEY }}" > ~/.ssh/100days
+          chmod 600 ~/.ssh/100days
+          ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+          cat >> ~/.ssh/config <<'EOF'
+          Host github.com
+            IdentityFile ~/.ssh/100days
+            IdentitiesOnly yes
+          EOF
+          chmod 600 ~/.ssh/config
+          git config --global \
+            url."git@github.com:andrew54068/100Days.git".insteadOf \
+            "https://github.com/andrew54068/100Days.git"
+
+      - name: Checkout 100Days submodule
+        run: git submodule update --init --recursive 100days
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build site
+        run: yarn build
+
+      - name: Verify generated SEO output
+        run: yarn check:seo
