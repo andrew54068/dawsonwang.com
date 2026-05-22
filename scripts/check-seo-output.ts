@@ -70,7 +70,11 @@ if (!existsSync(outDir)) {
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertIncludes(home, `<meta property="og:url" content="${siteUrl}/"`, 'home');
   assertMatch(home, /<meta property="og:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
+  assertIncludes(home, '<meta property="og:image:width" content="1200"', 'home og:image:width');
+  assertIncludes(home, '<meta property="og:image:height" content="630"', 'home og:image:height');
+  assertMatch(home, /<meta property="og:image:alt" content="[^"]+"/, 'home og:image:alt');
   assertMatch(home, /<meta name="twitter:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
+  assertMatch(home, /<meta name="twitter:image:alt" content="[^"]+"/, 'home twitter:image:alt');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
@@ -87,6 +91,8 @@ if (!existsSync(outDir)) {
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
   assertIncludes(allPosts, '所有', 'all posts');
   assertIncludes(allPosts, '文章', 'all posts');
+  assertMatch(allPosts, /<meta property="og:image:alt" content="[^"]+"/, '/days og:image:alt');
+  assertMatch(allPosts, /<meta name="twitter:image:alt" content="[^"]+"/, '/days twitter:image:alt');
   if (allPosts.includes('article:published_time')) fail('/days leaks article:published_time meta (should be type=website)');
   assertIncludes(allPosts, '共 ', 'all posts');
   const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
@@ -114,6 +120,8 @@ if (!existsSync(outDir)) {
     assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
     assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
     assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `day ${latestDay} article:author`);
+    assertMatch(dayHtml, /<meta property="og:image:alt" content="[^"]+"/, `day ${latestDay} og:image:alt`);
+    assertMatch(dayHtml, /<meta name="twitter:image:alt" content="[^"]+"/, `day ${latestDay} twitter:image:alt`);
   }
 
   // article:tag is only emitted when the day has topic chips; assert on the latest day that has topics
