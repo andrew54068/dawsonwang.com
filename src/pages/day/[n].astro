@@ -39,6 +39,19 @@ const publishDate: string | null = day.data.manifest?.threads?.publishedAt
   ?? day.data.manifest?.linkedin?.publishedAt
   ?? null;
 const articleDescription = cleanDescription(day.data.body, 155);
+// Word count: CJK chars count as 1 each + ASCII whitespace-separated word tokens.
+// This gives a reasonable schema.org `wordCount` for mixed zh-Hant / English bodies.
+function computeWordCount(body: string): number {
+  if (!body) return 0;
+  const cjk = body.match(/[\u3400-\u9fff\u3040-\u30ff\uac00-\ud7af]/g)?.length ?? 0;
+  const asciiTokens = body
+    .replace(/[\u3400-\u9fff\u3040-\u30ff\uac00-\ud7af]/g, ' ')
+    .split(/\s+/)
+    .filter(t => /[A-Za-z0-9]/.test(t)).length;
+  return cjk + asciiTokens;
+}
+const articleWordCount = computeWordCount(day.data.body);
+const primarySection = topics[0]?.title;
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -47,12 +60,15 @@ const articleJsonLd = {
   url: `${SITE_URL}/day/${day.data.dayNumber}`,
   mainEntityOfPage: `${SITE_URL}/day/${day.data.dayNumber}`,
   inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   author: { '@id': `${SITE_URL}/#person` },
   publisher: { '@id': `${SITE_URL}/#person` },
   datePublished: publishDate ?? undefined,
   dateModified: publishDate ?? undefined,
   image: slides.length > 0 ? `${SITE_URL}${slides[0].src}` : `${SITE_URL}/og-default.png`,
   keywords: topics.map(t => t.title),
+  wordCount: articleWordCount,
+  ...(primarySection ? { articleSection: primarySection } : {}),
 };
 const dayBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Home', url: '/' },
