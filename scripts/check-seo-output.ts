@@ -190,6 +190,13 @@ if (!existsSync(outDir)) {
   assertIncludes(llms, `${siteUrl}/rss.xml`, 'llms.txt rss link');
   if (latestDay) assertIncludes(llms, `${siteUrl}/day/${latestDay}`, 'llms.txt');
 
+  // /proof portfolio page — CollectionPage + BreadcrumbList JSON-LD with #website graph link
+  const proof = readGenerated('proof/index.html');
+  assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
+  assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
+  assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
+  assertIncludes(proof, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
+
   // RSS feed
   assertIncludes(home, '<link rel="alternate" type="application/rss+xml"', 'home rss alternate link');
   assertIncludes(allPosts, '<link rel="alternate" type="application/rss+xml"', '/days rss alternate link');

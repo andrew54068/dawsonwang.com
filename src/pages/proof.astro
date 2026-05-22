@@ -4,12 +4,30 @@ import PullQuote from '../components/PullQuote.astro';
 import StatsCharts from '../components/StatsCharts.astro';
 import { getCollection } from 'astro:content';
 import { computeStatsSummary } from '../lib/metrics';
+import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 
 const days = await getCollection('days');
 const stats = computeStatsSummary(days);
 const totalDays = stats.totalDays;
+const proofTitle = 'AI 工具落地作品集';
+const proofDescription = `${totalDays} 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果。`;
+const proofCollectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${SITE_URL}/proof#collectionpage`,
+  name: proofTitle,
+  description: proofDescription,
+  url: absoluteUrl('/proof'),
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: { '@id': `${SITE_URL}/#person` },
+};
+const proofBreadcrumbJsonLd = breadcrumbJsonLd([
+  { name: 'Home', url: '/' },
+  { name: 'Proof', url: '/proof' },
+]);
 ---
-<BaseLayout title="AI 工具落地作品集" description={`${totalDays} 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果。`}>
+<BaseLayout title={proofTitle} description={proofDescription} structuredData={[proofCollectionJsonLd, proofBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">PROOF · {totalDays} DAYS</div>
     <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
