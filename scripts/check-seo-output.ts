@@ -116,6 +116,9 @@ if (!existsSync(outDir)) {
     assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, `day ${latestDay} Article JSON-LD`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `day ${latestDay} BreadcrumbList JSON-LD`);
+    // Article enrichment (wordCount + isPartOf are stable across all days; articleSection gated below).
+    assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
+    assertIncludes(dayHtml, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `day ${latestDay} Article isPartOf`);
     // OG article:* metadata: published/modified/author asserted on the latest day.
     assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
     assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
