@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { TOPICS } from '../src/data/topics';
+import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -80,11 +80,14 @@ if (!existsSync(outDir)) {
     assertIncludes(home, `name="${field}"`, `home inquiry form field ${field}`);
   }
   assertIncludes(home, 'href="/#inquire"', 'home appointment CTA');
+  // Negative probe: home is type=website, must NOT emit article:* OG tags.
+  if (home.includes('article:published_time')) fail('home leaks article:published_time meta (should be type=website)');
 
   const allPosts = readGenerated('days/index.html');
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
   assertIncludes(allPosts, '所有', 'all posts');
   assertIncludes(allPosts, '文章', 'all posts');
+  if (allPosts.includes('article:published_time')) fail('/days leaks article:published_time meta (should be type=website)');
   assertIncludes(allPosts, '共 ', 'all posts');
   const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
   if (allPostsDayLinks < days.length) fail(`All posts page links only ${allPostsDayLinks}/${days.length} day pages`);
@@ -107,6 +110,24 @@ if (!existsSync(outDir)) {
     assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, `day ${latestDay} Article JSON-LD`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `day ${latestDay} BreadcrumbList JSON-LD`);
+    // OG article:* metadata: published/modified/author asserted on the latest day.
+    assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
+    assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
+    assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `day ${latestDay} article:author`);
+  }
+
+  // article:tag is only emitted when the day has topic chips; assert on the latest day that has topics
+  // (stable-subset gate per the skill — avoids hiding a baseline gap for older days without topic mappings).
+  const latestDayWithTopics = Object.keys(DAY_TOPICS)
+    .map(n => Number(n))
+    .filter(n => Number.isFinite(n) && (DAY_TOPICS[n] ?? []).length > 0 && existsSync(path.join(outDir, `day/${n}/index.html`)))
+    .sort((a, b) => b - a)[0];
+  if (latestDayWithTopics) {
+    const dayHtml = readGenerated(`day/${latestDayWithTopics}/index.html`);
+    assertMatch(dayHtml, /<meta property="article:tag" content="[^"]+"/, `day ${latestDayWithTopics} article:tag`);
+    note(`article:tag asserted on day ${latestDayWithTopics}`);
+  } else {
+    note('no day with topics found; article:tag probe skipped');
   }
 
   const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
