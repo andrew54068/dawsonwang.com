@@ -7,7 +7,7 @@ import MetricsBlock from '../../components/MetricsBlock.astro';
 import ExternalLinks from '../../components/ExternalLinks.astro';
 import { isTopPerformer } from '../../lib/metrics';
 import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
-import { SITE_URL, cleanDescription } from '../../lib/seo';
+import { SITE_URL, breadcrumbJsonLd, cleanDescription } from '../../lib/seo';
 import Divider from '../../components/Divider.astro';
 
 export async function getStaticPaths() {
@@ -54,8 +54,13 @@ const articleJsonLd = {
   image: slides.length > 0 ? `${SITE_URL}${slides[0].src}` : `${SITE_URL}/og-default.png`,
   keywords: topics.map(t => t.title),
 };
+const breadcrumbData = breadcrumbJsonLd([
+  { name: 'Home', url: '/' },
+  { name: 'Days', url: '/days' },
+  { name: `Day ${day.data.dayNumber}`, url: `/day/${day.data.dayNumber}` },
+]);
 ---
-<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={slides[0]?.src ?? '/og-default.png'} structuredData={articleJsonLd}>
+<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={slides[0]?.src ?? '/og-default.png'} structuredData={[articleJsonLd, breadcrumbData]}>
   <article class="max-w-5xl mx-auto px-8 py-14" data-pagefind-body data-pagefind-meta={`day:${day.data.dayNumber}`}>
     <div class="grid grid-cols-1 md:grid-cols-[1fr_160px] gap-x-12 gap-y-6">
 

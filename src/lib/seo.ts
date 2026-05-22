@@ -24,6 +24,19 @@ export function jsonLd(data: Record<string, unknown> | Record<string, unknown>[]
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
 
+export function breadcrumbJsonLd(crumbs: { name: string; url: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.name,
+      item: absoluteUrl(crumb.url),
+    })),
+  };
+}
+
 export const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',

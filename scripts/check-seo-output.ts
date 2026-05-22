@@ -103,6 +103,7 @@ if (!existsSync(outDir)) {
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `day ${latestDay}`);
     assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, `day ${latestDay} Article JSON-LD`);
+    assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*"name":"Home".*"item":"https:\/\/dawsonwang\.com\/".*"name":"Days".*"item":"https:\/\/dawsonwang\.com\/days".*"name":"Day \d+".*"item":"https:\/\/dawsonwang\.com\/day\/\d+".*<\/script>/s, `day ${latestDay} BreadcrumbList JSON-LD`);
   }
 
   const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
@@ -125,6 +126,8 @@ if (!existsSync(outDir)) {
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
+    assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*"name":"Home".*"item":"https:\/\/dawsonwang\.com\/".*"name":"Topics".*"item":"https:\/\/dawsonwang\.com\/topics".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
+    assertIncludes(topicHtml, `"item":"${siteUrl}/topics/${topic.slug}"`, `${label} BreadcrumbList URL`);
   }
   note(`generated topic pages: ${TOPICS.length}/${TOPICS.length}`);
 
