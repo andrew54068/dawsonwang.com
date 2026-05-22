@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
+import { TOPICS } from '../src/data/topics';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -88,10 +89,26 @@ if (!existsSync(outDir)) {
     note(`generated day pages: ${generatedDayPages.length}/${days.length}`);
   }
 
+  const topicsIndex = readGenerated('topics/index.html');
+  assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
+  assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
+  for (const topic of TOPICS) {
+    const label = `topic ${topic.slug}`;
+    const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
+    assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
+    assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
+  }
+  note(`generated topic pages: ${TOPICS.length}/${TOPICS.length}`);
+
   const sitemap = readGenerated('sitemap.xml');
   assertIncludes(sitemap, `<loc>${siteUrl}/</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/days</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/topics</loc>`, 'sitemap');
+  for (const topic of TOPICS) {
+    assertIncludes(sitemap, `<loc>${siteUrl}/topics/${topic.slug}</loc>`, 'sitemap');
+  }
+  const sitemapTopicCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/topics\/[^<]+<\/loc>/g)).length;
+  if (sitemapTopicCount !== TOPICS.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${TOPICS.length}`);
   assertIncludes(sitemap, `<loc>${siteUrl}/search</loc>`, 'sitemap');
   if (latestDay) assertIncludes(sitemap, `<loc>${siteUrl}/day/${latestDay}</loc>`, 'sitemap');
   const sitemapDayCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/day\/\d+<\/loc>/g)).length;
