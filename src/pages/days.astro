@@ -4,13 +4,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { topicsForDay } from '../lib/topics';
 import { isTopPerformer } from '../lib/metrics';
+import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 
 const days = await getCollection('days');
 const sorted = days.sort((a, b) => b.data.dayNumber - a.data.dayNumber);
+const itemListDays = [...sorted].sort((a, b) => a.data.dayNumber - b.data.dayNumber);
 const firstDay = sorted[sorted.length - 1]?.data.dayNumber ?? 1;
 const lastDay = sorted[0]?.data.dayNumber ?? days.length;
+const description = `Dawson Wang 連續 ${days.length} 天公開 AI 工具落地實作：Claude Code、agent workflow、MCP、automation、團隊工作流與產品實驗筆記。`;
+const daysCollectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${SITE_URL}/days#collection`,
+  url: absoluteUrl('/days'),
+  name: 'AI 實作文章',
+  description,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: { '@id': `${SITE_URL}/#person` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: itemListDays.length,
+    itemListElement: itemListDays.map((day, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: absoluteUrl(`/day/${day.data.dayNumber}`),
+      name: `Day ${day.data.dayNumber}：${day.data.subtitle}`,
+      ...(day.data.subtitle ? { description: day.data.subtitle } : {}),
+    })),
+  },
+};
+const daysBreadcrumbJsonLd = breadcrumbJsonLd([
+  { name: 'Home', url: '/' },
+  { name: 'All posts', url: '/days' },
+]);
 ---
-<BaseLayout title="AI 實作文章" description={`Dawson Wang 連續 ${days.length} 天公開 AI 工具落地實作：Claude Code、agent workflow、MCP、automation、團隊工作流與產品實驗筆記。`}>
+<BaseLayout title="AI 實作文章" description={description} structuredData={[daysCollectionJsonLd, daysBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">ALL POSTS · {firstDay}—{lastDay}</div>
     <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] font-semibold"
