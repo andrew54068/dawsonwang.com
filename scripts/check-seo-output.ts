@@ -108,6 +108,10 @@ if (!existsSync(outDir)) {
   assertIncludes(search, 'value="keyword"', 'search keyword mode');
   assertIncludes(search, 'value="semantic"', 'search semantic mode');
   assertIncludes(search, 'id="search-results"', 'search results');
+  assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"SearchResultsPage".*<\/script>/s, '/search SearchResultsPage JSON-LD');
+  assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/search BreadcrumbList JSON-LD');
+  assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
+  assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
