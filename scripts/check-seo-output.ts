@@ -214,6 +214,17 @@ if (!existsSync(outDir)) {
   assertIncludes(rss, '<language>zh-Hant-TW</language>', 'rss.xml language');
   assertMatch(rss, /<item>[\s\S]*?<link>https:\/\/dawsonwang\.com\/day\/\d+<\/link>/, 'rss.xml item with absolute day link');
   if (latestDay) assertIncludes(rss, `<link>${siteUrl}/day/${latestDay}</link>`, 'rss.xml latest day');
+
+  // /inquiry-received thank-you page is noindexed via BaseLayout `noindex` prop.
+  const inquiry = readGenerated('inquiry-received/index.html');
+  assertIncludes(inquiry, '<meta name="robots" content="noindex, nofollow"', '/inquiry-received noindex meta robots');
+  if (inquiry.includes('content="index, follow')) fail('/inquiry-received leaks index,follow robots directive (should be noindex,nofollow)');
+  // Negative-sitemap probe: /inquiry-received must NOT appear in sitemap.xml or llms.txt.
+  if (sitemap.includes(`${siteUrl}/inquiry-received`)) fail('sitemap.xml leaks /inquiry-received (should be excluded)');
+  if (llms.includes(`${siteUrl}/inquiry-received`)) fail('llms.txt leaks /inquiry-received (should be excluded)');
+  // Guard against an accidental global flip: indexable pages must still emit index,follow.
+  assertIncludes(home, 'content="index, follow', 'home robots index,follow (regression guard)');
+  assertIncludes(search, 'content="index, follow', '/search robots index,follow (regression guard)');
 }
 
 for (const line of notes) console.log(`✓ ${line}`);

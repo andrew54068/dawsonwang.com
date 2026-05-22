@@ -32,6 +32,7 @@ interface Props {
   modifiedTime?: string;
   articleAuthorUrl?: string;
   articleTags?: string[];
+  noindex?: boolean;
 }
 
 const {
@@ -47,7 +48,11 @@ const {
   modifiedTime,
   articleAuthorUrl,
   articleTags,
+  noindex = false,
 } = Astro.props;
+const robotsContent = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 const isDefaultOgImage = ogImage === DEFAULT_OG_IMAGE;
 const resolvedOgImageWidth = ogImageWidth ?? (isDefaultOgImage ? DEFAULT_OG_IMAGE_WIDTH : undefined);
 const resolvedOgImageHeight = ogImageHeight ?? (isDefaultOgImage ? DEFAULT_OG_IMAGE_HEIGHT : undefined);
@@ -73,7 +78,7 @@ const allStructuredData = [...baseStructuredData, ...pageStructuredData];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={metaDescription} />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="robots" content={robotsContent} />
     <meta name="author" content="Dawson Wang" />
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:site_name" content={SITE_NAME} />
