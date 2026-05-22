@@ -67,6 +67,7 @@ const articleJsonLd = {
   dateModified: publishDate ?? undefined,
   image: slides.length > 0 ? `${SITE_URL}${slides[0].src}` : `${SITE_URL}/og-default.png`,
   keywords: topics.map(t => t.title),
+  ...(topics.length > 0 ? { about: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })) } : {}),
   wordCount: articleWordCount,
   ...(primarySection ? { articleSection: primarySection } : {}),
 };
