@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { topicBySlug, daysForTopic, allTopics, topicsForDay, chipVariantFor } from '../../lib/topics';
 import { isTopPerformer } from '../../lib/metrics';
+import { SITE_URL } from '../../lib/seo';
 
 export async function getStaticPaths() {
   return allTopics().map(t => ({ params: { slug: t.slug } }));
@@ -19,8 +20,35 @@ const filtered = days.filter(d => tagged.includes(d.data.dayNumber))
   .sort((a, b) => b.data.dayNumber - a.data.dayNumber);
 
 const variant = chipVariantFor(topic.slug);
+const topicJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${SITE_URL}/topics/${topic.slug}#collection`,
+  url: `${SITE_URL}/topics/${topic.slug}`,
+  name: topic.title,
+  description: topic.blurb,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: {
+    '@type': 'DefinedTerm',
+    '@id': `${SITE_URL}/topics/${topic.slug}#term`,
+    name: topic.title,
+    description: topic.blurb,
+    url: `${SITE_URL}/topics/${topic.slug}`,
+  },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: filtered.length,
+    itemListElement: filtered.map((day, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `${SITE_URL}/day/${day.data.dayNumber}`,
+      name: `Day ${day.data.dayNumber} ${day.data.subtitle}`,
+    })),
+  },
+};
 ---
-<BaseLayout title={topic.title} description={topic.blurb}>
+<BaseLayout title={topic.title} description={topic.blurb} structuredData={topicJsonLd}>
   <article class="max-w-5xl mx-auto px-8 py-16">
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPIC · {filtered.length} POSTS</div>
     <div class="flex items-baseline gap-3 mb-3">
