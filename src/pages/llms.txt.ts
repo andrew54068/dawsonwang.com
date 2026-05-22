@@ -18,6 +18,7 @@ export async function GET() {
     `- [All posts](${SITE_URL}/days): daily AI workflow implementation notes`,
     `- [Topics](${SITE_URL}/topics): posts grouped by AI workflow themes`,
     `- [Search](${SITE_URL}/search): site search`,
+    `- [RSS](${SITE_URL}/rss.xml): RSS 2.0 feed of latest posts`,
     '',
     '## Topics',
     ...topics.map(topic => `- [${topic.title}](${SITE_URL}/topics/${topic.slug}): ${topic.blurb}`),
