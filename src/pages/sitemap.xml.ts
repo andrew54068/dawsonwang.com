@@ -41,6 +41,7 @@ export async function GET() {
     entry('/days', '0.9', 'daily', latestPublishedAt),
     entry('/topics', '0.7', 'weekly', latestPublishedAt),
     entry('/search', '0.5', 'monthly', latestPublishedAt),
+    entry('/rss.xml', '0.6', 'daily', latestPublishedAt),
     ...topics.map(topic => entry(`/topics/${topic.slug}`, '0.7', 'weekly', latestPublishedAt)),
     ...days
       .sort((a, b) => b.data.dayNumber - a.data.dayNumber)

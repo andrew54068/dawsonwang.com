@@ -184,7 +184,22 @@ if (!existsSync(outDir)) {
   const llms = readGenerated('llms.txt');
   assertIncludes(llms, '# Dawson Wang', 'llms.txt');
   assertIncludes(llms, `${siteUrl}/topics`, 'llms.txt');
+  assertIncludes(llms, `${siteUrl}/rss.xml`, 'llms.txt rss link');
   if (latestDay) assertIncludes(llms, `${siteUrl}/day/${latestDay}`, 'llms.txt');
+
+  // RSS feed
+  assertIncludes(home, '<link rel="alternate" type="application/rss+xml"', 'home rss alternate link');
+  assertIncludes(allPosts, '<link rel="alternate" type="application/rss+xml"', '/days rss alternate link');
+  assertIncludes(sitemap, `<loc>${siteUrl}/rss.xml</loc>`, 'sitemap rss entry');
+  const rss = readGenerated('rss.xml');
+  assertIncludes(rss, '<rss version="2.0"', 'rss.xml');
+  assertIncludes(rss, 'xmlns:atom="http://www.w3.org/2005/Atom"', 'rss.xml atom namespace');
+  assertMatch(rss, /<atom:link[^>]+href="https:\/\/dawsonwang\.com\/rss\.xml"[^>]+rel="self"/, 'rss.xml atom:link self');
+  assertIncludes(rss, '<channel>', 'rss.xml channel');
+  assertIncludes(rss, `<link>${siteUrl}/</link>`, 'rss.xml channel link');
+  assertIncludes(rss, '<language>zh-Hant-TW</language>', 'rss.xml language');
+  assertMatch(rss, /<item>[\s\S]*?<link>https:\/\/dawsonwang\.com\/day\/\d+<\/link>/, 'rss.xml item with absolute day link');
+  if (latestDay) assertIncludes(rss, `<link>${siteUrl}/day/${latestDay}</link>`, 'rss.xml latest day');
 }
 
 for (const line of notes) console.log(`✓ ${line}`);
