@@ -40,6 +40,10 @@ function assertMatch(haystack: string, pattern: RegExp, label: string) {
   if (!pattern.test(haystack)) fail(`${label} missing pattern ${pattern}`);
 }
 
+function countMatches(haystack: string, pattern: RegExp) {
+  return Array.from(haystack.matchAll(pattern)).length;
+}
+
 function listSourceDays() {
   const contentDir = path.join(root, '100days/content');
   return readdirSync(contentDir, { withFileTypes: true })
@@ -67,6 +71,30 @@ if (!existsSync(outDir)) {
   assertMatch(home, /<meta property="og:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
   assertMatch(home, /<meta name="twitter:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
+  assertIncludes(home, 'Dawson Wang', 'home');
+  assertIncludes(home, 'AI 工具落地', 'home');
+  assertIncludes(home, 'action="/api/inquiry"', 'home inquiry form');
+  assertIncludes(home, 'method="POST"', 'home inquiry form');
+  for (const field of ['name', 'email', 'company', 'goal', 'team_size', 'budget', 'timeline', 'hp_field']) {
+    assertIncludes(home, `name="${field}"`, `home inquiry form field ${field}`);
+  }
+  assertIncludes(home, 'href="/#inquire"', 'home appointment CTA');
+
+  const allPosts = readGenerated('days/index.html');
+  assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
+  assertIncludes(allPosts, '所有', 'all posts');
+  assertIncludes(allPosts, '文章', 'all posts');
+  assertIncludes(allPosts, '共 ', 'all posts');
+  const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
+  if (allPostsDayLinks < days.length) fail(`All posts page links only ${allPostsDayLinks}/${days.length} day pages`);
+
+  const search = readGenerated('search/index.html');
+  assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
+  assertIncludes(search, 'id="search-form"', 'search form');
+  assertIncludes(search, 'type="search"', 'search form');
+  assertIncludes(search, 'value="keyword"', 'search keyword mode');
+  assertIncludes(search, 'value="semantic"', 'search semantic mode');
+  assertIncludes(search, 'id="search-results"', 'search results');
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
@@ -113,4 +141,4 @@ if (failures.length) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log('✓ generated SEO output contains required metadata, crawler files, sitemap coverage, llms.txt, and content routes');
+console.log('✓ generated SEO and production-flow output contains required metadata, inquiry form, article browsing, search page, crawler files, sitemap coverage, llms.txt, and content routes');
