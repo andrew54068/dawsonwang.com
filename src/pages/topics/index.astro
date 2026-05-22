@@ -2,13 +2,42 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopicCard from '../../components/TopicCard.astro';
 import { allTopics, daysForTopic } from '../../lib/topics';
+import { SITE_URL, absoluteUrl } from '../../lib/seo';
 
 const topics = allTopics().map(t => ({
   ...t,
   count: daysForTopic(t.slug).length,
 }));
+
+const description = '依主題瀏覽 Dawson Wang 的 AI 工具落地文章：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。';
+
+const collectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${SITE_URL}/topics#collection`,
+  url: `${SITE_URL}/topics`,
+  name: 'AI 實作主題',
+  description,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: { '@id': `${SITE_URL}/#person` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: topics.length,
+    itemListElement: topics.map((t, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      url: absoluteUrl(`/topics/${t.slug}`),
+      name: t.title,
+    })),
+  },
+};
 ---
-<BaseLayout title="AI 實作主題" description="依主題瀏覽 Dawson Wang 的 AI 工具落地文章：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。">
+<BaseLayout
+  title="AI 實作主題"
+  description={description}
+  structuredData={collectionJsonLd}
+>
   <article class="max-w-5xl mx-auto px-8 py-16">
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPICS · {topics.length} CATEGORIES</div>
     <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"

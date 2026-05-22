@@ -88,6 +88,30 @@ if (!existsSync(outDir)) {
     note(`generated day pages: ${generatedDayPages.length}/${days.length}`);
   }
 
+  const topicsIndex = readGenerated('topics/index.html');
+  assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
+  assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>[^<]*"@type":"CollectionPage"[^<]*<\/script>/s, 'topics index CollectionPage JSON-LD');
+
+  // Pick first generated topic detail page from sitemap-derivable slugs (scan dist/topics directory)
+  const topicsDir = path.join(outDir, 'topics');
+  if (existsSync(topicsDir)) {
+    const topicSlugs = readdirSync(topicsDir, { withFileTypes: true })
+      .filter(e => e.isDirectory())
+      .map(e => e.name);
+    if (topicSlugs.length === 0) {
+      fail('No generated topic detail pages found under topics/');
+    } else {
+      const sample = topicSlugs[0];
+      const topicHtml = readGenerated(`topics/${sample}/index.html`);
+      assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${sample}"`, `topic ${sample}`);
+      assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>[^<]*"@type":"CollectionPage"[^<]*<\/script>/s, `topic ${sample} CollectionPage JSON-LD`);
+      assertMatch(topicHtml, /"@type":"BreadcrumbList"/, `topic ${sample} BreadcrumbList`);
+      note(`generated topic detail pages: ${topicSlugs.length}`);
+    }
+  } else {
+    fail('Missing generated topics/ directory');
+  }
+
   const sitemap = readGenerated('sitemap.xml');
   assertIncludes(sitemap, `<loc>${siteUrl}/</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/days</loc>`, 'sitemap');
@@ -96,6 +120,9 @@ if (!existsSync(outDir)) {
   if (latestDay) assertIncludes(sitemap, `<loc>${siteUrl}/day/${latestDay}</loc>`, 'sitemap');
   const sitemapDayCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/day\/\d+<\/loc>/g)).length;
   if (sitemapDayCount !== days.length) fail(`Sitemap day URL count mismatch: ${sitemapDayCount}/${days.length}`);
+  const sitemapTopicMatches = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/topics\/[^<]+<\/loc>/g));
+  if (sitemapTopicMatches.length === 0) fail('Sitemap is missing /topics/<slug> URLs');
+  else note(`sitemap topic detail URLs: ${sitemapTopicMatches.length}`);
 
   const robots = readGenerated('robots.txt');
   assertIncludes(robots, `Sitemap: ${siteUrl}/sitemap.xml`, 'robots.txt');
