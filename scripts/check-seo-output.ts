@@ -133,6 +133,8 @@ if (!existsSync(outDir)) {
     // Article enrichment (wordCount + isPartOf are stable across all days; articleSection gated below).
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
     assertIncludes(dayHtml, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `day ${latestDay} Article isPartOf`);
+    assertIncludes(dayHtml, `"mainEntityOfPage":{"@type":"WebPage","@id":"${siteUrl}/day/${latestDay}"}`, `day ${latestDay} Article mainEntityOfPage WebPage`);
+    assertMatch(dayHtml, /"image":\{"@type":"ImageObject","url":"https:\/\/dawsonwang\.com\/og-default\.png","width":1200,"height":630\}/, `day ${latestDay} Article ImageObject dimensions`);
     // OG article:* metadata: published/modified/author asserted on the latest day.
     assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
     assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);

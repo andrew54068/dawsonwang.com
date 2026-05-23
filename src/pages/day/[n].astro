@@ -7,7 +7,14 @@ import MetricsBlock from '../../components/MetricsBlock.astro';
 import ExternalLinks from '../../components/ExternalLinks.astro';
 import { isTopPerformer } from '../../lib/metrics';
 import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
-import { SITE_URL, cleanDescription, breadcrumbJsonLd } from '../../lib/seo';
+import {
+  SITE_URL,
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_WIDTH,
+  DEFAULT_OG_IMAGE_HEIGHT,
+  cleanDescription,
+  breadcrumbJsonLd,
+} from '../../lib/seo';
 import Divider from '../../components/Divider.astro';
 
 export async function getStaticPaths() {
@@ -52,20 +59,27 @@ function computeWordCount(body: string): number {
 }
 const articleWordCount = computeWordCount(day.data.body);
 const primarySection = topics[0]?.title;
+const canonicalDayUrl = `${SITE_URL}/day/${day.data.dayNumber}`;
+const articleImageJsonLd = {
+  '@type': 'ImageObject',
+  url: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+  width: DEFAULT_OG_IMAGE_WIDTH,
+  height: DEFAULT_OG_IMAGE_HEIGHT,
+};
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: `Day ${day.data.dayNumber} ${day.data.subtitle}`,
   description: articleDescription,
-  url: `${SITE_URL}/day/${day.data.dayNumber}`,
-  mainEntityOfPage: `${SITE_URL}/day/${day.data.dayNumber}`,
+  url: canonicalDayUrl,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalDayUrl },
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   author: { '@id': `${SITE_URL}/#person` },
   publisher: { '@id': `${SITE_URL}/#person` },
   datePublished: publishDate ?? undefined,
   dateModified: publishDate ?? undefined,
-  image: slides.length > 0 ? `${SITE_URL}${slides[0].src}` : `${SITE_URL}/og-default.png`,
+  image: articleImageJsonLd,
   keywords: topics.map(t => t.title),
   ...(topics.length > 0 ? { about: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })) } : {}),
   wordCount: articleWordCount,
