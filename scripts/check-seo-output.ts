@@ -76,6 +76,9 @@ if (!existsSync(outDir)) {
   assertMatch(home, /<meta name="twitter:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
   assertMatch(home, /<meta name="twitter:image:alt" content="[^"]+"/, 'home twitter:image:alt');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
+  assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
+  assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
+  assertMatch(home, /"@type":"WebSite"[^}]*"description":"/, 'home WebSite description');
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
   assertIncludes(home, 'action="/api/inquiry"', 'home inquiry form');
