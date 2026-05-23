@@ -185,12 +185,24 @@ if (!existsSync(outDir)) {
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
+  // DefinedTermSet hub: models topics as a controlled vocabulary, with isPartOf graph link up to #website
+  // and one hasDefinedTerm reference per TOPICS entry (generated from src/data/topics.ts — no literal slugs in JSON-LD source).
+  assertMatch(topicsIndex, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
+  assertMatch(topicsIndex, /"@type":"DefinedTermSet"[\s\S]*?"isPartOf":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, '/topics DefinedTermSet isPartOf → #website graph link');
+  for (const topic of TOPICS) {
+    assertIncludes(topicsIndex, `{"@id":"${siteUrl}/topics/${topic.slug}#term"}`, `/topics DefinedTermSet hasDefinedTerm → ${topic.slug}#term graph link`);
+  }
+  // Count guard: future TOPICS growth ships green automatically without a literal-number edit.
+  const taxonomyTermRefCount = countMatches(topicsIndex, /"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"/g);
+  if (taxonomyTermRefCount < TOPICS.length) fail(`/topics DefinedTermSet term-ref count ${taxonomyTermRefCount} < TOPICS.length ${TOPICS.length}`);
   for (const topic of TOPICS) {
     const label = `topic ${topic.slug}`;
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
+    // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
+    assertMatch(topicHtml, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
   }
   note(`generated topic pages: ${TOPICS.length}/${TOPICS.length}`);
 
