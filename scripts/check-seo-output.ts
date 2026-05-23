@@ -79,6 +79,13 @@ if (!existsSync(outDir)) {
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
   assertMatch(home, /"@type":"WebSite"[^}]*"description":"/, 'home WebSite description');
+  // ProfessionalService OfferCatalog enrichment: mirrors src/data/services.ts (3 tier services).
+  assertMatch(home, /"@type":"ProfessionalService"[\s\S]*?"hasOfferCatalog":\{[\s\S]*?"@type":"OfferCatalog"/, 'home ProfessionalService hasOfferCatalog');
+  assertIncludes(home, `"@id":"${siteUrl}/#ai-workflow-service-catalog"`, 'home OfferCatalog @id');
+  const homeOfferCount = countMatches(home, /"@type":"Offer","position":\d+/g);
+  if (homeOfferCount < 3) fail(`home OfferCatalog has only ${homeOfferCount} Offer items (expected >=3 — one per service tier)`);
+  assertMatch(home, /"@type":"Offer"[\s\S]*?"itemOffered":\{"@type":"Service"[\s\S]*?"provider":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home Offer.itemOffered Service.provider -> #person graph link');
+  assertMatch(home, /"@type":"Offer"[^}]*"url":"https:\/\/dawsonwang\.com\/#inquire"/, 'home Offer.url absolute -> #inquire');
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
   assertIncludes(home, 'action="/api/inquiry"', 'home inquiry form');
