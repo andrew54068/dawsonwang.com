@@ -82,6 +82,10 @@ if (!existsSync(outDir)) {
   // Root-graph link: Person → ProfessionalService (joins the commercial-intent subtree into the Person node).
   assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"worksFor":\\{"@id":"${siteUrl}/#ai-workflow-service"\\}`), 'home Person worksFor → #ai-workflow-service graph link');
   assertMatch(home, /"@type":"WebSite"[^}]*"description":"/, 'home WebSite description');
+  // Bidirectional Person ↔ WebSite root-graph links (PR/issue #55 — root-graph enrichment).
+  assertMatch(home, /"@type":"Person"[\s\S]*?"mainEntityOfPage":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, 'home Person mainEntityOfPage → #website graph link');
+  assertMatch(home, /"@type":"WebSite"[\s\S]*?"mainEntity":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home WebSite mainEntity → #person graph link');
+  assertMatch(home, /"@type":"WebSite"[\s\S]*?"copyrightHolder":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home WebSite copyrightHolder → #person graph link');
   // ProfessionalService OfferCatalog enrichment: mirrors src/data/services.ts (3 tier services).
   assertMatch(home, /"@type":"ProfessionalService"[\s\S]*?"hasOfferCatalog":\{[\s\S]*?"@type":"OfferCatalog"/, 'home ProfessionalService hasOfferCatalog');
   // Graph links back to the root WebSite node so the ProfessionalService + its OfferCatalog are not orphan nodes.
