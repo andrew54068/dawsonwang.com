@@ -7,7 +7,7 @@ import MetricsBlock from '../../components/MetricsBlock.astro';
 import ExternalLinks from '../../components/ExternalLinks.astro';
 import { isTopPerformer } from '../../lib/metrics';
 import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
-import { SITE_URL, cleanDescription, breadcrumbJsonLd } from '../../lib/seo';
+import { SITE_URL, cleanDescription, breadcrumbJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_WIDTH, DEFAULT_OG_IMAGE_HEIGHT } from '../../lib/seo';
 import Divider from '../../components/Divider.astro';
 
 export async function getStaticPaths() {
@@ -52,20 +52,35 @@ function computeWordCount(body: string): number {
 }
 const articleWordCount = computeWordCount(day.data.body);
 const primarySection = topics[0]?.title;
+const dayUrl = `${SITE_URL}/day/${day.data.dayNumber}`;
+// Primary Article image: og-default with known dimensions to qualify for the large-image
+// Article rich result (Google guidance: declare width/height, prefer ≥1200px). Slide images
+// from content/dayNN are added as secondary string entries when present — we don't have
+// reliable dimensions for them at build time, so the typed primary is the dimension anchor.
+const fallbackImage = {
+  '@type': 'ImageObject',
+  url: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+  width: DEFAULT_OG_IMAGE_WIDTH,
+  height: DEFAULT_OG_IMAGE_HEIGHT,
+};
+const slideImageUrls = slides.map(s => `${SITE_URL}${s.src}`);
+const articleImage: unknown = slideImageUrls.length > 0
+  ? [fallbackImage, ...slideImageUrls]
+  : fallbackImage;
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: `Day ${day.data.dayNumber} ${day.data.subtitle}`,
   description: articleDescription,
-  url: `${SITE_URL}/day/${day.data.dayNumber}`,
-  mainEntityOfPage: `${SITE_URL}/day/${day.data.dayNumber}`,
+  url: dayUrl,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': dayUrl },
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   author: { '@id': `${SITE_URL}/#person` },
   publisher: { '@id': `${SITE_URL}/#person` },
   datePublished: publishDate ?? undefined,
   dateModified: publishDate ?? undefined,
-  image: slides.length > 0 ? `${SITE_URL}${slides[0].src}` : `${SITE_URL}/og-default.png`,
+  image: articleImage,
   keywords: topics.map(t => t.title),
   ...(topics.length > 0 ? { about: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })) } : {}),
   wordCount: articleWordCount,
