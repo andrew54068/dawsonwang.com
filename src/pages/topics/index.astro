@@ -8,6 +8,20 @@ const topics = allTopics().map(t => ({
   ...t,
   count: daysForTopic(t.slug).length,
 }));
+
+// DefinedTermSet hub: models the topic list as a controlled vocabulary / taxonomy.
+// Single source of truth — references each topic's DefinedTerm @id by allTopics()/TOPICS slug,
+// so future topic additions propagate without literal edits here.
+const topicTaxonomyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${SITE_URL}/topics#topic-taxonomy`,
+  name: 'AI 實作主題分類',
+  description: 'Dawson Wang 的 AI 工具落地主題分類：agent workflow、Claude Code、MCP、瀏覽器自動化、內容流程、開發工具、資安與個人工作流。',
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  hasDefinedTerm: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })),
+};
 const topicCollectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -35,7 +49,7 @@ const topicsIndexBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Topics', url: '/topics' },
 ]);
 ---
-<BaseLayout title="AI 實作主題" description="依主題瀏覽 Dawson Wang 的 AI 工具落地文章：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。" structuredData={[topicCollectionJsonLd, topicsIndexBreadcrumbJsonLd]}>
+<BaseLayout title="AI 實作主題" description="依主題瀏覽 Dawson Wang 的 AI 工具落地文章：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。" structuredData={[topicTaxonomyJsonLd, topicCollectionJsonLd, topicsIndexBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPICS · {topics.length} CATEGORIES</div>
     <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"

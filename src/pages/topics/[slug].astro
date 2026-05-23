@@ -35,6 +35,7 @@ const topicJsonLd = {
     name: topic.title,
     description: topic.blurb,
     url: `${SITE_URL}/topics/${topic.slug}`,
+    inDefinedTermSet: { '@id': `${SITE_URL}/topics#topic-taxonomy` },
   },
   mainEntity: {
     '@type': 'ItemList',
