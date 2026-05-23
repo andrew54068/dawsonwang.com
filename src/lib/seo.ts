@@ -66,6 +66,11 @@ export const personJsonLd = {
   // Graph link: Person → ProfessionalService node emitted on / (src/pages/index.astro).
   // Data-independent; propagates wherever personJsonLd is rendered (currently the home page only).
   worksFor: { '@id': `${SITE_URL}/#ai-workflow-service` },
+  // Bidirectional root-graph link: Person ↔ WebSite. WebSite.publisher/mainEntity/copyrightHolder
+  // all point at #person; this is the reverse edge declaring the WebSite as the Person's
+  // canonical page. Data-independent helper enrichment — see website-seo-optimization skill
+  // "Root-graph enrichment technique".
+  mainEntityOfPage: { '@id': `${SITE_URL}/#website` },
 };
 
 export const websiteJsonLd = {
@@ -77,6 +82,10 @@ export const websiteJsonLd = {
   description: DEFAULT_DESCRIPTION,
   inLanguage: 'zh-Hant-TW',
   publisher: { '@id': `${SITE_URL}/#person` },
+  // Schema.org canonical signal that this personal site is *primarily about* its owner.
+  // Stronger than `publisher` alone (which only declares who publishes content).
+  mainEntity: { '@id': `${SITE_URL}/#person` },
+  copyrightHolder: { '@id': `${SITE_URL}/#person` },
   potentialAction: {
     '@type': 'SearchAction',
     target: `${SITE_URL}/search?q={search_term_string}`,
