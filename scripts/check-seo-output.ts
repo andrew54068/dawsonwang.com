@@ -133,6 +133,13 @@ if (!existsSync(outDir)) {
     // Article enrichment (wordCount + isPartOf are stable across all days; articleSection gated below).
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
     assertIncludes(dayHtml, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `day ${latestDay} Article isPartOf`);
+    // mainEntityOfPage promoted to typed WebPage node (was bare URL string).
+    assertIncludes(dayHtml, `"mainEntityOfPage":{"@type":"WebPage","@id":"${siteUrl}/day/${latestDay}"}`, `day ${latestDay} Article mainEntityOfPage WebPage`);
+    // image promoted to typed ImageObject with declared dimensions (large-image rich-result eligibility).
+    // Primary image is always the og-default fallback (1200x630) so dimensions are stable across days.
+    assertMatch(dayHtml, /"image":(\[\{|\{)"@type":"ImageObject","url":"https:\/\/dawsonwang\.com\/og-default\.png","width":1200,"height":630/, `day ${latestDay} Article image ImageObject`);
+    // Negative: ensure we did NOT regress to bare-URL mainEntityOfPage.
+    if (/"mainEntityOfPage":"https:/.test(dayHtml)) fail(`day ${latestDay} Article mainEntityOfPage regressed to bare URL string`);
     // OG article:* metadata: published/modified/author asserted on the latest day.
     assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
     assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
