@@ -53,6 +53,8 @@ export const personJsonLd = {
   url: SITE_URL,
   image: absoluteUrl('/dawson.webp'),
   jobTitle: 'AI workflow implementation consultant',
+  description: DEFAULT_DESCRIPTION,
+  knowsLanguage: ['zh-Hant-TW', 'en'],
   knowsAbout: [
     'AI workflow implementation',
     'Claude Code',
@@ -69,6 +71,7 @@ export const websiteJsonLd = {
   '@id': `${SITE_URL}/#website`,
   name: SITE_NAME,
   url: SITE_URL,
+  description: DEFAULT_DESCRIPTION,
   inLanguage: 'zh-Hant-TW',
   publisher: { '@id': `${SITE_URL}/#person` },
   potentialAction: {
