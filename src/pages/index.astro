@@ -20,6 +20,52 @@ const serviceJsonLd = {
   founder: { '@id': `${SITE_URL}/#person` },
   serviceType: ['AI 工具落地', 'AI workflow implementation', 'Claude Code training', 'MCP server implementation', 'Agent workflow consulting'],
   description: homeDescription,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'AI 工具落地服務項目',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        url: `${SITE_URL}/#inquire`,
+        itemOffered: {
+          '@type': 'Service',
+          name: 'AI workflow implementation',
+          serviceType: 'AI 工具落地與工作流導入',
+          description: '盤點團隊既有流程，設計 Claude Code、agent workflow 與自動化工具的實際導入路線。',
+        },
+      },
+      {
+        '@type': 'Offer',
+        url: `${SITE_URL}/#inquire`,
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Claude Code team training',
+          serviceType: 'Claude Code 團隊培訓',
+          description: '協助工程、產品與營運團隊建立可重複使用的 AI 協作規範、skills 與開發節奏。',
+        },
+      },
+      {
+        '@type': 'Offer',
+        url: `${SITE_URL}/#inquire`,
+        itemOffered: {
+          '@type': 'Service',
+          name: 'MCP server implementation',
+          serviceType: 'MCP server 與內部系統串接',
+          description: '將文件、資料庫、內部 API 與營運工具接到 agent 工作流，降低手動切換成本。',
+        },
+      },
+      {
+        '@type': 'Offer',
+        url: `${SITE_URL}/#inquire`,
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Agent workflow consulting',
+          serviceType: 'Agent workflow 顧問陪跑',
+          description: '從 PoC 到上線交付，陪跑客製 agent workflow 的設計、驗證與團隊採用。',
+        },
+      },
+    ],
+  },
 };
 ---
 <BaseLayout title="Dawson Wang" description={homeDescription} structuredData={serviceJsonLd}>
