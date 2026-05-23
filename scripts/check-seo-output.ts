@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { TOPICS, DAY_TOPICS } from '../src/data/topics';
+import { PROOF_PROJECTS } from '../src/data/proof-projects';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -218,6 +219,21 @@ if (!existsSync(outDir)) {
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
   assertIncludes(proof, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
+  // mainEntity ItemList of shipped projects — single source of truth in src/data/proof-projects.ts
+  assertMatch(proof, /"@type":"CollectionPage"[\s\S]*?"mainEntity":\{[^}]*"@type":"ItemList"/, '/proof CollectionPage→ItemList mainEntity link');
+  assertMatch(proof, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${PROOF_PROJECTS.length}\\b`), '/proof ItemList numberOfItems matches PROOF_PROJECTS.length');
+  // Count CreativeWork occurrences in the structuredData script (each PROOF_PROJECTS item emits exactly one
+  // CreativeWork; BreadcrumbList items are not CreativeWork, so this isolates the project count without
+  // accidentally counting BreadcrumbList ListItems that share the same script tag).
+  const proofCreativeWorkCount = countMatches(proof, /"@type":"CreativeWork"/g);
+  if (proofCreativeWorkCount !== PROOF_PROJECTS.length) {
+    fail(`/proof CreativeWork count ${proofCreativeWorkCount} !== PROOF_PROJECTS.length ${PROOF_PROJECTS.length}`);
+  }
+  // Spot-check that each PROOF_PROJECTS entry's name appears inside the JSON-LD (escaped form).
+  for (const project of PROOF_PROJECTS) {
+    const escaped = JSON.stringify(project.name).slice(1, -1).replace(/</g, '\\u003c');
+    assertIncludes(proof, escaped, `/proof ItemList contains project name ${project.name}`);
+  }
 
   // RSS feed
   assertIncludes(home, '<link rel="alternate" type="application/rss+xml"', 'home rss alternate link');
