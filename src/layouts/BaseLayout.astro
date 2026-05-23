@@ -8,6 +8,7 @@ import {
   DEFAULT_OG_IMAGE_WIDTH,
   DEFAULT_OG_IMAGE_HEIGHT,
   DEFAULT_OG_IMAGE_ALT,
+  SITE_LANGUAGE,
   SITE_LOCALE,
   SITE_NAME,
   absoluteUrl,
@@ -81,6 +82,8 @@ const allStructuredData = [...baseStructuredData, ...pageStructuredData];
     <meta name="robots" content={robotsContent} />
     <meta name="author" content="Dawson Wang" />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang={SITE_LANGUAGE} href={canonicalUrl} />
+    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content={SITE_LOCALE} />
     <meta property="og:title" content={fullTitle} />

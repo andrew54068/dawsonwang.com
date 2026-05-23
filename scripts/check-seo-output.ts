@@ -68,6 +68,8 @@ if (!existsSync(outDir)) {
 
   const home = readGenerated('index.html');
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
+  assertIncludes(home, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/"`, 'home hreflang zh-Hant-TW');
+  assertIncludes(home, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/"`, 'home hreflang x-default');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertIncludes(home, `<meta property="og:url" content="${siteUrl}/"`, 'home');
   assertMatch(home, /<meta property="og:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
@@ -136,6 +138,8 @@ if (!existsSync(outDir)) {
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay}`);
+    assertIncludes(dayHtml, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang zh-Hant-TW`);
+    assertIncludes(dayHtml, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang x-default`);
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `day ${latestDay}`);
     assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, `day ${latestDay} Article JSON-LD`);
