@@ -140,9 +140,10 @@ if (!existsSync(outDir)) {
   if (latestDayWithTopics) {
     const dayHtml = readGenerated(`day/${latestDayWithTopics}/index.html`);
     assertMatch(dayHtml, /<meta property="article:tag" content="[^"]+"/, `day ${latestDayWithTopics} article:tag`);
-    note(`article:tag asserted on day ${latestDayWithTopics}`);
+    assertMatch(dayHtml, /"about":\[\{"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"\}/, `day ${latestDayWithTopics} Article about → DefinedTerm graph link`);
+    note(`article:tag and Article about asserted on day ${latestDayWithTopics}`);
   } else {
-    note('no day with topics found; article:tag probe skipped');
+    note('no day with topics found; article:tag and Article about probes skipped');
   }
 
   const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
