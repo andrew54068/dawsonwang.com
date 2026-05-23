@@ -63,6 +63,9 @@ export const personJsonLd = {
     'Full-stack software development',
     'Developer relations',
   ],
+  // Graph link: Person → ProfessionalService node emitted on / (src/pages/index.astro).
+  // Data-independent; propagates wherever personJsonLd is rendered (currently the home page only).
+  worksFor: { '@id': `${SITE_URL}/#ai-workflow-service` },
 };
 
 export const websiteJsonLd = {
