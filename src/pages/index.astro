@@ -6,8 +6,10 @@ import ProofExcerpt from '../components/ProofExcerpt.astro';
 import ServiceExplainer from '../components/ServiceExplainer.astro';
 import InquiryForm from '../components/InquiryForm.astro';
 import { SITE_URL } from '../lib/seo';
+import { SERVICES } from '../data/services';
 
 const homeDescription = 'Dawson Wang 幫台灣團隊把 AI 工具落地到實際工作流：Claude Code、客製 skills、MCP server、agent 工作流、團隊培訓與顧問陪跑。';
+const inquireUrl = `${SITE_URL}/#inquire`;
 const serviceJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
@@ -20,6 +22,26 @@ const serviceJsonLd = {
   founder: { '@id': `${SITE_URL}/#person` },
   serviceType: ['AI 工具落地', 'AI workflow implementation', 'Claude Code training', 'MCP server implementation', 'Agent workflow consulting'],
   description: homeDescription,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    '@id': `${SITE_URL}/#ai-workflow-service-catalog`,
+    name: 'Dawson Wang AI 工具落地服務方案',
+    inLanguage: 'zh-Hant-TW',
+    itemListElement: SERVICES.map((service, index) => ({
+      '@type': 'Offer',
+      position: index + 1,
+      url: inquireUrl,
+      availability: 'https://schema.org/InStock',
+      itemOffered: {
+        '@type': 'Service',
+        name: service.title,
+        description: service.blurb,
+        serviceType: service.examples,
+        provider: { '@id': `${SITE_URL}/#person` },
+        areaServed: 'Taiwan',
+      },
+    })),
+  },
 };
 ---
 <BaseLayout title="Dawson Wang" description={homeDescription} structuredData={serviceJsonLd}>
