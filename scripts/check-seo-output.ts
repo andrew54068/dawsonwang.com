@@ -273,6 +273,17 @@ if (!existsSync(outDir)) {
   // Negative-sitemap probe: /inquiry-received must NOT appear in sitemap.xml or llms.txt.
   if (sitemap.includes(`${siteUrl}/inquiry-received`)) fail('sitemap.xml leaks /inquiry-received (should be excluded)');
   if (llms.includes(`${siteUrl}/inquiry-received`)) fail('llms.txt leaks /inquiry-received (should be excluded)');
+  // /404 custom error page is noindexed via BaseLayout `noindex` prop and must navigate back into the content graph.
+  const notFound = readGenerated('404.html');
+  assertIncludes(notFound, '<meta name="robots" content="noindex, nofollow"', '/404 noindex meta robots');
+  if (notFound.includes('content="index, follow')) fail('/404 leaks index,follow robots directive (should be noindex,nofollow)');
+  // Negative-sitemap/llms probe: /404 must NOT appear in sitemap.xml or llms.txt.
+  if (sitemap.includes(`${siteUrl}/404`)) fail('sitemap.xml leaks /404 (should be excluded)');
+  if (llms.includes(`${siteUrl}/404`)) fail('llms.txt leaks /404 (should be excluded)');
+  // Internal-link assertions: 404 page must navigate back into the content graph (no dead end).
+  for (const href of ['href="/"', 'href="/days"', 'href="/topics"', 'href="/search"']) {
+    assertIncludes(notFound, href, `/404 navigation link ${href}`);
+  }
   // Guard against an accidental global flip: indexable pages must still emit index,follow.
   assertIncludes(home, 'content="index, follow', 'home robots index,follow (regression guard)');
   assertIncludes(search, 'content="index, follow', '/search robots index,follow (regression guard)');
