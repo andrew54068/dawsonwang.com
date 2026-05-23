@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="找不到頁面"
+  description="這個頁面不存在或已經搬走了。回首頁、看 100 天系列、或從主題索引重新出發。"
+  noindex={true}
+>
+  <article class="max-w-xl mx-auto px-8 py-24 text-center">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">404 · NOT FOUND</div>
+    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] font-semibold"
+        style="font-size: clamp(2.5rem, 6vw, 4rem);">
+      這頁<span class="text-teal">不見了</span>。
+    </h1>
+    <p class="font-display text-muted text-lg mt-6 leading-relaxed">
+      網址打錯、或這個頁面已經搬走。從下面幾個入口重新開始：
+    </p>
+    <nav class="mt-8 flex flex-wrap gap-3 justify-center" aria-label="找不到頁面導覽">
+      <a href="/" class="btn-ghost">← 回首頁</a>
+      <a href="/days" class="btn-ghost">100 天系列</a>
+      <a href="/topics" class="btn-ghost">主題索引</a>
+      <a href="/search" class="btn-ghost">搜尋</a>
+    </nav>
+  </article>
+</BaseLayout>
