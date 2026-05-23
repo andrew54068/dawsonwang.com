@@ -20,6 +20,7 @@ const serviceJsonLd = {
   areaServed: 'Taiwan',
   inLanguage: 'zh-Hant-TW',
   founder: { '@id': `${SITE_URL}/#person` },
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   serviceType: ['AI 工具落地', 'AI workflow implementation', 'Claude Code training', 'MCP server implementation', 'Agent workflow consulting'],
   description: homeDescription,
   hasOfferCatalog: {
@@ -27,6 +28,7 @@ const serviceJsonLd = {
     '@id': `${SITE_URL}/#ai-workflow-service-catalog`,
     name: 'Dawson Wang AI 工具落地服務方案',
     inLanguage: 'zh-Hant-TW',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
     itemListElement: SERVICES.map((service, index) => ({
       '@type': 'Offer',
       position: index + 1,

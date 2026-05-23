@@ -79,9 +79,14 @@ if (!existsSync(outDir)) {
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
+  // Root-graph link: Person → ProfessionalService (joins the commercial-intent subtree into the Person node).
+  assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"worksFor":\\{"@id":"${siteUrl}/#ai-workflow-service"\\}`), 'home Person worksFor → #ai-workflow-service graph link');
   assertMatch(home, /"@type":"WebSite"[^}]*"description":"/, 'home WebSite description');
   // ProfessionalService OfferCatalog enrichment: mirrors src/data/services.ts (3 tier services).
   assertMatch(home, /"@type":"ProfessionalService"[\s\S]*?"hasOfferCatalog":\{[\s\S]*?"@type":"OfferCatalog"/, 'home ProfessionalService hasOfferCatalog');
+  // Graph links back to the root WebSite node so the ProfessionalService + its OfferCatalog are not orphan nodes.
+  assertMatch(home, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home ProfessionalService isPartOf → #website graph link');
+  assertMatch(home, new RegExp(`"@type":"OfferCatalog"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home OfferCatalog isPartOf → #website graph link');
   assertIncludes(home, `"@id":"${siteUrl}/#ai-workflow-service-catalog"`, 'home OfferCatalog @id');
   const homeOfferCount = countMatches(home, /"@type":"Offer","position":\d+/g);
   if (homeOfferCount < 3) fail(`home OfferCatalog has only ${homeOfferCount} Offer items (expected >=3 — one per service tier)`);
