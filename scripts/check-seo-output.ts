@@ -151,6 +151,7 @@ if (!existsSync(outDir)) {
     assertIncludes(dayHtml, `"copyrightHolder":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article copyrightHolder → #person graph link`);
     assertIncludes(dayHtml, `"creator":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article creator → #person graph link`);
     assertIncludes(dayHtml, `"accountablePerson":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article accountablePerson → #person graph link`);
+    assertIncludes(dayHtml, `"editor":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article editor → #person graph link`);
     // mainEntityOfPage promoted to typed WebPage node (was bare URL string).
     assertIncludes(dayHtml, `"mainEntityOfPage":{"@type":"WebPage","@id":"${siteUrl}/day/${latestDay}"}`, `day ${latestDay} Article mainEntityOfPage WebPage`);
     // image promoted to typed ImageObject with declared dimensions (large-image rich-result eligibility).
