@@ -8,6 +8,13 @@ export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 export const DEFAULT_OG_IMAGE_ALT = 'Dawson Wang — AI 工具落地實踐者';
 
+// Single source of truth for Person.sameAs (Knowledge Graph entity-linking).
+// Extend with additional canonical, owner-controlled profile URLs (Threads, LinkedIn, …) as they
+// are confirmed. Never invent or guess social URLs — that is an SEO anti-pattern.
+export const PERSON_SAME_AS_URLS = [
+  'https://github.com/andrew54068',
+];
+
 export function absoluteUrl(pathOrUrl = '/') {
   if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
   return new URL(pathOrUrl, SITE_URL).toString();
@@ -72,6 +79,9 @@ export const personJsonLd = {
   // canonical page. Data-independent helper enrichment — see website-seo-optimization skill
   // "Root-graph enrichment technique".
   mainEntityOfPage: { '@id': `${SITE_URL}/#website` },
+  // Knowledge Graph entity-linking signal. Generated from PERSON_SAME_AS_URLS so new profile
+  // URLs require only a data-list edit, never a JSON-LD source edit.
+  sameAs: PERSON_SAME_AS_URLS,
 };
 
 export const websiteJsonLd = {

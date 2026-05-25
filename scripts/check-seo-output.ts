@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 import { PROOF_PROJECTS } from '../src/data/proof-projects';
+import { PERSON_SAME_AS_URLS } from '../src/lib/seo';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -81,6 +82,22 @@ if (!existsSync(outDir)) {
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
+  // Person.sameAs (Knowledge Graph entity-linking) generated from PERSON_SAME_AS_URLS in src/lib/seo.ts.
+  // Stable-subset assertion: presence of a sameAs array + the seed GitHub URL. List growth ships green
+  // automatically via the count-against-source-list guard below.
+  assertMatch(home, /"@type":"Person"[\s\S]*?"sameAs":\[/, 'home Person sameAs array');
+  for (const url of PERSON_SAME_AS_URLS) {
+    assertIncludes(home, JSON.stringify(url), `home Person sameAs contains ${url}`);
+  }
+  const homeSameAsBlock = home.match(/"@type":"Person"[\s\S]*?"sameAs":\[([^\]]*)\]/);
+  if (!homeSameAsBlock) {
+    fail('home Person sameAs array regex did not match');
+  } else {
+    const urlCount = countMatches(homeSameAsBlock[1], /"https?:\/\/[^"]+"/g);
+    if (urlCount < PERSON_SAME_AS_URLS.length) {
+      fail(`home Person sameAs has ${urlCount} URLs but PERSON_SAME_AS_URLS has ${PERSON_SAME_AS_URLS.length}`);
+    }
+  }
   // Root-graph link: Person → ProfessionalService (joins the commercial-intent subtree into the Person node).
   assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"worksFor":\\{"@id":"${siteUrl}/#ai-workflow-service"\\}`), 'home Person worksFor → #ai-workflow-service graph link');
   assertMatch(home, /"@type":"WebSite"[^}]*"description":"/, 'home WebSite description');
