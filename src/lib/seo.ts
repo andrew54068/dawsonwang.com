@@ -1,6 +1,7 @@
 export const SITE_URL = 'https://dawsonwang.com';
 export const SITE_NAME = 'Dawson Wang';
 export const SITE_LOCALE = 'zh_TW';
+export const SITE_LANGUAGE = 'zh-Hant-TW';
 export const DEFAULT_DESCRIPTION = 'Dawson Wang — 幫台灣團隊把 AI 工具落地到實際工作流。9 年新創軟體開發經驗，從 PoC、客製 agent workflow 到團隊培訓與上線交付。';
 export const DEFAULT_OG_IMAGE = '/og-default.png';
 export const DEFAULT_OG_IMAGE_WIDTH = 1200;
