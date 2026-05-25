@@ -90,12 +90,13 @@ const articleJsonLd = {
   ...(topics.length > 0 ? { about: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })) } : {}),
   wordCount: articleWordCount,
   ...(primarySection ? { articleSection: primarySection } : {}),
+  breadcrumb: { '@id': `${dayUrl}#breadcrumb` },
 };
 const dayBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Home', url: '/' },
   { name: 'Days', url: '/days' },
   { name: `Day ${day.data.dayNumber} ${day.data.subtitle ?? ''}`.trim(), url: `/day/${day.data.dayNumber}` },
-]);
+], dayUrl);
 ---
 <BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={slides[0]?.src ?? '/og-default.png'} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)}>
   <article class="max-w-5xl mx-auto px-8 py-14" data-pagefind-body data-pagefind-meta={`day:${day.data.dayNumber}`}>

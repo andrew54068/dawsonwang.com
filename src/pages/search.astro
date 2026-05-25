@@ -7,16 +7,18 @@ const days = await getCollection('days');
 const total = days.length;
 const searchTitle = '搜尋';
 const searchDescription = `從 ${total} 篇日誌中以關鍵字或語意查找`;
+const searchUrl = absoluteUrl('/search');
 const searchResultsPageJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SearchResultsPage',
   '@id': `${SITE_URL}/search#searchresultspage`,
   name: searchTitle,
   description: searchDescription,
-  url: absoluteUrl('/search'),
+  url: searchUrl,
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#person` },
+  breadcrumb: { '@id': `${searchUrl}#breadcrumb` },
   potentialAction: {
     '@type': 'SearchAction',
     target: `${SITE_URL}/search?q={search_term_string}`,
@@ -26,7 +28,7 @@ const searchResultsPageJsonLd = {
 const searchBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Home', url: '/' },
   { name: 'Search', url: '/search' },
-]);
+], searchUrl);
 ---
 <BaseLayout title={searchTitle} description={searchDescription} structuredData={[searchResultsPageJsonLd, searchBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16" data-pagefind-ignore="all">

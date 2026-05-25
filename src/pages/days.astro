@@ -13,16 +13,18 @@ const lastDay = sorted[0]?.data.dayNumber ?? days.length;
 
 const daysDescription = `Dawson Wang 連續 ${days.length} 天公開 AI 工具落地實作：Claude Code、agent workflow、MCP、automation、團隊工作流與產品實驗筆記。`;
 
+const daysUrl = `${SITE_URL}/days`;
 const daysCollectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  '@id': `${SITE_URL}/days#collection`,
-  url: `${SITE_URL}/days`,
+  '@id': `${daysUrl}#collection`,
+  url: daysUrl,
   name: '所有文章',
   description: daysDescription,
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#person` },
+  breadcrumb: { '@id': `${daysUrl}#breadcrumb` },
   mainEntity: {
     '@type': 'ItemList',
     numberOfItems: sorted.length,
@@ -38,7 +40,7 @@ const daysCollectionJsonLd = {
 const daysBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Home', url: '/' },
   { name: 'All posts', url: '/days' },
-]);
+], daysUrl);
 ---
 <BaseLayout title="AI 實作文章" description={daysDescription} structuredData={[daysCollectionJsonLd, daysBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
