@@ -1,3 +1,5 @@
+import { PERSON_SAME_AS_URLS } from '../data/profiles';
+
 export const SITE_URL = 'https://dawsonwang.com';
 export const SITE_NAME = 'Dawson Wang';
 export const SITE_LOCALE = 'zh_TW';
@@ -72,6 +74,10 @@ export const personJsonLd = {
   // canonical page. Data-independent helper enrichment — see website-seo-optimization skill
   // "Root-graph enrichment technique".
   mainEntityOfPage: { '@id': `${SITE_URL}/#website` },
+  // Knowledge Graph entity-linking: canonical off-site profile URLs sourced from
+  // src/data/profiles.ts. Tells search engines this Person entity is the same real-world
+  // person behind those external profiles. Extend src/data/profiles.ts to add more.
+  sameAs: [...PERSON_SAME_AS_URLS],
 };
 
 export const websiteJsonLd = {

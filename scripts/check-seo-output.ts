@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 import { PROOF_PROJECTS } from '../src/data/proof-projects';
+import { PERSON_SAME_AS_URLS } from '../src/data/profiles';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -83,6 +84,13 @@ if (!existsSync(outDir)) {
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
   // Root-graph link: Person → ProfessionalService (joins the commercial-intent subtree into the Person node).
   assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"worksFor":\\{"@id":"${siteUrl}/#ai-workflow-service"\\}`), 'home Person worksFor → #ai-workflow-service graph link');
+  // Knowledge Graph entity-linking: Person.sameAs array of canonical off-site profiles
+  // (sourced from src/data/profiles.ts). At minimum the GitHub URL must be present.
+  assertMatch(home, /"@type":"Person"[\s\S]*?"sameAs":\[[^\]]*"https:\/\/github\.com\/andrew54068"/, 'home Person sameAs contains GitHub URL');
+  for (const profileUrl of PERSON_SAME_AS_URLS) {
+    const escaped = profileUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"sameAs":\\[[^\\]]*"${escaped}"`), `home Person sameAs contains ${profileUrl}`);
+  }
   assertMatch(home, /"@type":"WebSite"[^}]*"description":"/, 'home WebSite description');
   // Bidirectional Person ↔ WebSite root-graph links (PR/issue #55 — root-graph enrichment).
   assertMatch(home, /"@type":"Person"[\s\S]*?"mainEntityOfPage":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, 'home Person mainEntityOfPage → #website graph link');
