@@ -1,4 +1,4 @@
-import { PERSON_SAME_AS_URLS } from '../data/profiles';
+import { PERSON_SAME_AS_URLS, PERSON_X_HANDLE } from '../data/profiles';
 
 export const SITE_URL = 'https://dawsonwang.com';
 export const SITE_NAME = 'Dawson Wang';
@@ -9,6 +9,7 @@ export const DEFAULT_OG_IMAGE = '/og-default.png';
 export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 export const DEFAULT_OG_IMAGE_ALT = 'Dawson Wang — AI 工具落地實踐者';
+export const SOCIAL_X_HANDLE = PERSON_X_HANDLE;
 
 export function absoluteUrl(pathOrUrl = '/') {
   if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;

@@ -7,3 +7,9 @@
 export const PERSON_SAME_AS_URLS: readonly string[] = [
   'https://github.com/andrew54068',
 ];
+
+// Canonical X / Twitter profile used for social-card attribution meta tags.
+// Keep the handle and URL together here so BaseLayout and future profile graph
+// enrichments read from a single source of truth.
+export const PERSON_X_URL = 'https://x.com/dawson54068';
+export const PERSON_X_HANDLE = '@dawson54068';
