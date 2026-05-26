@@ -158,13 +158,11 @@ if (!existsSync(outDir)) {
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
   assertIncludes(home, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/"`, 'home hreflang zh-Hant-TW');
   assertIncludes(home, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/"`, 'home hreflang x-default');
-  assertIncludes(home, `<title>${expectedHomeTitle}</title>`, 'home title');
+  assertTitleStack(home, expectedHomeTitle, 'home');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertIncludes(home, `<meta property="og:url" content="${siteUrl}/"`, 'home');
-  assertIncludes(home, `<meta property="og:title" content="${expectedHomeTitle}"`, 'home og:title');
   assertIncludes(home, '<meta name="twitter:site" content="@dawson54068"', 'home twitter:site');
   assertIncludes(home, '<meta name="twitter:creator" content="@dawson54068"', 'home twitter:creator');
-  assertIncludes(home, `<meta name="twitter:title" content="${expectedHomeTitle}"`, 'home twitter:title');
   assertMatch(home, /<meta property="og:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
   assertIncludes(home, '<meta property="og:image:width" content="1200"', 'home og:image:width');
   assertIncludes(home, '<meta property="og:image:height" content="630"', 'home og:image:height');
