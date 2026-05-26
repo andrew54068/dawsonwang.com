@@ -63,6 +63,19 @@ function assertTitleStack(haystack: string, expectedTitle: string, label: string
   assertIncludes(haystack, `<meta name="twitter:title" content="${expectedTitle}"`, `${label} twitter:title`);
 }
 
+function assertDiscoveryAlternates(haystack: string, label: string) {
+  assertIncludes(
+    haystack,
+    '<link rel="alternate" type="text/plain" title="Dawson Wang AI-readable site summary" href="/llms.txt"',
+    `${label} llms alternate`,
+  );
+  assertIncludes(
+    haystack,
+    '<link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml"',
+    `${label} rss alternate`,
+  );
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -120,6 +133,7 @@ if (!existsSync(outDir)) {
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
+  assertMatch(home, /"@type":"WebSite"[\s\S]*?"potentialAction":\{"@type":"SearchAction","target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}","query-input":"required name=search_term_string"\}/, 'home WebSite SearchAction potentialAction');
   // Root-graph link: Person → ProfessionalService (joins the commercial-intent subtree into the Person node).
   assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"worksFor":\\{"@id":"${siteUrl}/#ai-workflow-service"\\}`), 'home Person worksFor → #ai-workflow-service graph link');
   // Knowledge Graph entity-linking: Person.sameAs array of canonical off-site profiles
@@ -152,6 +166,7 @@ if (!existsSync(outDir)) {
     assertIncludes(home, `name="${field}"`, `home inquiry form field ${field}`);
   }
   assertIncludes(home, 'href="/#inquire"', 'home appointment CTA');
+  assertDiscoveryAlternates(home, 'home');
   // Negative probe: home is type=website, must NOT emit article:* OG tags.
   if (home.includes('article:published_time')) fail('home leaks article:published_time meta (should be type=website)');
 
@@ -231,6 +246,7 @@ if (!existsSync(outDir)) {
     assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `day ${latestDay} article:author`);
     assertMatch(dayHtml, /<meta property="og:image:alt" content="[^"]+"/, `day ${latestDay} og:image:alt`);
     assertMatch(dayHtml, /<meta name="twitter:image:alt" content="[^"]+"/, `day ${latestDay} twitter:image:alt`);
+    assertDiscoveryAlternates(dayHtml, `day ${latestDay}`);
     const latestDayOgImage = dayHtml.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
     if (!latestDayOgImage) {
       fail(`day ${latestDay} missing og:image meta`);
@@ -307,6 +323,7 @@ if (!existsSync(outDir)) {
     // topic growth ships green automatically (same pattern as the DefinedTermSet ref-count guard).
     assertIncludes(topicHtml, `"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"`, `${label} BreadcrumbList @id`);
     assertMatch(topicHtml, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"\\}`), `${label} CollectionPage breadcrumb → #breadcrumb graph link`);
+    if (topic.slug === TOPICS[0]?.slug) assertDiscoveryAlternates(topicHtml, label);
   }
   note(`generated topic pages: ${TOPICS.length}/${TOPICS.length}`);
 
