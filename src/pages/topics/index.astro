@@ -23,13 +23,15 @@ const topicTaxonomyJsonLd = {
   hasDefinedTerm: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })),
 };
 const topicsIndexUrl = `${SITE_URL}/topics`;
+const topicsIndexTitle = 'AI 工具落地主題索引';
+const topicsIndexDescription = `依主題瀏覽 Dawson Wang 的 ${topics.length} 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。`;
 const topicCollectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   '@id': `${topicsIndexUrl}#collection`,
   url: topicsIndexUrl,
   name: 'AI 實作主題',
-  description: '依主題瀏覽 Dawson Wang 的 AI 工具落地文章：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。',
+  description: topicsIndexDescription,
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#person` },
@@ -51,7 +53,7 @@ const topicsIndexBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Topics', url: '/topics' },
 ], topicsIndexUrl);
 ---
-<BaseLayout title="AI 實作主題" description="依主題瀏覽 Dawson Wang 的 AI 工具落地文章：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。" structuredData={[topicTaxonomyJsonLd, topicCollectionJsonLd, topicsIndexBreadcrumbJsonLd]}>
+<BaseLayout title={topicsIndexTitle} description={topicsIndexDescription} structuredData={[topicTaxonomyJsonLd, topicCollectionJsonLd, topicsIndexBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPICS · {topics.length} CATEGORIES</div>
     <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"

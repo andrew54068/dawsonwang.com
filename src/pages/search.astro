@@ -5,8 +5,8 @@ import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 
 const days = await getCollection('days');
 const total = days.length;
-const searchTitle = '搜尋';
-const searchDescription = `從 ${total} 篇日誌中以關鍵字或語意查找`;
+const searchTitle = 'AI 工作流文章搜尋';
+const searchDescription = `從 ${total} 篇 Dawson Wang 的 AI 工具落地日誌中，用關鍵字或語意搜尋 Claude Code、MCP、automation、內容流程與團隊導入案例。`;
 const searchUrl = absoluteUrl('/search');
 const searchResultsPageJsonLd = {
   '@context': 'https://schema.org',

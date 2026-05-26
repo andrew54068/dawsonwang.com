@@ -10,8 +10,8 @@ import { PROOF_PROJECTS } from '../data/proof-projects';
 const days = await getCollection('days');
 const stats = computeStatsSummary(days);
 const totalDays = stats.totalDays;
-const proofTitle = 'AI 工具落地作品集';
-const proofDescription = `${totalDays} 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果。`;
+const proofTitle = 'AI 工具落地案例與作品集';
+const proofDescription = `${totalDays} 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。`;
 const proofUrl = absoluteUrl('/proof');
 const proofCollectionJsonLd = {
   '@context': 'https://schema.org',
