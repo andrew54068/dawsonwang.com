@@ -73,6 +73,8 @@ if (!existsSync(outDir)) {
   assertIncludes(home, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/"`, 'home hreflang x-default');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertIncludes(home, `<meta property="og:url" content="${siteUrl}/"`, 'home');
+  assertIncludes(home, '<meta name="twitter:site" content="@dawson54068"', 'home twitter:site');
+  assertIncludes(home, '<meta name="twitter:creator" content="@dawson54068"', 'home twitter:creator');
   assertMatch(home, /<meta property="og:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
   assertIncludes(home, '<meta property="og:image:width" content="1200"', 'home og:image:width');
   assertIncludes(home, '<meta property="og:image:height" content="630"', 'home og:image:height');
@@ -155,6 +157,8 @@ if (!existsSync(outDir)) {
     assertIncludes(dayHtml, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang zh-Hant-TW`);
     assertIncludes(dayHtml, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang x-default`);
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `day ${latestDay}`);
+    assertIncludes(dayHtml, '<meta name="twitter:site" content="@dawson54068"', `day ${latestDay} twitter:site`);
+    assertIncludes(dayHtml, '<meta name="twitter:creator" content="@dawson54068"', `day ${latestDay} twitter:creator`);
     assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, `day ${latestDay} Article JSON-LD`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `day ${latestDay} BreadcrumbList JSON-LD`);
@@ -232,6 +236,8 @@ if (!existsSync(outDir)) {
     const label = `topic ${topic.slug}`;
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
+    assertIncludes(topicHtml, '<meta name="twitter:site" content="@dawson54068"', `${label} twitter:site`);
+    assertIncludes(topicHtml, '<meta name="twitter:creator" content="@dawson54068"', `${label} twitter:creator`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).

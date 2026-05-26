@@ -11,6 +11,7 @@ import {
   SITE_LANGUAGE,
   SITE_LOCALE,
   SITE_NAME,
+  SOCIAL_X_HANDLE,
   absoluteUrl,
   canonicalPath,
   cleanDescription,
@@ -99,6 +100,8 @@ const allStructuredData = [...baseStructuredData, ...pageStructuredData];
     {isArticle && articleAuthorUrl && <meta property="article:author" content={articleAuthorUrl} />}
     {ogArticleTags.map(tag => <meta property="article:tag" content={tag} />)}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={SOCIAL_X_HANDLE} />
+    <meta name="twitter:creator" content={SOCIAL_X_HANDLE} />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
