@@ -47,6 +47,22 @@ function countMatches(haystack: string, pattern: RegExp) {
   return Array.from(haystack.matchAll(pattern)).length;
 }
 
+function readPngDimensionsFromAssetUrl(assetUrl: string) {
+  try {
+    const { pathname } = new URL(assetUrl);
+    const imagePath = path.join(root, 'public', pathname.replace(/^\/+/, ''));
+    const imageBytes = readFileSync(imagePath);
+    if (imageBytes.length < 24 || imageBytes.toString('ascii', 1, 4) !== 'PNG') return undefined;
+
+    return {
+      width: imageBytes.readUInt32BE(16),
+      height: imageBytes.readUInt32BE(20),
+    };
+  } catch {
+    return undefined;
+  }
+}
+
 function listSourceDays() {
   const contentDir = path.join(root, '100days/content');
   return readdirSync(contentDir, { withFileTypes: true })
@@ -182,6 +198,18 @@ if (!existsSync(outDir)) {
     assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `day ${latestDay} article:author`);
     assertMatch(dayHtml, /<meta property="og:image:alt" content="[^"]+"/, `day ${latestDay} og:image:alt`);
     assertMatch(dayHtml, /<meta name="twitter:image:alt" content="[^"]+"/, `day ${latestDay} twitter:image:alt`);
+    const latestDayOgImage = dayHtml.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+    if (!latestDayOgImage) {
+      fail(`day ${latestDay} missing og:image meta`);
+    } else {
+      const latestDayOgImageDimensions = readPngDimensionsFromAssetUrl(latestDayOgImage);
+      if (!latestDayOgImageDimensions) {
+        fail(`day ${latestDay} og:image dimensions unreadable for ${latestDayOgImage}`);
+      } else {
+        assertIncludes(dayHtml, `<meta property="og:image:width" content="${latestDayOgImageDimensions.width}"`, `day ${latestDay} og:image:width`);
+        assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
+      }
+    }
   }
 
   // article:tag is only emitted when the day has topic chips; assert on the latest day that has topics
