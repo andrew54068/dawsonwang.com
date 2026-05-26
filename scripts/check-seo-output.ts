@@ -241,6 +241,7 @@ if (!existsSync(outDir)) {
   assertIncludes(search, 'id="search-results"', 'search results');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"SearchResultsPage".*<\/script>/s, '/search SearchResultsPage JSON-LD');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/search BreadcrumbList JSON-LD');
+  assertDiscoveryAlternates(search, '/search');
   assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
   assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
   // BreadcrumbList @id + SearchResultsPage → BreadcrumbList graph link (issue #68).
@@ -415,6 +416,7 @@ if (!existsSync(outDir)) {
   assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
+  assertDiscoveryAlternates(proof, '/proof');
   assertIncludes(proof, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(proof, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
