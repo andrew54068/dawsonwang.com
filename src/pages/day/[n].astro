@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import { marked } from 'marked';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SlideCarousel from '../../components/SlideCarousel.astro';
 import MetricsBlock from '../../components/MetricsBlock.astro';
@@ -53,6 +55,30 @@ function computeWordCount(body: string): number {
 const articleWordCount = computeWordCount(day.data.body);
 const primarySection = topics[0]?.title;
 const dayUrl = `${SITE_URL}/day/${day.data.dayNumber}`;
+const repoRoot = process.cwd();
+
+function pngDimensionsForPublicPath(publicPath: string) {
+  const normalizedPath = publicPath.replace(/^\/+/, '');
+  if (!normalizedPath.toLowerCase().endsWith('.png')) return undefined;
+
+  try {
+    const imageBytes = readFileSync(path.join(repoRoot, 'public', normalizedPath));
+    if (imageBytes.length < 24 || imageBytes.toString('ascii', 1, 4) !== 'PNG') return undefined;
+
+    return {
+      width: imageBytes.readUInt32BE(16),
+      height: imageBytes.readUInt32BE(20),
+    };
+  } catch {
+    return undefined;
+  }
+}
+
+const primaryOgImage = slides[0]?.src ?? DEFAULT_OG_IMAGE;
+const primaryOgImageDimensions = pngDimensionsForPublicPath(primaryOgImage)
+  ?? (primaryOgImage === DEFAULT_OG_IMAGE
+    ? { width: DEFAULT_OG_IMAGE_WIDTH, height: DEFAULT_OG_IMAGE_HEIGHT }
+    : undefined);
 // Primary Article image: og-default with known dimensions to qualify for the large-image
 // Article rich result (Google guidance: declare width/height, prefer ≥1200px). Slide images
 // from content/dayNN are added as secondary string entries when present — we don't have
@@ -98,7 +124,7 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: `Day ${day.data.dayNumber} ${day.data.subtitle ?? ''}`.trim(), url: `/day/${day.data.dayNumber}` },
 ], dayUrl);
 ---
-<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={slides[0]?.src ?? '/og-default.png'} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)}>
+<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={primaryOgImage} ogImageWidth={primaryOgImageDimensions?.width} ogImageHeight={primaryOgImageDimensions?.height} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)}>
   <article class="max-w-5xl mx-auto px-8 py-14" data-pagefind-body data-pagefind-meta={`day:${day.data.dayNumber}`}>
     <div class="grid grid-cols-1 md:grid-cols-[1fr_160px] gap-x-12 gap-y-6">
 
