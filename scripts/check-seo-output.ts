@@ -57,6 +57,12 @@ function extractRequired(haystack: string, pattern: RegExp, label: string) {
   return match[1];
 }
 
+function assertTitleStack(haystack: string, expectedTitle: string, label: string) {
+  assertIncludes(haystack, `<title>${expectedTitle}</title>`, `${label} title`);
+  assertIncludes(haystack, `<meta property="og:title" content="${expectedTitle}"`, `${label} og:title`);
+  assertIncludes(haystack, `<meta name="twitter:title" content="${expectedTitle}"`, `${label} twitter:title`);
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -150,7 +156,7 @@ if (!existsSync(outDir)) {
   if (home.includes('article:published_time')) fail('home leaks article:published_time meta (should be type=website)');
 
   const allPosts = readGenerated('days/index.html');
-  assertIncludes(allPosts, '<title>AI 工具落地文章索引 | Dawson Wang</title>', 'all posts title');
+  assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
   assertMatch(allPosts, /<meta name="description" content="瀏覽 Dawson Wang 連續 \d+ 天公開的 AI 工具落地文章：[^"]+"\s*\/?\s*>/, 'all posts meta description');
   assertIncludes(allPosts, '所有', 'all posts');
@@ -169,7 +175,7 @@ if (!existsSync(outDir)) {
   assertMatch(allPosts, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
 
   const search = readGenerated('search/index.html');
-  assertIncludes(search, '<title>AI 工作流文章搜尋 | Dawson Wang</title>', 'search title');
+  assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
   assertMatch(search, /<meta name="description" content="從 \d+ 篇 Dawson Wang 的 AI 工具落地日誌中，用關鍵字或語意搜尋 Claude Code、MCP、automation、內容流程與團隊導入案例。"\s*\/?\s*>/, 'search meta description');
   assertIncludes(search, 'id="search-form"', 'search form');
@@ -267,7 +273,7 @@ if (!existsSync(outDir)) {
   }
 
   const topicsIndex = readGenerated('topics/index.html');
-  assertIncludes(topicsIndex, '<title>AI 工具落地主題索引 | Dawson Wang</title>', 'topics index title');
+  assertTitleStack(topicsIndex, 'AI 工具落地主題索引 | Dawson Wang', 'topics index');
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
   assertMatch(topicsIndex, /<meta name="description" content="依主題瀏覽 Dawson Wang 的 \d+ 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。"\s*\/?\s*>/, 'topics index meta description');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
@@ -288,7 +294,7 @@ if (!existsSync(outDir)) {
   for (const topic of TOPICS) {
     const label = `topic ${topic.slug}`;
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
-    assertIncludes(topicHtml, `<title>${topic.title} AI 實作文章 | Dawson Wang</title>`, `${label} title`);
+    assertTitleStack(topicHtml, `${topic.title} AI 實作文章 | Dawson Wang`, label);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
     assertMatch(topicHtml, /<meta name="description" content="[^"]+ 收錄 \d+ 篇 Dawson Wang 的 AI 工具落地文章與案例。"\s*\/?\s*>/, `${label} meta description`);
     assertIncludes(topicHtml, '<meta name="twitter:site" content="@dawson54068"', `${label} twitter:site`);
@@ -330,7 +336,7 @@ if (!existsSync(outDir)) {
 
   // /proof portfolio page — CollectionPage + BreadcrumbList JSON-LD with #website graph link
   const proof = readGenerated('proof/index.html');
-  assertIncludes(proof, '<title>AI 工具落地案例與作品集 | Dawson Wang</title>', '/proof title');
+  assertTitleStack(proof, 'AI 工具落地案例與作品集 | Dawson Wang', '/proof');
   assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
   assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
