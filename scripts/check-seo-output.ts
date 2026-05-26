@@ -63,6 +63,11 @@ function assertTitleStack(haystack: string, expectedTitle: string, label: string
   assertIncludes(haystack, `<meta name="twitter:title" content="${expectedTitle}"`, `${label} twitter:title`);
 }
 
+function assertDiscoveryAlternates(haystack: string, label: string) {
+  assertIncludes(haystack, '<link rel="alternate" type="text/plain" title="Dawson Wang AI-readable site summary" href="/llms.txt"', `${label} llms alternate link`);
+  assertIncludes(haystack, '<link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml"', `${label} rss alternate link`);
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -130,6 +135,7 @@ if (!existsSync(outDir)) {
     assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"sameAs":\\[[^\\]]*"${escaped}"`), `home Person sameAs contains ${profileUrl}`);
   }
   assertMatch(home, /"@type":"WebSite"[^}]*"description":"/, 'home WebSite description');
+  assertMatch(home, /"@type":"WebSite"[\s\S]*?"potentialAction":\{"@type":"SearchAction","target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}","query-input":"required name=search_term_string"\}/, 'home WebSite SearchAction');
   // Bidirectional Person ↔ WebSite root-graph links (PR/issue #55 — root-graph enrichment).
   assertMatch(home, /"@type":"Person"[\s\S]*?"mainEntityOfPage":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, 'home Person mainEntityOfPage → #website graph link');
   assertMatch(home, /"@type":"WebSite"[\s\S]*?"mainEntity":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home WebSite mainEntity → #person graph link');
@@ -146,6 +152,7 @@ if (!existsSync(outDir)) {
   assertMatch(home, /"@type":"Offer"[^}]*"url":"https:\/\/dawsonwang\.com\/#inquire"/, 'home Offer.url absolute -> #inquire');
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
+  assertDiscoveryAlternates(home, 'home');
   assertIncludes(home, 'action="/api/inquiry"', 'home inquiry form');
   assertIncludes(home, 'method="POST"', 'home inquiry form');
   for (const field of ['name', 'email', 'company', 'goal', 'team_size', 'budget', 'timeline', 'hp_field']) {
@@ -243,6 +250,7 @@ if (!existsSync(outDir)) {
         assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
       }
     }
+    assertDiscoveryAlternates(dayHtml, `day ${latestDay}`);
   }
 
   // article:tag is only emitted when the day has topic chips; assert on the latest day that has topics
@@ -301,6 +309,7 @@ if (!existsSync(outDir)) {
     assertIncludes(topicHtml, '<meta name="twitter:creator" content="@dawson54068"', `${label} twitter:creator`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
+    assertDiscoveryAlternates(topicHtml, label);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
     assertMatch(topicHtml, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
     // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68) — wrapped in the TOPICS loop so future
@@ -362,8 +371,7 @@ if (!existsSync(outDir)) {
   }
 
   // RSS feed
-  assertIncludes(home, '<link rel="alternate" type="application/rss+xml"', 'home rss alternate link');
-  assertIncludes(allPosts, '<link rel="alternate" type="application/rss+xml"', '/days rss alternate link');
+  assertDiscoveryAlternates(allPosts, '/days');
   assertIncludes(sitemap, `<loc>${siteUrl}/rss.xml</loc>`, 'sitemap rss entry');
   const rss = readGenerated('rss.xml');
   assertIncludes(rss, '<rss version="2.0"', 'rss.xml');
