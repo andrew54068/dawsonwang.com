@@ -21,20 +21,22 @@ const filtered = days.filter(d => tagged.includes(d.data.dayNumber))
 
 const variant = chipVariantFor(topic.slug);
 const topicUrl = `${SITE_URL}/topics/${topic.slug}`;
+const topicPageTitle = `${topic.title} AI 實作文章`;
+const topicPageDescription = `${topic.blurb} 收錄 ${filtered.length} 篇 Dawson Wang 的 AI 工具落地文章與案例。`;
 const topicJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   '@id': `${topicUrl}#collection`,
   url: topicUrl,
   name: topic.title,
-  description: topic.blurb,
+  description: topicPageDescription,
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   about: {
     '@type': 'DefinedTerm',
     '@id': `${topicUrl}#term`,
     name: topic.title,
-    description: topic.blurb,
+    description: topicPageDescription,
     url: topicUrl,
     inDefinedTermSet: { '@id': `${SITE_URL}/topics#topic-taxonomy` },
   },
@@ -56,7 +58,7 @@ const topicBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: topic.title, url: `/topics/${topic.slug}` },
 ], topicUrl);
 ---
-<BaseLayout title={topic.title} description={topic.blurb} structuredData={[topicJsonLd, topicBreadcrumbJsonLd]}>
+<BaseLayout title={topicPageTitle} description={topicPageDescription} structuredData={[topicJsonLd, topicBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPIC · {filtered.length} POSTS</div>
     <div class="flex items-baseline gap-3 mb-3">
