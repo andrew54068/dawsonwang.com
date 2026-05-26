@@ -91,10 +91,42 @@ function listSourceDays() {
     .map(entry => {
       const number = Number(entry.name.replace('day', ''));
       const sourcePath = path.join(contentDir, entry.name, 'source.md');
-      return { dir: entry.name, number, sourcePath };
+      const publishManifestPath = path.join(contentDir, entry.name, 'publish-manifest.json');
+      return { dir: entry.name, number, sourcePath, publishManifestPath };
     })
     .filter(day => Number.isFinite(day.number) && existsSync(day.sourcePath))
     .sort((a, b) => a.number - b.number);
+}
+
+function readDayPublishedAt(publishManifestPath: string) {
+  if (!existsSync(publishManifestPath)) return undefined;
+
+  try {
+    const manifest = JSON.parse(readFileSync(publishManifestPath, 'utf8')) as {
+      threads?: { published_at?: string };
+      facebook?: { published_at?: string };
+      linkedin?: { published_at?: string };
+    };
+    return manifest.threads?.published_at
+      ?? manifest.facebook?.published_at
+      ?? manifest.linkedin?.published_at;
+  } catch {
+    fail(`Unreadable publish manifest: ${path.relative(root, publishManifestPath)}`);
+    return undefined;
+  }
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function assertSitemapEntry(xml: string, routePath: string, priority: string, changefreq: string, lastmod?: string) {
+  const loc = escapeRegExp(`${siteUrl}${routePath}`);
+  const lastmodPattern = lastmod ? `<lastmod>${escapeRegExp(lastmod)}<\\/lastmod>\\s*` : '';
+  const pattern = new RegExp(
+    `<url>\\s*<loc>${loc}<\\/loc>\\s*${lastmodPattern}<changefreq>${escapeRegExp(changefreq)}<\\/changefreq>\\s*<priority>${escapeRegExp(priority)}<\\/priority>\\s*<\\/url>`
+  );
+  assertMatch(xml, pattern, `sitemap ${routePath}`);
 }
 
 if (!existsSync(outDir)) {
@@ -102,6 +134,23 @@ if (!existsSync(outDir)) {
 } else {
   const days = listSourceDays();
   const latestDay = days.at(-1)?.number;
+  const dayPublishedAtByNumber = new Map(days.map(day => [day.number, readDayPublishedAt(day.publishManifestPath)]));
+  const latestPublishedAt = Array.from(dayPublishedAtByNumber.values())
+    .filter((value): value is string => Boolean(value))
+    .sort()
+    .at(-1);
+  const taggedTopicSlugs = TOPICS
+    .filter(topic => Object.values(DAY_TOPICS).some(slugs => slugs.includes(topic.slug)))
+    .map(topic => topic.slug);
+  const topicPublishedAtBySlug = new Map(taggedTopicSlugs.map(slug => {
+    const publishedAt = Object.entries(DAY_TOPICS)
+      .filter(([, slugs]) => slugs.includes(slug))
+      .map(([dayNumber]) => dayPublishedAtByNumber.get(Number(dayNumber)))
+      .filter((value): value is string => Boolean(value))
+      .sort()
+      .at(-1);
+    return [slug, publishedAt];
+  }));
   note(`source day count: ${days.length}${latestDay ? `, latest day: ${latestDay}` : ''}`);
 
   const home = readGenerated('index.html');
@@ -329,7 +378,23 @@ if (!existsSync(outDir)) {
   const sitemapTopicCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/topics\/[^<]+<\/loc>/g)).length;
   if (sitemapTopicCount !== TOPICS.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${TOPICS.length}`);
   assertIncludes(sitemap, `<loc>${siteUrl}/search</loc>`, 'sitemap');
-  if (latestDay) assertIncludes(sitemap, `<loc>${siteUrl}/day/${latestDay}</loc>`, 'sitemap');
+  if (latestPublishedAt) {
+    assertSitemapEntry(sitemap, '/', '1.0', 'weekly', latestPublishedAt);
+    assertSitemapEntry(sitemap, '/proof', '0.9', 'weekly', latestPublishedAt);
+    assertSitemapEntry(sitemap, '/days', '0.9', 'daily', latestPublishedAt);
+    assertSitemapEntry(sitemap, '/topics', '0.7', 'weekly', latestPublishedAt);
+    assertSitemapEntry(sitemap, '/search', '0.5', 'monthly', latestPublishedAt);
+    assertSitemapEntry(sitemap, '/rss.xml', '0.6', 'daily', latestPublishedAt);
+  }
+  for (const [slug, publishedAt] of topicPublishedAtBySlug.entries()) {
+    if (!publishedAt) continue;
+    assertSitemapEntry(sitemap, `/topics/${slug}`, '0.7', 'weekly', publishedAt);
+  }
+  if (latestDay) {
+    assertIncludes(sitemap, `<loc>${siteUrl}/day/${latestDay}</loc>`, 'sitemap');
+    const latestDayPublishedAt = dayPublishedAtByNumber.get(latestDay);
+    if (latestDayPublishedAt) assertSitemapEntry(sitemap, `/day/${latestDay}`, '0.8', 'monthly', latestDayPublishedAt);
+  }
   const sitemapDayCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/day\/\d+<\/loc>/g)).length;
   if (sitemapDayCount !== days.length) fail(`Sitemap day URL count mismatch: ${sitemapDayCount}/${days.length}`);
 
