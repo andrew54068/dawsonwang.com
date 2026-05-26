@@ -68,6 +68,25 @@ function assertDiscoveryAlternates(haystack: string, label: string) {
   assertIncludes(haystack, '<link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml"', `${label} rss alternate link`);
 }
 
+function assertSitemapEntryFields(sitemap: string, url: string, expected: { lastmod?: string; changefreq?: string; priority?: string }, label: string) {
+  const escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const entry = sitemap.match(new RegExp(`<url>[\\s\\S]*?<loc>${escapedUrl}<\\/loc>[\\s\\S]*?<\\/url>`))?.[0];
+  if (!entry) {
+    fail(`${label} missing sitemap entry for ${url}`);
+    return;
+  }
+
+  if (expected.lastmod) {
+    assertIncludes(entry, `<lastmod>${expected.lastmod}</lastmod>`, `${label} sitemap lastmod`);
+  }
+  if (expected.changefreq) {
+    assertIncludes(entry, `<changefreq>${expected.changefreq}</changefreq>`, `${label} sitemap changefreq`);
+  }
+  if (expected.priority) {
+    assertIncludes(entry, `<priority>${expected.priority}</priority>`, `${label} sitemap priority`);
+  }
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -198,8 +217,10 @@ if (!existsSync(outDir)) {
   assertIncludes(search, `"@id":"${siteUrl}/search#breadcrumb"`, '/search BreadcrumbList @id');
   assertMatch(search, new RegExp(`"@type":"SearchResultsPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/search#breadcrumb"\\}`), '/search SearchResultsPage breadcrumb → #breadcrumb graph link');
 
+  let latestDayPublishedAt = '';
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
+    latestDayPublishedAt = extractRequired(dayHtml, /<meta property="article:published_time" content="([^"]+)"/, `day ${latestDay} article:published_time value`);
     const latestDayHeadline = extractRequired(dayHtml, /"@type":"Article"[\s\S]*?"headline":"([^"]+)"/, `day ${latestDay} Article headline`);
     const expectedLatestDayTitle = latestDayHeadline ? `${latestDayHeadline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay}`);
@@ -259,8 +280,12 @@ if (!existsSync(outDir)) {
     .map(n => Number(n))
     .filter(n => Number.isFinite(n) && (DAY_TOPICS[n] ?? []).length > 0 && existsSync(path.join(outDir, `day/${n}/index.html`)))
     .sort((a, b) => b - a)[0];
+  let representativeTopicSlug = '';
+  let representativeTopicPublishedAt = '';
   if (latestDayWithTopics) {
     const dayHtml = readGenerated(`day/${latestDayWithTopics}/index.html`);
+    representativeTopicSlug = DAY_TOPICS[latestDayWithTopics]?.[0] ?? '';
+    representativeTopicPublishedAt = extractRequired(dayHtml, /<meta property="article:published_time" content="([^"]+)"/, `day ${latestDayWithTopics} topic article:published_time value`);
     assertMatch(dayHtml, /<meta property="article:tag" content="[^"]+"/, `day ${latestDayWithTopics} article:tag`);
     assertMatch(dayHtml, /"about":\[\{"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"\}/, `day ${latestDayWithTopics} Article about → DefinedTerm graph link`);
     note(`article:tag and Article about asserted on day ${latestDayWithTopics}`);
@@ -332,6 +357,18 @@ if (!existsSync(outDir)) {
   if (latestDay) assertIncludes(sitemap, `<loc>${siteUrl}/day/${latestDay}</loc>`, 'sitemap');
   const sitemapDayCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/day\/\d+<\/loc>/g)).length;
   if (sitemapDayCount !== days.length) fail(`Sitemap day URL count mismatch: ${sitemapDayCount}/${days.length}`);
+  if (latestDayPublishedAt) {
+    assertSitemapEntryFields(sitemap, `${siteUrl}/`, { lastmod: latestDayPublishedAt, changefreq: 'weekly', priority: '1.0' }, 'home');
+    assertSitemapEntryFields(sitemap, `${siteUrl}/proof`, { lastmod: latestDayPublishedAt, changefreq: 'weekly', priority: '0.9' }, '/proof');
+    assertSitemapEntryFields(sitemap, `${siteUrl}/days`, { lastmod: latestDayPublishedAt, changefreq: 'daily', priority: '0.9' }, '/days');
+    assertSitemapEntryFields(sitemap, `${siteUrl}/topics`, { lastmod: latestDayPublishedAt, changefreq: 'weekly', priority: '0.7' }, '/topics');
+    assertSitemapEntryFields(sitemap, `${siteUrl}/search`, { lastmod: latestDayPublishedAt, changefreq: 'monthly', priority: '0.5' }, '/search');
+    assertSitemapEntryFields(sitemap, `${siteUrl}/rss.xml`, { lastmod: latestDayPublishedAt, changefreq: 'daily', priority: '0.6' }, '/rss.xml');
+    assertSitemapEntryFields(sitemap, `${siteUrl}/day/${latestDay}`, { lastmod: latestDayPublishedAt, changefreq: 'monthly', priority: '0.8' }, `day ${latestDay}`);
+  }
+  if (representativeTopicSlug && representativeTopicPublishedAt) {
+    assertSitemapEntryFields(sitemap, `${siteUrl}/topics/${representativeTopicSlug}`, { lastmod: representativeTopicPublishedAt, changefreq: 'weekly', priority: '0.7' }, `topic ${representativeTopicSlug}`);
+  }
 
   const robots = readGenerated('robots.txt');
   assertIncludes(robots, `Sitemap: ${siteUrl}/sitemap.xml`, 'robots.txt');

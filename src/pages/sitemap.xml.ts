@@ -1,5 +1,6 @@
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_URL } from '../lib/seo';
+import { DAY_TOPICS } from '../data/topics';
 import { allTopics } from '../lib/topics';
 
 function escapeXml(value: string) {
@@ -27,13 +28,26 @@ export async function GET() {
   const days = await getCollection('days');
   const topics = allTopics();
   const now = new Date().toISOString();
+  const publishedAtForDay = (day: CollectionEntry<'days'>) => day.data.manifest?.threads?.publishedAt
+    ?? day.data.manifest?.facebook?.publishedAt
+    ?? day.data.manifest?.linkedin?.publishedAt;
   const latestPublishedAt = days
-    .map(day => day.data.manifest?.threads?.publishedAt
-      ?? day.data.manifest?.facebook?.publishedAt
-      ?? day.data.manifest?.linkedin?.publishedAt)
+    .map(publishedAtForDay)
     .filter((value): value is string => Boolean(value))
     .sort()
     .at(-1) ?? now;
+  const dayByNumber = new Map(days.map(day => [day.data.dayNumber, day]));
+  const topicLastmodBySlug = new Map(topics.map(topic => {
+    const latestTopicPublishedAt = Object.entries(DAY_TOPICS)
+      .filter(([, slugs]) => slugs.includes(topic.slug))
+      .map(([dayNumber]) => Number(dayNumber))
+      .map(dayNumber => dayByNumber.get(dayNumber))
+      .flatMap(day => day ? [publishedAtForDay(day)] : [])
+      .filter((value): value is string => Boolean(value))
+      .sort()
+      .at(-1);
+    return [topic.slug, latestTopicPublishedAt ?? latestPublishedAt] as const;
+  }));
 
   const urls = [
     entry('/', '1.0', 'weekly', latestPublishedAt),
@@ -42,14 +56,11 @@ export async function GET() {
     entry('/topics', '0.7', 'weekly', latestPublishedAt),
     entry('/search', '0.5', 'monthly', latestPublishedAt),
     entry('/rss.xml', '0.6', 'daily', latestPublishedAt),
-    ...topics.map(topic => entry(`/topics/${topic.slug}`, '0.7', 'weekly', latestPublishedAt)),
+    ...topics.map(topic => entry(`/topics/${topic.slug}`, '0.7', 'weekly', topicLastmodBySlug.get(topic.slug) ?? latestPublishedAt)),
     ...days
       .sort((a, b) => b.data.dayNumber - a.data.dayNumber)
       .map(day => {
-        const publishedAt = day.data.manifest?.threads?.publishedAt
-          ?? day.data.manifest?.facebook?.publishedAt
-          ?? day.data.manifest?.linkedin?.publishedAt
-          ?? latestPublishedAt;
+        const publishedAt = publishedAtForDay(day) ?? latestPublishedAt;
         return entry(`/day/${day.data.dayNumber}`, '0.8', 'monthly', publishedAt);
       }),
   ];
