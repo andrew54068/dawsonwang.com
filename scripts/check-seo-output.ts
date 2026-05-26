@@ -334,6 +334,7 @@ if (!existsSync(outDir)) {
   assertMatch(topicsIndex, /<meta name="description" content="依主題瀏覽 Dawson Wang 的 \d+ 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。"\s*\/?\s*>/, 'topics index meta description');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
+  assertDiscoveryAlternates(topicsIndex, '/topics');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(topicsIndex, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
   assertMatch(topicsIndex, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
