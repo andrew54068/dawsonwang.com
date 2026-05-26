@@ -12,16 +12,18 @@ const stats = computeStatsSummary(days);
 const totalDays = stats.totalDays;
 const proofTitle = 'AI 工具落地作品集';
 const proofDescription = `${totalDays} 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果。`;
+const proofUrl = absoluteUrl('/proof');
 const proofCollectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   '@id': `${SITE_URL}/proof#collectionpage`,
   name: proofTitle,
   description: proofDescription,
-  url: absoluteUrl('/proof'),
+  url: proofUrl,
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#person` },
+  breadcrumb: { '@id': `${proofUrl}#breadcrumb` },
   mainEntity: {
     '@type': 'ItemList',
     name: '公開實作項目',
@@ -43,7 +45,7 @@ const proofCollectionJsonLd = {
 const proofBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Home', url: '/' },
   { name: 'Proof', url: '/proof' },
-]);
+], proofUrl);
 ---
 <BaseLayout title={proofTitle} description={proofDescription} structuredData={[proofCollectionJsonLd, proofBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">

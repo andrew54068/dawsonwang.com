@@ -35,10 +35,15 @@ export interface BreadcrumbCrumb {
   url: string;
 }
 
-export function breadcrumbJsonLd(crumbs: BreadcrumbCrumb[]) {
+export function breadcrumbJsonLd(crumbs: BreadcrumbCrumb[], pageId?: string) {
+  // Optional pageId carries the absolute URL of the page emitting this breadcrumb.
+  // When provided, the BreadcrumbList gets `@id: ${pageId}#breadcrumb` so the
+  // page-level node (Article / CollectionPage / SearchResultsPage) can reference
+  // it via schema.org's canonical `breadcrumb` property — closes the graph-orphan.
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    ...(pageId ? { '@id': `${pageId}#breadcrumb` } : {}),
     itemListElement: crumbs.map((crumb, index) => ({
       '@type': 'ListItem',
       position: index + 1,

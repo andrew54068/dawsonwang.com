@@ -130,6 +130,9 @@ if (!existsSync(outDir)) {
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, '/days CollectionPage+ItemList JSON-LD');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/days BreadcrumbList JSON-LD');
   assertMatch(allPosts, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
+  // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
+  assertIncludes(allPosts, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
+  assertMatch(allPosts, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
 
   const search = readGenerated('search/index.html');
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
@@ -142,6 +145,9 @@ if (!existsSync(outDir)) {
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/search BreadcrumbList JSON-LD');
   assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
   assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
+  // BreadcrumbList @id + SearchResultsPage → BreadcrumbList graph link (issue #68).
+  assertIncludes(search, `"@id":"${siteUrl}/search#breadcrumb"`, '/search BreadcrumbList @id');
+  assertMatch(search, new RegExp(`"@type":"SearchResultsPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/search#breadcrumb"\\}`), '/search SearchResultsPage breadcrumb → #breadcrumb graph link');
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
@@ -152,6 +158,9 @@ if (!existsSync(outDir)) {
     assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, `day ${latestDay} Article JSON-LD`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `day ${latestDay} BreadcrumbList JSON-LD`);
+    // BreadcrumbList @id + Article → BreadcrumbList graph link (issue #68).
+    assertIncludes(dayHtml, `"@id":"${siteUrl}/day/${latestDay}#breadcrumb"`, `day ${latestDay} BreadcrumbList @id`);
+    assertMatch(dayHtml, new RegExp(`"@type":"Article"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/day/${latestDay}#breadcrumb"\\}`), `day ${latestDay} Article breadcrumb → #breadcrumb graph link`);
     // Article enrichment (wordCount + isPartOf are stable across all days; articleSection gated below).
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
     assertIncludes(dayHtml, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `day ${latestDay} Article isPartOf`);
@@ -206,6 +215,9 @@ if (!existsSync(outDir)) {
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
+  // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
+  assertIncludes(topicsIndex, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
+  assertMatch(topicsIndex, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
   // DefinedTermSet hub: models topics as a controlled vocabulary, with isPartOf graph link up to #website
   // and one hasDefinedTerm reference per TOPICS entry (generated from src/data/topics.ts — no literal slugs in JSON-LD source).
   assertMatch(topicsIndex, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
@@ -224,6 +236,10 @@ if (!existsSync(outDir)) {
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
     assertMatch(topicHtml, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
+    // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68) — wrapped in the TOPICS loop so future
+    // topic growth ships green automatically (same pattern as the DefinedTermSet ref-count guard).
+    assertIncludes(topicHtml, `"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"`, `${label} BreadcrumbList @id`);
+    assertMatch(topicHtml, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"\\}`), `${label} CollectionPage breadcrumb → #breadcrumb graph link`);
   }
   note(`generated topic pages: ${TOPICS.length}/${TOPICS.length}`);
 
@@ -257,6 +273,9 @@ if (!existsSync(outDir)) {
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
   assertIncludes(proof, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
+  // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
+  assertIncludes(proof, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
+  assertMatch(proof, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/proof#breadcrumb"\\}`), '/proof CollectionPage breadcrumb → #breadcrumb graph link');
   // mainEntity ItemList of shipped projects — single source of truth in src/data/proof-projects.ts
   assertMatch(proof, /"@type":"CollectionPage"[\s\S]*?"mainEntity":\{[^}]*"@type":"ItemList"/, '/proof CollectionPage→ItemList mainEntity link');
   assertMatch(proof, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${PROOF_PROJECTS.length}\\b`), '/proof ItemList numberOfItems matches PROOF_PROJECTS.length');

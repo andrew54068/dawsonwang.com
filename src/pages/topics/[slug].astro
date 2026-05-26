@@ -20,23 +20,25 @@ const filtered = days.filter(d => tagged.includes(d.data.dayNumber))
   .sort((a, b) => b.data.dayNumber - a.data.dayNumber);
 
 const variant = chipVariantFor(topic.slug);
+const topicUrl = `${SITE_URL}/topics/${topic.slug}`;
 const topicJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  '@id': `${SITE_URL}/topics/${topic.slug}#collection`,
-  url: `${SITE_URL}/topics/${topic.slug}`,
+  '@id': `${topicUrl}#collection`,
+  url: topicUrl,
   name: topic.title,
   description: topic.blurb,
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   about: {
     '@type': 'DefinedTerm',
-    '@id': `${SITE_URL}/topics/${topic.slug}#term`,
+    '@id': `${topicUrl}#term`,
     name: topic.title,
     description: topic.blurb,
-    url: `${SITE_URL}/topics/${topic.slug}`,
+    url: topicUrl,
     inDefinedTermSet: { '@id': `${SITE_URL}/topics#topic-taxonomy` },
   },
+  breadcrumb: { '@id': `${topicUrl}#breadcrumb` },
   mainEntity: {
     '@type': 'ItemList',
     numberOfItems: filtered.length,
@@ -52,7 +54,7 @@ const topicBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Home', url: '/' },
   { name: 'Topics', url: '/topics' },
   { name: topic.title, url: `/topics/${topic.slug}` },
-]);
+], topicUrl);
 ---
 <BaseLayout title={topic.title} description={topic.blurb} structuredData={[topicJsonLd, topicBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">

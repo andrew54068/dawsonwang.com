@@ -22,16 +22,18 @@ const topicTaxonomyJsonLd = {
   isPartOf: { '@id': `${SITE_URL}/#website` },
   hasDefinedTerm: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })),
 };
+const topicsIndexUrl = `${SITE_URL}/topics`;
 const topicCollectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  '@id': `${SITE_URL}/topics#collection`,
-  url: `${SITE_URL}/topics`,
+  '@id': `${topicsIndexUrl}#collection`,
+  url: topicsIndexUrl,
   name: 'AI 實作主題',
   description: '依主題瀏覽 Dawson Wang 的 AI 工具落地文章：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。',
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#person` },
+  breadcrumb: { '@id': `${topicsIndexUrl}#breadcrumb` },
   mainEntity: {
     '@type': 'ItemList',
     numberOfItems: topics.length,
@@ -47,7 +49,7 @@ const topicCollectionJsonLd = {
 const topicsIndexBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: 'Home', url: '/' },
   { name: 'Topics', url: '/topics' },
-]);
+], topicsIndexUrl);
 ---
 <BaseLayout title="AI 實作主題" description="依主題瀏覽 Dawson Wang 的 AI 工具落地文章：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。" structuredData={[topicTaxonomyJsonLd, topicCollectionJsonLd, topicsIndexBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
