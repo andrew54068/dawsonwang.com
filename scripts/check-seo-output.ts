@@ -389,6 +389,8 @@ if (!existsSync(outDir)) {
         assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
       }
     }
+    if (dayHtml.includes(`alt="Day ${latestDay} slide 1"`)) fail(`day ${latestDay} slide alt regressed to generic Day N slide M pattern`);
+    assertIncludes(dayHtml, `alt="${latestDayHeadline} — 投影片 1"`, `day ${latestDay} first slide alt`);
   }
 
   // article:tag is only emitted when the day has topic chips; assert on the latest day that has topics
