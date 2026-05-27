@@ -253,12 +253,10 @@ if (!existsSync(outDir)) {
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay}`);
     assertIncludes(dayHtml, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang zh-Hant-TW`);
     assertIncludes(dayHtml, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang x-default`);
-    assertIncludes(dayHtml, `<title>${expectedLatestDayTitle}</title>`, `day ${latestDay} title`);
+    assertTitleStack(dayHtml, expectedLatestDayTitle, `day ${latestDay}`);
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `day ${latestDay}`);
-    assertIncludes(dayHtml, `<meta property="og:title" content="${expectedLatestDayTitle}"`, `day ${latestDay} og:title`);
     assertIncludes(dayHtml, '<meta name="twitter:site" content="@dawson54068"', `day ${latestDay} twitter:site`);
     assertIncludes(dayHtml, '<meta name="twitter:creator" content="@dawson54068"', `day ${latestDay} twitter:creator`);
-    assertIncludes(dayHtml, `<meta name="twitter:title" content="${expectedLatestDayTitle}"`, `day ${latestDay} twitter:title`);
     assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, `day ${latestDay} Article JSON-LD`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `day ${latestDay} BreadcrumbList JSON-LD`);
