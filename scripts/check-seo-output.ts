@@ -402,7 +402,10 @@ if (!existsSync(outDir)) {
 
   const llms = readGenerated('llms.txt');
   assertIncludes(llms, '# Dawson Wang', 'llms.txt');
-  assertIncludes(llms, `${siteUrl}/topics`, 'llms.txt');
+  for (const llmsCorePath of ['/', '/proof', '/days', '/topics', '/search']) {
+    const expectedUrl = llmsCorePath === '/' ? `${siteUrl}/` : `${siteUrl}${llmsCorePath}`;
+    assertIncludes(llms, expectedUrl, `llms.txt core page ${llmsCorePath}`);
+  }
   assertIncludes(llms, `${siteUrl}/rss.xml`, 'llms.txt rss link');
   if (latestDay) assertIncludes(llms, `${siteUrl}/day/${latestDay}`, 'llms.txt');
 
