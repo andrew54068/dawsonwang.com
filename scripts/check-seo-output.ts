@@ -106,6 +106,14 @@ function assertDefaultSocialCardStack(haystack: string, label: string) {
   assertIncludes(haystack, `<meta name="twitter:image:alt" content="${defaultOgImageAlt}"`, `${label} twitter:image:alt`);
 }
 
+function assertJsonLdInLanguage(haystack: string, nodeType: string, label: string) {
+  assertMatch(
+    haystack,
+    new RegExp(`"@type":"${escapeRegExp(nodeType)}"[\\s\\S]*?"inLanguage":"zh-Hant-TW"`),
+    `${label} ${nodeType} inLanguage`
+  );
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -200,6 +208,7 @@ if (!existsSync(outDir)) {
   assertIncludes(home, `<meta property="og:url" content="${siteUrl}/"`, 'home');
   assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
+  assertJsonLdInLanguage(home, 'WebSite', 'home');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
   // Root-graph link: Person → ProfessionalService (joins the commercial-intent subtree into the Person node).
@@ -247,6 +256,7 @@ if (!existsSync(outDir)) {
   assertIncludes(allPosts, '所有', 'all posts');
   assertIncludes(allPosts, '文章', 'all posts');
   assertDefaultSocialCardStack(allPosts, '/days');
+  assertJsonLdInLanguage(allPosts, 'CollectionPage', '/days');
   if (allPosts.includes('article:published_time')) fail('/days leaks article:published_time meta (should be type=website)');
   assertIncludes(allPosts, '共 ', 'all posts');
   const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
@@ -271,6 +281,7 @@ if (!existsSync(outDir)) {
   assertIncludes(search, 'id="search-results"', 'search results');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"SearchResultsPage".*<\/script>/s, '/search SearchResultsPage JSON-LD');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/search BreadcrumbList JSON-LD');
+  assertJsonLdInLanguage(search, 'SearchResultsPage', '/search');
   assertDiscoveryAlternates(search, '/search');
   assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
   assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
@@ -319,6 +330,7 @@ if (!existsSync(outDir)) {
     assertIncludes(dayHtml, `"@id":"${siteUrl}/day/${latestDay}#breadcrumb"`, `day ${latestDay} BreadcrumbList @id`);
     assertMatch(dayHtml, new RegExp(`"@type":"Article"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/day/${latestDay}#breadcrumb"\\}`), `day ${latestDay} Article breadcrumb → #breadcrumb graph link`);
     // Article enrichment (wordCount + isPartOf are stable across all days; articleSection gated below).
+    assertJsonLdInLanguage(dayHtml, 'Article', `day ${latestDay}`);
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
     assertIncludes(dayHtml, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `day ${latestDay} Article isPartOf`);
     assertIncludes(dayHtml, '"isAccessibleForFree":true', `day ${latestDay} Article isAccessibleForFree`);
@@ -377,6 +389,8 @@ if (!existsSync(outDir)) {
   assertMatch(topicsIndex, /<meta name="description" content="依主題瀏覽 Dawson Wang 的 \d+ 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。"\s*\/?\s*>/, 'topics index meta description');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
+  assertJsonLdInLanguage(topicsIndex, 'DefinedTermSet', '/topics');
+  assertJsonLdInLanguage(topicsIndex, 'CollectionPage', '/topics');
   assertDiscoveryAlternates(topicsIndex, '/topics');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(topicsIndex, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
@@ -401,6 +415,7 @@ if (!existsSync(outDir)) {
     assertMatch(topicHtml, /<meta name="description" content="[^"]+ 收錄 \d+ 篇 Dawson Wang 的 AI 工具落地文章與案例。"\s*\/?\s*>/, `${label} meta description`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
+    assertJsonLdInLanguage(topicHtml, 'CollectionPage', label);
     assertDiscoveryAlternates(topicHtml, label);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
     assertMatch(topicHtml, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
@@ -463,6 +478,7 @@ if (!existsSync(outDir)) {
   assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
+  assertJsonLdInLanguage(proof, 'CollectionPage', '/proof');
   assertDiscoveryAlternates(proof, '/proof');
   assertIncludes(proof, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
