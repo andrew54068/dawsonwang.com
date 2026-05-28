@@ -185,6 +185,7 @@ if (!existsSync(outDir)) {
     .filter((value): value is string => Boolean(value))
     .sort()
     .at(-1);
+  const topicTitleBySlug = new Map(TOPICS.map(topic => [topic.slug, topic.title]));
   const taggedTopicSlugs = TOPICS
     .filter(topic => Object.values(DAY_TOPICS).some(slugs => slugs.includes(topic.slug)))
     .map(topic => topic.slug);
@@ -374,11 +375,21 @@ if (!existsSync(outDir)) {
     .sort((a, b) => b - a)[0];
   if (latestDayWithTopics) {
     const dayHtml = readGenerated(`day/${latestDayWithTopics}/index.html`);
+    const expectedArticleSection = topicTitleBySlug.get(DAY_TOPICS[latestDayWithTopics]?.[0] ?? '');
+    if (!expectedArticleSection) {
+      fail(`day ${latestDayWithTopics} missing primary topic title for articleSection probe`);
+    } else {
+      assertMatch(
+        dayHtml,
+        new RegExp(`"@type":"Article"[\\s\\S]*?"articleSection":"${escapeRegExp(expectedArticleSection)}"`),
+        `day ${latestDayWithTopics} Article articleSection`
+      );
+    }
     assertMatch(dayHtml, /<meta property="article:tag" content="[^"]+"/, `day ${latestDayWithTopics} article:tag`);
     assertMatch(dayHtml, /"about":\[\{"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"\}/, `day ${latestDayWithTopics} Article about → DefinedTerm graph link`);
-    note(`article:tag and Article about asserted on day ${latestDayWithTopics}`);
+    note(`articleSection, article:tag, and Article about asserted on day ${latestDayWithTopics}`);
   } else {
-    note('no day with topics found; article:tag and Article about probes skipped');
+    note('no day with topics found; articleSection, article:tag, and Article about probes skipped');
   }
 
   const topicsIndex = readGenerated('topics/index.html');
