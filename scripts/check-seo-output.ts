@@ -85,6 +85,12 @@ function assertDiscoveryAlternates(haystack: string, label: string) {
   assertIncludes(haystack, '<link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml"', `${label} rss alternate link`);
 }
 
+function assertSelfHreflangAlternates(haystack: string, routePath: string, label: string) {
+  const href = routePath === '/' ? `${siteUrl}/` : `${siteUrl}${routePath}`;
+  assertIncludes(haystack, `<link rel="alternate" hreflang="zh-Hant-TW" href="${href}"`, `${label} hreflang zh-Hant-TW`);
+  assertIncludes(haystack, `<link rel="alternate" hreflang="x-default" href="${href}"`, `${label} hreflang x-default`);
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -173,8 +179,7 @@ if (!existsSync(outDir)) {
   const home = readGenerated('index.html');
   const expectedHomeTitle = 'Dawson Wang — AI 工具落地實踐者';
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
-  assertIncludes(home, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/"`, 'home hreflang zh-Hant-TW');
-  assertIncludes(home, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/"`, 'home hreflang x-default');
+  assertSelfHreflangAlternates(home, '/', 'home');
   assertTitleStack(home, expectedHomeTitle, 'home');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertIncludes(home, `<meta property="og:url" content="${siteUrl}/"`, 'home');
@@ -229,6 +234,7 @@ if (!existsSync(outDir)) {
   const allPosts = readGenerated('days/index.html');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
+  assertSelfHreflangAlternates(allPosts, '/days', 'all posts');
   assertMatch(allPosts, /<meta name="description" content="瀏覽 Dawson Wang 連續 \d+ 天公開的 AI 工具落地文章：[^"]+"\s*\/?\s*>/, 'all posts meta description');
   assertIncludes(allPosts, '所有', 'all posts');
   assertIncludes(allPosts, '文章', 'all posts');
@@ -248,6 +254,7 @@ if (!existsSync(outDir)) {
   const search = readGenerated('search/index.html');
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
+  assertSelfHreflangAlternates(search, '/search', 'search');
   assertMatch(search, /<meta name="description" content="從 \d+ 篇 Dawson Wang 的 AI 工具落地日誌中，用關鍵字或語意搜尋 Claude Code、MCP、automation、內容流程與團隊導入案例。"\s*\/?\s*>/, 'search meta description');
   assertIncludes(search, 'id="search-form"', 'search form');
   assertIncludes(search, 'type="search"', 'search form');
@@ -281,8 +288,7 @@ if (!existsSync(outDir)) {
     const headline = decodeJsonStringLiteral(extractRequired(dayHtml, /"@type":"Article"[\s\S]*?"headline":"((?:\\.|[^"])*)"/, `${label} Article headline`));
     const expectedTitle = headline ? `${headline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${day.number}"`, `${label} canonical`);
-    assertIncludes(dayHtml, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/day/${day.number}"`, `${label} hreflang zh-Hant-TW`);
-    assertIncludes(dayHtml, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/day/${day.number}"`, `${label} hreflang x-default`);
+    assertSelfHreflangAlternates(dayHtml, `/day/${day.number}`, label);
     assertTitleStack(dayHtml, expectedTitle, label);
     assertDiscoveryAlternates(dayHtml, label);
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `${label} og:type article`);
@@ -293,8 +299,7 @@ if (!existsSync(outDir)) {
     const latestDayHeadline = decodeJsonStringLiteral(extractRequired(dayHtml, /"@type":"Article"[\s\S]*?"headline":"((?:\\.|[^"])*)"/, `day ${latestDay} Article headline`));
     const expectedLatestDayTitle = latestDayHeadline ? `${latestDayHeadline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay}`);
-    assertIncludes(dayHtml, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang zh-Hant-TW`);
-    assertIncludes(dayHtml, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang x-default`);
+    assertSelfHreflangAlternates(dayHtml, `/day/${latestDay}`, `day ${latestDay}`);
     assertTitleStack(dayHtml, expectedLatestDayTitle, `day ${latestDay}`);
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `day ${latestDay}`);
     assertIncludes(dayHtml, '<meta name="twitter:site" content="@dawson54068"', `day ${latestDay} twitter:site`);
@@ -359,6 +364,7 @@ if (!existsSync(outDir)) {
   const topicsIndex = readGenerated('topics/index.html');
   assertTitleStack(topicsIndex, 'AI 工具落地主題索引 | Dawson Wang', 'topics index');
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
+  assertSelfHreflangAlternates(topicsIndex, '/topics', 'topics index');
   assertMatch(topicsIndex, /<meta name="description" content="依主題瀏覽 Dawson Wang 的 \d+ 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。"\s*\/?\s*>/, 'topics index meta description');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
@@ -381,6 +387,7 @@ if (!existsSync(outDir)) {
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
     assertTitleStack(topicHtml, `${topic.title} AI 實作文章 | Dawson Wang`, label);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
+    assertSelfHreflangAlternates(topicHtml, `/topics/${topic.slug}`, label);
     assertMatch(topicHtml, /<meta name="description" content="[^"]+ 收錄 \d+ 篇 Dawson Wang 的 AI 工具落地文章與案例。"\s*\/?\s*>/, `${label} meta description`);
     assertIncludes(topicHtml, '<meta name="twitter:site" content="@dawson54068"', `${label} twitter:site`);
     assertIncludes(topicHtml, '<meta name="twitter:creator" content="@dawson54068"', `${label} twitter:creator`);
@@ -443,6 +450,7 @@ if (!existsSync(outDir)) {
   const proof = readGenerated('proof/index.html');
   assertTitleStack(proof, 'AI 工具落地案例與作品集 | Dawson Wang', '/proof');
   assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
+  assertSelfHreflangAlternates(proof, '/proof', '/proof');
   assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
