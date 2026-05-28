@@ -57,10 +57,27 @@ function extractRequired(haystack: string, pattern: RegExp, label: string) {
   return match[1];
 }
 
+function decodeJsonStringLiteral(value: string) {
+  try {
+    return JSON.parse(`"${value}"`) as string;
+  } catch {
+    return value;
+  }
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function assertTitleStack(haystack: string, expectedTitle: string, label: string) {
-  assertIncludes(haystack, `<title>${expectedTitle}</title>`, `${label} title`);
-  assertIncludes(haystack, `<meta property="og:title" content="${expectedTitle}"`, `${label} og:title`);
-  assertIncludes(haystack, `<meta name="twitter:title" content="${expectedTitle}"`, `${label} twitter:title`);
+  const escapedTitle = escapeHtml(expectedTitle);
+  assertIncludes(haystack, `<title>${escapedTitle}</title>`, `${label} title`);
+  assertIncludes(haystack, `<meta property="og:title" content="${escapedTitle}"`, `${label} og:title`);
+  assertIncludes(haystack, `<meta name="twitter:title" content="${escapedTitle}"`, `${label} twitter:title`);
 }
 
 function assertDiscoveryAlternates(haystack: string, label: string) {
@@ -246,9 +263,34 @@ if (!existsSync(outDir)) {
   assertIncludes(search, `"@id":"${siteUrl}/search#breadcrumb"`, '/search BreadcrumbList @id');
   assertMatch(search, new RegExp(`"@type":"SearchResultsPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/search#breadcrumb"\\}`), '/search SearchResultsPage breadcrumb → #breadcrumb graph link');
 
+  const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
+  if (generatedDayPages.length !== days.length) {
+    const missing = days
+      .filter(day => !existsSync(path.join(outDir, `day/${day.number}/index.html`)))
+      .map(day => `${day.dir}->/day/${day.number}`)
+      .slice(0, 20)
+      .join(', ');
+    fail(`Generated day page count mismatch: ${generatedDayPages.length}/${days.length}. Missing: ${missing}`);
+  } else {
+    note(`generated day pages: ${generatedDayPages.length}/${days.length}`);
+  }
+
+  for (const day of generatedDayPages) {
+    const label = `day ${day.number}`;
+    const dayHtml = readGenerated(`day/${day.number}/index.html`);
+    const headline = decodeJsonStringLiteral(extractRequired(dayHtml, /"@type":"Article"[\s\S]*?"headline":"((?:\\.|[^"])*)"/, `${label} Article headline`));
+    const expectedTitle = headline ? `${headline} | Dawson Wang` : '';
+    assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${day.number}"`, `${label} canonical`);
+    assertIncludes(dayHtml, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/day/${day.number}"`, `${label} hreflang zh-Hant-TW`);
+    assertIncludes(dayHtml, `<link rel="alternate" hreflang="x-default" href="${siteUrl}/day/${day.number}"`, `${label} hreflang x-default`);
+    assertTitleStack(dayHtml, expectedTitle, label);
+    assertDiscoveryAlternates(dayHtml, label);
+    assertIncludes(dayHtml, '<meta property="og:type" content="article"', `${label} og:type article`);
+  }
+
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
-    const latestDayHeadline = extractRequired(dayHtml, /"@type":"Article"[\s\S]*?"headline":"([^"]+)"/, `day ${latestDay} Article headline`);
+    const latestDayHeadline = decodeJsonStringLiteral(extractRequired(dayHtml, /"@type":"Article"[\s\S]*?"headline":"((?:\\.|[^"])*)"/, `day ${latestDay} Article headline`));
     const expectedLatestDayTitle = latestDayHeadline ? `${latestDayHeadline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay}`);
     assertIncludes(dayHtml, `<link rel="alternate" hreflang="zh-Hant-TW" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay} hreflang zh-Hant-TW`);
@@ -312,18 +354,6 @@ if (!existsSync(outDir)) {
     note(`article:tag and Article about asserted on day ${latestDayWithTopics}`);
   } else {
     note('no day with topics found; article:tag and Article about probes skipped');
-  }
-
-  const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
-  if (generatedDayPages.length !== days.length) {
-    const missing = days
-      .filter(day => !existsSync(path.join(outDir, `day/${day.number}/index.html`)))
-      .map(day => `${day.dir}->/day/${day.number}`)
-      .slice(0, 20)
-      .join(', ');
-    fail(`Generated day page count mismatch: ${generatedDayPages.length}/${days.length}. Missing: ${missing}`);
-  } else {
-    note(`generated day pages: ${generatedDayPages.length}/${days.length}`);
   }
 
   const topicsIndex = readGenerated('topics/index.html');
