@@ -14,6 +14,9 @@ const outDir = candidateSiteDirs
   .find(dir => existsSync(path.join(dir, 'index.html')))
   ?? path.resolve(root, configuredSiteDir ?? 'dist');
 const siteUrl = 'https://dawsonwang.com';
+const defaultOgImageUrl = `${siteUrl}/og-default.png`;
+const defaultOgImageAlt = 'Dawson Wang — AI 工具落地實踐者';
+const socialXHandle = '@dawson54068';
 
 const failures: string[] = [];
 const notes: string[] = [];
@@ -89,6 +92,18 @@ function assertSelfHreflangAlternates(haystack: string, routePath: string, label
   const href = routePath === '/' ? `${siteUrl}/` : `${siteUrl}${routePath}`;
   assertIncludes(haystack, `<link rel="alternate" hreflang="zh-Hant-TW" href="${href}"`, `${label} hreflang zh-Hant-TW`);
   assertIncludes(haystack, `<link rel="alternate" hreflang="x-default" href="${href}"`, `${label} hreflang x-default`);
+}
+
+function assertDefaultSocialCardStack(haystack: string, label: string) {
+  assertIncludes(haystack, `<meta property="og:image" content="${defaultOgImageUrl}"`, `${label} og:image default absolute URL`);
+  assertIncludes(haystack, '<meta property="og:image:width" content="1200"', `${label} og:image:width`);
+  assertIncludes(haystack, '<meta property="og:image:height" content="630"', `${label} og:image:height`);
+  assertIncludes(haystack, `<meta property="og:image:alt" content="${defaultOgImageAlt}"`, `${label} og:image:alt`);
+  assertIncludes(haystack, '<meta name="twitter:card" content="summary_large_image"', `${label} twitter:card`);
+  assertIncludes(haystack, `<meta name="twitter:site" content="${socialXHandle}"`, `${label} twitter:site`);
+  assertIncludes(haystack, `<meta name="twitter:creator" content="${socialXHandle}"`, `${label} twitter:creator`);
+  assertIncludes(haystack, `<meta name="twitter:image" content="${defaultOgImageUrl}"`, `${label} twitter:image default absolute URL`);
+  assertIncludes(haystack, `<meta name="twitter:image:alt" content="${defaultOgImageAlt}"`, `${label} twitter:image:alt`);
 }
 
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
@@ -183,14 +198,7 @@ if (!existsSync(outDir)) {
   assertTitleStack(home, expectedHomeTitle, 'home');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertIncludes(home, `<meta property="og:url" content="${siteUrl}/"`, 'home');
-  assertIncludes(home, '<meta name="twitter:site" content="@dawson54068"', 'home twitter:site');
-  assertIncludes(home, '<meta name="twitter:creator" content="@dawson54068"', 'home twitter:creator');
-  assertMatch(home, /<meta property="og:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
-  assertIncludes(home, '<meta property="og:image:width" content="1200"', 'home og:image:width');
-  assertIncludes(home, '<meta property="og:image:height" content="630"', 'home og:image:height');
-  assertMatch(home, /<meta property="og:image:alt" content="[^"]+"/, 'home og:image:alt');
-  assertMatch(home, /<meta name="twitter:image" content="https:\/\/dawsonwang\.com\/[^"]+"\s*\/?\s*>/, 'home');
-  assertMatch(home, /<meta name="twitter:image:alt" content="[^"]+"/, 'home twitter:image:alt');
+  assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
@@ -238,8 +246,7 @@ if (!existsSync(outDir)) {
   assertMatch(allPosts, /<meta name="description" content="瀏覽 Dawson Wang 連續 \d+ 天公開的 AI 工具落地文章：[^"]+"\s*\/?\s*>/, 'all posts meta description');
   assertIncludes(allPosts, '所有', 'all posts');
   assertIncludes(allPosts, '文章', 'all posts');
-  assertMatch(allPosts, /<meta property="og:image:alt" content="[^"]+"/, '/days og:image:alt');
-  assertMatch(allPosts, /<meta name="twitter:image:alt" content="[^"]+"/, '/days twitter:image:alt');
+  assertDefaultSocialCardStack(allPosts, '/days');
   if (allPosts.includes('article:published_time')) fail('/days leaks article:published_time meta (should be type=website)');
   assertIncludes(allPosts, '共 ', 'all posts');
   const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
@@ -255,6 +262,7 @@ if (!existsSync(outDir)) {
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
   assertSelfHreflangAlternates(search, '/search', 'search');
+  assertDefaultSocialCardStack(search, '/search');
   assertMatch(search, /<meta name="description" content="從 \d+ 篇 Dawson Wang 的 AI 工具落地日誌中，用關鍵字或語意搜尋 Claude Code、MCP、automation、內容流程與團隊導入案例。"\s*\/?\s*>/, 'search meta description');
   assertIncludes(search, 'id="search-form"', 'search form');
   assertIncludes(search, 'type="search"', 'search form');
@@ -365,6 +373,7 @@ if (!existsSync(outDir)) {
   assertTitleStack(topicsIndex, 'AI 工具落地主題索引 | Dawson Wang', 'topics index');
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
   assertSelfHreflangAlternates(topicsIndex, '/topics', 'topics index');
+  assertDefaultSocialCardStack(topicsIndex, '/topics');
   assertMatch(topicsIndex, /<meta name="description" content="依主題瀏覽 Dawson Wang 的 \d+ 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。"\s*\/?\s*>/, 'topics index meta description');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
@@ -388,9 +397,8 @@ if (!existsSync(outDir)) {
     assertTitleStack(topicHtml, `${topic.title} AI 實作文章 | Dawson Wang`, label);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
     assertSelfHreflangAlternates(topicHtml, `/topics/${topic.slug}`, label);
+    assertDefaultSocialCardStack(topicHtml, label);
     assertMatch(topicHtml, /<meta name="description" content="[^"]+ 收錄 \d+ 篇 Dawson Wang 的 AI 工具落地文章與案例。"\s*\/?\s*>/, `${label} meta description`);
-    assertIncludes(topicHtml, '<meta name="twitter:site" content="@dawson54068"', `${label} twitter:site`);
-    assertIncludes(topicHtml, '<meta name="twitter:creator" content="@dawson54068"', `${label} twitter:creator`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
     assertDiscoveryAlternates(topicHtml, label);
@@ -451,6 +459,7 @@ if (!existsSync(outDir)) {
   assertTitleStack(proof, 'AI 工具落地案例與作品集 | Dawson Wang', '/proof');
   assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
   assertSelfHreflangAlternates(proof, '/proof', '/proof');
+  assertDefaultSocialCardStack(proof, '/proof');
   assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
