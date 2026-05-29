@@ -1,11 +1,11 @@
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../lib/seo';
-import { allTopics } from '../lib/topics';
+import { topicsWithPosts } from '../lib/topics';
 
 export async function GET() {
   const days = await getCollection('days');
   const latest = days.sort((a, b) => b.data.dayNumber - a.data.dayNumber).slice(0, 20);
-  const topics = allTopics();
+  const topics = topicsWithPosts();
 
   const lines = [
     '# Dawson Wang',
