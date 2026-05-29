@@ -61,10 +61,11 @@ function extractRequired(haystack: string, pattern: RegExp, label: string) {
   return match[1];
 }
 
-function decodeJsonStringLiteral(value: string) {
+function decodeJsonStringLiteral(value: string, label?: string) {
   try {
     return JSON.parse(`"${value}"`) as string;
   } catch {
+    if (label) fail(`${label} is not a valid JSON string literal`);
     return value;
   }
 }
@@ -113,6 +114,15 @@ function assertJsonLdInLanguage(haystack: string, nodeType: string, label: strin
     new RegExp(`"@type":"${escapeRegExp(nodeType)}"[\\s\\S]*?"inLanguage":"zh-Hant-TW"`),
     `${label} ${nodeType} inLanguage`
   );
+}
+
+function extractArticleHeadline(haystack: string, label: string) {
+  const encodedHeadline = extractRequired(
+    haystack,
+    /"@type":"Article"[\s\S]*?"headline":"((?:\\.|[^"])*)"/,
+    `${label} Article headline`
+  );
+  return encodedHeadline ? decodeJsonStringLiteral(encodedHeadline, `${label} Article headline`) : '';
 }
 
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
@@ -199,6 +209,7 @@ if (!existsSync(outDir)) {
       .at(-1);
     return [slug, publishedAt];
   }));
+  const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
   note(`source day count: ${days.length}${latestDay ? `, latest day: ${latestDay}` : ''}`);
 
   const home = readGenerated('index.html');
@@ -292,7 +303,6 @@ if (!existsSync(outDir)) {
   assertIncludes(search, `"@id":"${siteUrl}/search#breadcrumb"`, '/search BreadcrumbList @id');
   assertMatch(search, new RegExp(`"@type":"SearchResultsPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/search#breadcrumb"\\}`), '/search SearchResultsPage breadcrumb → #breadcrumb graph link');
 
-  const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
   if (generatedDayPages.length !== days.length) {
     const missing = days
       .filter(day => !existsSync(path.join(outDir, `day/${day.number}/index.html`)))
@@ -307,7 +317,7 @@ if (!existsSync(outDir)) {
   for (const day of generatedDayPages) {
     const label = `day ${day.number}`;
     const dayHtml = readGenerated(`day/${day.number}/index.html`);
-    const headline = decodeJsonStringLiteral(extractRequired(dayHtml, /"@type":"Article"[\s\S]*?"headline":"((?:\\.|[^"])*)"/, `${label} Article headline`));
+    const headline = extractArticleHeadline(dayHtml, label);
     const expectedTitle = headline ? `${headline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${day.number}"`, `${label} canonical`);
     assertSelfHreflangAlternates(dayHtml, `/day/${day.number}`, label);
@@ -318,12 +328,9 @@ if (!existsSync(outDir)) {
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
-    const latestDayHeadline = decodeJsonStringLiteral(extractRequired(dayHtml, /"@type":"Article"[\s\S]*?"headline":"((?:\\.|[^"])*)"/, `day ${latestDay} Article headline`));
+    const latestDayHeadline = extractArticleHeadline(dayHtml, `day ${latestDay}`);
     const expectedLatestDayTitle = latestDayHeadline ? `${latestDayHeadline} | Dawson Wang` : '';
-    assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${latestDay}"`, `day ${latestDay}`);
-    assertSelfHreflangAlternates(dayHtml, `/day/${latestDay}`, `day ${latestDay}`);
     assertTitleStack(dayHtml, expectedLatestDayTitle, `day ${latestDay}`);
-    assertIncludes(dayHtml, '<meta property="og:type" content="article"', `day ${latestDay}`);
     assertIncludes(dayHtml, '<meta name="twitter:site" content="@dawson54068"', `day ${latestDay} twitter:site`);
     assertIncludes(dayHtml, '<meta name="twitter:creator" content="@dawson54068"', `day ${latestDay} twitter:creator`);
     assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
@@ -366,7 +373,6 @@ if (!existsSync(outDir)) {
         assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
       }
     }
-    assertDiscoveryAlternates(dayHtml, `day ${latestDay}`);
   }
 
   // article:tag is only emitted when the day has topic chips; assert on the latest day that has topics
