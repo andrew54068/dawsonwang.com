@@ -1,4 +1,6 @@
-import { PERSON_SAME_AS_URLS, PERSON_X_HANDLE } from '../data/profiles';
+import { PERSON_SAME_AS_URLS, PERSON_X_HANDLE, PERSON_X_URL } from '../data/profiles';
+
+const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_URL]));
 
 export const SITE_URL = 'https://dawsonwang.com';
 export const SITE_NAME = 'Dawson Wang';
@@ -83,7 +85,7 @@ export const personJsonLd = {
   // Knowledge Graph entity-linking: canonical off-site profile URLs sourced from
   // src/data/profiles.ts. Tells search engines this Person entity is the same real-world
   // person behind those external profiles. Extend src/data/profiles.ts to add more.
-  sameAs: [...PERSON_SAME_AS_URLS],
+  sameAs: personSameAsUrls,
 };
 
 export const websiteJsonLd = {

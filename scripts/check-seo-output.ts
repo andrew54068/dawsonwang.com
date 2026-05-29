@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 import { PROOF_PROJECTS } from '../src/data/proof-projects';
-import { PERSON_SAME_AS_URLS } from '../src/data/profiles';
+import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../src/data/profiles';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -17,6 +17,7 @@ const siteUrl = 'https://dawsonwang.com';
 const defaultOgImageUrl = `${siteUrl}/og-default.png`;
 const defaultOgImageAlt = 'Dawson Wang — AI 工具落地實踐者';
 const socialXHandle = '@dawson54068';
+const expectedPersonSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_URL]));
 
 const failures: string[] = [];
 const notes: string[] = [];
@@ -217,7 +218,8 @@ if (!existsSync(outDir)) {
   // Knowledge Graph entity-linking: Person.sameAs array of canonical off-site profiles
   // (sourced from src/data/profiles.ts). At minimum the GitHub URL must be present.
   assertMatch(home, /"@type":"Person"[\s\S]*?"sameAs":\[[^\]]*"https:\/\/github\.com\/andrew54068"/, 'home Person sameAs contains GitHub URL');
-  for (const profileUrl of PERSON_SAME_AS_URLS) {
+  assertMatch(home, /"@type":"Person"[\s\S]*?"sameAs":\[[^\]]*"https:\/\/x\.com\/dawson54068"/, 'home Person sameAs contains X URL');
+  for (const profileUrl of expectedPersonSameAsUrls) {
     const escaped = profileUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"sameAs":\\[[^\\]]*"${escaped}"`), `home Person sameAs contains ${profileUrl}`);
   }
