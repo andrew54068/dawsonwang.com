@@ -97,6 +97,17 @@ function assertDescriptionStack(haystack: string, label: string) {
   assertIncludes(haystack, `<meta name="twitter:description" content="${renderedDescription}"`, `${label} twitter:description`);
 }
 
+function assertCanonicalOgUrlParity(haystack: string, label: string) {
+  const canonicalUrl = extractRequired(
+    haystack,
+    /<link rel="canonical" href="([^"]+)"\s*\/?\s*>/,
+    `${label} canonical href`
+  );
+  if (!canonicalUrl) return;
+
+  assertIncludes(haystack, `<meta property="og:url" content="${canonicalUrl}"`, `${label} og:url matches canonical`);
+}
+
 function assertDiscoveryAlternates(haystack: string, label: string) {
   assertIncludes(haystack, '<link rel="alternate" type="text/plain" title="Dawson Wang AI-readable site summary" href="/llms.txt"', `${label} llms alternate link`);
   assertIncludes(haystack, '<link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml"', `${label} rss alternate link`);
@@ -227,11 +238,11 @@ if (!existsSync(outDir)) {
   const home = readGenerated('index.html');
   const expectedHomeTitle = 'Dawson Wang — AI 工具落地實踐者';
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
+  assertCanonicalOgUrlParity(home, 'home');
   assertSelfHreflangAlternates(home, '/', 'home');
   assertTitleStack(home, expectedHomeTitle, 'home');
   assertDescriptionStack(home, 'home');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
-  assertIncludes(home, `<meta property="og:url" content="${siteUrl}/"`, 'home');
   assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   assertJsonLdInLanguage(home, 'WebSite', 'home');
@@ -278,6 +289,7 @@ if (!existsSync(outDir)) {
   const allPosts = readGenerated('days/index.html');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
+  assertCanonicalOgUrlParity(allPosts, 'all posts');
   assertSelfHreflangAlternates(allPosts, '/days', 'all posts');
   assertDescriptionStack(allPosts, 'all posts');
   assertMatch(allPosts, /<meta name="description" content="瀏覽 Dawson Wang 連續 \d+ 天公開的 AI 工具落地文章：[^"]+"\s*\/?\s*>/, 'all posts meta description');
@@ -299,6 +311,7 @@ if (!existsSync(outDir)) {
   const search = readGenerated('search/index.html');
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
+  assertCanonicalOgUrlParity(search, 'search');
   assertSelfHreflangAlternates(search, '/search', 'search');
   assertDescriptionStack(search, 'search');
   assertDefaultSocialCardStack(search, '/search');
@@ -335,6 +348,7 @@ if (!existsSync(outDir)) {
     const headline = extractArticleHeadline(dayHtml, label);
     const expectedTitle = headline ? `${headline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${day.number}"`, `${label} canonical`);
+    assertCanonicalOgUrlParity(dayHtml, label);
     assertSelfHreflangAlternates(dayHtml, `/day/${day.number}`, label);
     assertTitleStack(dayHtml, expectedTitle, label);
     assertDescriptionStack(dayHtml, label);
@@ -419,6 +433,7 @@ if (!existsSync(outDir)) {
   const topicsIndex = readGenerated('topics/index.html');
   assertTitleStack(topicsIndex, 'AI 工具落地主題索引 | Dawson Wang', 'topics index');
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
+  assertCanonicalOgUrlParity(topicsIndex, 'topics index');
   assertSelfHreflangAlternates(topicsIndex, '/topics', 'topics index');
   assertDescriptionStack(topicsIndex, 'topics index');
   assertDefaultSocialCardStack(topicsIndex, '/topics');
@@ -446,6 +461,7 @@ if (!existsSync(outDir)) {
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
     assertTitleStack(topicHtml, `${topic.title} AI 實作文章 | Dawson Wang`, label);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
+    assertCanonicalOgUrlParity(topicHtml, label);
     assertSelfHreflangAlternates(topicHtml, `/topics/${topic.slug}`, label);
     assertDescriptionStack(topicHtml, label);
     assertDefaultSocialCardStack(topicHtml, label);
@@ -510,6 +526,7 @@ if (!existsSync(outDir)) {
   const proof = readGenerated('proof/index.html');
   assertTitleStack(proof, 'AI 工具落地案例與作品集 | Dawson Wang', '/proof');
   assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
+  assertCanonicalOgUrlParity(proof, '/proof');
   assertSelfHreflangAlternates(proof, '/proof', '/proof');
   assertDescriptionStack(proof, '/proof');
   assertDefaultSocialCardStack(proof, '/proof');
