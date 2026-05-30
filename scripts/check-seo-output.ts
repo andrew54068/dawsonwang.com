@@ -14,6 +14,8 @@ const outDir = candidateSiteDirs
   .find(dir => existsSync(path.join(dir, 'index.html')))
   ?? path.resolve(root, configuredSiteDir ?? 'dist');
 const siteUrl = 'https://dawsonwang.com';
+const siteLanguage = 'zh-Hant-TW';
+const siteLocale = 'zh_TW';
 const defaultOgImageUrl = `${siteUrl}/og-default.png`;
 const defaultOgImageAlt = 'Dawson Wang — AI 工具落地實踐者';
 const socialXHandle = '@dawson54068';
@@ -113,9 +115,14 @@ function assertDiscoveryAlternates(haystack: string, label: string) {
   assertIncludes(haystack, '<link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml"', `${label} rss alternate link`);
 }
 
+function assertLocaleStack(haystack: string, label: string) {
+  assertIncludes(haystack, `<html lang="${siteLanguage}">`, `${label} html lang`);
+  assertIncludes(haystack, `<meta property="og:locale" content="${siteLocale}"`, `${label} og:locale`);
+}
+
 function assertSelfHreflangAlternates(haystack: string, routePath: string, label: string) {
   const href = routePath === '/' ? `${siteUrl}/` : `${siteUrl}${routePath}`;
-  assertIncludes(haystack, `<link rel="alternate" hreflang="zh-Hant-TW" href="${href}"`, `${label} hreflang zh-Hant-TW`);
+  assertIncludes(haystack, `<link rel="alternate" hreflang="${siteLanguage}" href="${href}"`, `${label} hreflang ${siteLanguage}`);
   assertIncludes(haystack, `<link rel="alternate" hreflang="x-default" href="${href}"`, `${label} hreflang x-default`);
 }
 
@@ -239,6 +246,7 @@ if (!existsSync(outDir)) {
   const expectedHomeTitle = 'Dawson Wang — AI 工具落地實踐者';
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
   assertCanonicalOgUrlParity(home, 'home');
+  assertLocaleStack(home, 'home');
   assertSelfHreflangAlternates(home, '/', 'home');
   assertTitleStack(home, expectedHomeTitle, 'home');
   assertDescriptionStack(home, 'home');
@@ -290,6 +298,7 @@ if (!existsSync(outDir)) {
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
   assertCanonicalOgUrlParity(allPosts, 'all posts');
+  assertLocaleStack(allPosts, 'all posts');
   assertSelfHreflangAlternates(allPosts, '/days', 'all posts');
   assertDescriptionStack(allPosts, 'all posts');
   assertMatch(allPosts, /<meta name="description" content="瀏覽 Dawson Wang 連續 \d+ 天公開的 AI 工具落地文章：[^"]+"\s*\/?\s*>/, 'all posts meta description');
@@ -312,6 +321,7 @@ if (!existsSync(outDir)) {
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
   assertCanonicalOgUrlParity(search, 'search');
+  assertLocaleStack(search, 'search');
   assertSelfHreflangAlternates(search, '/search', 'search');
   assertDescriptionStack(search, 'search');
   assertDefaultSocialCardStack(search, '/search');
@@ -349,6 +359,7 @@ if (!existsSync(outDir)) {
     const expectedTitle = headline ? `${headline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${day.number}"`, `${label} canonical`);
     assertCanonicalOgUrlParity(dayHtml, label);
+    assertLocaleStack(dayHtml, label);
     assertSelfHreflangAlternates(dayHtml, `/day/${day.number}`, label);
     assertTitleStack(dayHtml, expectedTitle, label);
     assertDescriptionStack(dayHtml, label);
@@ -434,6 +445,7 @@ if (!existsSync(outDir)) {
   assertTitleStack(topicsIndex, 'AI 工具落地主題索引 | Dawson Wang', 'topics index');
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
   assertCanonicalOgUrlParity(topicsIndex, 'topics index');
+  assertLocaleStack(topicsIndex, 'topics index');
   assertSelfHreflangAlternates(topicsIndex, '/topics', 'topics index');
   assertDescriptionStack(topicsIndex, 'topics index');
   assertDefaultSocialCardStack(topicsIndex, '/topics');
@@ -462,6 +474,7 @@ if (!existsSync(outDir)) {
     assertTitleStack(topicHtml, `${topic.title} AI 實作文章 | Dawson Wang`, label);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
     assertCanonicalOgUrlParity(topicHtml, label);
+    assertLocaleStack(topicHtml, label);
     assertSelfHreflangAlternates(topicHtml, `/topics/${topic.slug}`, label);
     assertDescriptionStack(topicHtml, label);
     assertDefaultSocialCardStack(topicHtml, label);
@@ -527,6 +540,7 @@ if (!existsSync(outDir)) {
   assertTitleStack(proof, 'AI 工具落地案例與作品集 | Dawson Wang', '/proof');
   assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
   assertCanonicalOgUrlParity(proof, '/proof');
+  assertLocaleStack(proof, '/proof');
   assertSelfHreflangAlternates(proof, '/proof', '/proof');
   assertDescriptionStack(proof, '/proof');
   assertDefaultSocialCardStack(proof, '/proof');
