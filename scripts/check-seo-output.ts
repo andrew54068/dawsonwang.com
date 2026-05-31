@@ -584,6 +584,13 @@ if (!existsSync(outDir)) {
 
   // /inquiry-received thank-you page is noindexed via BaseLayout `noindex` prop.
   const inquiry = readGenerated('inquiry-received/index.html');
+  assertTitleStack(inquiry, '收到了 | Dawson Wang', '/inquiry-received');
+  assertIncludes(inquiry, `<link rel="canonical" href="${siteUrl}/inquiry-received"`, '/inquiry-received canonical');
+  assertCanonicalOgUrlParity(inquiry, '/inquiry-received');
+  assertLocaleStack(inquiry, '/inquiry-received');
+  assertSelfHreflangAlternates(inquiry, '/inquiry-received', '/inquiry-received');
+  assertDescriptionStack(inquiry, '/inquiry-received');
+  assertDefaultSocialCardStack(inquiry, '/inquiry-received');
   assertIncludes(inquiry, '<meta name="robots" content="noindex, nofollow"', '/inquiry-received noindex meta robots');
   if (inquiry.includes('content="index, follow')) fail('/inquiry-received leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap probe: /inquiry-received must NOT appear in sitemap.xml or llms.txt.
@@ -591,6 +598,13 @@ if (!existsSync(outDir)) {
   if (llms.includes(`${siteUrl}/inquiry-received`)) fail('llms.txt leaks /inquiry-received (should be excluded)');
   // /404 custom error page is noindexed via BaseLayout `noindex` prop and must navigate back into the content graph.
   const notFound = readGenerated('404.html');
+  assertTitleStack(notFound, '找不到頁面 | Dawson Wang', '/404');
+  assertIncludes(notFound, `<link rel="canonical" href="${siteUrl}/404"`, '/404 canonical');
+  assertCanonicalOgUrlParity(notFound, '/404');
+  assertLocaleStack(notFound, '/404');
+  assertSelfHreflangAlternates(notFound, '/404', '/404');
+  assertDescriptionStack(notFound, '/404');
+  assertDefaultSocialCardStack(notFound, '/404');
   assertIncludes(notFound, '<meta name="robots" content="noindex, nofollow"', '/404 noindex meta robots');
   if (notFound.includes('content="index, follow')) fail('/404 leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap/llms probe: /404 must NOT appear in sitemap.xml or llms.txt.
