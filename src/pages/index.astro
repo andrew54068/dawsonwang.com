@@ -21,6 +21,13 @@ const serviceJsonLd = {
   inLanguage: 'zh-Hant-TW',
   founder: { '@id': `${SITE_URL}/#person` },
   isPartOf: { '@id': `${SITE_URL}/#website` },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    url: inquireUrl,
+    contactType: 'consulting inquiries',
+    areaServed: 'Taiwan',
+    availableLanguage: ['zh-Hant-TW', 'en'],
+  },
   serviceType: ['AI 工具落地', 'AI workflow implementation', 'Claude Code training', 'MCP server implementation', 'Agent workflow consulting'],
   description: homeDescription,
   hasOfferCatalog: {

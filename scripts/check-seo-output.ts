@@ -322,6 +322,7 @@ if (!existsSync(outDir)) {
   assertMatch(homeJsonLd, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"founder":\\{"@id":"${siteUrl}/#person"\\}`), 'home ProfessionalService founder → #person graph link');
   assertMatch(homeJsonLd, /"@type":"ProfessionalService"[\s\S]*?"areaServed":"Taiwan"/, 'home ProfessionalService areaServed Taiwan');
   assertMatch(homeJsonLd, /"@type":"ProfessionalService"[\s\S]*?"inLanguage":"zh-Hant-TW"/, 'home ProfessionalService inLanguage zh-Hant-TW');
+  assertMatch(homeJsonLd, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"contactPoint":\\{"@type":"ContactPoint","url":"${siteUrl}/#inquire","contactType":"consulting inquiries","areaServed":"Taiwan","availableLanguage":\\["zh-Hant-TW","en"\\]\\}`), 'home ProfessionalService contactPoint → #inquire');
   assertMatch(home, new RegExp(`"@type":"OfferCatalog"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home OfferCatalog isPartOf → #website graph link');
   assertIncludes(home, `"@id":"${siteUrl}/#ai-workflow-service-catalog"`, 'home OfferCatalog @id');
   const homeOfferCount = countMatches(homeJsonLd, /"@type":"Offer","position":\d+/g);
