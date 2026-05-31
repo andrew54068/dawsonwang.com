@@ -53,6 +53,10 @@ function countMatches(haystack: string, pattern: RegExp) {
   return Array.from(haystack.matchAll(pattern)).length;
 }
 
+function assertCountEquals(actual: number, expected: number, label: string) {
+  if (actual !== expected) fail(`${label} count ${actual} !== expected ${expected}`);
+}
+
 function extractRequired(haystack: string, pattern: RegExp, label: string) {
   const match = haystack.match(pattern);
   if (!match?.[1]) {
@@ -223,6 +227,7 @@ if (!existsSync(outDir)) {
 } else {
   const days = listSourceDays();
   const latestDay = days.at(-1)?.number;
+  const sourceDayNumberSet = new Set(days.map(day => day.number));
   const dayPublishedAtByNumber = new Map(days.map(day => [day.number, readDayPublishedAt(day.publishManifestPath)]));
   const latestPublishedAt = Array.from(dayPublishedAtByNumber.values())
     .filter((value): value is string => Boolean(value))
@@ -232,6 +237,12 @@ if (!existsSync(outDir)) {
   const taggedTopicSlugs = TOPICS
     .filter(topic => Object.values(DAY_TOPICS).some(slugs => slugs.includes(topic.slug)))
     .map(topic => topic.slug);
+  const topicDayCountBySlug = new Map(TOPICS.map(topic => {
+    const topicDayCount = Object.entries(DAY_TOPICS)
+      .filter(([dayNumber, slugs]) => slugs.includes(topic.slug) && sourceDayNumberSet.has(Number(dayNumber)))
+      .length;
+    return [topic.slug, topicDayCount];
+  }));
   const topicPublishedAtBySlug = new Map(taggedTopicSlugs.map(slug => {
     const publishedAt = Object.entries(DAY_TOPICS)
       .filter(([, slugs]) => slugs.includes(slug))
@@ -310,8 +321,13 @@ if (!existsSync(outDir)) {
   assertJsonLdInLanguage(allPosts, 'CollectionPage', '/days');
   if (allPosts.includes('article:published_time')) fail('/days leaks article:published_time meta (should be type=website)');
   assertIncludes(allPosts, '共 ', 'all posts');
+  assertMatch(allPosts, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${days.length}\\b`), '/days ItemList numberOfItems matches source day count');
   const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
   if (allPostsDayLinks < days.length) fail(`All posts page links only ${allPostsDayLinks}/${days.length} day pages`);
+  // Count absolute ItemList day URLs in the generated JSON-LD instead of raw ListItem nodes:
+  // BreadcrumbList shares the same script and would overcount by +2.
+  const allPostsJsonLdDayUrlCount = countMatches(allPosts, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
+  assertCountEquals(allPostsJsonLdDayUrlCount, generatedDayPages.length, '/days ItemList absolute day URL');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, '/days CollectionPage+ItemList JSON-LD');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/days BreadcrumbList JSON-LD');
   assertMatch(allPosts, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
@@ -461,6 +477,11 @@ if (!existsSync(outDir)) {
   assertJsonLdInLanguage(topicsIndex, 'DefinedTermSet', '/topics');
   assertJsonLdInLanguage(topicsIndex, 'CollectionPage', '/topics');
   assertDiscoveryAlternates(topicsIndex, '/topics');
+  assertMatch(topicsIndex, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${TOPICS.length}\\b`), '/topics ItemList numberOfItems matches topic source of truth');
+  // Count absolute topic URLs in the ItemList rather than ListItem wrappers so the BreadcrumbList
+  // nodes in the shared JSON-LD script cannot inflate the expected total.
+  const topicsIndexItemListUrlCount = countMatches(topicsIndex, /"url":"https:\/\/dawsonwang\.com\/topics\/[^"]+"/g);
+  assertCountEquals(topicsIndexItemListUrlCount, TOPICS.length, '/topics ItemList absolute topic URL');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(topicsIndex, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
   assertMatch(topicsIndex, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
@@ -477,6 +498,7 @@ if (!existsSync(outDir)) {
   for (const topic of TOPICS) {
     const label = `topic ${topic.slug}`;
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
+    const expectedTopicDayCount = topicDayCountBySlug.get(topic.slug) ?? 0;
     assertTitleStack(topicHtml, `${topic.title} AI 實作文章 | Dawson Wang`, label);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
     assertCanonicalOgUrlParity(topicHtml, label);
@@ -489,6 +511,9 @@ if (!existsSync(outDir)) {
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
     assertJsonLdInLanguage(topicHtml, 'CollectionPage', label);
     assertDiscoveryAlternates(topicHtml, label);
+    assertMatch(topicHtml, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${expectedTopicDayCount}\\b`), `${label} ItemList numberOfItems matches tagged day count`);
+    const topicItemListDayUrlCount = countMatches(topicHtml, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
+    assertCountEquals(topicItemListDayUrlCount, expectedTopicDayCount, `${label} ItemList absolute day URL`);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
     assertMatch(topicHtml, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
     // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68) — wrapped in the TOPICS loop so future
