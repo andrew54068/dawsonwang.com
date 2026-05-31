@@ -278,6 +278,7 @@ if (!existsSync(outDir)) {
   assertMatch(home, /"@type":"ProfessionalService"[\s\S]*?"hasOfferCatalog":\{[\s\S]*?"@type":"OfferCatalog"/, 'home ProfessionalService hasOfferCatalog');
   // Graph links back to the root WebSite node so the ProfessionalService + its OfferCatalog are not orphan nodes.
   assertMatch(home, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home ProfessionalService isPartOf → #website graph link');
+  assertMatch(home, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"contactPoint":\\{"@type":"ContactPoint","url":"${siteUrl}/#inquire","contactType":"consulting inquiries","areaServed":"Taiwan","availableLanguage":\\["zh-Hant-TW","en"\\]\\}`), 'home ProfessionalService contactPoint → #inquire');
   assertMatch(home, new RegExp(`"@type":"OfferCatalog"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home OfferCatalog isPartOf → #website graph link');
   assertIncludes(home, `"@id":"${siteUrl}/#ai-workflow-service-catalog"`, 'home OfferCatalog @id');
   const homeOfferCount = countMatches(home, /"@type":"Offer","position":\d+/g);
