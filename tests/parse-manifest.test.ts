@@ -39,6 +39,20 @@ test('handles missing platforms (early days without LinkedIn)', () => {
   expect(result.threads?.stats).toEqual({});
 });
 
+test('normalizes blank published_at values to undefined without dropping the platform record', () => {
+  const raw = {
+    day: 44,
+    threads: {
+      published_at: '   ',
+      post_url: 'https://www.threads.com/@andrew54068/post/DUtUFc8k9Um',
+    },
+  };
+  const result = parseManifest(raw);
+  expect(result.threads?.publishedAt).toBeUndefined();
+  expect(result.threads?.postUrl).toBe('https://www.threads.com/@andrew54068/post/DUtUFc8k9Um');
+  expect(result.threads?.stats).toEqual({});
+});
+
 test('returns no-stats record when stats not yet collected', () => {
   const raw = {
     day: 122,

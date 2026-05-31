@@ -194,9 +194,11 @@ function readDayPublishedAt(publishManifestPath: string) {
       facebook?: { published_at?: string };
       linkedin?: { published_at?: string };
     };
-    return manifest.threads?.published_at
-      ?? manifest.facebook?.published_at
-      ?? manifest.linkedin?.published_at;
+    for (const candidate of [manifest.threads?.published_at, manifest.facebook?.published_at, manifest.linkedin?.published_at]) {
+      const normalized = candidate?.trim();
+      if (normalized) return normalized;
+    }
+    return undefined;
   } catch {
     fail(`Unreadable publish manifest: ${path.relative(root, publishManifestPath)}`);
     return undefined;
@@ -365,6 +367,10 @@ if (!existsSync(outDir)) {
     assertDescriptionStack(dayHtml, label);
     assertDiscoveryAlternates(dayHtml, label);
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `${label} og:type article`);
+    if (/"datePublished":""/.test(dayHtml)) fail(`${label} Article datePublished is an empty string`);
+    if (/"dateModified":""/.test(dayHtml)) fail(`${label} Article dateModified is an empty string`);
+    if (/<meta property="article:published_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:published_time is an empty string`);
+    if (/<meta property="article:modified_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:modified_time is an empty string`);
   }
 
   if (latestDay) {

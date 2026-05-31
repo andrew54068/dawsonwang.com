@@ -39,11 +39,16 @@ const ManifestSchema = z.object({
   linkedin: PlatformBlock(LinkedInStats),
 });
 
+function normalizePublishedAt(value: string) {
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : undefined;
+}
+
 export interface ParsedManifest {
   day: number;
-  threads?: { publishedAt: string; postUrl: string; stats: z.infer<typeof ThreadsStats> };
-  facebook?: { publishedAt: string; postUrl: string; stats: z.infer<typeof FacebookStats> };
-  linkedin?: { publishedAt: string; postUrl: string; stats: z.infer<typeof LinkedInStats> };
+  threads?: { publishedAt?: string; postUrl: string; stats: z.infer<typeof ThreadsStats> };
+  facebook?: { publishedAt?: string; postUrl: string; stats: z.infer<typeof FacebookStats> };
+  linkedin?: { publishedAt?: string; postUrl: string; stats: z.infer<typeof LinkedInStats> };
 }
 
 export function parseManifest(raw: unknown): ParsedManifest {
@@ -51,17 +56,17 @@ export function parseManifest(raw: unknown): ParsedManifest {
   return {
     day: parsed.day,
     threads: parsed.threads && {
-      publishedAt: parsed.threads.published_at,
+      publishedAt: normalizePublishedAt(parsed.threads.published_at),
       postUrl: parsed.threads.post_url,
       stats: parsed.threads.stats,
     },
     facebook: parsed.facebook && {
-      publishedAt: parsed.facebook.published_at,
+      publishedAt: normalizePublishedAt(parsed.facebook.published_at),
       postUrl: parsed.facebook.post_url,
       stats: parsed.facebook.stats,
     },
     linkedin: parsed.linkedin && {
-      publishedAt: parsed.linkedin.published_at,
+      publishedAt: normalizePublishedAt(parsed.linkedin.published_at),
       postUrl: parsed.linkedin.post_url,
       stats: parsed.linkedin.stats,
     },
