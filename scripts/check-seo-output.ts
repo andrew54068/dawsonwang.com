@@ -353,19 +353,20 @@ if (!existsSync(outDir)) {
   assertJsonLdInLanguage(allPosts, 'CollectionPage', '/days');
   if (allPosts.includes('article:published_time')) fail('/days leaks article:published_time meta (should be type=website)');
   assertIncludes(allPosts, '共 ', 'all posts');
-  assertMatch(allPosts, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${days.length}\\b`), '/days ItemList numberOfItems matches source day count');
+  const allPostsJsonLd = extractJsonLdScript(allPosts, '/days');
+  assertMatch(allPostsJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${days.length}\\b`), '/days ItemList numberOfItems matches source day count');
   const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
   if (allPostsDayLinks < days.length) fail(`All posts page links only ${allPostsDayLinks}/${days.length} day pages`);
-  // Count absolute ItemList day URLs in the generated JSON-LD instead of raw ListItem nodes:
-  // BreadcrumbList shares the same script and would overcount by +2.
-  const allPostsJsonLdDayUrlCount = countMatches(allPosts, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
+  // Count absolute ItemList day URLs inside the extracted JSON-LD instead of the full HTML:
+  // the rendered card list also links every day page, so a broken ItemList payload could hide behind visible copy.
+  const allPostsJsonLdDayUrlCount = countMatches(allPostsJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
   assertCountEquals(allPostsJsonLdDayUrlCount, generatedDayPages.length, '/days ItemList absolute day URL');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, '/days CollectionPage+ItemList JSON-LD');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/days BreadcrumbList JSON-LD');
-  assertMatch(allPosts, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
+  assertMatch(allPostsJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
-  assertIncludes(allPosts, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
-  assertMatch(allPosts, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
+  assertIncludes(allPostsJsonLd, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
+  assertMatch(allPostsJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
 
   const search = readGenerated('search/index.html');
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
@@ -509,23 +510,24 @@ if (!existsSync(outDir)) {
   assertJsonLdInLanguage(topicsIndex, 'DefinedTermSet', '/topics');
   assertJsonLdInLanguage(topicsIndex, 'CollectionPage', '/topics');
   assertDiscoveryAlternates(topicsIndex, '/topics');
-  assertMatch(topicsIndex, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${TOPICS.length}\\b`), '/topics ItemList numberOfItems matches topic source of truth');
-  // Count absolute topic URLs in the ItemList rather than ListItem wrappers so the BreadcrumbList
-  // nodes in the shared JSON-LD script cannot inflate the expected total.
-  const topicsIndexItemListUrlCount = countMatches(topicsIndex, /"url":"https:\/\/dawsonwang\.com\/topics\/[^"]+"/g);
+  const topicsIndexJsonLd = extractJsonLdScript(topicsIndex, '/topics');
+  assertMatch(topicsIndexJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${TOPICS.length}\\b`), '/topics ItemList numberOfItems matches topic source of truth');
+  // Count absolute topic URLs inside the extracted JSON-LD rather than the full HTML: topic cards render
+  // the same links visibly, so whole-document matches can go false-green if the ItemList drifts.
+  const topicsIndexItemListUrlCount = countMatches(topicsIndexJsonLd, /"url":"https:\/\/dawsonwang\.com\/topics\/[^"]+"/g);
   assertCountEquals(topicsIndexItemListUrlCount, TOPICS.length, '/topics ItemList absolute topic URL');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
-  assertIncludes(topicsIndex, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
-  assertMatch(topicsIndex, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
+  assertIncludes(topicsIndexJsonLd, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
+  assertMatch(topicsIndexJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
   // DefinedTermSet hub: models topics as a controlled vocabulary, with isPartOf graph link up to #website
   // and one hasDefinedTerm reference per TOPICS entry (generated from src/data/topics.ts — no literal slugs in JSON-LD source).
-  assertMatch(topicsIndex, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
-  assertMatch(topicsIndex, /"@type":"DefinedTermSet"[\s\S]*?"isPartOf":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, '/topics DefinedTermSet isPartOf → #website graph link');
+  assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
+  assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"isPartOf":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, '/topics DefinedTermSet isPartOf → #website graph link');
   for (const topic of TOPICS) {
-    assertIncludes(topicsIndex, `{"@id":"${siteUrl}/topics/${topic.slug}#term"}`, `/topics DefinedTermSet hasDefinedTerm → ${topic.slug}#term graph link`);
+    assertIncludes(topicsIndexJsonLd, `{"@id":"${siteUrl}/topics/${topic.slug}#term"}`, `/topics DefinedTermSet hasDefinedTerm → ${topic.slug}#term graph link`);
   }
   // Count guard: future TOPICS growth ships green automatically without a literal-number edit.
-  const taxonomyTermRefCount = countMatches(topicsIndex, /"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"/g);
+  const taxonomyTermRefCount = countMatches(topicsIndexJsonLd, /"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"/g);
   if (taxonomyTermRefCount < TOPICS.length) fail(`/topics DefinedTermSet term-ref count ${taxonomyTermRefCount} < TOPICS.length ${TOPICS.length}`);
   for (const topic of TOPICS) {
     const label = `topic ${topic.slug}`;
@@ -543,15 +545,16 @@ if (!existsSync(outDir)) {
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
     assertJsonLdInLanguage(topicHtml, 'CollectionPage', label);
     assertDiscoveryAlternates(topicHtml, label);
-    assertMatch(topicHtml, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${expectedTopicDayCount}\\b`), `${label} ItemList numberOfItems matches tagged day count`);
-    const topicItemListDayUrlCount = countMatches(topicHtml, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
+    const topicPageJsonLd = extractJsonLdScript(topicHtml, label);
+    assertMatch(topicPageJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${expectedTopicDayCount}\\b`), `${label} ItemList numberOfItems matches tagged day count`);
+    const topicItemListDayUrlCount = countMatches(topicPageJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
     assertCountEquals(topicItemListDayUrlCount, expectedTopicDayCount, `${label} ItemList absolute day URL`);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
-    assertMatch(topicHtml, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
+    assertMatch(topicPageJsonLd, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
     // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68) — wrapped in the TOPICS loop so future
     // topic growth ships green automatically (same pattern as the DefinedTermSet ref-count guard).
-    assertIncludes(topicHtml, `"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"`, `${label} BreadcrumbList @id`);
-    assertMatch(topicHtml, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"\\}`), `${label} CollectionPage breadcrumb → #breadcrumb graph link`);
+    assertIncludes(topicPageJsonLd, `"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"`, `${label} BreadcrumbList @id`);
+    assertMatch(topicPageJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"\\}`), `${label} CollectionPage breadcrumb → #breadcrumb graph link`);
   }
   note(`generated topic pages: ${TOPICS.length}/${TOPICS.length}`);
 
@@ -612,24 +615,25 @@ if (!existsSync(outDir)) {
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(proof, 'CollectionPage', '/proof');
   assertDiscoveryAlternates(proof, '/proof');
-  assertIncludes(proof, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
+  const proofJsonLd = extractJsonLdScript(proof, '/proof');
+  assertIncludes(proofJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
-  assertIncludes(proof, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
-  assertMatch(proof, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/proof#breadcrumb"\\}`), '/proof CollectionPage breadcrumb → #breadcrumb graph link');
+  assertIncludes(proofJsonLd, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
+  assertMatch(proofJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/proof#breadcrumb"\\}`), '/proof CollectionPage breadcrumb → #breadcrumb graph link');
   // mainEntity ItemList of shipped projects — single source of truth in src/data/proof-projects.ts
-  assertMatch(proof, /"@type":"CollectionPage"[\s\S]*?"mainEntity":\{[^}]*"@type":"ItemList"/, '/proof CollectionPage→ItemList mainEntity link');
-  assertMatch(proof, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${PROOF_PROJECTS.length}\\b`), '/proof ItemList numberOfItems matches PROOF_PROJECTS.length');
+  assertMatch(proofJsonLd, /"@type":"CollectionPage"[\s\S]*?"mainEntity":\{[^}]*"@type":"ItemList"/, '/proof CollectionPage→ItemList mainEntity link');
+  assertMatch(proofJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${PROOF_PROJECTS.length}\\b`), '/proof ItemList numberOfItems matches PROOF_PROJECTS.length');
   // Count CreativeWork occurrences in the structuredData script (each PROOF_PROJECTS item emits exactly one
-  // CreativeWork; BreadcrumbList items are not CreativeWork, so this isolates the project count without
-  // accidentally counting BreadcrumbList ListItems that share the same script tag).
-  const proofCreativeWorkCount = countMatches(proof, /"@type":"CreativeWork"/g);
+  // CreativeWork; the rendered proof cards duplicate the same names in visible copy, so count/assert inside
+  // the extracted JSON-LD blob rather than the full HTML document.
+  const proofCreativeWorkCount = countMatches(proofJsonLd, /"@type":"CreativeWork"/g);
   if (proofCreativeWorkCount !== PROOF_PROJECTS.length) {
     fail(`/proof CreativeWork count ${proofCreativeWorkCount} !== PROOF_PROJECTS.length ${PROOF_PROJECTS.length}`);
   }
   // Spot-check that each PROOF_PROJECTS entry's name appears inside the JSON-LD (escaped form).
   for (const project of PROOF_PROJECTS) {
     const escaped = escapeJsonString(project.name);
-    assertIncludes(proof, escaped, `/proof ItemList contains project name ${project.name}`);
+    assertIncludes(proofJsonLd, escaped, `/proof ItemList contains project name ${project.name}`);
   }
 
   // RSS feed
