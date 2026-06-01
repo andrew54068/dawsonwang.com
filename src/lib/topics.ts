@@ -20,6 +20,11 @@ export function allTopics(): Topic[] {
   return TOPICS;
 }
 
+/** Returns only topics that currently map to at least one tagged day. */
+export function topicsWithPosts(): Topic[] {
+  return TOPICS.filter(topic => daysForTopic(topic.slug).length > 0);
+}
+
 export function chipVariantFor(slug: string): ChipVariant {
   return TOPICS.find(t => t.slug === slug)?.chipVariant ?? 'outline';
 }

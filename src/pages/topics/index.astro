@@ -1,30 +1,31 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopicCard from '../../components/TopicCard.astro';
-import { allTopics, daysForTopic } from '../../lib/topics';
+import { topicsWithPosts, daysForTopic } from '../../lib/topics';
 import { SITE_URL, breadcrumbJsonLd } from '../../lib/seo';
 
-const topics = allTopics().map(t => ({
+const topics = topicsWithPosts().map(t => ({
   ...t,
   count: daysForTopic(t.slug).length,
 }));
+const topicTitleList = topics.map(topic => topic.title).join('、');
 
 // DefinedTermSet hub: models the topic list as a controlled vocabulary / taxonomy.
-// Single source of truth — references each topic's DefinedTerm @id by allTopics()/TOPICS slug,
-// so future topic additions propagate without literal edits here.
+// Single source of truth — references only topics backed by at least one tagged day,
+// so placeholder / zero-post topics do not leak into crawlable taxonomy surfaces.
 const topicTaxonomyJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'DefinedTermSet',
   '@id': `${SITE_URL}/topics#topic-taxonomy`,
   name: 'AI 實作主題分類',
-  description: 'Dawson Wang 的 AI 工具落地主題分類：agent workflow、Claude Code、MCP、瀏覽器自動化、內容流程、開發工具、資安與個人工作流。',
+  description: `Dawson Wang 的 ${topics.length} 個 AI 工具落地主題分類：${topicTitleList}。`,
   inLanguage: 'zh-Hant-TW',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   hasDefinedTerm: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })),
 };
 const topicsIndexUrl = `${SITE_URL}/topics`;
 const topicsIndexTitle = 'AI 工具落地主題索引';
-const topicsIndexDescription = `依主題瀏覽 Dawson Wang 的 ${topics.length} 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。`;
+const topicsIndexDescription = `依主題瀏覽 Dawson Wang 的 ${topics.length} 個 AI 工具落地分類：${topicTitleList}。`;
 const topicCollectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',

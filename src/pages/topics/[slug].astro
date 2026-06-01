@@ -2,12 +2,12 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
-import { topicBySlug, daysForTopic, allTopics, topicsForDay, chipVariantFor } from '../../lib/topics';
+import { topicBySlug, daysForTopic, topicsWithPosts, topicsForDay, chipVariantFor } from '../../lib/topics';
 import { isTopPerformer } from '../../lib/metrics';
 import { SITE_URL, breadcrumbJsonLd } from '../../lib/seo';
 
 export async function getStaticPaths() {
-  return allTopics().map(t => ({ params: { slug: t.slug } }));
+  return topicsWithPosts().map(t => ({ params: { slug: t.slug } }));
 }
 
 const { slug } = Astro.params;
