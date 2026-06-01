@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 import { PROOF_PROJECTS } from '../src/data/proof-projects';
+import { SERVICES } from '../src/data/services';
 import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../src/data/profiles';
 
 const root = process.cwd();
@@ -84,6 +85,10 @@ function escapeHtml(value: string) {
     .replace(/>/g, '&gt;');
 }
 
+function escapeJsonString(value: string) {
+  return JSON.stringify(value).slice(1, -1).replace(/</g, '\\u003c');
+}
+
 function assertTitleStack(haystack: string, expectedTitle: string, label: string) {
   const escapedTitle = escapeHtml(expectedTitle);
   assertIncludes(haystack, `<title>${escapedTitle}</title>`, `${label} title`);
@@ -147,6 +152,14 @@ function assertJsonLdInLanguage(haystack: string, nodeType: string, label: strin
     haystack,
     new RegExp(`"@type":"${escapeRegExp(nodeType)}"[\\s\\S]*?"inLanguage":"zh-Hant-TW"`),
     `${label} ${nodeType} inLanguage`
+  );
+}
+
+function extractJsonLdScript(haystack: string, label: string) {
+  return extractRequired(
+    haystack,
+    /<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/,
+    `${label} JSON-LD script`
   );
 }
 
@@ -266,6 +279,7 @@ if (!existsSync(outDir)) {
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
+  const homeJsonLd = extractJsonLdScript(home, 'home');
   assertJsonLdInLanguage(home, 'WebSite', 'home');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
@@ -289,12 +303,30 @@ if (!existsSync(outDir)) {
   assertMatch(home, /"@type":"ProfessionalService"[\s\S]*?"hasOfferCatalog":\{[\s\S]*?"@type":"OfferCatalog"/, 'home ProfessionalService hasOfferCatalog');
   // Graph links back to the root WebSite node so the ProfessionalService + its OfferCatalog are not orphan nodes.
   assertMatch(home, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home ProfessionalService isPartOf → #website graph link');
+  assertMatch(homeJsonLd, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"founder":\\{"@id":"${siteUrl}/#person"\\}`), 'home ProfessionalService founder → #person graph link');
+  assertMatch(homeJsonLd, /"@type":"ProfessionalService"[\s\S]*?"areaServed":"Taiwan"/, 'home ProfessionalService areaServed Taiwan');
+  assertMatch(homeJsonLd, /"@type":"ProfessionalService"[\s\S]*?"inLanguage":"zh-Hant-TW"/, 'home ProfessionalService inLanguage zh-Hant-TW');
   assertMatch(home, new RegExp(`"@type":"OfferCatalog"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home OfferCatalog isPartOf → #website graph link');
   assertIncludes(home, `"@id":"${siteUrl}/#ai-workflow-service-catalog"`, 'home OfferCatalog @id');
-  const homeOfferCount = countMatches(home, /"@type":"Offer","position":\d+/g);
-  if (homeOfferCount < 3) fail(`home OfferCatalog has only ${homeOfferCount} Offer items (expected >=3 — one per service tier)`);
+  const homeOfferCount = countMatches(homeJsonLd, /"@type":"Offer","position":\d+/g);
+  assertCountEquals(homeOfferCount, SERVICES.length, 'home OfferCatalog Offer count matches SERVICES.length');
   assertMatch(home, /"@type":"Offer"[\s\S]*?"itemOffered":\{"@type":"Service"[\s\S]*?"provider":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home Offer.itemOffered Service.provider -> #person graph link');
   assertMatch(home, /"@type":"Offer"[^}]*"url":"https:\/\/dawsonwang\.com\/#inquire"/, 'home Offer.url absolute -> #inquire');
+  for (const service of SERVICES) {
+    const escapedTitle = escapeJsonString(service.title);
+    const escapedDescription = escapeJsonString(service.blurb);
+    const escapedServiceTypeList = service.examples.map(example => `"${escapeJsonString(example)}"`).join(',');
+    assertIncludes(
+      homeJsonLd,
+      `"itemOffered":{"@type":"Service","name":"${escapedTitle}","description":"${escapedDescription}","serviceType":[${escapedServiceTypeList}]`,
+      `home OfferCatalog serviceType list for ${service.title}`
+    );
+    assertMatch(
+      homeJsonLd,
+      new RegExp(`"itemOffered":\\{"@type":"Service","name":"${escapeRegExp(escapedTitle)}"[\\s\\S]*?"provider":\\{"@id":"${siteUrl}/#person"\\},"areaServed":"Taiwan"`),
+      `home OfferCatalog itemOffered areaServed Taiwan for ${service.title}`
+    );
+  }
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
   assertDiscoveryAlternates(home, 'home');
@@ -596,7 +628,7 @@ if (!existsSync(outDir)) {
   }
   // Spot-check that each PROOF_PROJECTS entry's name appears inside the JSON-LD (escaped form).
   for (const project of PROOF_PROJECTS) {
-    const escaped = JSON.stringify(project.name).slice(1, -1).replace(/</g, '\\u003c');
+    const escaped = escapeJsonString(project.name);
     assertIncludes(proof, escaped, `/proof ItemList contains project name ${project.name}`);
   }
 
