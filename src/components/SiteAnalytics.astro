@@ -1,0 +1,14 @@
+---
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
+import { resolveAnalyticsConfig } from '../lib/analytics';
+
+const analyticsConfig = resolveAnalyticsConfig(import.meta.env);
+---
+{analyticsConfig.provider === 'vercel' && <Analytics />}
+{analyticsConfig.enableSpeedInsights && <SpeedInsights />}
+<script type="module" define:vars={{ analyticsConfig }}>
+  import { installAnalytics } from '../lib/analytics-client';
+
+  installAnalytics(analyticsConfig);
+</script>

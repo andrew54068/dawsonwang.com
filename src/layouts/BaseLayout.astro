@@ -1,7 +1,7 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import SpeedInsights from '@vercel/speed-insights/astro';
+import SiteAnalytics from '../components/SiteAnalytics.astro';
 import {
   DEFAULT_DESCRIPTION,
   DEFAULT_OG_IMAGE,
@@ -139,6 +139,6 @@ const allStructuredData = [...baseStructuredData, ...pageStructuredData];
     <Nav />
     <main><slot /></main>
     <Footer />
-    <SpeedInsights />
+    <SiteAnalytics />
   </body>
 </html>
