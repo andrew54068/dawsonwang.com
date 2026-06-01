@@ -18,9 +18,10 @@ export async function getStaticPaths() {
 }
 
 const { day, allDays } = Astro.props;
+const slideAltBase = `Day ${day.data.dayNumber} ${day.data.subtitle || ''}`.trim();
 const slides = day.data.slideFiles.map((p: string, i: number) => ({
   src: `/content/day${String(day.data.dayNumber).padStart(2, '0')}/slides/${p.split('/').pop()}`,
-  alt: `Day ${day.data.dayNumber} slide ${i + 1}`,
+  alt: `${slideAltBase} — 投影片 ${i + 1}`,
 }));
 
 const bodyHtml = marked.parse(day.data.body);
