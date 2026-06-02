@@ -298,7 +298,15 @@ if (!existsSync(outDir)) {
     return [slug, publishedAt];
   }));
   const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
+  const latestGeneratedDayWithPublishedAt = generatedDayPages
+    .slice()
+    .reverse()
+    .find(day => Boolean(dayPublishedAtByNumber.get(day.number)))
+    ?.number;
   note(`source day count: ${days.length}${latestDay ? `, latest day: ${latestDay}` : ''}`);
+  if (latestGeneratedDayWithPublishedAt && latestGeneratedDayWithPublishedAt !== latestDay) {
+    note(`latest published day for positive article-date probes: ${latestGeneratedDayWithPublishedAt} (latest generated day ${latestDay} has no publish timestamp)`);
+  }
 
   const home = readGenerated('index.html');
   const expectedHomeTitle = 'Dawson Wang — AI 工具落地實踐者';
@@ -453,6 +461,7 @@ if (!existsSync(outDir)) {
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
+    const latestDayPublishedAt = dayPublishedAtByNumber.get(latestDay);
     const latestDayHeadline = extractArticleHeadline(dayHtml, `day ${latestDay}`);
     const expectedLatestDayTitle = latestDayHeadline ? `${latestDayHeadline} | Dawson Wang` : '';
     assertTitleStack(dayHtml, expectedLatestDayTitle, `day ${latestDay}`);
@@ -469,9 +478,16 @@ if (!existsSync(outDir)) {
     // image promoted to typed ImageObject with declared dimensions (large-image rich-result eligibility).
     // Primary image is always the og-default fallback (1200x630) so dimensions are stable across days.
     assertMatch(dayHtml, /"image":(\[\{|\{)"@type":"ImageObject","url":"https:\/\/dawsonwang\.com\/og-default\.png","width":1200,"height":630/, `day ${latestDay} Article image ImageObject`);
-    // OG article:* metadata: published/modified asserted on the latest day; article:author is ratcheted across the full collection.
-    assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
-    assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
+    // Latest-day pages may legitimately omit article dates when the source day has no publish timestamp.
+    if (latestDayPublishedAt) {
+      assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
+      assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
+    } else {
+      if (/"datePublished":/.test(dayHtml)) fail(`day ${latestDay} should omit Article datePublished without a publish timestamp`);
+      if (/"dateModified":/.test(dayHtml)) fail(`day ${latestDay} should omit Article dateModified without a publish timestamp`);
+      if (/<meta property="article:published_time"/.test(dayHtml)) fail(`day ${latestDay} should omit article:published_time without a publish timestamp`);
+      if (/<meta property="article:modified_time"/.test(dayHtml)) fail(`day ${latestDay} should omit article:modified_time without a publish timestamp`);
+    }
     assertMatch(dayHtml, /<meta property="og:image:alt" content="[^"]+"/, `day ${latestDay} og:image:alt`);
     assertMatch(dayHtml, /<meta name="twitter:image:alt" content="[^"]+"/, `day ${latestDay} twitter:image:alt`);
     const latestDayOgImage = dayHtml.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
@@ -486,6 +502,15 @@ if (!existsSync(outDir)) {
         assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
       }
     }
+  }
+
+  if (latestGeneratedDayWithPublishedAt) {
+    const dayHtml = readGenerated(`day/${latestGeneratedDayWithPublishedAt}/index.html`);
+    assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestGeneratedDayWithPublishedAt} article:published_time`);
+    assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestGeneratedDayWithPublishedAt} article:modified_time`);
+    note(`article publish/modified date probes asserted on day ${latestGeneratedDayWithPublishedAt}`);
+  } else {
+    note('no generated day with a publish timestamp found; article publish/modified date probes skipped');
   }
 
   // article:tag is only emitted when the day has topic chips; assert on the latest day that has topics
