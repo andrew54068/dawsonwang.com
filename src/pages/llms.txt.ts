@@ -4,8 +4,9 @@ import { topicsWithPosts } from '../lib/topics';
 
 export async function GET() {
   const days = await getCollection('days');
+  const validDayNumbers = days.map(day => day.data.dayNumber);
   const latest = days.sort((a, b) => b.data.dayNumber - a.data.dayNumber).slice(0, 20);
-  const topics = topicsWithPosts();
+  const topics = topicsWithPosts(validDayNumbers);
 
   const lines = [
     '# Dawson Wang',

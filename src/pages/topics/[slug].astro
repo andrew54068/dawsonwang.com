@@ -7,7 +7,9 @@ import { isTopPerformer } from '../../lib/metrics';
 import { SITE_URL, breadcrumbJsonLd } from '../../lib/seo';
 
 export async function getStaticPaths() {
-  return topicsWithPosts().map(t => ({ params: { slug: t.slug } }));
+  const days = await getCollection('days');
+  const validDayNumbers = days.map(day => day.data.dayNumber);
+  return topicsWithPosts(validDayNumbers).map(t => ({ params: { slug: t.slug } }));
 }
 
 const { slug } = Astro.params;
@@ -15,7 +17,8 @@ const topic = topicBySlug(slug as string);
 if (!topic) throw new Error(`Unknown topic: ${slug}`);
 
 const days = await getCollection('days');
-const tagged = daysForTopic(slug as string);
+const validDayNumbers = days.map(day => day.data.dayNumber);
+const tagged = daysForTopic(slug as string, validDayNumbers);
 const filtered = days.filter(d => tagged.includes(d.data.dayNumber))
   .sort((a, b) => b.data.dayNumber - a.data.dayNumber);
 

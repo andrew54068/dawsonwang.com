@@ -31,14 +31,22 @@ test('daysForTopic sorts newest-first', () => {
   expect(days).toEqual([...days].sort((a, b) => b - a));
 });
 
-test('topicsWithPosts excludes zero-post topics from crawlable topic surfaces', () => {
-  const topics = topicsWithPosts();
-  expect(topics.map(topic => topic.slug)).toEqual(['claude-code', 'agents']);
+test('daysForTopic can restrict results to real loaded day numbers', () => {
+  expect(daysForTopic('claude-code', [121])).toEqual([121]);
+  expect(daysForTopic('agents', [121])).toEqual([]);
 });
 
-test('topicsWithPosts only returns topics backed by tagged days', () => {
-  const topics = topicsWithPosts();
-  expect(topics.every(topic => daysForTopic(topic.slug).length > 0)).toBe(true);
+test('topicsWithPosts excludes zero-post topics from crawlable topic surfaces', () => {
+  const topicSlugs = topicsWithPosts([120, 121]).map(topic => topic.slug);
+  expect(topicSlugs).toEqual(expect.arrayContaining(['claude-code', 'agents']));
+  expect(topicSlugs).toHaveLength(2);
+});
+
+test('topicsWithPosts only returns topics backed by tagged loaded days', () => {
+  const validDayNumbers = [121];
+  const topics = topicsWithPosts(validDayNumbers);
+  expect(topics.map(topic => topic.slug)).toEqual(['claude-code']);
+  expect(topics.every(topic => daysForTopic(topic.slug, validDayNumbers).length > 0)).toBe(true);
 });
 
 test('chipVariantFor returns the topic chip color', () => {

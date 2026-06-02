@@ -279,7 +279,11 @@ if (!existsSync(outDir)) {
     .sort()
     .at(-1);
   const topicTitleBySlug = new Map(TOPICS.map(topic => [topic.slug, topic.title]));
-  const activeTopicSlugSet = new Set(Object.values(DAY_TOPICS).flat());
+  const activeTopicSlugSet = new Set(
+    Object.entries(DAY_TOPICS)
+      .filter(([dayNumber]) => sourceDayNumberSet.has(Number(dayNumber)))
+      .flatMap(([, slugs]) => slugs)
+  );
   const activeTopics = TOPICS.filter(topic => activeTopicSlugSet.has(topic.slug));
   const zeroPostTopics = TOPICS.filter(topic => !activeTopicSlugSet.has(topic.slug));
   const topicDayCountBySlug = new Map(activeTopics.map(topic => {

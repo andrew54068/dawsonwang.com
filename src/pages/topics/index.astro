@@ -1,12 +1,15 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopicCard from '../../components/TopicCard.astro';
 import { topicsWithPosts, daysForTopic } from '../../lib/topics';
 import { SITE_URL, breadcrumbJsonLd } from '../../lib/seo';
 
-const topics = topicsWithPosts().map(t => ({
+const days = await getCollection('days');
+const validDayNumbers = days.map(day => day.data.dayNumber);
+const topics = topicsWithPosts(validDayNumbers).map(t => ({
   ...t,
-  count: daysForTopic(t.slug).length,
+  count: daysForTopic(t.slug, validDayNumbers).length,
 }));
 const topicTitleList = topics.map(topic => topic.title).join('、');
 
