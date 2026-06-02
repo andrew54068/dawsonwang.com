@@ -172,6 +172,22 @@ function extractArticleHeadline(haystack: string, label: string) {
   return encodedHeadline ? decodeJsonStringLiteral(encodedHeadline, `${label} Article headline`) : '';
 }
 
+function assertDayArticleOwnershipTrustCluster(dayHtml: string, dayNumber: number, label: string) {
+  const dayJsonLd = extractJsonLdScript(dayHtml, `${label} JSON-LD`);
+  assertJsonLdInLanguage(dayJsonLd, 'Article', label);
+  assertIncludes(dayJsonLd, `"author":{"@id":"${siteUrl}/#person"}`, `${label} Article author → #person graph link`);
+  assertIncludes(dayJsonLd, `"publisher":{"@id":"${siteUrl}/#person"}`, `${label} Article publisher → #person graph link`);
+  assertIncludes(dayJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `${label} Article isPartOf`);
+  assertIncludes(dayJsonLd, '"isAccessibleForFree":true', `${label} Article isAccessibleForFree`);
+  assertIncludes(dayJsonLd, `"copyrightHolder":{"@id":"${siteUrl}/#person"}`, `${label} Article copyrightHolder → #person graph link`);
+  assertIncludes(dayJsonLd, `"creator":{"@id":"${siteUrl}/#person"}`, `${label} Article creator → #person graph link`);
+  assertIncludes(dayJsonLd, `"accountablePerson":{"@id":"${siteUrl}/#person"}`, `${label} Article accountablePerson → #person graph link`);
+  assertIncludes(dayJsonLd, `"editor":{"@id":"${siteUrl}/#person"}`, `${label} Article editor → #person graph link`);
+  assertIncludes(dayJsonLd, `"mainEntityOfPage":{"@type":"WebPage","@id":"${siteUrl}/day/${dayNumber}"}`, `${label} Article mainEntityOfPage WebPage`);
+  if (/"mainEntityOfPage":"https:/.test(dayJsonLd)) fail(`${label} Article mainEntityOfPage regressed to bare URL string`);
+  assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `${label} article:author`);
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -420,7 +436,9 @@ if (!existsSync(outDir)) {
     if (/"dateModified":""/.test(dayHtml)) fail(`${label} Article dateModified is an empty string`);
     if (/<meta property="article:published_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:published_time is an empty string`);
     if (/<meta property="article:modified_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:modified_time is an empty string`);
+    assertDayArticleOwnershipTrustCluster(dayHtml, day.number, label);
   }
+  note(`day Article ownership/trust cluster asserted across ${generatedDayPages.length} generated pages`);
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
@@ -435,26 +453,14 @@ if (!existsSync(outDir)) {
     // BreadcrumbList @id + Article → BreadcrumbList graph link (issue #68).
     assertIncludes(dayHtml, `"@id":"${siteUrl}/day/${latestDay}#breadcrumb"`, `day ${latestDay} BreadcrumbList @id`);
     assertMatch(dayHtml, new RegExp(`"@type":"Article"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/day/${latestDay}#breadcrumb"\\}`), `day ${latestDay} Article breadcrumb → #breadcrumb graph link`);
-    // Article enrichment (wordCount + isPartOf are stable across all days; articleSection gated below).
-    assertJsonLdInLanguage(dayHtml, 'Article', `day ${latestDay}`);
+    // Keep richer latest-day assertions for representative-page details that are not part of the full-collection ownership/trust ratchet.
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
-    assertIncludes(dayHtml, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `day ${latestDay} Article isPartOf`);
-    assertIncludes(dayHtml, '"isAccessibleForFree":true', `day ${latestDay} Article isAccessibleForFree`);
-    assertIncludes(dayHtml, `"copyrightHolder":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article copyrightHolder → #person graph link`);
-    assertIncludes(dayHtml, `"creator":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article creator → #person graph link`);
-    assertIncludes(dayHtml, `"accountablePerson":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article accountablePerson → #person graph link`);
-    assertIncludes(dayHtml, `"editor":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article editor → #person graph link`);
-    // mainEntityOfPage promoted to typed WebPage node (was bare URL string).
-    assertIncludes(dayHtml, `"mainEntityOfPage":{"@type":"WebPage","@id":"${siteUrl}/day/${latestDay}"}`, `day ${latestDay} Article mainEntityOfPage WebPage`);
     // image promoted to typed ImageObject with declared dimensions (large-image rich-result eligibility).
     // Primary image is always the og-default fallback (1200x630) so dimensions are stable across days.
     assertMatch(dayHtml, /"image":(\[\{|\{)"@type":"ImageObject","url":"https:\/\/dawsonwang\.com\/og-default\.png","width":1200,"height":630/, `day ${latestDay} Article image ImageObject`);
-    // Negative: ensure we did NOT regress to bare-URL mainEntityOfPage.
-    if (/"mainEntityOfPage":"https:/.test(dayHtml)) fail(`day ${latestDay} Article mainEntityOfPage regressed to bare URL string`);
-    // OG article:* metadata: published/modified/author asserted on the latest day.
+    // OG article:* metadata: published/modified asserted on the latest day; article:author is ratcheted across the full collection.
     assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
     assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
-    assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `day ${latestDay} article:author`);
     assertMatch(dayHtml, /<meta property="og:image:alt" content="[^"]+"/, `day ${latestDay} og:image:alt`);
     assertMatch(dayHtml, /<meta name="twitter:image:alt" content="[^"]+"/, `day ${latestDay} twitter:image:alt`);
     const latestDayOgImage = dayHtml.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
