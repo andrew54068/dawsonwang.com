@@ -135,6 +135,22 @@ function assertSelfHreflangAlternates(haystack: string, routePath: string, label
   assertIncludes(haystack, `<link rel="alternate" hreflang="x-default" href="${href}"`, `${label} hreflang x-default`);
 }
 
+function assertNonArticleSharedLayoutContract(haystack: string, routePath: string, label: string) {
+  assertIncludes(haystack, '<meta property="og:type" content="website"', `${label} og:type website`);
+  assertSelfHreflangAlternates(haystack, routePath, label);
+  assertCountEquals(countMatches(haystack, /<link rel="alternate" hreflang="[^"]+"/g), 2, `${label} hreflang alternate link`);
+  assertDiscoveryAlternates(haystack, label);
+  assertCountEquals(countMatches(haystack, /<link rel="alternate" type="[^"]+"/g), 2, `${label} discovery alternate link`);
+
+  const leakedArticleMetaProperties = Array.from(haystack.matchAll(/<meta property="(article:[^"]+)"/g))
+    .map((match) => match[1])
+    .filter((value): value is string => Boolean(value));
+  if (leakedArticleMetaProperties.length > 0) {
+    const leakedPropertyList = Array.from(new Set(leakedArticleMetaProperties)).join(', ');
+    fail(`${label} leaks article:* meta (${leakedPropertyList}) (should be type=website)`);
+  }
+}
+
 function assertDefaultSocialCardStack(haystack: string, label: string) {
   assertIncludes(haystack, `<meta property="og:image" content="${defaultOgImageUrl}"`, `${label} og:image default absolute URL`);
   assertIncludes(haystack, '<meta property="og:image:width" content="1200"', `${label} og:image:width`);
@@ -289,7 +305,7 @@ if (!existsSync(outDir)) {
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
   assertCanonicalOgUrlParity(home, 'home');
   assertLocaleStack(home, 'home');
-  assertSelfHreflangAlternates(home, '/', 'home');
+  assertNonArticleSharedLayoutContract(home, '/', 'home');
   assertTitleStack(home, expectedHomeTitle, 'home');
   assertDescriptionStack(home, 'home');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
@@ -345,29 +361,25 @@ if (!existsSync(outDir)) {
   }
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
-  assertDiscoveryAlternates(home, 'home');
   assertIncludes(home, 'action="/api/inquiry"', 'home inquiry form');
   assertIncludes(home, 'method="POST"', 'home inquiry form');
   for (const field of ['name', 'email', 'company', 'goal', 'team_size', 'budget', 'timeline', 'hp_field']) {
     assertIncludes(home, `name="${field}"`, `home inquiry form field ${field}`);
   }
   assertIncludes(home, 'href="/#inquire"', 'home appointment CTA');
-  // Negative probe: home is type=website, must NOT emit article:* OG tags.
-  if (home.includes('article:published_time')) fail('home leaks article:published_time meta (should be type=website)');
 
   const allPosts = readGenerated('days/index.html');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
   assertCanonicalOgUrlParity(allPosts, 'all posts');
   assertLocaleStack(allPosts, 'all posts');
-  assertSelfHreflangAlternates(allPosts, '/days', 'all posts');
+  assertNonArticleSharedLayoutContract(allPosts, '/days', 'all posts');
   assertDescriptionStack(allPosts, 'all posts');
   assertMatch(allPosts, /<meta name="description" content="瀏覽 Dawson Wang 連續 \d+ 天公開的 AI 工具落地文章：[^"]+"\s*\/?\s*>/, 'all posts meta description');
   assertIncludes(allPosts, '所有', 'all posts');
   assertIncludes(allPosts, '文章', 'all posts');
   assertDefaultSocialCardStack(allPosts, '/days');
   assertJsonLdInLanguage(allPosts, 'CollectionPage', '/days');
-  if (allPosts.includes('article:published_time')) fail('/days leaks article:published_time meta (should be type=website)');
   assertIncludes(allPosts, '共 ', 'all posts');
   const allPostsJsonLd = extractJsonLdScript(allPosts, '/days');
   assertMatch(allPostsJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${days.length}\\b`), '/days ItemList numberOfItems matches source day count');
@@ -389,7 +401,7 @@ if (!existsSync(outDir)) {
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
   assertCanonicalOgUrlParity(search, 'search');
   assertLocaleStack(search, 'search');
-  assertSelfHreflangAlternates(search, '/search', 'search');
+  assertNonArticleSharedLayoutContract(search, '/search', 'search');
   assertDescriptionStack(search, 'search');
   assertDefaultSocialCardStack(search, '/search');
   assertMatch(search, /<meta name="description" content="從 \d+ 篇 Dawson Wang 的 AI 工具落地日誌中，用關鍵字或語意搜尋 Claude Code、MCP、automation、內容流程與團隊導入案例。"\s*\/?\s*>/, 'search meta description');
@@ -401,7 +413,6 @@ if (!existsSync(outDir)) {
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"SearchResultsPage".*<\/script>/s, '/search SearchResultsPage JSON-LD');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/search BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(search, 'SearchResultsPage', '/search');
-  assertDiscoveryAlternates(search, '/search');
   assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
   assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
   // BreadcrumbList @id + SearchResultsPage → BreadcrumbList graph link (issue #68).
@@ -507,7 +518,7 @@ if (!existsSync(outDir)) {
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
   assertCanonicalOgUrlParity(topicsIndex, 'topics index');
   assertLocaleStack(topicsIndex, 'topics index');
-  assertSelfHreflangAlternates(topicsIndex, '/topics', 'topics index');
+  assertNonArticleSharedLayoutContract(topicsIndex, '/topics', 'topics index');
   assertDescriptionStack(topicsIndex, 'topics index');
   assertDefaultSocialCardStack(topicsIndex, '/topics');
   assertMatch(topicsIndex, /<meta name="description" content="依主題瀏覽 Dawson Wang 的 \d+ 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。"\s*\/?\s*>/, 'topics index meta description');
@@ -515,7 +526,6 @@ if (!existsSync(outDir)) {
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(topicsIndex, 'DefinedTermSet', '/topics');
   assertJsonLdInLanguage(topicsIndex, 'CollectionPage', '/topics');
-  assertDiscoveryAlternates(topicsIndex, '/topics');
   const topicsIndexJsonLd = extractJsonLdScript(topicsIndex, '/topics');
   assertMatch(topicsIndexJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${TOPICS.length}\\b`), '/topics ItemList numberOfItems matches topic source of truth');
   // Count absolute topic URLs inside the extracted JSON-LD rather than the full HTML: topic cards render
@@ -543,14 +553,13 @@ if (!existsSync(outDir)) {
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
     assertCanonicalOgUrlParity(topicHtml, label);
     assertLocaleStack(topicHtml, label);
-    assertSelfHreflangAlternates(topicHtml, `/topics/${topic.slug}`, label);
+    assertNonArticleSharedLayoutContract(topicHtml, `/topics/${topic.slug}`, label);
     assertDescriptionStack(topicHtml, label);
     assertDefaultSocialCardStack(topicHtml, label);
     assertMatch(topicHtml, /<meta name="description" content="[^"]+ 收錄 \d+ 篇 Dawson Wang 的 AI 工具落地文章與案例。"\s*\/?\s*>/, `${label} meta description`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
     assertJsonLdInLanguage(topicHtml, 'CollectionPage', label);
-    assertDiscoveryAlternates(topicHtml, label);
     const topicPageJsonLd = extractJsonLdScript(topicHtml, label);
     assertMatch(topicPageJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${expectedTopicDayCount}\\b`), `${label} ItemList numberOfItems matches tagged day count`);
     const topicItemListDayUrlCount = countMatches(topicPageJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
@@ -613,14 +622,13 @@ if (!existsSync(outDir)) {
   assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
   assertCanonicalOgUrlParity(proof, '/proof');
   assertLocaleStack(proof, '/proof');
-  assertSelfHreflangAlternates(proof, '/proof', '/proof');
+  assertNonArticleSharedLayoutContract(proof, '/proof', '/proof');
   assertDescriptionStack(proof, '/proof');
   assertDefaultSocialCardStack(proof, '/proof');
   assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(proof, 'CollectionPage', '/proof');
-  assertDiscoveryAlternates(proof, '/proof');
   const proofJsonLd = extractJsonLdScript(proof, '/proof');
   assertIncludes(proofJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
@@ -643,7 +651,6 @@ if (!existsSync(outDir)) {
   }
 
   // RSS feed
-  assertDiscoveryAlternates(allPosts, '/days');
   assertIncludes(sitemap, `<loc>${siteUrl}/rss.xml</loc>`, 'sitemap rss entry');
   const rss = readGenerated('rss.xml');
   assertIncludes(rss, '<rss version="2.0"', 'rss.xml');
@@ -661,10 +668,9 @@ if (!existsSync(outDir)) {
   assertIncludes(inquiry, `<link rel="canonical" href="${siteUrl}/inquiry-received"`, '/inquiry-received canonical');
   assertCanonicalOgUrlParity(inquiry, '/inquiry-received');
   assertLocaleStack(inquiry, '/inquiry-received');
-  assertSelfHreflangAlternates(inquiry, '/inquiry-received', '/inquiry-received');
+  assertNonArticleSharedLayoutContract(inquiry, '/inquiry-received', '/inquiry-received');
   assertDescriptionStack(inquiry, '/inquiry-received');
   assertDefaultSocialCardStack(inquiry, '/inquiry-received');
-  assertDiscoveryAlternates(inquiry, '/inquiry-received');
   assertIncludes(inquiry, '<meta name="robots" content="noindex, nofollow"', '/inquiry-received noindex meta robots');
   if (inquiry.includes('content="index, follow')) fail('/inquiry-received leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap probe: /inquiry-received must NOT appear in sitemap.xml or llms.txt.
@@ -676,10 +682,9 @@ if (!existsSync(outDir)) {
   assertIncludes(notFound, `<link rel="canonical" href="${siteUrl}/404"`, '/404 canonical');
   assertCanonicalOgUrlParity(notFound, '/404');
   assertLocaleStack(notFound, '/404');
-  assertSelfHreflangAlternates(notFound, '/404', '/404');
+  assertNonArticleSharedLayoutContract(notFound, '/404', '/404');
   assertDescriptionStack(notFound, '/404');
   assertDefaultSocialCardStack(notFound, '/404');
-  assertDiscoveryAlternates(notFound, '/404');
   assertIncludes(notFound, '<meta name="robots" content="noindex, nofollow"', '/404 noindex meta robots');
   if (notFound.includes('content="index, follow')) fail('/404 leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap/llms probe: /404 must NOT appear in sitemap.xml or llms.txt.
