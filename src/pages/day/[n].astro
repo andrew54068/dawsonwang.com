@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { marked } from 'marked';
+import { renderMarkdown } from '../../lib/render-markdown';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -23,7 +23,7 @@ const slides = day.data.slideFiles.map((p: string, i: number) => ({
   alt: `Day ${day.data.dayNumber} slide ${i + 1}`,
 }));
 
-const bodyHtml = marked.parse(day.data.body);
+const bodyHtml = renderMarkdown(day.data.body);
 const topicSlugs = topicsForDay(day.data.dayNumber);
 const topics = topicSlugs.map(s => ({ slug: s, title: topicBySlug(s)?.title ?? s, variant: chipVariantFor(s) }));
 
