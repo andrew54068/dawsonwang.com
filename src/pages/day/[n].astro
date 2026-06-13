@@ -146,6 +146,8 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
 
         <Divider class="my-8" />
 
+        {slides.length > 0 && <SlideCarousel slides={slides} />}
+
         <div class="prose prose-invert max-w-none
                     prose-headings:font-display prose-headings:text-ink prose-headings:font-semibold prose-headings:tracking-tight
                     prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:relative prose-h2:pl-3 prose-h2:before:content-[''] prose-h2:before:absolute prose-h2:before:left-0 prose-h2:before:top-1.5 prose-h2:before:bottom-1.5 prose-h2:before:w-[2px] prose-h2:before:bg-teal
@@ -156,8 +158,6 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
                     prose-pre:bg-surface-1 prose-pre:border prose-pre:border-rule prose-pre:rounded-lg
                     prose-blockquote:font-display prose-blockquote:not-italic prose-blockquote:text-ink prose-blockquote:text-[18px] prose-blockquote:leading-snug prose-blockquote:border-t prose-blockquote:border-teal prose-blockquote:border-l-0 prose-blockquote:border-b prose-blockquote:border-b-rule prose-blockquote:pl-0 prose-blockquote:py-3"
              set:html={bodyHtml} />
-
-        {slides.length > 0 && <SlideCarousel slides={slides} />}
 
         {day.data.manifest && isTopPerformer(day.data.dayNumber) && (
           <MetricsBlock manifest={day.data.manifest} />
