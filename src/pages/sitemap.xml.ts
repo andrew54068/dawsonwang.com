@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../lib/seo';
-import { allTopics, daysForTopic } from '../lib/topics';
+import { topicsWithPosts, daysForTopic } from '../lib/topics';
+import { latestDefinedPublishedAt, publishedAtForManifest } from '../lib/publish-metadata';
 
 function escapeXml(value: string) {
   return value
@@ -23,26 +24,16 @@ function entry(path: string, priority: string, changefreq: string, lastmod?: str
   ].filter(Boolean).join('\n');
 }
 
-function publishedAtForDay(day: any) {
-  return day.data.manifest?.threads?.publishedAt
-    ?? day.data.manifest?.facebook?.publishedAt
-    ?? day.data.manifest?.linkedin?.publishedAt;
-}
-
 export async function GET() {
   const days = await getCollection('days');
-  const topics = allTopics();
+  const validDayNumbers = days.map(day => day.data.dayNumber);
+  const topics = topicsWithPosts(validDayNumbers);
   const now = new Date().toISOString();
-  const dayPublishedAtByNumber = new Map(days.map(day => [day.data.dayNumber, publishedAtForDay(day)]));
-  const latestPublishedAt = Array.from(dayPublishedAtByNumber.values())
-    .filter((value): value is string => Boolean(value))
-    .sort()
-    .at(-1) ?? now;
-  const topicPublishedAt = (slug: string) => daysForTopic(slug)
-    .map(dayNumber => dayPublishedAtByNumber.get(dayNumber))
-    .filter((value): value is string => Boolean(value))
-    .sort()
-    .at(-1) ?? latestPublishedAt;
+  const dayPublishedAtByNumber = new Map(days.map(day => [day.data.dayNumber, publishedAtForManifest(day.data.manifest)]));
+  const latestPublishedAt = latestDefinedPublishedAt(dayPublishedAtByNumber.values()) ?? now;
+  const topicPublishedAt = (slug: string) => latestDefinedPublishedAt(
+    daysForTopic(slug, validDayNumbers).map(dayNumber => dayPublishedAtByNumber.get(dayNumber))
+  );
 
   const urls = [
     entry('/', '1.0', 'weekly', latestPublishedAt),
@@ -55,7 +46,7 @@ export async function GET() {
     ...days
       .sort((a, b) => b.data.dayNumber - a.data.dayNumber)
       .map(day => {
-        const publishedAt = publishedAtForDay(day) ?? latestPublishedAt;
+        const publishedAt = publishedAtForManifest(day.data.manifest);
         return entry(`/day/${day.data.dayNumber}`, '0.8', 'monthly', publishedAt);
       }),
   ];

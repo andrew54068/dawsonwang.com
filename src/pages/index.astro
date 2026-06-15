@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import FeaturedPosts from '../components/FeaturedPosts.astro';
+import RecentConsultations from '../components/RecentConsultations.astro';
+import ToolsIBuilt from '../components/ToolsIBuilt.astro';
 import ProofExcerpt from '../components/ProofExcerpt.astro';
 import ServiceExplainer from '../components/ServiceExplainer.astro';
 import InquiryForm from '../components/InquiryForm.astro';
@@ -21,6 +22,13 @@ const serviceJsonLd = {
   inLanguage: 'zh-Hant-TW',
   founder: { '@id': `${SITE_URL}/#person` },
   isPartOf: { '@id': `${SITE_URL}/#website` },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    url: inquireUrl,
+    contactType: 'consulting inquiries',
+    areaServed: 'Taiwan',
+    availableLanguage: ['zh-Hant-TW', 'en'],
+  },
   serviceType: ['AI 工具落地', 'AI workflow implementation', 'Claude Code training', 'MCP server implementation', 'Agent workflow consulting'],
   description: homeDescription,
   hasOfferCatalog: {
@@ -54,8 +62,9 @@ const homePersonServiceGraphLinkJsonLd = {
 ---
 <BaseLayout title="Dawson Wang" description={homeDescription} structuredData={[serviceJsonLd, homePersonServiceGraphLinkJsonLd]}>
   <Hero />
-  <FeaturedPosts />
-  <ProofExcerpt />
+  <RecentConsultations />
+  <ToolsIBuilt />
   <ServiceExplainer />
+  <ProofExcerpt />
   <InquiryForm />
 </BaseLayout>

@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content';
+import { PERSONAL_TOOLS } from '../data/homepage-cases';
+
+const days = await getCollection('days');
+
+// Same defensive resolve as RecentConsultations — fail the build if a tool
+// references a day that no longer exists.
+const tools = PERSONAL_TOOLS.map(t => {
+  const day = days.find(d => d.data.dayNumber === t.dayNumber);
+  if (!day) {
+    throw new Error(
+      `ToolsIBuilt: day ${t.dayNumber} referenced in homepage-cases.ts ` +
+      `but no matching entry exists in the days collection.`
+    );
+  }
+  return t;
+});
+---
+<section class="max-w-5xl mx-auto px-8 py-20 border-t border-rule">
+  <div class="mb-10">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">
+      PERSONAL TOOLS · 我每天都在用
+    </div>
+    <h2 class="font-display text-ink leading-[1.1] tracking-[-0.02em] font-semibold"
+        style="font-size: clamp(1.75rem, 3.5vw, 2.5rem);">
+      不只給客戶做，<br />我自己也每天用。
+    </h2>
+    <p class="font-display text-muted text-lg leading-relaxed max-w-xl mt-3">
+      下面這三個工具都從個人痛點出發，現在每天還在用——而且每一個都附完整源碼或步驟。
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
+    {tools.map(t => (
+      <article class="flex flex-col p-7 bg-surface-1">
+        <div class="font-mono text-[11px] uppercase tracking-[.08em] text-ochre mb-3">
+          {t.category}
+        </div>
+        <h3 class="font-display text-ink text-xl font-semibold tracking-tight mb-2 leading-snug">
+          {t.headline}
+        </h3>
+        <div class="font-mono text-xs text-teal mb-4">{t.numberHook}</div>
+        <dl class="font-display text-sm text-muted leading-relaxed space-y-3 mb-6 flex-1">
+          <div>
+            <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">起點</dt>
+            <dd>{t.pain}</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">產出</dt>
+            <dd>{t.outcome}</dd>
+          </div>
+        </dl>
+        <div class="border-t border-rule pt-4 flex flex-col gap-2">
+          {t.demoHref && t.demoLabel && (
+            <a
+              href={t.demoHref}
+              class="font-mono text-xs text-ink hover:text-teal transition-colors duration-150 no-underline"
+            >
+              {t.demoLabel}
+            </a>
+          )}
+          <a
+            href={`/day/${t.dayNumber}`}
+            class="font-mono text-[11px] uppercase tracking-[.08em] text-faint hover:text-teal transition-colors duration-150 no-underline"
+          >
+            Day {String(t.dayNumber).padStart(3, '0')} · 看完整流程 →
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
