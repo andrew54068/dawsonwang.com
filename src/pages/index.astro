@@ -53,8 +53,14 @@ const serviceJsonLd = {
     })),
   },
 };
+const homePersonServiceGraphLinkJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE_URL}/#person`,
+  worksFor: { '@id': `${SITE_URL}/#ai-workflow-service` },
+};
 ---
-<BaseLayout title="Dawson Wang" description={homeDescription} structuredData={serviceJsonLd}>
+<BaseLayout title="Dawson Wang" description={homeDescription} structuredData={[serviceJsonLd, homePersonServiceGraphLinkJsonLd]}>
   <Hero />
   <RecentConsultations />
   <ToolsIBuilt />

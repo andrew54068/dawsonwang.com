@@ -204,6 +204,21 @@ function assertDayArticleOwnershipTrustCluster(dayHtml: string, dayNumber: numbe
   assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `${label} article:author`);
 }
 
+function assertRootEntityGraph(jsonLd: string, label: string) {
+  assertMatch(jsonLd, new RegExp(`"@type":"Person"[\\s\\S]*?"@id":"${siteUrl}/#person"`), `${label} Person root node @id`);
+  assertMatch(jsonLd, new RegExp(`"@type":"Person"[\\s\\S]*?"mainEntityOfPage":\\{"@id":"${siteUrl}/#website"\\}`), `${label} Person mainEntityOfPage → #website graph link`);
+  assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"@id":"${siteUrl}/#website"`), `${label} WebSite root node @id`);
+  assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"publisher":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite publisher → #person graph link`);
+  assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"mainEntity":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite mainEntity → #person graph link`);
+  assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"copyrightHolder":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite copyrightHolder → #person graph link`);
+  assertMatch(jsonLd, /"@type":"WebSite"[\s\S]*?"potentialAction":\{"@type":"SearchAction","target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}","query-input":"required name=search_term_string"\}/, `${label} WebSite SearchAction`);
+}
+
+function assertOmitsRootEntityGraph(haystack: string, label: string) {
+  if (/"@type":"Person"/.test(haystack)) fail(`${label} should omit root Person JSON-LD on noindex utility pages`);
+  if (/"@type":"WebSite"/.test(haystack)) fail(`${label} should omit root WebSite JSON-LD on noindex utility pages`);
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -327,6 +342,7 @@ if (!existsSync(outDir)) {
   assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   const homeJsonLd = extractJsonLdScript(home, 'home');
+  assertRootEntityGraph(homeJsonLd, 'home');
   assertJsonLdInLanguage(home, 'WebSite', 'home');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
@@ -402,6 +418,7 @@ if (!existsSync(outDir)) {
   assertJsonLdInLanguage(allPosts, 'CollectionPage', '/days');
   assertIncludes(allPosts, '共 ', 'all posts');
   const allPostsJsonLd = extractJsonLdScript(allPosts, '/days');
+  assertRootEntityGraph(allPostsJsonLd, '/days');
   assertMatch(allPostsJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${days.length}\\b`), '/days ItemList numberOfItems matches source day count');
   const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
   if (allPostsDayLinks < days.length) fail(`All posts page links only ${allPostsDayLinks}/${days.length} day pages`);
@@ -436,6 +453,8 @@ if (!existsSync(outDir)) {
   assertIncludes(search, 'id="search-results"', 'search results');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"SearchResultsPage".*<\/script>/s, '/search SearchResultsPage JSON-LD');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/search BreadcrumbList JSON-LD');
+  const searchJsonLd = extractJsonLdScript(search, '/search');
+  assertRootEntityGraph(searchJsonLd, '/search');
   assertJsonLdInLanguage(search, 'SearchResultsPage', '/search');
   assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
   assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
@@ -457,6 +476,7 @@ if (!existsSync(outDir)) {
   for (const day of generatedDayPages) {
     const label = `day ${day.number}`;
     const dayHtml = readGenerated(`day/${day.number}/index.html`);
+    const dayJsonLd = extractJsonLdScript(dayHtml, `${label} JSON-LD`);
     const headline = extractArticleHeadline(dayHtml, label);
     const expectedTitle = headline ? `${headline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${day.number}"`, `${label} canonical`);
@@ -471,6 +491,7 @@ if (!existsSync(outDir)) {
     if (/"dateModified":""/.test(dayHtml)) fail(`${label} Article dateModified is an empty string`);
     if (/<meta property="article:published_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:published_time is an empty string`);
     if (/<meta property="article:modified_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:modified_time is an empty string`);
+    assertRootEntityGraph(dayJsonLd, label);
     assertDayArticleOwnershipTrustCluster(dayHtml, day.number, label);
   }
   note(`day Article ownership/trust cluster asserted across ${generatedDayPages.length} generated pages`);
@@ -570,6 +591,7 @@ if (!existsSync(outDir)) {
   assertJsonLdInLanguage(topicsIndex, 'DefinedTermSet', '/topics');
   assertJsonLdInLanguage(topicsIndex, 'CollectionPage', '/topics');
   const topicsIndexJsonLd = extractJsonLdScript(topicsIndex, '/topics');
+  assertRootEntityGraph(topicsIndexJsonLd, '/topics');
   assertMatch(topicsIndexJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${activeTopics.length}\\b`), '/topics ItemList numberOfItems matches active topic source of truth');
   // Count absolute topic URLs inside the extracted JSON-LD rather than the full HTML: topic cards render
   // the same links visibly, so whole-document matches can go false-green if the ItemList drifts.
@@ -604,6 +626,7 @@ if (!existsSync(outDir)) {
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
     assertJsonLdInLanguage(topicHtml, 'CollectionPage', label);
     const topicPageJsonLd = extractJsonLdScript(topicHtml, label);
+    assertRootEntityGraph(topicPageJsonLd, label);
     assertMatch(topicPageJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${expectedTopicDayCount}\\b`), `${label} ItemList numberOfItems matches tagged day count`);
     const topicItemListDayUrlCount = countMatches(topicPageJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
     assertCountEquals(topicItemListDayUrlCount, expectedTopicDayCount, `${label} ItemList absolute day URL`);
@@ -690,6 +713,7 @@ if (!existsSync(outDir)) {
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(proof, 'CollectionPage', '/proof');
   const proofJsonLd = extractJsonLdScript(proof, '/proof');
+  assertRootEntityGraph(proofJsonLd, '/proof');
   assertIncludes(proofJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(proofJsonLd, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
@@ -732,6 +756,7 @@ if (!existsSync(outDir)) {
   assertDescriptionStack(inquiry, '/inquiry-received');
   assertDefaultSocialCardStack(inquiry, '/inquiry-received');
   assertIncludes(inquiry, '<meta name="robots" content="noindex, nofollow"', '/inquiry-received noindex meta robots');
+  assertOmitsRootEntityGraph(inquiry, '/inquiry-received');
   if (inquiry.includes('content="index, follow')) fail('/inquiry-received leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap probe: /inquiry-received must NOT appear in sitemap.xml or llms.txt.
   if (sitemap.includes(`${siteUrl}/inquiry-received`)) fail('sitemap.xml leaks /inquiry-received (should be excluded)');
@@ -746,6 +771,7 @@ if (!existsSync(outDir)) {
   assertDescriptionStack(notFound, '/404');
   assertDefaultSocialCardStack(notFound, '/404');
   assertIncludes(notFound, '<meta name="robots" content="noindex, nofollow"', '/404 noindex meta robots');
+  assertOmitsRootEntityGraph(notFound, '/404');
   if (notFound.includes('content="index, follow')) fail('/404 leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap/llms probe: /404 must NOT appear in sitemap.xml or llms.txt.
   if (sitemap.includes(`${siteUrl}/404`)) fail('sitemap.xml leaks /404 (should be excluded)');

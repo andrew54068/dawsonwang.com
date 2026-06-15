@@ -68,7 +68,10 @@ const fullTitle = title === SITE_NAME ? `${SITE_NAME} — AI 工具落地實踐�
 const metaDescription = cleanDescription(description);
 const canonicalUrl = absoluteUrl(canonicalPath(Astro.url.pathname));
 const ogImageUrl = absoluteUrl(ogImage);
-const baseStructuredData = Astro.url.pathname === '/' ? [personJsonLd, websiteJsonLd] : [];
+// Emit the root Person + WebSite nodes on every indexable page so page-level JSON-LD
+// can resolve #person / #website in the generated HTML, but keep noindex utility routes
+// free of root entities.
+const baseStructuredData = noindex ? [] : [personJsonLd, websiteJsonLd];
 const pageStructuredData = structuredData
   ? Array.isArray(structuredData) ? structuredData : [structuredData]
   : [];
