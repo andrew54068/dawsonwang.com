@@ -403,6 +403,15 @@ if (!existsSync(outDir)) {
   for (const profileUrl of expectedPersonSameAsUrls) {
     assertIncludes(home, `<link rel="me" href="${profileUrl}"`, `home rel=me ${profileUrl}`);
   }
+  // Analytics client wiring (PR #119). The SiteAnalytics script must be a bundled/processed
+  // module, never a `define:vars` inline script — the latter ships the bare specifier
+  // `../lib/analytics-client` to the browser unresolved, silently disabling all analytics.
+  // Guard both directions: the inert JSON config island must exist, and no unbundled
+  // analytics-client import may survive in the shipped HTML.
+  assertIncludes(home, 'id="dw-analytics-config"', 'home analytics config island');
+  if (/from\s*["'][./]*lib\/analytics-client/.test(home)) {
+    fail('home ships an unbundled analytics-client import (define:vars inline-script regression)');
+  }
 
   const allPosts = readGenerated('days/index.html');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
