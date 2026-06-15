@@ -74,9 +74,6 @@ export const personJsonLd = {
     'Full-stack software development',
     'Developer relations',
   ],
-  // Graph link: Person → ProfessionalService node emitted on / (src/pages/index.astro).
-  // Data-independent; propagates wherever personJsonLd is rendered (currently the home page only).
-  worksFor: { '@id': `${SITE_URL}/#ai-workflow-service` },
   // Bidirectional root-graph link: Person ↔ WebSite. WebSite.publisher/mainEntity/copyrightHolder
   // all point at #person; this is the reverse edge declaring the WebSite as the Person's
   // canonical page. Data-independent helper enrichment — see website-seo-optimization skill
