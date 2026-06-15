@@ -25,6 +25,40 @@ const expectedPersonSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PER
 const failures: string[] = [];
 const notes: string[] = [];
 
+type SourceDay = {
+  dir: string;
+  number: number;
+  sourcePath: string;
+  publishManifestPath: string;
+};
+
+type ProofPoint = {
+  day: number;
+  value: number;
+};
+
+type ProofMetricsSummary = {
+  totalDays: number;
+  threadsSeries: ProofPoint[];
+  facebookSeries: ProofPoint[];
+  totalThreadsViews: number;
+  totalFacebookReach: number;
+  totalLinkedInImpressions: number;
+  threadsPeak?: ProofPoint;
+  facebookPeak?: ProofPoint;
+};
+
+type RawPlatformBlock = {
+  latest?: Record<string, unknown> | null;
+  stats?: Record<string, unknown> | null;
+} | null | undefined;
+
+type RawPublishManifest = {
+  threads?: RawPlatformBlock;
+  facebook?: RawPlatformBlock;
+  linkedin?: RawPlatformBlock;
+};
+
 function fail(message: string) {
   failures.push(message);
 }
@@ -56,6 +90,142 @@ function countMatches(haystack: string, pattern: RegExp) {
 
 function assertCountEquals(actual: number, expected: number, label: string) {
   if (actual !== expected) fail(`${label} count ${actual} !== expected ${expected}`);
+}
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function formatCompactCount(n: number) {
+  if (n >= 1000) return `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}K`;
+  return String(n);
+}
+
+function extractNumericStats(block: RawPlatformBlock) {
+  if (!block || !isObjectRecord(block)) return {} as Record<string, number>;
+
+  const snapshot = isObjectRecord(block.latest)
+    ? block.latest
+    : isObjectRecord(block.stats)
+      ? block.stats
+      : undefined;
+
+  if (!snapshot) return {} as Record<string, number>;
+
+  return Object.fromEntries(
+    Object.entries(snapshot).filter(([, value]) => typeof value === 'number' && Number.isFinite(value))
+  ) as Record<string, number>;
+}
+
+function readRawPublishManifest(publishManifestPath: string) {
+  if (!existsSync(publishManifestPath)) return undefined;
+
+  try {
+    return JSON.parse(readFileSync(publishManifestPath, 'utf8')) as RawPublishManifest;
+  } catch {
+    fail(`Unreadable publish manifest: ${path.relative(root, publishManifestPath)}`);
+    return undefined;
+  }
+}
+
+function findPeak(series: ProofPoint[]) {
+  return series.reduce<ProofPoint | undefined>(
+    (best, point) => (!best || point.value > best.value ? point : best),
+    undefined,
+  );
+}
+
+function computeExpectedProofMetrics(days: SourceDay[]): ProofMetricsSummary {
+  const threadsSeries: ProofPoint[] = [];
+  const facebookSeries: ProofPoint[] = [];
+  let totalThreadsViews = 0;
+  let totalFacebookReach = 0;
+  let totalLinkedInImpressions = 0;
+
+  for (const day of days) {
+    const manifest = readRawPublishManifest(day.publishManifestPath);
+    if (!manifest) continue;
+
+    const threadsViews = extractNumericStats(manifest.threads).views;
+    if (typeof threadsViews === 'number' && threadsViews > 0) {
+      threadsSeries.push({ day: day.number, value: threadsViews });
+      totalThreadsViews += threadsViews;
+    }
+
+    const facebookReach = extractNumericStats(manifest.facebook).reach;
+    if (typeof facebookReach === 'number' && facebookReach > 0) {
+      facebookSeries.push({ day: day.number, value: facebookReach });
+      totalFacebookReach += facebookReach;
+    }
+
+    const linkedInImpressions = extractNumericStats(manifest.linkedin).impressions;
+    if (typeof linkedInImpressions === 'number') {
+      totalLinkedInImpressions += linkedInImpressions;
+    }
+  }
+
+  threadsSeries.sort((a, b) => a.day - b.day);
+  facebookSeries.sort((a, b) => a.day - b.day);
+
+  return {
+    totalDays: days.length,
+    threadsSeries,
+    facebookSeries,
+    totalThreadsViews,
+    totalFacebookReach,
+    totalLinkedInImpressions,
+    threadsPeak: findPeak(threadsSeries),
+    facebookPeak: findPeak(facebookSeries),
+  };
+}
+
+function assertProofMetricsPanel(haystack: string, label: string, metrics: ProofMetricsSummary) {
+  const threadsCountLabel = `${metrics.threadsSeries.length} / ${metrics.totalDays}`;
+  assertMatch(
+    haystack,
+    new RegExp(`Threads · daily views<\\/span>\\s*<span[^>]*>${escapeRegExp(threadsCountLabel)}<\\/span>`),
+    `${label} Threads count`,
+  );
+  assertMatch(
+    haystack,
+    new RegExp(`累計\\s*<span[^>]*>${escapeRegExp(formatCompactCount(metrics.totalThreadsViews))}<\\/span>\\s*觀看`),
+    `${label} Threads total`,
+  );
+  if (metrics.threadsPeak) {
+    assertMatch(
+      haystack,
+      new RegExp(`peak day ${metrics.threadsPeak.day} · ${escapeRegExp(formatCompactCount(metrics.threadsPeak.value))}`),
+      `${label} Threads peak`,
+    );
+  }
+
+  assertMatch(
+    haystack,
+    new RegExp(`Facebook · daily reach<\\/span>\\s*<span[^>]*>${escapeRegExp(String(metrics.facebookSeries.length))}<\\/span>`),
+    `${label} Facebook count`,
+  );
+  assertMatch(
+    haystack,
+    new RegExp(`累計\\s*<span[^>]*>${escapeRegExp(formatCompactCount(metrics.totalFacebookReach))}<\\/span>\\s*觸及`),
+    `${label} Facebook total`,
+  );
+  if (metrics.facebookPeak) {
+    assertMatch(
+      haystack,
+      new RegExp(`peak day ${metrics.facebookPeak.day} · ${escapeRegExp(formatCompactCount(metrics.facebookPeak.value))}`),
+      `${label} Facebook peak`,
+    );
+  }
+
+  if (metrics.totalLinkedInImpressions > 0) {
+    assertMatch(
+      haystack,
+      new RegExp(`LinkedIn 另曝光\\s*<span[^>]*>${escapeRegExp(formatCompactCount(metrics.totalLinkedInImpressions))}<\\/span>\\s*次`),
+      `${label} LinkedIn total`,
+    );
+  } else if (/LinkedIn 另曝光/.test(haystack)) {
+    fail(`${label} unexpectedly rendered LinkedIn metrics without raw-manifest impressions`);
+  }
 }
 
 function extractRequired(haystack: string, pattern: RegExp, label: string) {
@@ -235,7 +405,7 @@ function readPngDimensionsFromAssetUrl(assetUrl: string) {
   }
 }
 
-function listSourceDays() {
+function listSourceDays(): SourceDay[] {
   const contentDir = path.join(root, '100days/content');
   return readdirSync(contentDir, { withFileTypes: true })
     .filter(entry => entry.isDirectory() && /^day\d+$/.test(entry.name))
@@ -295,6 +465,7 @@ if (!existsSync(outDir)) {
     .filter((value): value is string => Boolean(value))
     .sort()
     .at(-1);
+  const expectedProofMetrics = computeExpectedProofMetrics(days);
   const topicTitleBySlug = new Map(TOPICS.map(topic => [topic.slug, topic.title]));
   const activeTopicSlugSet = new Set(
     Object.entries(DAY_TOPICS)
@@ -326,6 +497,9 @@ if (!existsSync(outDir)) {
     .find(day => Boolean(dayPublishedAtByNumber.get(day.number)))
     ?.number;
   note(`source day count: ${days.length}${latestDay ? `, latest day: ${latestDay}` : ''}`);
+  note(
+    `proof metrics from raw manifests: Threads ${expectedProofMetrics.threadsSeries.length}/${expectedProofMetrics.totalDays} (${formatCompactCount(expectedProofMetrics.totalThreadsViews)}), Facebook ${expectedProofMetrics.facebookSeries.length} (${formatCompactCount(expectedProofMetrics.totalFacebookReach)}), LinkedIn ${formatCompactCount(expectedProofMetrics.totalLinkedInImpressions)}`,
+  );
   if (latestGeneratedDayWithPublishedAt && latestGeneratedDayWithPublishedAt !== latestDay) {
     note(`latest published day for positive article-date probes: ${latestGeneratedDayWithPublishedAt} (latest generated day ${latestDay} has no publish timestamp)`);
   }
@@ -412,6 +586,7 @@ if (!existsSync(outDir)) {
   if (/from\s*["'][./]*lib\/analytics-client/.test(home)) {
     fail('home ships an unbundled analytics-client import (define:vars inline-script regression)');
   }
+  assertProofMetricsPanel(home, 'home proof excerpt', expectedProofMetrics);
 
   const allPosts = readGenerated('days/index.html');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
@@ -717,6 +892,7 @@ if (!existsSync(outDir)) {
   assertNonArticleSharedLayoutContract(proof, '/proof', '/proof');
   assertDescriptionStack(proof, '/proof');
   assertDefaultSocialCardStack(proof, '/proof');
+  assertProofMetricsPanel(proof, '/proof metrics panel', expectedProofMetrics);
   assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
