@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import FeaturedPosts from '../components/FeaturedPosts.astro';
+import RecentConsultations from '../components/RecentConsultations.astro';
+import ToolsIBuilt from '../components/ToolsIBuilt.astro';
 import ProofExcerpt from '../components/ProofExcerpt.astro';
 import ServiceExplainer from '../components/ServiceExplainer.astro';
 import InquiryForm from '../components/InquiryForm.astro';
@@ -48,8 +49,9 @@ const serviceJsonLd = {
 ---
 <BaseLayout title="Dawson Wang" description={homeDescription} structuredData={serviceJsonLd}>
   <Hero />
-  <FeaturedPosts />
-  <ProofExcerpt />
+  <RecentConsultations />
+  <ToolsIBuilt />
   <ServiceExplainer />
+  <ProofExcerpt />
   <InquiryForm />
 </BaseLayout>
