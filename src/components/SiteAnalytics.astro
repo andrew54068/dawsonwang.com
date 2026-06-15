@@ -1,0 +1,24 @@
+---
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
+import { resolveAnalyticsConfig } from '../lib/analytics';
+
+const analyticsConfig = resolveAnalyticsConfig(import.meta.env);
+// Escape `<` the same way the JSON-LD helper does so a config value can never
+// break out of the inert data island below.
+const serializedConfig = JSON.stringify(analyticsConfig).replace(/</g, '\\u003c');
+---
+{analyticsConfig.provider === 'vercel' && <Analytics />}
+{analyticsConfig.enableSpeedInsights && <SpeedInsights />}
+<script type="application/json" id="dw-analytics-config" is:inline set:html={serializedConfig} />
+<script>
+  // Processed (bundled) script: Astro/Vite resolves this import into a hashed
+  // chunk. It must NOT use `define:vars`, which would force `is:inline` and ship
+  // the bare specifier to the browser unresolved.
+  import { installAnalytics } from '../lib/analytics-client';
+
+  const configElement = document.getElementById('dw-analytics-config');
+  if (configElement?.textContent) {
+    installAnalytics(JSON.parse(configElement.textContent));
+  }
+</script>
