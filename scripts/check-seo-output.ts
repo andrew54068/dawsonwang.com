@@ -381,6 +381,10 @@ if (!existsSync(outDir)) {
     assertIncludes(home, `name="${field}"`, `home inquiry form field ${field}`);
   }
   assertIncludes(home, 'href="/#inquire"', 'home appointment CTA');
+  // rel=me identity profile links — BaseLayout emits site-wide; asserted on home (issue #144).
+  for (const profileUrl of expectedPersonSameAsUrls) {
+    assertIncludes(home, `<link rel="me" href="${profileUrl}"`, `home rel=me ${profileUrl}`);
+  }
 
   const allPosts = readGenerated('days/index.html');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
@@ -409,6 +413,10 @@ if (!existsSync(outDir)) {
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(allPostsJsonLd, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
   assertMatch(allPostsJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
+  // Spot-check BaseLayout rel=me propagation on a non-home stable public page (issue #144).
+  for (const profileUrl of expectedPersonSameAsUrls) {
+    assertIncludes(allPosts, `<link rel="me" href="${profileUrl}"`, `/days rel=me ${profileUrl}`);
+  }
 
   const search = readGenerated('search/index.html');
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
