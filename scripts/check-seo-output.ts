@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 import { PROOF_PROJECTS } from '../src/data/proof-projects';
+import { SERVICES } from '../src/data/services';
 import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../src/data/profiles';
 
 const root = process.cwd();
@@ -14,6 +15,8 @@ const outDir = candidateSiteDirs
   .find(dir => existsSync(path.join(dir, 'index.html')))
   ?? path.resolve(root, configuredSiteDir ?? 'dist');
 const siteUrl = 'https://dawsonwang.com';
+const siteLanguage = 'zh-Hant-TW';
+const siteLocale = 'zh_TW';
 const defaultOgImageUrl = `${siteUrl}/og-default.png`;
 const defaultOgImageAlt = 'Dawson Wang — AI 工具落地實踐者';
 const socialXHandle = '@dawson54068';
@@ -51,6 +54,10 @@ function countMatches(haystack: string, pattern: RegExp) {
   return Array.from(haystack.matchAll(pattern)).length;
 }
 
+function assertCountEquals(actual: number, expected: number, label: string) {
+  if (actual !== expected) fail(`${label} count ${actual} !== expected ${expected}`);
+}
+
 function extractRequired(haystack: string, pattern: RegExp, label: string) {
   const match = haystack.match(pattern);
   if (!match?.[1]) {
@@ -76,6 +83,10 @@ function escapeHtml(value: string) {
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function escapeJsonString(value: string) {
+  return JSON.stringify(value).slice(1, -1).replace(/</g, '\\u003c');
 }
 
 function assertTitleStack(haystack: string, expectedTitle: string, label: string) {
@@ -113,10 +124,31 @@ function assertDiscoveryAlternates(haystack: string, label: string) {
   assertIncludes(haystack, '<link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml"', `${label} rss alternate link`);
 }
 
+function assertLocaleStack(haystack: string, label: string) {
+  assertIncludes(haystack, `<html lang="${siteLanguage}">`, `${label} html lang`);
+  assertIncludes(haystack, `<meta property="og:locale" content="${siteLocale}"`, `${label} og:locale`);
+}
+
 function assertSelfHreflangAlternates(haystack: string, routePath: string, label: string) {
   const href = routePath === '/' ? `${siteUrl}/` : `${siteUrl}${routePath}`;
-  assertIncludes(haystack, `<link rel="alternate" hreflang="zh-Hant-TW" href="${href}"`, `${label} hreflang zh-Hant-TW`);
+  assertIncludes(haystack, `<link rel="alternate" hreflang="${siteLanguage}" href="${href}"`, `${label} hreflang ${siteLanguage}`);
   assertIncludes(haystack, `<link rel="alternate" hreflang="x-default" href="${href}"`, `${label} hreflang x-default`);
+}
+
+function assertNonArticleSharedLayoutContract(haystack: string, routePath: string, label: string) {
+  assertIncludes(haystack, '<meta property="og:type" content="website"', `${label} og:type website`);
+  assertSelfHreflangAlternates(haystack, routePath, label);
+  assertCountEquals(countMatches(haystack, /<link rel="alternate" hreflang="[^"]+"/g), 2, `${label} hreflang alternate link`);
+  assertDiscoveryAlternates(haystack, label);
+  assertCountEquals(countMatches(haystack, /<link rel="alternate" type="[^"]+"/g), 2, `${label} discovery alternate link`);
+
+  const leakedArticleMetaProperties = Array.from(haystack.matchAll(/<meta property="(article:[^"]+)"/g))
+    .map((match) => match[1])
+    .filter((value): value is string => Boolean(value));
+  if (leakedArticleMetaProperties.length > 0) {
+    const leakedPropertyList = Array.from(new Set(leakedArticleMetaProperties)).join(', ');
+    fail(`${label} leaks article:* meta (${leakedPropertyList}) (should be type=website)`);
+  }
 }
 
 function assertDefaultSocialCardStack(haystack: string, label: string) {
@@ -139,6 +171,14 @@ function assertJsonLdInLanguage(haystack: string, nodeType: string, label: strin
   );
 }
 
+function extractJsonLdScript(haystack: string, label: string) {
+  return extractRequired(
+    haystack,
+    /<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/,
+    `${label} JSON-LD script`
+  );
+}
+
 function extractArticleHeadline(haystack: string, label: string) {
   const encodedHeadline = extractRequired(
     haystack,
@@ -146,6 +186,37 @@ function extractArticleHeadline(haystack: string, label: string) {
     `${label} Article headline`
   );
   return encodedHeadline ? decodeJsonStringLiteral(encodedHeadline, `${label} Article headline`) : '';
+}
+
+function assertDayArticleOwnershipTrustCluster(dayHtml: string, dayNumber: number, label: string) {
+  const dayJsonLd = extractJsonLdScript(dayHtml, `${label} JSON-LD`);
+  assertJsonLdInLanguage(dayJsonLd, 'Article', label);
+  assertIncludes(dayJsonLd, `"author":{"@id":"${siteUrl}/#person"}`, `${label} Article author → #person graph link`);
+  assertIncludes(dayJsonLd, `"publisher":{"@id":"${siteUrl}/#person"}`, `${label} Article publisher → #person graph link`);
+  assertIncludes(dayJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `${label} Article isPartOf`);
+  assertIncludes(dayJsonLd, '"isAccessibleForFree":true', `${label} Article isAccessibleForFree`);
+  assertIncludes(dayJsonLd, `"copyrightHolder":{"@id":"${siteUrl}/#person"}`, `${label} Article copyrightHolder → #person graph link`);
+  assertIncludes(dayJsonLd, `"creator":{"@id":"${siteUrl}/#person"}`, `${label} Article creator → #person graph link`);
+  assertIncludes(dayJsonLd, `"accountablePerson":{"@id":"${siteUrl}/#person"}`, `${label} Article accountablePerson → #person graph link`);
+  assertIncludes(dayJsonLd, `"editor":{"@id":"${siteUrl}/#person"}`, `${label} Article editor → #person graph link`);
+  assertIncludes(dayJsonLd, `"mainEntityOfPage":{"@type":"WebPage","@id":"${siteUrl}/day/${dayNumber}"}`, `${label} Article mainEntityOfPage WebPage`);
+  if (/"mainEntityOfPage":"https:/.test(dayJsonLd)) fail(`${label} Article mainEntityOfPage regressed to bare URL string`);
+  assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `${label} article:author`);
+}
+
+function assertRootEntityGraph(jsonLd: string, label: string) {
+  assertMatch(jsonLd, new RegExp(`"@type":"Person"[\\s\\S]*?"@id":"${siteUrl}/#person"`), `${label} Person root node @id`);
+  assertMatch(jsonLd, new RegExp(`"@type":"Person"[\\s\\S]*?"mainEntityOfPage":\\{"@id":"${siteUrl}/#website"\\}`), `${label} Person mainEntityOfPage → #website graph link`);
+  assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"@id":"${siteUrl}/#website"`), `${label} WebSite root node @id`);
+  assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"publisher":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite publisher → #person graph link`);
+  assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"mainEntity":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite mainEntity → #person graph link`);
+  assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"copyrightHolder":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite copyrightHolder → #person graph link`);
+  assertMatch(jsonLd, /"@type":"WebSite"[\s\S]*?"potentialAction":\{"@type":"SearchAction","target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}","query-input":"required name=search_term_string"\}/, `${label} WebSite SearchAction`);
+}
+
+function assertOmitsRootEntityGraph(haystack: string, label: string) {
+  if (/"@type":"Person"/.test(haystack)) fail(`${label} should omit root Person JSON-LD on noindex utility pages`);
+  if (/"@type":"WebSite"/.test(haystack)) fail(`${label} should omit root WebSite JSON-LD on noindex utility pages`);
 }
 
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
@@ -187,9 +258,11 @@ function readDayPublishedAt(publishManifestPath: string) {
       facebook?: { published_at?: string };
       linkedin?: { published_at?: string };
     };
-    return manifest.threads?.published_at
-      ?? manifest.facebook?.published_at
-      ?? manifest.linkedin?.published_at;
+    for (const candidate of [manifest.threads?.published_at, manifest.facebook?.published_at, manifest.linkedin?.published_at]) {
+      const normalized = candidate?.trim();
+      if (normalized) return normalized;
+    }
+    return undefined;
   } catch {
     fail(`Unreadable publish manifest: ${path.relative(root, publishManifestPath)}`);
     return undefined;
@@ -202,7 +275,9 @@ function escapeRegExp(value: string) {
 
 function assertSitemapEntry(xml: string, routePath: string, priority: string, changefreq: string, lastmod?: string) {
   const loc = escapeRegExp(`${siteUrl}${routePath}`);
-  const lastmodPattern = lastmod ? `<lastmod>${escapeRegExp(lastmod)}<\\/lastmod>\\s*` : '';
+  const lastmodPattern = lastmod
+    ? `<lastmod>${escapeRegExp(lastmod)}<\\/lastmod>\\s*`
+    : `(?!<lastmod>)`;
   const pattern = new RegExp(
     `<url>\\s*<loc>${loc}<\\/loc>\\s*${lastmodPattern}<changefreq>${escapeRegExp(changefreq)}<\\/changefreq>\\s*<priority>${escapeRegExp(priority)}<\\/priority>\\s*<\\/url>`
   );
@@ -214,18 +289,30 @@ if (!existsSync(outDir)) {
 } else {
   const days = listSourceDays();
   const latestDay = days.at(-1)?.number;
+  const sourceDayNumberSet = new Set(days.map(day => day.number));
   const dayPublishedAtByNumber = new Map(days.map(day => [day.number, readDayPublishedAt(day.publishManifestPath)]));
   const latestPublishedAt = Array.from(dayPublishedAtByNumber.values())
     .filter((value): value is string => Boolean(value))
     .sort()
     .at(-1);
   const topicTitleBySlug = new Map(TOPICS.map(topic => [topic.slug, topic.title]));
-  const taggedTopicSlugs = TOPICS
-    .filter(topic => Object.values(DAY_TOPICS).some(slugs => slugs.includes(topic.slug)))
-    .map(topic => topic.slug);
-  const topicPublishedAtBySlug = new Map(taggedTopicSlugs.map(slug => {
+  const activeTopicSlugSet = new Set(
+    Object.entries(DAY_TOPICS)
+      .filter(([dayNumber]) => sourceDayNumberSet.has(Number(dayNumber)))
+      .flatMap(([, slugs]) => slugs)
+  );
+  const activeTopics = TOPICS.filter(topic => activeTopicSlugSet.has(topic.slug));
+  const zeroPostTopics = TOPICS.filter(topic => !activeTopicSlugSet.has(topic.slug));
+  const topicDayCountBySlug = new Map(activeTopics.map(topic => {
+    const topicDayCount = Object.entries(DAY_TOPICS)
+      .filter(([dayNumber, slugs]) => sourceDayNumberSet.has(Number(dayNumber)) && slugs.includes(topic.slug))
+      .length;
+    return [topic.slug, topicDayCount];
+  }));
+  const topicPublishedAtBySlug = new Map(activeTopics.map(topic => {
+    const slug = topic.slug;
     const publishedAt = Object.entries(DAY_TOPICS)
-      .filter(([, slugs]) => slugs.includes(slug))
+      .filter(([dayNumber, slugs]) => sourceDayNumberSet.has(Number(dayNumber)) && slugs.includes(slug))
       .map(([dayNumber]) => dayPublishedAtByNumber.get(Number(dayNumber)))
       .filter((value): value is string => Boolean(value))
       .sort()
@@ -233,18 +320,29 @@ if (!existsSync(outDir)) {
     return [slug, publishedAt];
   }));
   const generatedDayPages = days.filter(day => existsSync(path.join(outDir, `day/${day.number}/index.html`)));
+  const latestGeneratedDayWithPublishedAt = generatedDayPages
+    .slice()
+    .reverse()
+    .find(day => Boolean(dayPublishedAtByNumber.get(day.number)))
+    ?.number;
   note(`source day count: ${days.length}${latestDay ? `, latest day: ${latestDay}` : ''}`);
+  if (latestGeneratedDayWithPublishedAt && latestGeneratedDayWithPublishedAt !== latestDay) {
+    note(`latest published day for positive article-date probes: ${latestGeneratedDayWithPublishedAt} (latest generated day ${latestDay} has no publish timestamp)`);
+  }
 
   const home = readGenerated('index.html');
   const expectedHomeTitle = 'Dawson Wang — AI 工具落地實踐者';
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
   assertCanonicalOgUrlParity(home, 'home');
-  assertSelfHreflangAlternates(home, '/', 'home');
+  assertLocaleStack(home, 'home');
+  assertNonArticleSharedLayoutContract(home, '/', 'home');
   assertTitleStack(home, expectedHomeTitle, 'home');
   assertDescriptionStack(home, 'home');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
+  const homeJsonLd = extractJsonLdScript(home, 'home');
+  assertRootEntityGraph(homeJsonLd, 'home');
   assertJsonLdInLanguage(home, 'WebSite', 'home');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
   assertMatch(home, /"@type":"Person"[\s\S]*?"knowsLanguage":\["zh-Hant-TW","en"\]/, 'home Person knowsLanguage');
@@ -268,51 +366,83 @@ if (!existsSync(outDir)) {
   assertMatch(home, /"@type":"ProfessionalService"[\s\S]*?"hasOfferCatalog":\{[\s\S]*?"@type":"OfferCatalog"/, 'home ProfessionalService hasOfferCatalog');
   // Graph links back to the root WebSite node so the ProfessionalService + its OfferCatalog are not orphan nodes.
   assertMatch(home, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home ProfessionalService isPartOf → #website graph link');
+  assertMatch(homeJsonLd, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"founder":\\{"@id":"${siteUrl}/#person"\\}`), 'home ProfessionalService founder → #person graph link');
+  assertMatch(homeJsonLd, /"@type":"ProfessionalService"[\s\S]*?"areaServed":"Taiwan"/, 'home ProfessionalService areaServed Taiwan');
+  assertMatch(homeJsonLd, /"@type":"ProfessionalService"[\s\S]*?"inLanguage":"zh-Hant-TW"/, 'home ProfessionalService inLanguage zh-Hant-TW');
+  assertMatch(homeJsonLd, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"contactPoint":\\{"@type":"ContactPoint","url":"${siteUrl}/#inquire","contactType":"consulting inquiries","areaServed":"Taiwan","availableLanguage":\\["zh-Hant-TW","en"\\]\\}`), 'home ProfessionalService contactPoint → #inquire');
   assertMatch(home, new RegExp(`"@type":"OfferCatalog"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home OfferCatalog isPartOf → #website graph link');
   assertIncludes(home, `"@id":"${siteUrl}/#ai-workflow-service-catalog"`, 'home OfferCatalog @id');
-  const homeOfferCount = countMatches(home, /"@type":"Offer","position":\d+/g);
-  if (homeOfferCount < 3) fail(`home OfferCatalog has only ${homeOfferCount} Offer items (expected >=3 — one per service tier)`);
+  const homeOfferCount = countMatches(homeJsonLd, /"@type":"Offer","position":\d+/g);
+  assertCountEquals(homeOfferCount, SERVICES.length, 'home OfferCatalog Offer count matches SERVICES.length');
   assertMatch(home, /"@type":"Offer"[\s\S]*?"itemOffered":\{"@type":"Service"[\s\S]*?"provider":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home Offer.itemOffered Service.provider -> #person graph link');
   assertMatch(home, /"@type":"Offer"[^}]*"url":"https:\/\/dawsonwang\.com\/#inquire"/, 'home Offer.url absolute -> #inquire');
+  for (const service of SERVICES) {
+    const escapedTitle = escapeJsonString(service.title);
+    const escapedDescription = escapeJsonString(service.blurb);
+    const escapedServiceTypeList = service.examples.map(example => `"${escapeJsonString(example)}"`).join(',');
+    assertIncludes(
+      homeJsonLd,
+      `"itemOffered":{"@type":"Service","name":"${escapedTitle}","description":"${escapedDescription}","serviceType":[${escapedServiceTypeList}]`,
+      `home OfferCatalog serviceType list for ${service.title}`
+    );
+    assertMatch(
+      homeJsonLd,
+      new RegExp(`"itemOffered":\\{"@type":"Service","name":"${escapeRegExp(escapedTitle)}"[\\s\\S]*?"provider":\\{"@id":"${siteUrl}/#person"\\},"areaServed":"Taiwan"`),
+      `home OfferCatalog itemOffered areaServed Taiwan for ${service.title}`
+    );
+  }
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
-  assertDiscoveryAlternates(home, 'home');
   assertIncludes(home, 'action="/api/inquiry"', 'home inquiry form');
   assertIncludes(home, 'method="POST"', 'home inquiry form');
   for (const field of ['name', 'email', 'company', 'goal', 'team_size', 'budget', 'timeline', 'hp_field']) {
     assertIncludes(home, `name="${field}"`, `home inquiry form field ${field}`);
   }
   assertIncludes(home, 'href="/#inquire"', 'home appointment CTA');
-  // Negative probe: home is type=website, must NOT emit article:* OG tags.
-  if (home.includes('article:published_time')) fail('home leaks article:published_time meta (should be type=website)');
+  // rel=me identity profile links — BaseLayout emits site-wide; asserted on home (issue #144).
+  for (const profileUrl of expectedPersonSameAsUrls) {
+    assertIncludes(home, `<link rel="me" href="${profileUrl}"`, `home rel=me ${profileUrl}`);
+  }
 
   const allPosts = readGenerated('days/index.html');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
   assertCanonicalOgUrlParity(allPosts, 'all posts');
-  assertSelfHreflangAlternates(allPosts, '/days', 'all posts');
+  assertLocaleStack(allPosts, 'all posts');
+  assertNonArticleSharedLayoutContract(allPosts, '/days', 'all posts');
   assertDescriptionStack(allPosts, 'all posts');
   assertMatch(allPosts, /<meta name="description" content="瀏覽 Dawson Wang 連續 \d+ 天公開的 AI 工具落地文章：[^"]+"\s*\/?\s*>/, 'all posts meta description');
   assertIncludes(allPosts, '所有', 'all posts');
   assertIncludes(allPosts, '文章', 'all posts');
   assertDefaultSocialCardStack(allPosts, '/days');
   assertJsonLdInLanguage(allPosts, 'CollectionPage', '/days');
-  if (allPosts.includes('article:published_time')) fail('/days leaks article:published_time meta (should be type=website)');
   assertIncludes(allPosts, '共 ', 'all posts');
+  const allPostsJsonLd = extractJsonLdScript(allPosts, '/days');
+  assertRootEntityGraph(allPostsJsonLd, '/days');
+  assertMatch(allPostsJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${days.length}\\b`), '/days ItemList numberOfItems matches source day count');
   const allPostsDayLinks = countMatches(allPosts, /href="\/day\/\d+"/g);
   if (allPostsDayLinks < days.length) fail(`All posts page links only ${allPostsDayLinks}/${days.length} day pages`);
+  // Count absolute ItemList day URLs inside the extracted JSON-LD instead of the full HTML:
+  // the rendered card list also links every day page, so a broken ItemList payload could hide behind visible copy.
+  const allPostsJsonLdDayUrlCount = countMatches(allPostsJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
+  assertCountEquals(allPostsJsonLdDayUrlCount, generatedDayPages.length, '/days ItemList absolute day URL');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, '/days CollectionPage+ItemList JSON-LD');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/days BreadcrumbList JSON-LD');
-  assertMatch(allPosts, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
+  assertMatch(allPostsJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
-  assertIncludes(allPosts, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
-  assertMatch(allPosts, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
+  assertIncludes(allPostsJsonLd, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
+  assertMatch(allPostsJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
+  // Spot-check BaseLayout rel=me propagation on a non-home stable public page (issue #144).
+  for (const profileUrl of expectedPersonSameAsUrls) {
+    assertIncludes(allPosts, `<link rel="me" href="${profileUrl}"`, `/days rel=me ${profileUrl}`);
+  }
 
   const search = readGenerated('search/index.html');
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
   assertCanonicalOgUrlParity(search, 'search');
-  assertSelfHreflangAlternates(search, '/search', 'search');
+  assertLocaleStack(search, 'search');
+  assertNonArticleSharedLayoutContract(search, '/search', 'search');
   assertDescriptionStack(search, 'search');
   assertDefaultSocialCardStack(search, '/search');
   assertMatch(search, /<meta name="description" content="從 \d+ 篇 Dawson Wang 的 AI 工具落地日誌中，用關鍵字或語意搜尋 Claude Code、MCP、automation、內容流程與團隊導入案例。"\s*\/?\s*>/, 'search meta description');
@@ -323,8 +453,9 @@ if (!existsSync(outDir)) {
   assertIncludes(search, 'id="search-results"', 'search results');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"SearchResultsPage".*<\/script>/s, '/search SearchResultsPage JSON-LD');
   assertMatch(search, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/search BreadcrumbList JSON-LD');
+  const searchJsonLd = extractJsonLdScript(search, '/search');
+  assertRootEntityGraph(searchJsonLd, '/search');
   assertJsonLdInLanguage(search, 'SearchResultsPage', '/search');
-  assertDiscoveryAlternates(search, '/search');
   assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
   assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
   // BreadcrumbList @id + SearchResultsPage → BreadcrumbList graph link (issue #68).
@@ -345,19 +476,29 @@ if (!existsSync(outDir)) {
   for (const day of generatedDayPages) {
     const label = `day ${day.number}`;
     const dayHtml = readGenerated(`day/${day.number}/index.html`);
+    const dayJsonLd = extractJsonLdScript(dayHtml, `${label} JSON-LD`);
     const headline = extractArticleHeadline(dayHtml, label);
     const expectedTitle = headline ? `${headline} | Dawson Wang` : '';
     assertIncludes(dayHtml, `<link rel="canonical" href="${siteUrl}/day/${day.number}"`, `${label} canonical`);
     assertCanonicalOgUrlParity(dayHtml, label);
+    assertLocaleStack(dayHtml, label);
     assertSelfHreflangAlternates(dayHtml, `/day/${day.number}`, label);
     assertTitleStack(dayHtml, expectedTitle, label);
     assertDescriptionStack(dayHtml, label);
     assertDiscoveryAlternates(dayHtml, label);
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `${label} og:type article`);
+    if (/"datePublished":""/.test(dayHtml)) fail(`${label} Article datePublished is an empty string`);
+    if (/"dateModified":""/.test(dayHtml)) fail(`${label} Article dateModified is an empty string`);
+    if (/<meta property="article:published_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:published_time is an empty string`);
+    if (/<meta property="article:modified_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:modified_time is an empty string`);
+    assertRootEntityGraph(dayJsonLd, label);
+    assertDayArticleOwnershipTrustCluster(dayHtml, day.number, label);
   }
+  note(`day Article ownership/trust cluster asserted across ${generatedDayPages.length} generated pages`);
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
+    const latestDayPublishedAt = dayPublishedAtByNumber.get(latestDay);
     const latestDayHeadline = extractArticleHeadline(dayHtml, `day ${latestDay}`);
     const expectedLatestDayTitle = latestDayHeadline ? `${latestDayHeadline} | Dawson Wang` : '';
     assertTitleStack(dayHtml, expectedLatestDayTitle, `day ${latestDay}`);
@@ -369,26 +510,21 @@ if (!existsSync(outDir)) {
     // BreadcrumbList @id + Article → BreadcrumbList graph link (issue #68).
     assertIncludes(dayHtml, `"@id":"${siteUrl}/day/${latestDay}#breadcrumb"`, `day ${latestDay} BreadcrumbList @id`);
     assertMatch(dayHtml, new RegExp(`"@type":"Article"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/day/${latestDay}#breadcrumb"\\}`), `day ${latestDay} Article breadcrumb → #breadcrumb graph link`);
-    // Article enrichment (wordCount + isPartOf are stable across all days; articleSection gated below).
-    assertJsonLdInLanguage(dayHtml, 'Article', `day ${latestDay}`);
+    // Keep richer latest-day assertions for representative-page details that are not part of the full-collection ownership/trust ratchet.
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
-    assertIncludes(dayHtml, `"isPartOf":{"@id":"${siteUrl}/#website"}`, `day ${latestDay} Article isPartOf`);
-    assertIncludes(dayHtml, '"isAccessibleForFree":true', `day ${latestDay} Article isAccessibleForFree`);
-    assertIncludes(dayHtml, `"copyrightHolder":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article copyrightHolder → #person graph link`);
-    assertIncludes(dayHtml, `"creator":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article creator → #person graph link`);
-    assertIncludes(dayHtml, `"accountablePerson":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article accountablePerson → #person graph link`);
-    assertIncludes(dayHtml, `"editor":{"@id":"${siteUrl}/#person"}`, `day ${latestDay} Article editor → #person graph link`);
-    // mainEntityOfPage promoted to typed WebPage node (was bare URL string).
-    assertIncludes(dayHtml, `"mainEntityOfPage":{"@type":"WebPage","@id":"${siteUrl}/day/${latestDay}"}`, `day ${latestDay} Article mainEntityOfPage WebPage`);
     // image promoted to typed ImageObject with declared dimensions (large-image rich-result eligibility).
     // Primary image is always the og-default fallback (1200x630) so dimensions are stable across days.
     assertMatch(dayHtml, /"image":(\[\{|\{)"@type":"ImageObject","url":"https:\/\/dawsonwang\.com\/og-default\.png","width":1200,"height":630/, `day ${latestDay} Article image ImageObject`);
-    // Negative: ensure we did NOT regress to bare-URL mainEntityOfPage.
-    if (/"mainEntityOfPage":"https:/.test(dayHtml)) fail(`day ${latestDay} Article mainEntityOfPage regressed to bare URL string`);
-    // OG article:* metadata: published/modified/author asserted on the latest day.
-    assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
-    assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
-    assertIncludes(dayHtml, `<meta property="article:author" content="${siteUrl}/#person"`, `day ${latestDay} article:author`);
+    // Latest-day pages may legitimately omit article dates when the source day has no publish timestamp.
+    if (latestDayPublishedAt) {
+      assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
+      assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestDay} article:modified_time`);
+    } else {
+      if (/"datePublished":/.test(dayHtml)) fail(`day ${latestDay} should omit Article datePublished without a publish timestamp`);
+      if (/"dateModified":/.test(dayHtml)) fail(`day ${latestDay} should omit Article dateModified without a publish timestamp`);
+      if (/<meta property="article:published_time"/.test(dayHtml)) fail(`day ${latestDay} should omit article:published_time without a publish timestamp`);
+      if (/<meta property="article:modified_time"/.test(dayHtml)) fail(`day ${latestDay} should omit article:modified_time without a publish timestamp`);
+    }
     assertMatch(dayHtml, /<meta property="og:image:alt" content="[^"]+"/, `day ${latestDay} og:image:alt`);
     assertMatch(dayHtml, /<meta name="twitter:image:alt" content="[^"]+"/, `day ${latestDay} twitter:image:alt`);
     const latestDayOgImage = dayHtml.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
@@ -403,6 +539,17 @@ if (!existsSync(outDir)) {
         assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
       }
     }
+    if (dayHtml.includes(`alt="Day ${latestDay} slide 1"`)) fail(`day ${latestDay} slide alt regressed to generic Day N slide M pattern`);
+    assertIncludes(dayHtml, `alt="${latestDayHeadline} — 投影片 1"`, `day ${latestDay} first slide alt`);
+  }
+
+  if (latestGeneratedDayWithPublishedAt) {
+    const dayHtml = readGenerated(`day/${latestGeneratedDayWithPublishedAt}/index.html`);
+    assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestGeneratedDayWithPublishedAt} article:published_time`);
+    assertMatch(dayHtml, /<meta property="article:modified_time" content="[^"]+"/, `day ${latestGeneratedDayWithPublishedAt} article:modified_time`);
+    note(`article publish/modified date probes asserted on day ${latestGeneratedDayWithPublishedAt}`);
+  } else {
+    note('no generated day with a publish timestamp found; article publish/modified date probes skipped');
   }
 
   // article:tag is only emitted when the day has topic chips; assert on the latest day that has topics
@@ -434,60 +581,79 @@ if (!existsSync(outDir)) {
   assertTitleStack(topicsIndex, 'AI 工具落地主題索引 | Dawson Wang', 'topics index');
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
   assertCanonicalOgUrlParity(topicsIndex, 'topics index');
-  assertSelfHreflangAlternates(topicsIndex, '/topics', 'topics index');
+  assertLocaleStack(topicsIndex, 'topics index');
+  assertNonArticleSharedLayoutContract(topicsIndex, '/topics', 'topics index');
   assertDescriptionStack(topicsIndex, 'topics index');
   assertDefaultSocialCardStack(topicsIndex, '/topics');
-  assertMatch(topicsIndex, /<meta name="description" content="依主題瀏覽 Dawson Wang 的 \d+ 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。"\s*\/?\s*>/, 'topics index meta description');
+  assertMatch(topicsIndex, new RegExp(`<meta name="description" content="依主題瀏覽 Dawson Wang 的 ${activeTopics.length} 個 AI 工具落地分類：[^\"]+。"\\s*\\/?\\s*>`), 'topics index meta description');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(topicsIndex, 'DefinedTermSet', '/topics');
   assertJsonLdInLanguage(topicsIndex, 'CollectionPage', '/topics');
-  assertDiscoveryAlternates(topicsIndex, '/topics');
+  const topicsIndexJsonLd = extractJsonLdScript(topicsIndex, '/topics');
+  assertRootEntityGraph(topicsIndexJsonLd, '/topics');
+  assertMatch(topicsIndexJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${activeTopics.length}\\b`), '/topics ItemList numberOfItems matches active topic source of truth');
+  // Count absolute topic URLs inside the extracted JSON-LD rather than the full HTML: topic cards render
+  // the same links visibly, so whole-document matches can go false-green if the ItemList drifts.
+  const topicsIndexItemListUrlCount = countMatches(topicsIndexJsonLd, /"url":"https:\/\/dawsonwang\.com\/topics\/[^"]+"/g);
+  assertCountEquals(topicsIndexItemListUrlCount, activeTopics.length, '/topics ItemList absolute topic URL');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
-  assertIncludes(topicsIndex, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
-  assertMatch(topicsIndex, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
+  assertIncludes(topicsIndexJsonLd, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
+  assertMatch(topicsIndexJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
   // DefinedTermSet hub: models topics as a controlled vocabulary, with isPartOf graph link up to #website
-  // and one hasDefinedTerm reference per TOPICS entry (generated from src/data/topics.ts — no literal slugs in JSON-LD source).
-  assertMatch(topicsIndex, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
-  assertMatch(topicsIndex, /"@type":"DefinedTermSet"[\s\S]*?"isPartOf":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, '/topics DefinedTermSet isPartOf → #website graph link');
-  for (const topic of TOPICS) {
-    assertIncludes(topicsIndex, `{"@id":"${siteUrl}/topics/${topic.slug}#term"}`, `/topics DefinedTermSet hasDefinedTerm → ${topic.slug}#term graph link`);
+  // and one hasDefinedTerm reference per active-topic entry (generated from src/data/topics.ts — no literal slugs in JSON-LD source).
+  assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
+  assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"isPartOf":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, '/topics DefinedTermSet isPartOf → #website graph link');
+  for (const topic of activeTopics) {
+    assertIncludes(topicsIndexJsonLd, `{"@id":"${siteUrl}/topics/${topic.slug}#term"}`, `/topics DefinedTermSet hasDefinedTerm → ${topic.slug}#term graph link`);
   }
-  // Count guard: future TOPICS growth ships green automatically without a literal-number edit.
-  const taxonomyTermRefCount = countMatches(topicsIndex, /"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"/g);
-  if (taxonomyTermRefCount < TOPICS.length) fail(`/topics DefinedTermSet term-ref count ${taxonomyTermRefCount} < TOPICS.length ${TOPICS.length}`);
-  for (const topic of TOPICS) {
+  // Count guard: future active-topic growth ships green automatically without a literal-number edit.
+  const taxonomyTermRefCount = countMatches(topicsIndexJsonLd, /"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"/g);
+  if (taxonomyTermRefCount !== activeTopics.length) fail(`/topics DefinedTermSet term-ref count ${taxonomyTermRefCount} !== active topic count ${activeTopics.length}`);
+  for (const topic of activeTopics) {
     const label = `topic ${topic.slug}`;
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
+    const expectedTopicDayCount = topicDayCountBySlug.get(topic.slug) ?? 0;
     assertTitleStack(topicHtml, `${topic.title} AI 實作文章 | Dawson Wang`, label);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
     assertCanonicalOgUrlParity(topicHtml, label);
-    assertSelfHreflangAlternates(topicHtml, `/topics/${topic.slug}`, label);
+    assertLocaleStack(topicHtml, label);
+    assertNonArticleSharedLayoutContract(topicHtml, `/topics/${topic.slug}`, label);
     assertDescriptionStack(topicHtml, label);
     assertDefaultSocialCardStack(topicHtml, label);
     assertMatch(topicHtml, /<meta name="description" content="[^"]+ 收錄 \d+ 篇 Dawson Wang 的 AI 工具落地文章與案例。"\s*\/?\s*>/, `${label} meta description`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"DefinedTerm".*"@type":"ItemList".*<\/script>/s, `${label} JSON-LD`);
     assertMatch(topicHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `${label} BreadcrumbList JSON-LD`);
     assertJsonLdInLanguage(topicHtml, 'CollectionPage', label);
-    assertDiscoveryAlternates(topicHtml, label);
+    const topicPageJsonLd = extractJsonLdScript(topicHtml, label);
+    assertRootEntityGraph(topicPageJsonLd, label);
+    assertMatch(topicPageJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${expectedTopicDayCount}\\b`), `${label} ItemList numberOfItems matches tagged day count`);
+    const topicItemListDayUrlCount = countMatches(topicPageJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
+    assertCountEquals(topicItemListDayUrlCount, expectedTopicDayCount, `${label} ItemList absolute day URL`);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
-    assertMatch(topicHtml, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
+    assertMatch(topicPageJsonLd, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
     // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68) — wrapped in the TOPICS loop so future
     // topic growth ships green automatically (same pattern as the DefinedTermSet ref-count guard).
-    assertIncludes(topicHtml, `"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"`, `${label} BreadcrumbList @id`);
-    assertMatch(topicHtml, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"\\}`), `${label} CollectionPage breadcrumb → #breadcrumb graph link`);
+    assertIncludes(topicPageJsonLd, `"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"`, `${label} BreadcrumbList @id`);
+    assertMatch(topicPageJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"\\}`), `${label} CollectionPage breadcrumb → #breadcrumb graph link`);
   }
-  note(`generated topic pages: ${TOPICS.length}/${TOPICS.length}`);
+  for (const topic of zeroPostTopics) {
+    const zeroPostTopicPath = path.join(outDir, `topics/${topic.slug}/index.html`);
+    if (existsSync(zeroPostTopicPath)) fail(`zero-post topic page should not be generated: ${path.relative(root, zeroPostTopicPath)}`);
+    if (topicsIndex.includes(`href="/topics/${topic.slug}"`)) fail(`/topics page leaks zero-post topic link /topics/${topic.slug}`);
+    if (topicsIndex.includes(`"@id":"${siteUrl}/topics/${topic.slug}#term"`)) fail(`/topics DefinedTermSet leaks zero-post topic ${topic.slug}#term`);
+  }
+  note(`generated topic pages: ${activeTopics.length}/${activeTopics.length}`);
 
   const sitemap = readGenerated('sitemap.xml');
   assertIncludes(sitemap, `<loc>${siteUrl}/</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/days</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/topics</loc>`, 'sitemap');
-  for (const topic of TOPICS) {
+  for (const topic of activeTopics) {
     assertIncludes(sitemap, `<loc>${siteUrl}/topics/${topic.slug}</loc>`, 'sitemap');
   }
   const sitemapTopicCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/topics\/[^<]+<\/loc>/g)).length;
-  if (sitemapTopicCount !== TOPICS.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${TOPICS.length}`);
+  if (sitemapTopicCount !== activeTopics.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${activeTopics.length}`);
   assertIncludes(sitemap, `<loc>${siteUrl}/search</loc>`, 'sitemap');
   if (latestPublishedAt) {
     assertSitemapEntry(sitemap, '/', '1.0', 'weekly', latestPublishedAt);
@@ -498,13 +664,18 @@ if (!existsSync(outDir)) {
     assertSitemapEntry(sitemap, '/rss.xml', '0.6', 'daily', latestPublishedAt);
   }
   for (const [slug, publishedAt] of topicPublishedAtBySlug.entries()) {
-    if (!publishedAt) continue;
     assertSitemapEntry(sitemap, `/topics/${slug}`, '0.7', 'weekly', publishedAt);
+  }
+  for (const topic of zeroPostTopics) {
+    if (sitemap.includes(`<loc>${siteUrl}/topics/${topic.slug}</loc>`)) fail(`sitemap.xml leaks zero-post topic /topics/${topic.slug}`);
   }
   if (latestDay) {
     assertIncludes(sitemap, `<loc>${siteUrl}/day/${latestDay}</loc>`, 'sitemap');
     const latestDayPublishedAt = dayPublishedAtByNumber.get(latestDay);
     if (latestDayPublishedAt) assertSitemapEntry(sitemap, `/day/${latestDay}`, '0.8', 'monthly', latestDayPublishedAt);
+  }
+  for (const day of days) {
+    assertSitemapEntry(sitemap, `/day/${day.number}`, '0.8', 'monthly', dayPublishedAtByNumber.get(day.number));
   }
   const sitemapDayCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/day\/\d+<\/loc>/g)).length;
   if (sitemapDayCount !== days.length) fail(`Sitemap day URL count mismatch: ${sitemapDayCount}/${days.length}`);
@@ -521,42 +692,49 @@ if (!existsSync(outDir)) {
   }
   assertIncludes(llms, `${siteUrl}/rss.xml`, 'llms.txt rss link');
   if (latestDay) assertIncludes(llms, `${siteUrl}/day/${latestDay}`, 'llms.txt');
+  for (const topic of activeTopics) {
+    assertIncludes(llms, `${siteUrl}/topics/${topic.slug}`, `llms.txt topic ${topic.slug}`);
+  }
+  for (const topic of zeroPostTopics) {
+    if (llms.includes(`${siteUrl}/topics/${topic.slug}`)) fail(`llms.txt leaks zero-post topic /topics/${topic.slug}`);
+  }
 
   // /proof portfolio page — CollectionPage + BreadcrumbList JSON-LD with #website graph link
   const proof = readGenerated('proof/index.html');
   assertTitleStack(proof, 'AI 工具落地案例與作品集 | Dawson Wang', '/proof');
   assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
   assertCanonicalOgUrlParity(proof, '/proof');
-  assertSelfHreflangAlternates(proof, '/proof', '/proof');
+  assertLocaleStack(proof, '/proof');
+  assertNonArticleSharedLayoutContract(proof, '/proof', '/proof');
   assertDescriptionStack(proof, '/proof');
   assertDefaultSocialCardStack(proof, '/proof');
   assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
   assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(proof, 'CollectionPage', '/proof');
-  assertDiscoveryAlternates(proof, '/proof');
-  assertIncludes(proof, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
+  const proofJsonLd = extractJsonLdScript(proof, '/proof');
+  assertRootEntityGraph(proofJsonLd, '/proof');
+  assertIncludes(proofJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
-  assertIncludes(proof, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
-  assertMatch(proof, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/proof#breadcrumb"\\}`), '/proof CollectionPage breadcrumb → #breadcrumb graph link');
+  assertIncludes(proofJsonLd, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
+  assertMatch(proofJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/proof#breadcrumb"\\}`), '/proof CollectionPage breadcrumb → #breadcrumb graph link');
   // mainEntity ItemList of shipped projects — single source of truth in src/data/proof-projects.ts
-  assertMatch(proof, /"@type":"CollectionPage"[\s\S]*?"mainEntity":\{[^}]*"@type":"ItemList"/, '/proof CollectionPage→ItemList mainEntity link');
-  assertMatch(proof, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${PROOF_PROJECTS.length}\\b`), '/proof ItemList numberOfItems matches PROOF_PROJECTS.length');
+  assertMatch(proofJsonLd, /"@type":"CollectionPage"[\s\S]*?"mainEntity":\{[^}]*"@type":"ItemList"/, '/proof CollectionPage→ItemList mainEntity link');
+  assertMatch(proofJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${PROOF_PROJECTS.length}\\b`), '/proof ItemList numberOfItems matches PROOF_PROJECTS.length');
   // Count CreativeWork occurrences in the structuredData script (each PROOF_PROJECTS item emits exactly one
-  // CreativeWork; BreadcrumbList items are not CreativeWork, so this isolates the project count without
-  // accidentally counting BreadcrumbList ListItems that share the same script tag).
-  const proofCreativeWorkCount = countMatches(proof, /"@type":"CreativeWork"/g);
+  // CreativeWork; the rendered proof cards duplicate the same names in visible copy, so count/assert inside
+  // the extracted JSON-LD blob rather than the full HTML document.
+  const proofCreativeWorkCount = countMatches(proofJsonLd, /"@type":"CreativeWork"/g);
   if (proofCreativeWorkCount !== PROOF_PROJECTS.length) {
     fail(`/proof CreativeWork count ${proofCreativeWorkCount} !== PROOF_PROJECTS.length ${PROOF_PROJECTS.length}`);
   }
   // Spot-check that each PROOF_PROJECTS entry's name appears inside the JSON-LD (escaped form).
   for (const project of PROOF_PROJECTS) {
-    const escaped = JSON.stringify(project.name).slice(1, -1).replace(/</g, '\\u003c');
-    assertIncludes(proof, escaped, `/proof ItemList contains project name ${project.name}`);
+    const escaped = escapeJsonString(project.name);
+    assertIncludes(proofJsonLd, escaped, `/proof ItemList contains project name ${project.name}`);
   }
 
   // RSS feed
-  assertDiscoveryAlternates(allPosts, '/days');
   assertIncludes(sitemap, `<loc>${siteUrl}/rss.xml</loc>`, 'sitemap rss entry');
   const rss = readGenerated('rss.xml');
   assertIncludes(rss, '<rss version="2.0"', 'rss.xml');
@@ -570,14 +748,30 @@ if (!existsSync(outDir)) {
 
   // /inquiry-received thank-you page is noindexed via BaseLayout `noindex` prop.
   const inquiry = readGenerated('inquiry-received/index.html');
+  assertTitleStack(inquiry, '收到了 | Dawson Wang', '/inquiry-received');
+  assertIncludes(inquiry, `<link rel="canonical" href="${siteUrl}/inquiry-received"`, '/inquiry-received canonical');
+  assertCanonicalOgUrlParity(inquiry, '/inquiry-received');
+  assertLocaleStack(inquiry, '/inquiry-received');
+  assertNonArticleSharedLayoutContract(inquiry, '/inquiry-received', '/inquiry-received');
+  assertDescriptionStack(inquiry, '/inquiry-received');
+  assertDefaultSocialCardStack(inquiry, '/inquiry-received');
   assertIncludes(inquiry, '<meta name="robots" content="noindex, nofollow"', '/inquiry-received noindex meta robots');
+  assertOmitsRootEntityGraph(inquiry, '/inquiry-received');
   if (inquiry.includes('content="index, follow')) fail('/inquiry-received leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap probe: /inquiry-received must NOT appear in sitemap.xml or llms.txt.
   if (sitemap.includes(`${siteUrl}/inquiry-received`)) fail('sitemap.xml leaks /inquiry-received (should be excluded)');
   if (llms.includes(`${siteUrl}/inquiry-received`)) fail('llms.txt leaks /inquiry-received (should be excluded)');
   // /404 custom error page is noindexed via BaseLayout `noindex` prop and must navigate back into the content graph.
   const notFound = readGenerated('404.html');
+  assertTitleStack(notFound, '找不到頁面 | Dawson Wang', '/404');
+  assertIncludes(notFound, `<link rel="canonical" href="${siteUrl}/404"`, '/404 canonical');
+  assertCanonicalOgUrlParity(notFound, '/404');
+  assertLocaleStack(notFound, '/404');
+  assertNonArticleSharedLayoutContract(notFound, '/404', '/404');
+  assertDescriptionStack(notFound, '/404');
+  assertDefaultSocialCardStack(notFound, '/404');
   assertIncludes(notFound, '<meta name="robots" content="noindex, nofollow"', '/404 noindex meta robots');
+  assertOmitsRootEntityGraph(notFound, '/404');
   if (notFound.includes('content="index, follow')) fail('/404 leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap/llms probe: /404 must NOT appear in sitemap.xml or llms.txt.
   if (sitemap.includes(`${siteUrl}/404`)) fail('sitemap.xml leaks /404 (should be excluded)');
