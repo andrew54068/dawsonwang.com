@@ -1,36 +1,42 @@
 import { z } from 'zod';
 
+const metricNumber = z.preprocess(
+  (value) => (value === null ? undefined : value),
+  z.number().optional(),
+);
+
 const ThreadsStats = z.object({
-  views: z.number().optional(),
-  likes: z.number().optional(),
-  reposts: z.number().optional(),
-  replies: z.number().optional(),
-  quotes: z.number().optional(),
-  follows: z.number().optional(),
-}).default({});
+  views: metricNumber,
+  likes: metricNumber,
+  reposts: metricNumber,
+  replies: metricNumber,
+  quotes: metricNumber,
+  follows: metricNumber,
+});
 
 const FacebookStats = z.object({
-  views: z.number().optional(),
-  reach: z.number().optional(),
-  reactions: z.number().optional(),
-  comments: z.number().optional(),
-  shares: z.number().optional(),
-  saves: z.number().optional(),
-}).default({});
+  views: metricNumber,
+  reach: metricNumber,
+  reactions: metricNumber,
+  comments: metricNumber,
+  shares: metricNumber,
+  saves: metricNumber,
+});
 
 const LinkedInStats = z.object({
-  impressions: z.number().optional(),
-  reactions: z.number().optional(),
-  comments: z.number().optional(),
-}).default({});
+  impressions: metricNumber,
+  reactions: metricNumber,
+  comments: metricNumber,
+  reposts: metricNumber,
+});
 
 const PlatformBlock = <T extends z.ZodType>(stats: T) =>
   z.object({
     published_at: z.string(),
     post_url: z.url(),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    stats: stats.optional().default({} as any),
-  }).optional();
+    stats: stats.optional().nullable(),
+    latest: stats.optional().nullable(),
+  }).nullable().optional();
 
 const ManifestSchema = z.object({
   day: z.number(),
@@ -44,6 +50,12 @@ function normalizePublishedAt(value: string) {
   return normalized.length > 0 ? normalized : undefined;
 }
 
+function stripNumericMetrics<T extends Record<string, number | undefined>>(stats?: T | null): T {
+  return Object.fromEntries(
+    Object.entries(stats ?? {}).filter(([, value]) => typeof value === 'number' && Number.isFinite(value)),
+  ) as T;
+}
+
 export interface ParsedManifest {
   day: number;
   threads?: { publishedAt?: string; postUrl: string; stats: z.infer<typeof ThreadsStats> };
@@ -51,24 +63,44 @@ export interface ParsedManifest {
   linkedin?: { publishedAt?: string; postUrl: string; stats: z.infer<typeof LinkedInStats> };
 }
 
+function selectStats<T extends Record<string, number | undefined>>(platform?: {
+  latest?: T | null;
+  stats?: T | null;
+} | null): T {
+  const latest = stripNumericMetrics(platform?.latest);
+  if (Object.keys(latest).length > 0) return latest;
+
+  const legacy = stripNumericMetrics(platform?.stats);
+  if (Object.keys(legacy).length > 0) return legacy;
+
+  return {} as T;
+}
+
 export function parseManifest(raw: unknown): ParsedManifest {
   const parsed = ManifestSchema.parse(raw);
+
   return {
     day: parsed.day,
-    threads: parsed.threads && {
-      publishedAt: normalizePublishedAt(parsed.threads.published_at),
-      postUrl: parsed.threads.post_url,
-      stats: parsed.threads.stats,
-    },
-    facebook: parsed.facebook && {
-      publishedAt: normalizePublishedAt(parsed.facebook.published_at),
-      postUrl: parsed.facebook.post_url,
-      stats: parsed.facebook.stats,
-    },
-    linkedin: parsed.linkedin && {
-      publishedAt: normalizePublishedAt(parsed.linkedin.published_at),
-      postUrl: parsed.linkedin.post_url,
-      stats: parsed.linkedin.stats,
-    },
+    ...(parsed.threads ? {
+      threads: {
+        publishedAt: normalizePublishedAt(parsed.threads.published_at),
+        postUrl: parsed.threads.post_url,
+        stats: selectStats(parsed.threads),
+      },
+    } : {}),
+    ...(parsed.facebook ? {
+      facebook: {
+        publishedAt: normalizePublishedAt(parsed.facebook.published_at),
+        postUrl: parsed.facebook.post_url,
+        stats: selectStats(parsed.facebook),
+      },
+    } : {}),
+    ...(parsed.linkedin ? {
+      linkedin: {
+        publishedAt: normalizePublishedAt(parsed.linkedin.published_at),
+        postUrl: parsed.linkedin.post_url,
+        stats: selectStats(parsed.linkedin),
+      },
+    } : {}),
   };
 }

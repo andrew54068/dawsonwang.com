@@ -258,6 +258,172 @@ function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function normalizeNumericMetrics(record?: Record<string, unknown>) {
+  if (!record) return {};
+  return Object.fromEntries(
+    Object.entries(record).filter(([, value]) => typeof value === 'number' && Number.isFinite(value)),
+  );
+}
+
+function selectManifestMetricBlock(manifest: Record<string, unknown>, platformKey: 'threads' | 'facebook' | 'linkedin') {
+  const platform = manifest[platformKey];
+  if (!isRecord(platform)) return undefined;
+
+  const latest = normalizeNumericMetrics(isRecord(platform.latest) ? platform.latest : undefined);
+  if (Object.keys(latest).length > 0) return latest;
+
+  const legacy = normalizeNumericMetrics(isRecord(platform.stats) ? platform.stats : undefined);
+  if (Object.keys(legacy).length > 0) return legacy;
+
+  return undefined;
+}
+
+function readPositiveMetric(value: unknown) {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : undefined;
+}
+
+function formatCompactCount(value: number) {
+  if (value >= 1000) return `${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}K`;
+  return String(value);
+}
+
+function computeProofMetricExpectations(days: ReturnType<typeof listSourceDays>) {
+  const threadsSeries: { day: number; value: number }[] = [];
+  const facebookSeries: { day: number; value: number }[] = [];
+  let totalLinkedInImpressions = 0;
+
+  for (const day of days) {
+    if (!existsSync(day.publishManifestPath)) continue;
+
+    let manifest: Record<string, unknown>;
+    try {
+      const raw = JSON.parse(readFileSync(day.publishManifestPath, 'utf8')) as unknown;
+      if (!isRecord(raw)) continue;
+      manifest = raw;
+    } catch {
+      fail(`Unreadable publish manifest for proof metric expectations: ${path.relative(root, day.publishManifestPath)}`);
+      continue;
+    }
+
+    const threadsViews = readPositiveMetric(selectManifestMetricBlock(manifest, 'threads')?.views);
+    if (threadsViews) threadsSeries.push({ day: day.number, value: threadsViews });
+
+    const facebookReach = readPositiveMetric(selectManifestMetricBlock(manifest, 'facebook')?.reach);
+    if (facebookReach) facebookSeries.push({ day: day.number, value: facebookReach });
+
+    const linkedinImpressions = readPositiveMetric(selectManifestMetricBlock(manifest, 'linkedin')?.impressions);
+    if (linkedinImpressions) totalLinkedInImpressions += linkedinImpressions;
+  }
+
+  const totalThreadsViews = threadsSeries.reduce((sum, point) => sum + point.value, 0);
+  const totalFacebookReach = facebookSeries.reduce((sum, point) => sum + point.value, 0);
+  const threadsPeak = threadsSeries.reduce<{ day: number; value: number } | undefined>(
+    (best, point) => (!best || point.value > best.value ? point : best),
+    undefined,
+  );
+  const facebookPeak = facebookSeries.reduce<{ day: number; value: number } | undefined>(
+    (best, point) => (!best || point.value > best.value ? point : best),
+    undefined,
+  );
+
+  return {
+    totalDays: days.length,
+    threads: {
+      countLabel: `${threadsSeries.length} / ${days.length}`,
+      totalLabel: formatCompactCount(totalThreadsViews),
+      peakDay: threadsPeak?.day,
+      peakLabel: threadsPeak ? formatCompactCount(threadsPeak.value) : undefined,
+    },
+    facebook: {
+      countLabel: String(facebookSeries.length),
+      totalLabel: formatCompactCount(totalFacebookReach),
+      peakDay: facebookPeak?.day,
+      peakLabel: facebookPeak ? formatCompactCount(facebookPeak.value) : undefined,
+    },
+    linkedin: {
+      totalLabel: formatCompactCount(totalLinkedInImpressions),
+    },
+  };
+}
+
+function extractMetricFigure(haystack: string, metricTitle: string, label: string) {
+  const figures = Array.from(haystack.matchAll(/<figure class="m-0">[\s\S]*?<\/figure>/g), match => match[0]);
+  const figure = figures.find(candidate => candidate.includes(metricTitle));
+  if (!figure) {
+    fail(`${label} missing figure for ${metricTitle}`);
+    return '';
+  }
+  return figure;
+}
+
+function assertRenderedMetricFigure(
+  haystack: string,
+  metricTitle: string,
+  unitLabel: '觀看' | '觸及',
+  expected: { countLabel: string; totalLabel: string; peakDay?: number; peakLabel?: string },
+  label: string,
+) {
+  const figure = extractMetricFigure(haystack, metricTitle, label);
+  if (!figure) return;
+
+  const countLabel = extractRequired(
+    figure,
+    /<span class="font-mono text-xs text-faint">([^<]+)<\/span>/,
+    `${label} ${metricTitle} count label`,
+  ).trim();
+  if (countLabel !== expected.countLabel) {
+    fail(`${label} ${metricTitle} count label ${countLabel} !== expected ${expected.countLabel}`);
+  }
+
+  const totalLabel = extractRequired(
+    figure,
+    new RegExp(`累計 <span class="text-ink">([^<]+)<\\/span> ${escapeRegExp(unitLabel)}`),
+    `${label} ${metricTitle} total label`,
+  ).trim();
+  if (totalLabel !== expected.totalLabel) {
+    fail(`${label} ${metricTitle} total label ${totalLabel} !== expected ${expected.totalLabel}`);
+  }
+
+  if (expected.peakDay !== undefined && expected.peakLabel) {
+    const peakMatch = figure.match(/peak day\s+(\d+) · ([^<\s]+)/);
+    if (!peakMatch) {
+      fail(`${label} ${metricTitle} missing peak day summary`);
+      return;
+    }
+
+    const peakDay = Number(peakMatch[1]);
+    const peakLabel = peakMatch[2]?.trim();
+    if (peakDay !== expected.peakDay) {
+      fail(`${label} ${metricTitle} peak day ${peakDay} !== expected ${expected.peakDay}`);
+    }
+    if (peakLabel !== expected.peakLabel) {
+      fail(`${label} ${metricTitle} peak label ${peakLabel} !== expected ${expected.peakLabel}`);
+    }
+  }
+}
+
+function assertRenderedLinkedInSummary(haystack: string, expectedTotalLabel: string, label: string) {
+  if (expectedTotalLabel === '0') {
+    if (haystack.includes('LinkedIn 另曝光')) {
+      fail(`${label} unexpectedly renders LinkedIn summary with zero expected impressions`);
+    }
+    return;
+  }
+
+  const totalLabel = extractRequired(
+    haystack,
+    /LinkedIn 另曝光 <span class="text-ink">([^<]+)<\/span> 次/,
+    `${label} LinkedIn summary`,
+  ).trim();
+  if (totalLabel !== expectedTotalLabel) {
+    fail(`${label} LinkedIn total ${totalLabel} !== expected ${expectedTotalLabel}`);
+  }
+}
+
 function assertSitemapEntry(xml: string, routePath: string, priority: string, changefreq: string, lastmod?: string) {
   const loc = escapeRegExp(`${siteUrl}${routePath}`);
   const lastmodPattern = lastmod ? `<lastmod>${escapeRegExp(lastmod)}<\\/lastmod>\\s*` : '';
@@ -674,6 +840,13 @@ if (!existsSync(outDir)) {
     const escaped = escapeJsonString(project.name);
     assertIncludes(proofJsonLd, escaped, `/proof ItemList contains project name ${project.name}`);
   }
+  const proofMetricExpectations = computeProofMetricExpectations(days);
+  assertRenderedMetricFigure(home, 'Threads · daily views', '觀看', proofMetricExpectations.threads, 'home proof excerpt');
+  assertRenderedMetricFigure(home, 'Facebook · daily reach', '觸及', proofMetricExpectations.facebook, 'home proof excerpt');
+  assertRenderedLinkedInSummary(home, proofMetricExpectations.linkedin.totalLabel, 'home proof excerpt');
+  assertRenderedMetricFigure(proof, 'Threads · daily views', '觀看', proofMetricExpectations.threads, '/proof');
+  assertRenderedMetricFigure(proof, 'Facebook · daily reach', '觸及', proofMetricExpectations.facebook, '/proof');
+  assertRenderedLinkedInSummary(proof, proofMetricExpectations.linkedin.totalLabel, '/proof');
 
   // RSS feed
   assertIncludes(sitemap, `<loc>${siteUrl}/rss.xml</loc>`, 'sitemap rss entry');
