@@ -260,7 +260,9 @@ function escapeRegExp(value: string) {
 
 function assertSitemapEntry(xml: string, routePath: string, priority: string, changefreq: string, lastmod?: string) {
   const loc = escapeRegExp(`${siteUrl}${routePath}`);
-  const lastmodPattern = lastmod ? `<lastmod>${escapeRegExp(lastmod)}<\\/lastmod>\\s*` : '';
+  const lastmodPattern = lastmod
+    ? `<lastmod>${escapeRegExp(lastmod)}<\\/lastmod>\\s*`
+    : `(?!<lastmod>)`;
   const pattern = new RegExp(
     `<url>\\s*<loc>${loc}<\\/loc>\\s*${lastmodPattern}<changefreq>${escapeRegExp(changefreq)}<\\/changefreq>\\s*<priority>${escapeRegExp(priority)}<\\/priority>\\s*<\\/url>`
   );
@@ -639,7 +641,6 @@ if (!existsSync(outDir)) {
     assertSitemapEntry(sitemap, '/rss.xml', '0.6', 'daily', latestPublishedAt);
   }
   for (const [slug, publishedAt] of topicPublishedAtBySlug.entries()) {
-    if (!publishedAt) continue;
     assertSitemapEntry(sitemap, `/topics/${slug}`, '0.7', 'weekly', publishedAt);
   }
   for (const topic of zeroPostTopics) {
@@ -649,6 +650,9 @@ if (!existsSync(outDir)) {
     assertIncludes(sitemap, `<loc>${siteUrl}/day/${latestDay}</loc>`, 'sitemap');
     const latestDayPublishedAt = dayPublishedAtByNumber.get(latestDay);
     if (latestDayPublishedAt) assertSitemapEntry(sitemap, `/day/${latestDay}`, '0.8', 'monthly', latestDayPublishedAt);
+  }
+  for (const day of days) {
+    assertSitemapEntry(sitemap, `/day/${day.number}`, '0.8', 'monthly', dayPublishedAtByNumber.get(day.number));
   }
   const sitemapDayCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/day\/\d+<\/loc>/g)).length;
   if (sitemapDayCount !== days.length) fail(`Sitemap day URL count mismatch: ${sitemapDayCount}/${days.length}`);
