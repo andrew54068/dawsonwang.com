@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content';
 import { SITE_URL } from '../lib/seo';
-import { allTopics, daysForTopic } from '../lib/topics';
+import { topicsWithPosts, daysForTopic } from '../lib/topics';
 import { latestDefinedPublishedAt, publishedAtForManifest } from '../lib/publish-metadata';
 
 function escapeXml(value: string) {
@@ -26,12 +26,13 @@ function entry(path: string, priority: string, changefreq: string, lastmod?: str
 
 export async function GET() {
   const days = await getCollection('days');
-  const topics = allTopics();
+  const validDayNumbers = days.map(day => day.data.dayNumber);
+  const topics = topicsWithPosts(validDayNumbers);
   const now = new Date().toISOString();
   const dayPublishedAtByNumber = new Map(days.map(day => [day.data.dayNumber, publishedAtForManifest(day.data.manifest)]));
   const latestPublishedAt = latestDefinedPublishedAt(dayPublishedAtByNumber.values()) ?? now;
   const topicPublishedAt = (slug: string) => latestDefinedPublishedAt(
-    daysForTopic(slug).map(dayNumber => dayPublishedAtByNumber.get(dayNumber))
+    daysForTopic(slug, validDayNumbers).map(dayNumber => dayPublishedAtByNumber.get(dayNumber))
   );
 
   const urls = [

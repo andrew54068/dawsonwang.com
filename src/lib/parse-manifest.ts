@@ -30,7 +30,7 @@ const PlatformBlock = <T extends z.ZodType>(stats: T) =>
     post_url: z.url(),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     stats: stats.optional().default({} as any),
-  }).optional();
+  }).nullish();
 
 const ManifestSchema = z.object({
   day: z.number(),
@@ -55,20 +55,20 @@ export function parseManifest(raw: unknown): ParsedManifest {
   const parsed = ManifestSchema.parse(raw);
   return {
     day: parsed.day,
-    threads: parsed.threads && {
+    threads: parsed.threads ? {
       publishedAt: normalizePublishedAt(parsed.threads.published_at),
       postUrl: parsed.threads.post_url,
       stats: parsed.threads.stats,
-    },
-    facebook: parsed.facebook && {
+    } : undefined,
+    facebook: parsed.facebook ? {
       publishedAt: normalizePublishedAt(parsed.facebook.published_at),
       postUrl: parsed.facebook.post_url,
       stats: parsed.facebook.stats,
-    },
-    linkedin: parsed.linkedin && {
+    } : undefined,
+    linkedin: parsed.linkedin ? {
       publishedAt: normalizePublishedAt(parsed.linkedin.published_at),
       postUrl: parsed.linkedin.post_url,
       stats: parsed.linkedin.stats,
-    },
+    } : undefined,
   };
 }

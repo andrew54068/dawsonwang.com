@@ -281,18 +281,23 @@ if (!existsSync(outDir)) {
     .sort()
     .at(-1);
   const topicTitleBySlug = new Map(TOPICS.map(topic => [topic.slug, topic.title]));
-  const taggedTopicSlugs = TOPICS
-    .filter(topic => Object.values(DAY_TOPICS).some(slugs => slugs.includes(topic.slug)))
-    .map(topic => topic.slug);
-  const topicDayCountBySlug = new Map(TOPICS.map(topic => {
+  const activeTopicSlugSet = new Set(
+    Object.entries(DAY_TOPICS)
+      .filter(([dayNumber]) => sourceDayNumberSet.has(Number(dayNumber)))
+      .flatMap(([, slugs]) => slugs)
+  );
+  const activeTopics = TOPICS.filter(topic => activeTopicSlugSet.has(topic.slug));
+  const zeroPostTopics = TOPICS.filter(topic => !activeTopicSlugSet.has(topic.slug));
+  const topicDayCountBySlug = new Map(activeTopics.map(topic => {
     const topicDayCount = Object.entries(DAY_TOPICS)
-      .filter(([dayNumber, slugs]) => slugs.includes(topic.slug) && sourceDayNumberSet.has(Number(dayNumber)))
+      .filter(([dayNumber, slugs]) => sourceDayNumberSet.has(Number(dayNumber)) && slugs.includes(topic.slug))
       .length;
     return [topic.slug, topicDayCount];
   }));
-  const topicPublishedAtBySlug = new Map(taggedTopicSlugs.map(slug => {
+  const topicPublishedAtBySlug = new Map(activeTopics.map(topic => {
+    const slug = topic.slug;
     const publishedAt = Object.entries(DAY_TOPICS)
-      .filter(([, slugs]) => slugs.includes(slug))
+      .filter(([dayNumber, slugs]) => sourceDayNumberSet.has(Number(dayNumber)) && slugs.includes(slug))
       .map(([dayNumber]) => dayPublishedAtByNumber.get(Number(dayNumber)))
       .filter((value): value is string => Boolean(value))
       .sort()
@@ -348,6 +353,7 @@ if (!existsSync(outDir)) {
   assertMatch(homeJsonLd, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"founder":\\{"@id":"${siteUrl}/#person"\\}`), 'home ProfessionalService founder → #person graph link');
   assertMatch(homeJsonLd, /"@type":"ProfessionalService"[\s\S]*?"areaServed":"Taiwan"/, 'home ProfessionalService areaServed Taiwan');
   assertMatch(homeJsonLd, /"@type":"ProfessionalService"[\s\S]*?"inLanguage":"zh-Hant-TW"/, 'home ProfessionalService inLanguage zh-Hant-TW');
+  assertMatch(homeJsonLd, new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"contactPoint":\\{"@type":"ContactPoint","url":"${siteUrl}/#inquire","contactType":"consulting inquiries","areaServed":"Taiwan","availableLanguage":\\["zh-Hant-TW","en"\\]\\}`), 'home ProfessionalService contactPoint → #inquire');
   assertMatch(home, new RegExp(`"@type":"OfferCatalog"[\\s\\S]*?"isPartOf":\\{"@id":"${siteUrl}/#website"\\}`), 'home OfferCatalog isPartOf → #website graph link');
   assertIncludes(home, `"@id":"${siteUrl}/#ai-workflow-service-catalog"`, 'home OfferCatalog @id');
   const homeOfferCount = countMatches(homeJsonLd, /"@type":"Offer","position":\d+/g);
@@ -377,6 +383,10 @@ if (!existsSync(outDir)) {
     assertIncludes(home, `name="${field}"`, `home inquiry form field ${field}`);
   }
   assertIncludes(home, 'href="/#inquire"', 'home appointment CTA');
+  // rel=me identity profile links — BaseLayout emits site-wide; asserted on home (issue #144).
+  for (const profileUrl of expectedPersonSameAsUrls) {
+    assertIncludes(home, `<link rel="me" href="${profileUrl}"`, `home rel=me ${profileUrl}`);
+  }
 
   const allPosts = readGenerated('days/index.html');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
@@ -405,6 +415,10 @@ if (!existsSync(outDir)) {
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(allPostsJsonLd, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
   assertMatch(allPostsJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
+  // Spot-check BaseLayout rel=me propagation on a non-home stable public page (issue #144).
+  for (const profileUrl of expectedPersonSameAsUrls) {
+    assertIncludes(allPosts, `<link rel="me" href="${profileUrl}"`, `/days rel=me ${profileUrl}`);
+  }
 
   const search = readGenerated('search/index.html');
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
@@ -504,6 +518,8 @@ if (!existsSync(outDir)) {
         assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
       }
     }
+    if (dayHtml.includes(`alt="Day ${latestDay} slide 1"`)) fail(`day ${latestDay} slide alt regressed to generic Day N slide M pattern`);
+    assertIncludes(dayHtml, `alt="${latestDayHeadline} — 投影片 1"`, `day ${latestDay} first slide alt`);
   }
 
   if (latestGeneratedDayWithPublishedAt) {
@@ -548,31 +564,31 @@ if (!existsSync(outDir)) {
   assertNonArticleSharedLayoutContract(topicsIndex, '/topics', 'topics index');
   assertDescriptionStack(topicsIndex, 'topics index');
   assertDefaultSocialCardStack(topicsIndex, '/topics');
-  assertMatch(topicsIndex, /<meta name="description" content="依主題瀏覽 Dawson Wang 的 \d+ 個 AI 工具落地分類：agent workflow、Claude Code、MCP、自動化、內容流程與團隊導入。"\s*\/?\s*>/, 'topics index meta description');
+  assertMatch(topicsIndex, new RegExp(`<meta name="description" content="依主題瀏覽 Dawson Wang 的 ${activeTopics.length} 個 AI 工具落地分類：[^\"]+。"\\s*\\/?\\s*>`), 'topics index meta description');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(topicsIndex, 'DefinedTermSet', '/topics');
   assertJsonLdInLanguage(topicsIndex, 'CollectionPage', '/topics');
   const topicsIndexJsonLd = extractJsonLdScript(topicsIndex, '/topics');
-  assertMatch(topicsIndexJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${TOPICS.length}\\b`), '/topics ItemList numberOfItems matches topic source of truth');
+  assertMatch(topicsIndexJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${activeTopics.length}\\b`), '/topics ItemList numberOfItems matches active topic source of truth');
   // Count absolute topic URLs inside the extracted JSON-LD rather than the full HTML: topic cards render
   // the same links visibly, so whole-document matches can go false-green if the ItemList drifts.
   const topicsIndexItemListUrlCount = countMatches(topicsIndexJsonLd, /"url":"https:\/\/dawsonwang\.com\/topics\/[^"]+"/g);
-  assertCountEquals(topicsIndexItemListUrlCount, TOPICS.length, '/topics ItemList absolute topic URL');
+  assertCountEquals(topicsIndexItemListUrlCount, activeTopics.length, '/topics ItemList absolute topic URL');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(topicsIndexJsonLd, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
   assertMatch(topicsIndexJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
   // DefinedTermSet hub: models topics as a controlled vocabulary, with isPartOf graph link up to #website
-  // and one hasDefinedTerm reference per TOPICS entry (generated from src/data/topics.ts — no literal slugs in JSON-LD source).
+  // and one hasDefinedTerm reference per active-topic entry (generated from src/data/topics.ts — no literal slugs in JSON-LD source).
   assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
   assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"isPartOf":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, '/topics DefinedTermSet isPartOf → #website graph link');
-  for (const topic of TOPICS) {
+  for (const topic of activeTopics) {
     assertIncludes(topicsIndexJsonLd, `{"@id":"${siteUrl}/topics/${topic.slug}#term"}`, `/topics DefinedTermSet hasDefinedTerm → ${topic.slug}#term graph link`);
   }
-  // Count guard: future TOPICS growth ships green automatically without a literal-number edit.
+  // Count guard: future active-topic growth ships green automatically without a literal-number edit.
   const taxonomyTermRefCount = countMatches(topicsIndexJsonLd, /"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"/g);
-  if (taxonomyTermRefCount < TOPICS.length) fail(`/topics DefinedTermSet term-ref count ${taxonomyTermRefCount} < TOPICS.length ${TOPICS.length}`);
-  for (const topic of TOPICS) {
+  if (taxonomyTermRefCount !== activeTopics.length) fail(`/topics DefinedTermSet term-ref count ${taxonomyTermRefCount} !== active topic count ${activeTopics.length}`);
+  for (const topic of activeTopics) {
     const label = `topic ${topic.slug}`;
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
     const expectedTopicDayCount = topicDayCountBySlug.get(topic.slug) ?? 0;
@@ -598,17 +614,23 @@ if (!existsSync(outDir)) {
     assertIncludes(topicPageJsonLd, `"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"`, `${label} BreadcrumbList @id`);
     assertMatch(topicPageJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"\\}`), `${label} CollectionPage breadcrumb → #breadcrumb graph link`);
   }
-  note(`generated topic pages: ${TOPICS.length}/${TOPICS.length}`);
+  for (const topic of zeroPostTopics) {
+    const zeroPostTopicPath = path.join(outDir, `topics/${topic.slug}/index.html`);
+    if (existsSync(zeroPostTopicPath)) fail(`zero-post topic page should not be generated: ${path.relative(root, zeroPostTopicPath)}`);
+    if (topicsIndex.includes(`href="/topics/${topic.slug}"`)) fail(`/topics page leaks zero-post topic link /topics/${topic.slug}`);
+    if (topicsIndex.includes(`"@id":"${siteUrl}/topics/${topic.slug}#term"`)) fail(`/topics DefinedTermSet leaks zero-post topic ${topic.slug}#term`);
+  }
+  note(`generated topic pages: ${activeTopics.length}/${activeTopics.length}`);
 
   const sitemap = readGenerated('sitemap.xml');
   assertIncludes(sitemap, `<loc>${siteUrl}/</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/days</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/topics</loc>`, 'sitemap');
-  for (const topic of TOPICS) {
+  for (const topic of activeTopics) {
     assertIncludes(sitemap, `<loc>${siteUrl}/topics/${topic.slug}</loc>`, 'sitemap');
   }
   const sitemapTopicCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/topics\/[^<]+<\/loc>/g)).length;
-  if (sitemapTopicCount !== TOPICS.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${TOPICS.length}`);
+  if (sitemapTopicCount !== activeTopics.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${activeTopics.length}`);
   assertIncludes(sitemap, `<loc>${siteUrl}/search</loc>`, 'sitemap');
   if (latestPublishedAt) {
     assertSitemapEntry(sitemap, '/', '1.0', 'weekly', latestPublishedAt);
@@ -620,6 +642,9 @@ if (!existsSync(outDir)) {
   }
   for (const [slug, publishedAt] of topicPublishedAtBySlug.entries()) {
     assertSitemapEntry(sitemap, `/topics/${slug}`, '0.7', 'weekly', publishedAt);
+  }
+  for (const topic of zeroPostTopics) {
+    if (sitemap.includes(`<loc>${siteUrl}/topics/${topic.slug}</loc>`)) fail(`sitemap.xml leaks zero-post topic /topics/${topic.slug}`);
   }
   if (latestDay) {
     assertIncludes(sitemap, `<loc>${siteUrl}/day/${latestDay}</loc>`, 'sitemap');
@@ -644,6 +669,12 @@ if (!existsSync(outDir)) {
   }
   assertIncludes(llms, `${siteUrl}/rss.xml`, 'llms.txt rss link');
   if (latestDay) assertIncludes(llms, `${siteUrl}/day/${latestDay}`, 'llms.txt');
+  for (const topic of activeTopics) {
+    assertIncludes(llms, `${siteUrl}/topics/${topic.slug}`, `llms.txt topic ${topic.slug}`);
+  }
+  for (const topic of zeroPostTopics) {
+    if (llms.includes(`${siteUrl}/topics/${topic.slug}`)) fail(`llms.txt leaks zero-post topic /topics/${topic.slug}`);
+  }
 
   // /proof portfolio page — CollectionPage + BreadcrumbList JSON-LD with #website graph link
   const proof = readGenerated('proof/index.html');
