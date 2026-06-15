@@ -61,3 +61,56 @@ test('returns no-stats record when stats not yet collected', () => {
   const result = parseManifest(raw);
   expect(result.threads?.stats).toEqual({});
 });
+
+test('reads engagement from the current `latest` snapshot format, stripping null fields', () => {
+  const raw = {
+    day: 87,
+    threads: {
+      published_at: '2026-03-28T17:04:18.752Z',
+      post_url: 'https://www.threads.com/@andrew54068/post/DWbxol1mleQ',
+      latest: { views: 179, likes: 4, reposts: 1, replies: null, quotes: null, follows: null, collected_at: '2026-04-17T05:54:20.114Z' },
+      snapshots: [{ views: 179, interval: 'legacy', collected_at: '2026-04-17T05:54:20.114Z' }],
+    },
+    facebook: {
+      published_at: '2026-03-28T16:00:00.000Z',
+      post_url: 'https://www.facebook.com/permalink/1',
+      latest: { reach: 320, reactions: 12, comments: null, shares: null, saves: null, views: null, collected_at: '2026-04-01T00:00:00Z' },
+    },
+    linkedin: {
+      published_at: '2026-03-28T16:02:00.000Z',
+      post_url: 'https://www.linkedin.com/feed/update/urn:li:activity:1/',
+      latest: { impressions: 540, reactions: 3, comments: null, reposts: null, collected_at: '2026-04-01T00:00:00Z' },
+    },
+  };
+  const result = parseManifest(raw);
+  expect(result.threads?.stats).toEqual({ views: 179, likes: 4, reposts: 1 });
+  expect(result.facebook?.stats).toEqual({ reach: 320, reactions: 12 });
+  expect(result.linkedin?.stats).toEqual({ impressions: 540, reactions: 3 });
+});
+
+test('returns empty stats when the latest snapshot has no numbers collected yet', () => {
+  const raw = {
+    day: 165,
+    facebook: {
+      published_at: '2026-06-14T16:39:40.676Z',
+      post_url: 'https://www.facebook.com/permalink/2',
+      latest: { reactions: null, comments: null, shares: null, reach: null, saves: null, views: null, collected_at: null },
+    },
+  };
+  const result = parseManifest(raw);
+  expect(result.facebook?.stats).toEqual({});
+});
+
+test('prefers the current latest snapshot over a legacy stats block when both are present', () => {
+  const raw = {
+    day: 100,
+    threads: {
+      published_at: '2026-04-10T17:32:54.291Z',
+      post_url: 'https://x',
+      stats: { views: 11 },
+      latest: { views: 9000 },
+    },
+  };
+  const result = parseManifest(raw);
+  expect(result.threads?.stats.views).toBe(9000);
+});
