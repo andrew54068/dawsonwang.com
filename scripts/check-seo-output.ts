@@ -273,6 +273,32 @@ function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+function assertVisibleBreadcrumbNav(
+  haystack: string,
+  label: string,
+  items: Array<{ label: string; href?: string }>,
+) {
+  assertCountEquals(countMatches(haystack, /<nav aria-label="Breadcrumb"/g), 1, `${label} visible breadcrumb nav count`);
+  assertMatch(haystack, /<nav aria-label="Breadcrumb"[\s\S]*?<ol[\s\S]*?<\/ol>[\s\S]*?<\/nav>/, `${label} visible breadcrumb nav structure`);
+
+  for (const item of items) {
+    const escapedLabel = escapeHtml(item.label);
+    if (item.href) {
+      assertMatch(
+        haystack,
+        new RegExp(`<a href="${escapeRegExp(item.href)}"[^>]*>\\s*${escapeRegExp(escapedLabel)}\\s*<\\/a>`),
+        `${label} visible breadcrumb link ${item.href}`,
+      );
+    } else {
+      assertMatch(
+        haystack,
+        new RegExp(`<span aria-current="page"[^>]*>\\s*${escapeRegExp(escapedLabel)}\\s*<\\/span>`),
+        `${label} visible breadcrumb current ${item.label}`,
+      );
+    }
+  }
+}
+
 function assertSitemapEntry(xml: string, routePath: string, priority: string, changefreq: string, lastmod?: string) {
   const loc = escapeRegExp(`${siteUrl}${routePath}`);
   const lastmodPattern = lastmod
@@ -438,6 +464,10 @@ if (!existsSync(outDir)) {
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, '/days CollectionPage+ItemList JSON-LD');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/days BreadcrumbList JSON-LD');
   assertMatch(allPostsJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
+  assertVisibleBreadcrumbNav(allPosts, '/days', [
+    { label: 'Home', href: '/' },
+    { label: 'Days' },
+  ]);
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(allPostsJsonLd, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
   assertMatch(allPostsJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
@@ -467,6 +497,10 @@ if (!existsSync(outDir)) {
   assertJsonLdInLanguage(search, 'SearchResultsPage', '/search');
   assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
   assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
+  assertVisibleBreadcrumbNav(search, '/search', [
+    { label: 'Home', href: '/' },
+    { label: 'Search' },
+  ]);
   // BreadcrumbList @id + SearchResultsPage → BreadcrumbList graph link (issue #68).
   assertIncludes(search, `"@id":"${siteUrl}/search#breadcrumb"`, '/search BreadcrumbList @id');
   assertMatch(search, new RegExp(`"@type":"SearchResultsPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/search#breadcrumb"\\}`), '/search SearchResultsPage breadcrumb → #breadcrumb graph link');
@@ -502,6 +536,11 @@ if (!existsSync(outDir)) {
     if (/<meta property="article:modified_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:modified_time is an empty string`);
     assertRootEntityGraph(dayJsonLd, label);
     assertDayArticleOwnershipTrustCluster(dayHtml, day.number, label);
+    assertVisibleBreadcrumbNav(dayHtml, label, [
+      { label: 'Home', href: '/' },
+      { label: 'Days', href: '/days' },
+      { label: `Day ${day.number}` },
+    ]);
   }
   note(`day Article ownership/trust cluster asserted across ${generatedDayPages.length} generated pages`);
 
@@ -602,6 +641,10 @@ if (!existsSync(outDir)) {
   const topicsIndexJsonLd = extractJsonLdScript(topicsIndex, '/topics');
   assertRootEntityGraph(topicsIndexJsonLd, '/topics');
   assertMatch(topicsIndexJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${activeTopics.length}\\b`), '/topics ItemList numberOfItems matches active topic source of truth');
+  assertVisibleBreadcrumbNav(topicsIndex, '/topics', [
+    { label: 'Home', href: '/' },
+    { label: 'Topics' },
+  ]);
   // Count absolute topic URLs inside the extracted JSON-LD rather than the full HTML: topic cards render
   // the same links visibly, so whole-document matches can go false-green if the ItemList drifts.
   const topicsIndexItemListUrlCount = countMatches(topicsIndexJsonLd, /"url":"https:\/\/dawsonwang\.com\/topics\/[^"]+"/g);
@@ -637,6 +680,11 @@ if (!existsSync(outDir)) {
     const topicPageJsonLd = extractJsonLdScript(topicHtml, label);
     assertRootEntityGraph(topicPageJsonLd, label);
     assertMatch(topicPageJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${expectedTopicDayCount}\\b`), `${label} ItemList numberOfItems matches tagged day count`);
+    assertVisibleBreadcrumbNav(topicHtml, label, [
+      { label: 'Home', href: '/' },
+      { label: 'Topics', href: '/topics' },
+      { label: topic.title },
+    ]);
     const topicItemListDayUrlCount = countMatches(topicPageJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
     assertCountEquals(topicItemListDayUrlCount, expectedTopicDayCount, `${label} ItemList absolute day URL`);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
@@ -724,6 +772,10 @@ if (!existsSync(outDir)) {
   const proofJsonLd = extractJsonLdScript(proof, '/proof');
   assertRootEntityGraph(proofJsonLd, '/proof');
   assertIncludes(proofJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
+  assertVisibleBreadcrumbNav(proof, '/proof', [
+    { label: 'Home', href: '/' },
+    { label: 'Proof' },
+  ]);
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(proofJsonLd, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
   assertMatch(proofJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/proof#breadcrumb"\\}`), '/proof CollectionPage breadcrumb → #breadcrumb graph link');
@@ -766,6 +818,7 @@ if (!existsSync(outDir)) {
   assertDefaultSocialCardStack(inquiry, '/inquiry-received');
   assertIncludes(inquiry, '<meta name="robots" content="noindex, nofollow"', '/inquiry-received noindex meta robots');
   assertOmitsRootEntityGraph(inquiry, '/inquiry-received');
+  if (/<nav aria-label="Breadcrumb"/.test(inquiry)) fail('/inquiry-received should omit visible breadcrumb nav');
   if (inquiry.includes('content="index, follow')) fail('/inquiry-received leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap probe: /inquiry-received must NOT appear in sitemap.xml or llms.txt.
   if (sitemap.includes(`${siteUrl}/inquiry-received`)) fail('sitemap.xml leaks /inquiry-received (should be excluded)');
@@ -781,6 +834,7 @@ if (!existsSync(outDir)) {
   assertDefaultSocialCardStack(notFound, '/404');
   assertIncludes(notFound, '<meta name="robots" content="noindex, nofollow"', '/404 noindex meta robots');
   assertOmitsRootEntityGraph(notFound, '/404');
+  if (/<nav aria-label="Breadcrumb"/.test(notFound)) fail('/404 should omit visible breadcrumb nav');
   if (notFound.includes('content="index, follow')) fail('/404 leaks index,follow robots directive (should be noindex,nofollow)');
   // Negative-sitemap/llms probe: /404 must NOT appear in sitemap.xml or llms.txt.
   if (sitemap.includes(`${siteUrl}/404`)) fail('sitemap.xml leaks /404 (should be excluded)');
