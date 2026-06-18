@@ -470,6 +470,9 @@ if (!existsSync(outDir)) {
   // BreadcrumbList @id + SearchResultsPage → BreadcrumbList graph link (issue #68).
   assertIncludes(search, `"@id":"${siteUrl}/search#breadcrumb"`, '/search BreadcrumbList @id');
   assertMatch(search, new RegExp(`"@type":"SearchResultsPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/search#breadcrumb"\\}`), '/search SearchResultsPage breadcrumb → #breadcrumb graph link');
+  assertIncludes(search, 'id="search-fallback-index"', '/search fallback index script');
+  assertIncludes(search, '黑客松', '/search fallback index ships reported CJK term');
+  assertIncludes(search, '用不完的訂閱額度拿去舉辦黑客松', '/search fallback index ships reported article title');
 
   if (generatedDayPages.length !== days.length) {
     const missing = days
