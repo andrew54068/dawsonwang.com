@@ -40,6 +40,7 @@ test('client email gate agrees with the server schema on every case', () => {
     'a@b.c.d', // trailing single-char TLD
     'A@B.CO', // uppercase
     'a@b.toolongbutfine',
+    `${'a'.repeat(250)}@example.com`, // 262 chars: pattern-valid but over the length cap
   ];
   for (const email of cases) {
     expect(
@@ -47,6 +48,14 @@ test('client email gate agrees with the server schema on every case', () => {
       `client/server disagree on ${JSON.stringify(email)}`,
     ).toBe(serverAccepts(email));
   }
+});
+
+test('rejects a pattern-valid address that exceeds the length cap, on both sides', () => {
+  // RFC 5321 caps addresses at 254 chars; the regex alone would accept this.
+  const tooLong = `${'a'.repeat(250)}@example.com`;
+  expect(tooLong.length).toBeGreaterThan(254);
+  expect(isValidInquiryEmail(tooLong)).toBe(false);
+  expect(serverAccepts(tooLong)).toBe(false);
 });
 
 test('rejects the single-character TLD from the original report', () => {

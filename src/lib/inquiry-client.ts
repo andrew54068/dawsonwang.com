@@ -1,4 +1,4 @@
-import { EMAIL_PATTERN } from './email-pattern';
+import { EMAIL_PATTERN, EMAIL_MAX_LENGTH } from './email-pattern';
 
 // Decision logic for the inquiry form's client script, kept DOM-free so it can
 // be unit-tested in the node test environment (the rest of the form is thin DOM
@@ -8,12 +8,14 @@ import { EMAIL_PATTERN } from './email-pattern';
 
 /**
  * Whether an email passes the same rule the server enforces (InquirySchema).
- * Trims first because the server schema also trims before validating — so the
+ * Trims first, then checks both length and pattern — mirroring the server's
+ * `z.string().trim().pipe(z.email({ pattern }).max(EMAIL_MAX_LENGTH))` — so the
  * client gate and the server stay in agreement and a valid address never slips
  * past the button only to be rejected by the API.
  */
 export function isValidInquiryEmail(value: string): boolean {
-  return EMAIL_PATTERN.test(value.trim());
+  const email = value.trim();
+  return email.length <= EMAIL_MAX_LENGTH && EMAIL_PATTERN.test(email);
 }
 
 /** The subset of a fetch Response we need to decide the UI outcome. */

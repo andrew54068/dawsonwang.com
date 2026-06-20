@@ -10,3 +10,8 @@
 // this — notably a TLD of 2+ characters.
 export const EMAIL_PATTERN =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
+
+// RFC 5321's address length cap. Shared so the client gate and the server schema
+// enforce the same length, not just the same pattern — otherwise a pattern-valid
+// but over-long address passes the button and is rejected by the API.
+export const EMAIL_MAX_LENGTH = 254;
