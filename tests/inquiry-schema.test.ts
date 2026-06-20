@@ -20,6 +20,19 @@ test('rejects missing email', () => {
   expect(() => InquirySchema.parse({ ...valid, email: '' })).toThrow();
 });
 
+test('rejects a single-character TLD (the original a@b.c report)', () => {
+  // No real address has a one-letter TLD; this is the exact value that produced
+  // the "Invalid payload" response and must stay rejected.
+  expect(() => InquirySchema.parse({ ...valid, email: 'a@b.c' })).toThrow();
+});
+
+test('trims surrounding whitespace from email before validating and storing', () => {
+  // A pasted address with stray spaces must validate (so it can't pass the
+  // client gate yet fail here) and be stored trimmed.
+  const result = InquirySchema.parse({ ...valid, email: '  mr.wang@example.com  ' });
+  expect(result.email).toBe('mr.wang@example.com');
+});
+
 test('rejects invalid budget', () => {
   expect(() => InquirySchema.parse({ ...valid, budget: 'free_money' })).toThrow();
 });

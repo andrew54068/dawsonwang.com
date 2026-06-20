@@ -44,5 +44,6 @@ public/content/
 public/search/
 .cache/
 
-# Claude Code worktrees (local-only branch sandboxes)
+# Claude Code local-only tooling (branch sandboxes, bullpen workflow symlinks)
 .claude/worktrees/
+.claude/workflows/
