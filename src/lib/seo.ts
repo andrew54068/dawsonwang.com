@@ -2,7 +2,13 @@ import { PERSON_SAME_AS_URLS, PERSON_X_HANDLE, PERSON_X_URL } from '../data/prof
 
 const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_URL]));
 
-export const SITE_URL = 'https://dawsonwang.com';
+// Canonical served host = www. Vercel currently treats www as the primary
+// domain and redirects apex → www. Every metadata surface (canonical, og:url,
+// og:image, sitemap, llms.txt, robots.txt, rss.xml, JSON-LD @id graph) reads
+// from this constant, so this is the single source of truth for the host.
+// Live-detection + fix recipe: website-seo-optimization skill,
+// `references/canonical-host-strategy.md`.
+export const SITE_URL = 'https://www.dawsonwang.com';
 export const SITE_NAME = 'Dawson Wang';
 export const SITE_LOCALE = 'zh_TW';
 export const SITE_LANGUAGE = 'zh-Hant-TW';

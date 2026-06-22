@@ -14,7 +14,7 @@ const outDir = candidateSiteDirs
   .map(dir => path.resolve(root, dir))
   .find(dir => existsSync(path.join(dir, 'index.html')))
   ?? path.resolve(root, configuredSiteDir ?? 'dist');
-const siteUrl = 'https://dawsonwang.com';
+const siteUrl = 'https://www.dawsonwang.com';
 const siteLanguage = 'zh-Hant-TW';
 const siteLocale = 'zh_TW';
 const defaultOgImageUrl = `${siteUrl}/og-default.png`;
@@ -211,7 +211,7 @@ function assertRootEntityGraph(jsonLd: string, label: string) {
   assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"publisher":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite publisher → #person graph link`);
   assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"mainEntity":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite mainEntity → #person graph link`);
   assertMatch(jsonLd, new RegExp(`"@type":"WebSite"[\\s\\S]*?"copyrightHolder":\\{"@id":"${siteUrl}/#person"\\}`), `${label} WebSite copyrightHolder → #person graph link`);
-  assertMatch(jsonLd, /"@type":"WebSite"[\s\S]*?"potentialAction":\{"@type":"SearchAction","target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}","query-input":"required name=search_term_string"\}/, `${label} WebSite SearchAction`);
+  assertMatch(jsonLd, /"@type":"WebSite"[\s\S]*?"potentialAction":\{"@type":"SearchAction","target":"https:\/\/www\.dawsonwang\.com\/search\?q=\{search_term_string\}","query-input":"required name=search_term_string"\}/, `${label} WebSite SearchAction`);
 }
 
 function assertOmitsRootEntityGraph(haystack: string, label: string) {
@@ -357,11 +357,11 @@ if (!existsSync(outDir)) {
     assertMatch(home, new RegExp(`"@type":"Person"[\\s\\S]*?"sameAs":\\[[^\\]]*"${escaped}"`), `home Person sameAs contains ${profileUrl}`);
   }
   assertMatch(home, /"@type":"WebSite"[^}]*"description":"/, 'home WebSite description');
-  assertMatch(home, /"@type":"WebSite"[\s\S]*?"potentialAction":\{"@type":"SearchAction","target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}","query-input":"required name=search_term_string"\}/, 'home WebSite SearchAction');
+  assertMatch(home, /"@type":"WebSite"[\s\S]*?"potentialAction":\{"@type":"SearchAction","target":"https:\/\/www\.dawsonwang\.com\/search\?q=\{search_term_string\}","query-input":"required name=search_term_string"\}/, 'home WebSite SearchAction');
   // Bidirectional Person ↔ WebSite root-graph links (PR/issue #55 — root-graph enrichment).
-  assertMatch(home, /"@type":"Person"[\s\S]*?"mainEntityOfPage":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, 'home Person mainEntityOfPage → #website graph link');
-  assertMatch(home, /"@type":"WebSite"[\s\S]*?"mainEntity":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home WebSite mainEntity → #person graph link');
-  assertMatch(home, /"@type":"WebSite"[\s\S]*?"copyrightHolder":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home WebSite copyrightHolder → #person graph link');
+  assertMatch(home, /"@type":"Person"[\s\S]*?"mainEntityOfPage":\{"@id":"https:\/\/www\.dawsonwang\.com\/#website"\}/, 'home Person mainEntityOfPage → #website graph link');
+  assertMatch(home, /"@type":"WebSite"[\s\S]*?"mainEntity":\{"@id":"https:\/\/www\.dawsonwang\.com\/#person"\}/, 'home WebSite mainEntity → #person graph link');
+  assertMatch(home, /"@type":"WebSite"[\s\S]*?"copyrightHolder":\{"@id":"https:\/\/www\.dawsonwang\.com\/#person"\}/, 'home WebSite copyrightHolder → #person graph link');
   // ProfessionalService OfferCatalog enrichment: mirrors src/data/services.ts (3 tier services).
   assertMatch(home, /"@type":"ProfessionalService"[\s\S]*?"hasOfferCatalog":\{[\s\S]*?"@type":"OfferCatalog"/, 'home ProfessionalService hasOfferCatalog');
   // Graph links back to the root WebSite node so the ProfessionalService + its OfferCatalog are not orphan nodes.
@@ -374,8 +374,8 @@ if (!existsSync(outDir)) {
   assertIncludes(home, `"@id":"${siteUrl}/#ai-workflow-service-catalog"`, 'home OfferCatalog @id');
   const homeOfferCount = countMatches(homeJsonLd, /"@type":"Offer","position":\d+/g);
   assertCountEquals(homeOfferCount, SERVICES.length, 'home OfferCatalog Offer count matches SERVICES.length');
-  assertMatch(home, /"@type":"Offer"[\s\S]*?"itemOffered":\{"@type":"Service"[\s\S]*?"provider":\{"@id":"https:\/\/dawsonwang\.com\/#person"\}/, 'home Offer.itemOffered Service.provider -> #person graph link');
-  assertMatch(home, /"@type":"Offer"[^}]*"url":"https:\/\/dawsonwang\.com\/#inquire"/, 'home Offer.url absolute -> #inquire');
+  assertMatch(home, /"@type":"Offer"[\s\S]*?"itemOffered":\{"@type":"Service"[\s\S]*?"provider":\{"@id":"https:\/\/www\.dawsonwang\.com\/#person"\}/, 'home Offer.itemOffered Service.provider -> #person graph link');
+  assertMatch(home, /"@type":"Offer"[^}]*"url":"https:\/\/www\.dawsonwang\.com\/#inquire"/, 'home Offer.url absolute -> #inquire');
   for (const service of SERVICES) {
     const escapedTitle = escapeJsonString(service.title);
     const escapedDescription = escapeJsonString(service.blurb);
@@ -433,11 +433,11 @@ if (!existsSync(outDir)) {
   if (allPostsDayLinks < days.length) fail(`All posts page links only ${allPostsDayLinks}/${days.length} day pages`);
   // Count absolute ItemList day URLs inside the extracted JSON-LD instead of the full HTML:
   // the rendered card list also links every day page, so a broken ItemList payload could hide behind visible copy.
-  const allPostsJsonLdDayUrlCount = countMatches(allPostsJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
+  const allPostsJsonLdDayUrlCount = countMatches(allPostsJsonLd, /"url":"https:\/\/www\.dawsonwang\.com\/day\/\d+"/g);
   assertCountEquals(allPostsJsonLdDayUrlCount, generatedDayPages.length, '/days ItemList absolute day URL');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, '/days CollectionPage+ItemList JSON-LD');
   assertMatch(allPosts, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/days BreadcrumbList JSON-LD');
-  assertMatch(allPostsJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
+  assertMatch(allPostsJsonLd, /"url":"https:\/\/www\.dawsonwang\.com\/day\/\d+"/, '/days ItemList contains absolute day URLs');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(allPostsJsonLd, `"@id":"${siteUrl}/days#breadcrumb"`, '/days BreadcrumbList @id');
   assertMatch(allPostsJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/days#breadcrumb"\\}`), '/days CollectionPage breadcrumb → #breadcrumb graph link');
@@ -466,7 +466,7 @@ if (!existsSync(outDir)) {
   assertRootEntityGraph(searchJsonLd, '/search');
   assertJsonLdInLanguage(search, 'SearchResultsPage', '/search');
   assertIncludes(search, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/search JSON-LD isPartOf #website graph link');
-  assertMatch(search, /"target":"https:\/\/dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
+  assertMatch(search, /"target":"https:\/\/www\.dawsonwang\.com\/search\?q=\{search_term_string\}"/, '/search SearchAction target');
   // BreadcrumbList @id + SearchResultsPage → BreadcrumbList graph link (issue #68).
   assertIncludes(search, `"@id":"${siteUrl}/search#breadcrumb"`, '/search BreadcrumbList @id');
   assertMatch(search, new RegExp(`"@type":"SearchResultsPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/search#breadcrumb"\\}`), '/search SearchResultsPage breadcrumb → #breadcrumb graph link');
@@ -523,7 +523,7 @@ if (!existsSync(outDir)) {
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
     // image promoted to typed ImageObject with declared dimensions (large-image rich-result eligibility).
     // Primary image is always the og-default fallback (1200x630) so dimensions are stable across days.
-    assertMatch(dayHtml, /"image":(\[\{|\{)"@type":"ImageObject","url":"https:\/\/dawsonwang\.com\/og-default\.png","width":1200,"height":630/, `day ${latestDay} Article image ImageObject`);
+    assertMatch(dayHtml, /"image":(\[\{|\{)"@type":"ImageObject","url":"https:\/\/www\.dawsonwang\.com\/og-default\.png","width":1200,"height":630/, `day ${latestDay} Article image ImageObject`);
     // Latest-day pages may legitimately omit article dates when the source day has no publish timestamp.
     if (latestDayPublishedAt) {
       assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
@@ -580,7 +580,7 @@ if (!existsSync(outDir)) {
       );
     }
     assertMatch(dayHtml, /<meta property="article:tag" content="[^"]+"/, `day ${latestDayWithTopics} article:tag`);
-    assertMatch(dayHtml, /"about":\[\{"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"\}/, `day ${latestDayWithTopics} Article about → DefinedTerm graph link`);
+    assertMatch(dayHtml, /"about":\[\{"@id":"https:\/\/www\.dawsonwang\.com\/topics\/[^"]+#term"\}/, `day ${latestDayWithTopics} Article about → DefinedTerm graph link`);
     note(`articleSection, article:tag, and Article about asserted on day ${latestDayWithTopics}`);
   } else {
     note('no day with topics found; articleSection, article:tag, and Article about probes skipped');
@@ -604,20 +604,20 @@ if (!existsSync(outDir)) {
   assertMatch(topicsIndexJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${activeTopics.length}\\b`), '/topics ItemList numberOfItems matches active topic source of truth');
   // Count absolute topic URLs inside the extracted JSON-LD rather than the full HTML: topic cards render
   // the same links visibly, so whole-document matches can go false-green if the ItemList drifts.
-  const topicsIndexItemListUrlCount = countMatches(topicsIndexJsonLd, /"url":"https:\/\/dawsonwang\.com\/topics\/[^"]+"/g);
+  const topicsIndexItemListUrlCount = countMatches(topicsIndexJsonLd, /"url":"https:\/\/www\.dawsonwang\.com\/topics\/[^"]+"/g);
   assertCountEquals(topicsIndexItemListUrlCount, activeTopics.length, '/topics ItemList absolute topic URL');
   // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
   assertIncludes(topicsIndexJsonLd, `"@id":"${siteUrl}/topics#breadcrumb"`, '/topics BreadcrumbList @id');
   assertMatch(topicsIndexJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/topics#breadcrumb"\\}`), '/topics CollectionPage breadcrumb → #breadcrumb graph link');
   // DefinedTermSet hub: models topics as a controlled vocabulary, with isPartOf graph link up to #website
   // and one hasDefinedTerm reference per active-topic entry (generated from src/data/topics.ts — no literal slugs in JSON-LD source).
-  assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
-  assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"isPartOf":\{"@id":"https:\/\/dawsonwang\.com\/#website"\}/, '/topics DefinedTermSet isPartOf → #website graph link');
+  assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"@id":"https:\/\/www\.dawsonwang\.com\/topics#topic-taxonomy"/, '/topics DefinedTermSet @id');
+  assertMatch(topicsIndexJsonLd, /"@type":"DefinedTermSet"[\s\S]*?"isPartOf":\{"@id":"https:\/\/www\.dawsonwang\.com\/#website"\}/, '/topics DefinedTermSet isPartOf → #website graph link');
   for (const topic of activeTopics) {
     assertIncludes(topicsIndexJsonLd, `{"@id":"${siteUrl}/topics/${topic.slug}#term"}`, `/topics DefinedTermSet hasDefinedTerm → ${topic.slug}#term graph link`);
   }
   // Count guard: future active-topic growth ships green automatically without a literal-number edit.
-  const taxonomyTermRefCount = countMatches(topicsIndexJsonLd, /"@id":"https:\/\/dawsonwang\.com\/topics\/[^"]+#term"/g);
+  const taxonomyTermRefCount = countMatches(topicsIndexJsonLd, /"@id":"https:\/\/www\.dawsonwang\.com\/topics\/[^"]+#term"/g);
   if (taxonomyTermRefCount !== activeTopics.length) fail(`/topics DefinedTermSet term-ref count ${taxonomyTermRefCount} !== active topic count ${activeTopics.length}`);
   for (const topic of activeTopics) {
     const label = `topic ${topic.slug}`;
@@ -637,10 +637,10 @@ if (!existsSync(outDir)) {
     const topicPageJsonLd = extractJsonLdScript(topicHtml, label);
     assertRootEntityGraph(topicPageJsonLd, label);
     assertMatch(topicPageJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${expectedTopicDayCount}\\b`), `${label} ItemList numberOfItems matches tagged day count`);
-    const topicItemListDayUrlCount = countMatches(topicPageJsonLd, /"url":"https:\/\/dawsonwang\.com\/day\/\d+"/g);
+    const topicItemListDayUrlCount = countMatches(topicPageJsonLd, /"url":"https:\/\/www\.dawsonwang\.com\/day\/\d+"/g);
     assertCountEquals(topicItemListDayUrlCount, expectedTopicDayCount, `${label} ItemList absolute day URL`);
     // Back-link from per-topic DefinedTerm → taxonomy hub on /topics (closes the topic-graph subgraph-orphan).
-    assertMatch(topicPageJsonLd, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
+    assertMatch(topicPageJsonLd, /"@type":"DefinedTerm"[\s\S]*?"inDefinedTermSet":\{"@id":"https:\/\/www\.dawsonwang\.com\/topics#topic-taxonomy"\}/, `${label} DefinedTerm inDefinedTermSet → #topic-taxonomy back-link`);
     // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68) — wrapped in the TOPICS loop so future
     // topic growth ships green automatically (same pattern as the DefinedTermSet ref-count guard).
     assertIncludes(topicPageJsonLd, `"@id":"${siteUrl}/topics/${topic.slug}#breadcrumb"`, `${label} BreadcrumbList @id`);
@@ -661,7 +661,7 @@ if (!existsSync(outDir)) {
   for (const topic of activeTopics) {
     assertIncludes(sitemap, `<loc>${siteUrl}/topics/${topic.slug}</loc>`, 'sitemap');
   }
-  const sitemapTopicCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/topics\/[^<]+<\/loc>/g)).length;
+  const sitemapTopicCount = Array.from(sitemap.matchAll(/<loc>https:\/\/www\.dawsonwang\.com\/topics\/[^<]+<\/loc>/g)).length;
   if (sitemapTopicCount !== activeTopics.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${activeTopics.length}`);
   assertIncludes(sitemap, `<loc>${siteUrl}/search</loc>`, 'sitemap');
   if (latestPublishedAt) {
@@ -686,7 +686,7 @@ if (!existsSync(outDir)) {
   for (const day of days) {
     assertSitemapEntry(sitemap, `/day/${day.number}`, '0.8', 'monthly', dayPublishedAtByNumber.get(day.number));
   }
-  const sitemapDayCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/day\/\d+<\/loc>/g)).length;
+  const sitemapDayCount = Array.from(sitemap.matchAll(/<loc>https:\/\/www\.dawsonwang\.com\/day\/\d+<\/loc>/g)).length;
   if (sitemapDayCount !== days.length) fail(`Sitemap day URL count mismatch: ${sitemapDayCount}/${days.length}`);
 
   const robots = readGenerated('robots.txt');
@@ -748,11 +748,11 @@ if (!existsSync(outDir)) {
   const rss = readGenerated('rss.xml');
   assertIncludes(rss, '<rss version="2.0"', 'rss.xml');
   assertIncludes(rss, 'xmlns:atom="http://www.w3.org/2005/Atom"', 'rss.xml atom namespace');
-  assertMatch(rss, /<atom:link[^>]+href="https:\/\/dawsonwang\.com\/rss\.xml"[^>]+rel="self"/, 'rss.xml atom:link self');
+  assertMatch(rss, /<atom:link[^>]+href="https:\/\/www\.dawsonwang\.com\/rss\.xml"[^>]+rel="self"/, 'rss.xml atom:link self');
   assertIncludes(rss, '<channel>', 'rss.xml channel');
   assertIncludes(rss, `<link>${siteUrl}/</link>`, 'rss.xml channel link');
   assertIncludes(rss, '<language>zh-Hant-TW</language>', 'rss.xml language');
-  assertMatch(rss, /<item>[\s\S]*?<link>https:\/\/dawsonwang\.com\/day\/\d+<\/link>/, 'rss.xml item with absolute day link');
+  assertMatch(rss, new RegExp(`<item>[\\s\\S]*?<link>${escapeRegExp(siteUrl)}\\/day\\/\\d+<\\/link>`), 'rss.xml item with absolute day link');
   if (latestDay) assertIncludes(rss, `<link>${siteUrl}/day/${latestDay}</link>`, 'rss.xml latest day');
 
   // /inquiry-received thank-you page is noindexed via BaseLayout `noindex` prop.
@@ -792,6 +792,58 @@ if (!existsSync(outDir)) {
   // Guard against an accidental global flip: indexable pages must still emit index,follow.
   assertIncludes(home, 'content="index, follow', 'home robots index,follow (regression guard)');
   assertIncludes(search, 'content="index, follow', '/search robots index,follow (regression guard)');
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Canonical-host purity ratchet (issue #160).
+  //
+  // Every metadata surface flows from `SITE_URL` in src/lib/seo.ts, but a
+  // hardcoded apex literal that slips into a generated artifact (sitemap loc,
+  // llms.txt link, robots Sitemap: directive, JSON-LD absolute URL) would
+  // recreate the "canonical declared at a host that 307s to the served host"
+  // defect. These four assertions fail loudly if the wrong host shows up in
+  // any of those surfaces. Live-detection + fix recipe: website-seo-optimization
+  // skill, `references/canonical-host-strategy.md`.
+  // ─────────────────────────────────────────────────────────────────────────
+  const expectedHost = new URL(siteUrl).host;
+
+  // 1. Every sitemap <loc> uses the canonical host.
+  const sitemapLocHosts = new Set(
+    Array.from(sitemap.matchAll(/<loc>https?:\/\/([^/<]+)/g)).map(m => m[1])
+  );
+  for (const host of sitemapLocHosts) {
+    if (host !== expectedHost) fail(`sitemap.xml leaks foreign host ${host} (expected ${expectedHost})`);
+  }
+  if (sitemapLocHosts.size === 0) fail('sitemap.xml has no <loc> entries to verify host purity');
+
+  // 2. Every llms.txt link uses the canonical host (schema.org excepted).
+  const llmsLinkHosts = new Set(
+    Array.from(llms.matchAll(/https?:\/\/([^/) "]+)/g)).map(m => m[1])
+  );
+  for (const host of llmsLinkHosts) {
+    if (host.endsWith('schema.org')) continue;
+    if (host !== expectedHost) fail(`llms.txt leaks foreign host ${host} (expected ${expectedHost})`);
+  }
+  if (llmsLinkHosts.size === 0) fail('llms.txt has no absolute links to verify host purity');
+
+  // 3. robots.txt Sitemap: directive points at the canonical host.
+  assertMatch(
+    robots,
+    new RegExp(`^Sitemap:\\s+${escapeRegExp(siteUrl)}/sitemap\\.xml\\s*$`, 'm'),
+    'robots.txt Sitemap directive uses canonical host',
+  );
+  // robots.txt must not contain any other dawsonwang host.
+  for (const m of robots.matchAll(/https?:\/\/([^/\s]+)/g)) {
+    if (m[1] !== expectedHost) fail(`robots.txt leaks foreign host ${m[1]} (expected ${expectedHost})`);
+  }
+
+  // 4. Every absolute dawsonwang.com URL in the home JSON-LD graph uses the
+  //    canonical host (schema.org refs are fine; PERSON_SAME_AS_URLS may use
+  //    other hosts like github.com / x.com which we leave alone).
+  for (const m of homeJsonLd.matchAll(/"(https?:\/\/(?:www\.)?dawsonwang\.com[^"]*)"/g)) {
+    const url = m[1];
+    const host = new URL(url).host;
+    if (host !== expectedHost) fail(`home JSON-LD leaks foreign dawsonwang host ${host} in ${url} (expected ${expectedHost})`);
+  }
 }
 
 for (const line of notes) console.log(`✓ ${line}`);
