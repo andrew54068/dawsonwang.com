@@ -502,8 +502,42 @@ if (!existsSync(outDir)) {
     if (/<meta property="article:modified_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:modified_time is an empty string`);
     assertRootEntityGraph(dayJsonLd, label);
     assertDayArticleOwnershipTrustCluster(dayHtml, day.number, label);
+    // Issue #162: social-card aspect-ratio guard. `twitter:card=summary_large_image`
+    // requires a 2:1 image; 1:1 square slide covers degrade the card. Assert that
+    // every generated day page declares `og:image:width` / `og:image:height` whose
+    // ratio lands in [1.85, 2.05] — covers Facebook's 1.91:1 OG recommendation and
+    // Twitter's 2:1 hard requirement. Reading from the rendered meta values (not the
+    // file on disk) catches the silent-regression class where a future code change
+    // re-routes a square image through og:image with mismatched declared dimensions.
+    const ogWidthMatch = dayHtml.match(/<meta property="og:image:width" content="(\d+)"/);
+    const ogHeightMatch = dayHtml.match(/<meta property="og:image:height" content="(\d+)"/);
+    if (!ogWidthMatch || !ogHeightMatch) {
+      fail(`${label} missing og:image:width or og:image:height meta`);
+    } else {
+      const ogWidth = Number(ogWidthMatch[1]);
+      const ogHeight = Number(ogHeightMatch[1]);
+      if (!Number.isFinite(ogWidth) || !Number.isFinite(ogHeight) || ogHeight === 0) {
+        fail(`${label} og:image dimensions unparseable: ${ogWidthMatch[1]} x ${ogHeightMatch[1]}`);
+      } else {
+        const ratio = ogWidth / ogHeight;
+        if (ratio < 1.85 || ratio > 2.05) {
+          fail(`${label} og:image aspect ratio ${ratio.toFixed(3)} (${ogWidth}x${ogHeight}) outside [1.85, 2.05] required by twitter:card=summary_large_image`);
+        }
+      }
+    }
+    // Issue #162: og:image and twitter:image must continue to reference the SAME
+    // absolute URL (acceptance criterion 6) so the fallback path doesn't divide
+    // social-share previews across two assets.
+    const ogImageMatch = dayHtml.match(/<meta property="og:image" content="([^"]+)"/);
+    const twitterImageMatch = dayHtml.match(/<meta name="twitter:image" content="([^"]+)"/);
+    if (!ogImageMatch || !twitterImageMatch) {
+      fail(`${label} missing og:image or twitter:image meta`);
+    } else if (ogImageMatch[1] !== twitterImageMatch[1]) {
+      fail(`${label} og:image (${ogImageMatch[1]}) and twitter:image (${twitterImageMatch[1]}) diverged`);
+    }
   }
   note(`day Article ownership/trust cluster asserted across ${generatedDayPages.length} generated pages`);
+  note(`day og:image aspect ratio in [1.85, 2.05] asserted across ${generatedDayPages.length} generated pages`);
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
