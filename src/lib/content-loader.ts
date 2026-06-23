@@ -6,6 +6,7 @@ import { parseManifest, type ParsedManifest } from './parse-manifest';
 export interface DayEntry extends ParsedSource {
   manifest?: ParsedManifest;
   slideFiles: string[];           // Absolute paths to slide PNGs
+  shareFiles: string[];           // Absolute paths to share artifacts (MP4/GIF) in day root
   coverImage?: string;            // Absolute path to cover.png if present
   contentDir: string;             // Absolute path to content/dayNN/
 }
@@ -68,6 +69,17 @@ async function loadOne(dir: string): Promise<DayEntry | null> {
     // No slides directory — fine
   }
 
+  let shareFiles: string[] = [];
+  try {
+    const rootEntries = await fs.readdir(dir);
+    shareFiles = rootEntries
+      .filter(f => /\.(mp4|gif)$/i.test(f))
+      .sort()
+      .map(f => path.join(dir, f));
+  } catch {
+    // ignore
+  }
+
   let coverImage: string | undefined;
   for (const candidate of ['cover.png', 'cover.jpg', 'cover.webp']) {
     const p = path.join(dir, candidate);
@@ -80,5 +92,5 @@ async function loadOne(dir: string): Promise<DayEntry | null> {
     }
   }
 
-  return { ...parsed, manifest, slideFiles, coverImage, contentDir: dir };
+  return { ...parsed, manifest, slideFiles, shareFiles, coverImage, contentDir: dir };
 }

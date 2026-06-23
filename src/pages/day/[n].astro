@@ -24,6 +24,15 @@ const slides = day.data.slideFiles.map((p: string, i: number) => ({
   alt: `${slideAltBase} — 投影片 ${i + 1}`,
 }));
 
+const dayPad = String(day.data.dayNumber).padStart(2, '0');
+const shareFiles = (day.data.shareFiles as string[]).map((p: string) => ({
+  name: p.split('/').pop()!,
+  src: `/content/day${dayPad}/${p.split('/').pop()}`,
+  isVideo: /\.mp4$/i.test(p),
+}));
+const squareVideo = shareFiles.find(f => f.isVideo && f.name.includes('square'));
+const shareArtifact = squareVideo ?? shareFiles.find(f => f.isVideo) ?? shareFiles.find(f => !f.isVideo);
+
 const bodyHtml = renderMarkdown(day.data.body);
 const topicSlugs = topicsForDay(day.data.dayNumber);
 const topics = topicSlugs.map(s => ({ slug: s, title: topicBySlug(s)?.title ?? s, variant: chipVariantFor(s) }));
@@ -148,6 +157,18 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
         <Divider class="my-8" />
 
         {slides.length > 0 && <SlideCarousel slides={slides} />}
+
+        {shareArtifact && slides.length === 0 && (
+          <figure class="my-10">
+            <div class="font-mono text-[11px] tracking-[.08em] uppercase text-teal mb-3">SHARE</div>
+            <div class="relative aspect-square overflow-hidden border border-rule rounded-lg bg-surface-1">
+              {shareArtifact.isVideo
+                ? <video src={shareArtifact.src} autoplay loop muted playsinline class="w-full h-full object-contain" />
+                : <img src={shareArtifact.src} alt={slideAltBase} class="w-full h-full object-contain" />
+              }
+            </div>
+          </figure>
+        )}
 
         <div class="prose prose-invert max-w-none
                     prose-headings:font-display prose-headings:text-ink prose-headings:font-semibold prose-headings:tracking-tight

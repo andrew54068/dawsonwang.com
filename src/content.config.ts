@@ -19,6 +19,7 @@ const days = defineCollection({
     body: z.string(),
     contentDir: z.string(),
     slideFiles: z.array(z.string()),
+    shareFiles: z.array(z.string()),
     coverImage: z.string().optional(),
     manifest: z.any().optional(),
   }),
