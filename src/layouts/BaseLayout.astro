@@ -36,6 +36,14 @@ interface Props {
   articleAuthorUrl?: string;
   articleTags?: string[];
   noindex?: boolean;
+  // Page-specific extra fields merged into the shared `personJsonLd` node before
+  // it is emitted. Use this for page-only edges (e.g. the homepage's
+  // `worksFor: { '@id': '#ai-workflow-service' }`) so the graph keeps EXACTLY
+  // ONE Person node with `@id: #person`, instead of shipping a second "merge
+  // stub" that shares the same @id and produces a duplicate-@id collision in
+  // generated HTML. See website-seo-optimization skill — "audit home-only
+  // cross-node edges before fan-out" — and issue #164.
+  personExtras?: Record<string, unknown>;
 }
 
 const {
@@ -52,6 +60,7 @@ const {
   articleAuthorUrl,
   articleTags,
   noindex = false,
+  personExtras,
 } = Astro.props;
 const robotsContent = noindex
   ? 'noindex, nofollow'
@@ -71,7 +80,13 @@ const ogImageUrl = absoluteUrl(ogImage);
 // Emit the root Person + WebSite nodes on every indexable page so page-level JSON-LD
 // can resolve #person / #website in the generated HTML, but keep noindex utility routes
 // free of root entities.
-const baseStructuredData = noindex ? [] : [personJsonLd, websiteJsonLd];
+// `personExtras` (e.g. the homepage's `worksFor` edge to #ai-workflow-service) is
+// merged into the single root Person node BEFORE it ships, so the graph never
+// contains a second Person node sharing the same `@id`. See issue #164.
+const rootPersonJsonLd = personExtras && !noindex
+  ? { ...personJsonLd, ...personExtras }
+  : personJsonLd;
+const baseStructuredData = noindex ? [] : [rootPersonJsonLd, websiteJsonLd];
 const pageStructuredData = structuredData
   ? Array.isArray(structuredData) ? structuredData : [structuredData]
   : [];

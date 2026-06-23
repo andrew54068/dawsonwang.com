@@ -219,6 +219,43 @@ function assertOmitsRootEntityGraph(haystack: string, label: string) {
   if (/"@type":"WebSite"/.test(haystack)) fail(`${label} should omit root WebSite JSON-LD on noindex utility pages`);
 }
 
+// Issue #164: every JSON-LD `@id` in the page graph must identify a single
+// resource. Duplicate `@id` IRIs are an invalid graph (parsers handle them
+// inconsistently — some merge, some take "last wins" and silently drop fields
+// from the first occurrence). Extracts the first JSON-LD <script> block, parses
+// it, walks every top-level node, and asserts no `@id` repeats. Safe to call on
+// pages whose JSON-LD blob is a single object (wraps to single-node graph).
+function assertJsonLdGraphHasUniqueIds(haystack: string, label: string) {
+  const match = /<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/.exec(haystack);
+  if (!match) return; // utility pages with no JSON-LD (e.g. some noindex routes) trivially pass
+  let parsed: unknown;
+  try {
+    // Reverse the `<` -> `\u003c` HTML-safe escape that `jsonLd()` applies on emit.
+    parsed = JSON.parse(match[1].replace(/\\u003c/g, '<'));
+  } catch (err) {
+    fail(`${label} JSON-LD failed to parse: ${(err as Error).message}`);
+    return;
+  }
+  const nodes: unknown[] = Array.isArray(parsed)
+    ? parsed
+    : (parsed && typeof parsed === 'object' && Array.isArray((parsed as { '@graph'?: unknown[] })['@graph']))
+      ? (parsed as { '@graph': unknown[] })['@graph']
+      : [parsed];
+  const ids: string[] = [];
+  for (const node of nodes) {
+    if (node && typeof node === 'object' && typeof (node as { '@id'?: unknown })['@id'] === 'string') {
+      ids.push((node as { '@id': string })['@id']);
+    }
+  }
+  const seen = new Map<string, number>();
+  for (const id of ids) seen.set(id, (seen.get(id) ?? 0) + 1);
+  const dups = [...seen.entries()].filter(([, count]) => count > 1);
+  if (dups.length > 0) {
+    const detail = dups.map(([id, count]) => `${id} (×${count})`).join(', ');
+    fail(`${label} JSON-LD graph has duplicate @id nodes: ${detail}`);
+  }
+}
+
 function readPngDimensionsFromAssetUrl(assetUrl: string) {
   try {
     const { pathname } = new URL(assetUrl);
@@ -341,6 +378,7 @@ if (!existsSync(outDir)) {
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
+  assertJsonLdGraphHasUniqueIds(home, 'home');
   const homeJsonLd = extractJsonLdScript(home, 'home');
   assertRootEntityGraph(homeJsonLd, 'home');
   assertJsonLdInLanguage(home, 'WebSite', 'home');
@@ -414,6 +452,7 @@ if (!existsSync(outDir)) {
   }
 
   const allPosts = readGenerated('days/index.html');
+  assertJsonLdGraphHasUniqueIds(allPosts, '/days');
   assertTitleStack(allPosts, 'AI 工具落地文章索引 | Dawson Wang', 'all posts');
   assertIncludes(allPosts, `<link rel="canonical" href="${siteUrl}/days"`, 'all posts');
   assertCanonicalOgUrlParity(allPosts, 'all posts');
@@ -447,6 +486,7 @@ if (!existsSync(outDir)) {
   }
 
   const search = readGenerated('search/index.html');
+  assertJsonLdGraphHasUniqueIds(search, '/search');
   assertTitleStack(search, 'AI 工作流文章搜尋 | Dawson Wang', 'search');
   assertIncludes(search, `<link rel="canonical" href="${siteUrl}/search"`, 'search');
   assertCanonicalOgUrlParity(search, 'search');
@@ -485,6 +525,7 @@ if (!existsSync(outDir)) {
   for (const day of generatedDayPages) {
     const label = `day ${day.number}`;
     const dayHtml = readGenerated(`day/${day.number}/index.html`);
+    assertJsonLdGraphHasUniqueIds(dayHtml, label);
     const dayJsonLd = extractJsonLdScript(dayHtml, `${label} JSON-LD`);
     const headline = extractArticleHeadline(dayHtml, label);
     const expectedTitle = headline ? `${headline} | Dawson Wang` : '';
@@ -587,6 +628,7 @@ if (!existsSync(outDir)) {
   }
 
   const topicsIndex = readGenerated('topics/index.html');
+  assertJsonLdGraphHasUniqueIds(topicsIndex, '/topics');
   assertTitleStack(topicsIndex, 'AI 工具落地主題索引 | Dawson Wang', 'topics index');
   assertIncludes(topicsIndex, `<link rel="canonical" href="${siteUrl}/topics"`, 'topics index');
   assertCanonicalOgUrlParity(topicsIndex, 'topics index');
@@ -622,6 +664,7 @@ if (!existsSync(outDir)) {
   for (const topic of activeTopics) {
     const label = `topic ${topic.slug}`;
     const topicHtml = readGenerated(`topics/${topic.slug}/index.html`);
+    assertJsonLdGraphHasUniqueIds(topicHtml, label);
     const expectedTopicDayCount = topicDayCountBySlug.get(topic.slug) ?? 0;
     assertTitleStack(topicHtml, `${topic.title} AI 實作文章 | Dawson Wang`, label);
     assertIncludes(topicHtml, `<link rel="canonical" href="${siteUrl}/topics/${topic.slug}"`, label);
@@ -710,6 +753,7 @@ if (!existsSync(outDir)) {
 
   // /proof portfolio page — CollectionPage + BreadcrumbList JSON-LD with #website graph link
   const proof = readGenerated('proof/index.html');
+  assertJsonLdGraphHasUniqueIds(proof, '/proof');
   assertTitleStack(proof, 'AI 工具落地案例與作品集 | Dawson Wang', '/proof');
   assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
   assertCanonicalOgUrlParity(proof, '/proof');
@@ -757,6 +801,7 @@ if (!existsSync(outDir)) {
 
   // /inquiry-received thank-you page is noindexed via BaseLayout `noindex` prop.
   const inquiry = readGenerated('inquiry-received/index.html');
+  assertJsonLdGraphHasUniqueIds(inquiry, '/inquiry-received');
   assertTitleStack(inquiry, '收到了 | Dawson Wang', '/inquiry-received');
   assertIncludes(inquiry, `<link rel="canonical" href="${siteUrl}/inquiry-received"`, '/inquiry-received canonical');
   assertCanonicalOgUrlParity(inquiry, '/inquiry-received');
@@ -772,6 +817,7 @@ if (!existsSync(outDir)) {
   if (llms.includes(`${siteUrl}/inquiry-received`)) fail('llms.txt leaks /inquiry-received (should be excluded)');
   // /404 custom error page is noindexed via BaseLayout `noindex` prop and must navigate back into the content graph.
   const notFound = readGenerated('404.html');
+  assertJsonLdGraphHasUniqueIds(notFound, '/404');
   assertTitleStack(notFound, '找不到頁面 | Dawson Wang', '/404');
   assertIncludes(notFound, `<link rel="canonical" href="${siteUrl}/404"`, '/404 canonical');
   assertCanonicalOgUrlParity(notFound, '/404');
