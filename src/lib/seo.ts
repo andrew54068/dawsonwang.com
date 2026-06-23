@@ -18,10 +18,46 @@ export function absoluteUrl(pathOrUrl = '/') {
   return new URL(pathOrUrl, SITE_URL).toString();
 }
 
+// Escape exactly the same five characters Astro / the BaseLayout writer escapes
+// when interpolating description values into HTML `content="…"` attributes. Kept
+// local to seo.ts so the budgeting logic and the escape rule are co-located —
+// any future drift in either has to be made in one place.
+function escapeHtmlAttribute(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;');
+}
+
+// Budget descriptions against their HTML-encoded length, not their decoded
+// character count. The value returned here is later inserted into HTML
+// `content="…"` attributes where `"` becomes `&quot;` (5 chars), `&` becomes
+// `&amp;`, `<` / `>` / `'` similarly inflate. A decoded-only budget silently
+// blew the Google SERP ~160-char ceiling on day posts containing ASCII quotes
+// (issue #166). maxLength is now treated as a ceiling on the *rendered* HTML
+// length: short / quote-free text behaves identically to before (the encoded
+// length equals the decoded length); text with escapeable characters is
+// truncated further so the rendered attribute stays within budget.
 export function cleanDescription(value: string, maxLength = 155) {
   const compact = value.replace(/\s+/g, ' ').trim();
-  if (compact.length <= maxLength) return compact;
-  return `${compact.slice(0, maxLength - 1).replace(/[，。、,;；:\s]+$/u, '')}…`;
+  if (escapeHtmlAttribute(compact).length <= maxLength) return compact;
+
+  // Truncate the source string until the *escaped* result, plus a trailing
+  // ellipsis (1 char), fits the budget. Walk back from `maxLength` so the
+  // happy path (no escapeable chars in the kept prefix) costs one slice; with
+  // escapeable chars we may shed a few more source chars per `&quot;`.
+  const ellipsis = '…';
+  let cut = Math.min(compact.length, maxLength - 1);
+  while (cut > 0 && escapeHtmlAttribute(compact.slice(0, cut)).length + ellipsis.length > maxLength) {
+    cut -= 1;
+  }
+  // Mirror the existing trailing-punctuation cleanup so we don't end on a
+  // comma / fullwidth period / semicolon / colon / whitespace before the
+  // ellipsis. The regex is intentionally identical to the prior behaviour.
+  const trimmed = compact.slice(0, cut).replace(/[，。、,;；:\s]+$/u, '');
+  return `${trimmed}${ellipsis}`;
 }
 
 export function canonicalPath(pathname: string) {

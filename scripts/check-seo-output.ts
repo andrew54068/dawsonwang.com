@@ -108,6 +108,31 @@ function assertDescriptionStack(haystack: string, label: string) {
   assertIncludes(haystack, `<meta name="twitter:description" content="${renderedDescription}"`, `${label} twitter:description`);
 }
 
+// Issue #166: descriptions are budgeted by cleanDescription against their
+// HTML-encoded length, but the silent-regression class is a future change that
+// reverts to a decoded-only budget. Lock the SERP ~160-char ceiling against the
+// *rendered* HTML content-attribute length (not the decoded value), and assert
+// it across all three description surfaces — description / og:description /
+// twitter:description — so a future drift can't slip past the parity probe.
+function assertDescriptionStackHtmlLength(haystack: string, label: string, maxHtmlLength = 160) {
+  const surfaces: Array<[string, RegExp]> = [
+    ['description', /<meta name="description" content="([^"]*)"\s*\/?\s*>/],
+    ['og:description', /<meta property="og:description" content="([^"]*)"\s*\/?\s*>/],
+    ['twitter:description', /<meta name="twitter:description" content="([^"]*)"\s*\/?\s*>/],
+  ];
+  for (const [name, pattern] of surfaces) {
+    const match = haystack.match(pattern);
+    if (!match) {
+      fail(`${label} ${name} not found for length check`);
+      continue;
+    }
+    const htmlLength = match[1].length;
+    if (htmlLength > maxHtmlLength) {
+      fail(`${label} ${name} HTML-encoded length ${htmlLength} exceeds ${maxHtmlLength}`);
+    }
+  }
+}
+
 function assertCanonicalOgUrlParity(haystack: string, label: string) {
   const canonicalUrl = extractRequired(
     haystack,
@@ -494,6 +519,12 @@ if (!existsSync(outDir)) {
     assertSelfHreflangAlternates(dayHtml, `/day/${day.number}`, label);
     assertTitleStack(dayHtml, expectedTitle, label);
     assertDescriptionStack(dayHtml, label);
+    // Issue #166: lock the SERP ~160-char ceiling on the rendered HTML length
+    // across the full generated /day/<n> collection — not just the latest page —
+    // so a future cleanDescription regression that reverts to a decoded-only
+    // budget gets caught on every page that has HTML-escapeable characters
+    // (`&quot;`, `&amp;`, `&lt;`, `&gt;`, `&#39;`) in its description source.
+    assertDescriptionStackHtmlLength(dayHtml, label);
     assertDiscoveryAlternates(dayHtml, label);
     assertIncludes(dayHtml, '<meta property="og:type" content="article"', `${label} og:type article`);
     if (/"datePublished":""/.test(dayHtml)) fail(`${label} Article datePublished is an empty string`);
@@ -504,6 +535,7 @@ if (!existsSync(outDir)) {
     assertDayArticleOwnershipTrustCluster(dayHtml, day.number, label);
   }
   note(`day Article ownership/trust cluster asserted across ${generatedDayPages.length} generated pages`);
+  note(`day description HTML-encoded length <=160 asserted across ${generatedDayPages.length} generated pages (issue #166)`);
 
   if (latestDay) {
     const dayHtml = readGenerated(`day/${latestDay}/index.html`);
@@ -513,7 +545,7 @@ if (!existsSync(outDir)) {
     assertTitleStack(dayHtml, expectedLatestDayTitle, `day ${latestDay}`);
     assertIncludes(dayHtml, '<meta name="twitter:site" content="@dawson54068"', `day ${latestDay} twitter:site`);
     assertIncludes(dayHtml, '<meta name="twitter:creator" content="@dawson54068"', `day ${latestDay} twitter:creator`);
-    assertMatch(dayHtml, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, `day ${latestDay}`);
+    assertMatch(dayHtml, /<meta name="description" content="[^"]{40,160}"\s*\/?\s*>/, `day ${latestDay}`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, `day ${latestDay} Article JSON-LD`);
     assertMatch(dayHtml, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, `day ${latestDay} BreadcrumbList JSON-LD`);
     // BreadcrumbList @id + Article → BreadcrumbList graph link (issue #68).
