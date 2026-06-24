@@ -84,11 +84,36 @@ function pngDimensionsForPublicPath(publicPath: string) {
   }
 }
 
-const primaryOgImage = slides[0]?.src ?? DEFAULT_OG_IMAGE;
-const primaryOgImageDimensions = pngDimensionsForPublicPath(primaryOgImage)
-  ?? (primaryOgImage === DEFAULT_OG_IMAGE
-    ? { width: DEFAULT_OG_IMAGE_WIDTH, height: DEFAULT_OG_IMAGE_HEIGHT }
-    : undefined);
+// Social-card aspect-ratio guard (issue #162):
+// `twitter:card=summary_large_image` (Twitter requires 2:1) and Facebook OG (1.91:1)
+// both expect a wide image. Slide covers from 100days/content are authored at 1:1
+// (1024×1024 / 1254×1254), which Twitter downgrades to a small-thumbnail card and
+// Facebook/LinkedIn/Slack center-crop. If the candidate slide cover's aspect ratio
+// falls outside [1.85, 2.05], fall back to the 1200×630 site default (which is
+// known to be in-band) so the declared og:image dimensions always match the
+// declared twitter:card type. The per-post alt text is preserved separately via
+// the explicit ogImageAlt prop so the alt-text contract from existing CI probes
+// (criterion 3) does not regress.
+const OG_IMAGE_MIN_RATIO = 1.85;
+const OG_IMAGE_MAX_RATIO = 2.05;
+const slideCoverSrc = slides[0]?.src;
+const slideCoverDims = slideCoverSrc ? pngDimensionsForPublicPath(slideCoverSrc) : undefined;
+const slideCoverRatio = slideCoverDims && slideCoverDims.height > 0
+  ? slideCoverDims.width / slideCoverDims.height
+  : undefined;
+const slideCoverIsSocialReady = slideCoverSrc !== undefined
+  && slideCoverDims !== undefined
+  && slideCoverRatio !== undefined
+  && slideCoverRatio >= OG_IMAGE_MIN_RATIO
+  && slideCoverRatio <= OG_IMAGE_MAX_RATIO;
+const primaryOgImage = slideCoverIsSocialReady ? slideCoverSrc! : DEFAULT_OG_IMAGE;
+const primaryOgImageDimensions = slideCoverIsSocialReady
+  ? slideCoverDims!
+  : { width: DEFAULT_OG_IMAGE_WIDTH, height: DEFAULT_OG_IMAGE_HEIGHT };
+// Preserve the per-post alt text (e.g. "Day 173 我推的會議 bot 被 Google 擋了")
+// even when we substitute the default OG image, so og:image:alt / twitter:image:alt
+// continue to identify the article rather than the generic site default.
+const primaryOgImageAlt = `Day ${day.data.dayNumber} ${day.data.subtitle || ''}`.trim();
 // Primary Article image: og-default with known dimensions to qualify for the large-image
 // Article rich result (Google guidance: declare width/height, prefer ≥1200px). Slide images
 // from content/dayNN are added as secondary string entries when present — we don't have
@@ -134,7 +159,7 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: `Day ${day.data.dayNumber} ${day.data.subtitle ?? ''}`.trim(), url: `/day/${day.data.dayNumber}` },
 ], dayUrl);
 ---
-<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={primaryOgImage} ogImageWidth={primaryOgImageDimensions?.width} ogImageHeight={primaryOgImageDimensions?.height} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)}>
+<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={primaryOgImage} ogImageWidth={primaryOgImageDimensions.width} ogImageHeight={primaryOgImageDimensions.height} ogImageAlt={primaryOgImageAlt} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)}>
   <article class="max-w-5xl mx-auto px-8 py-14" data-pagefind-body data-pagefind-meta={`day:${day.data.dayNumber}`}>
     <div class="grid grid-cols-1 md:grid-cols-[1fr_160px] gap-x-12 gap-y-6">
 
