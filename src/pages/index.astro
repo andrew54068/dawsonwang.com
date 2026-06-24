@@ -53,14 +53,16 @@ const serviceJsonLd = {
     })),
   },
 };
-const homePersonServiceGraphLinkJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  '@id': `${SITE_URL}/#person`,
+// Homepage-only Person edge: declare Dawson as `worksFor` the ProfessionalService
+// emitted on this page. Passed via BaseLayout's `personExtras` so it MERGES into
+// the single root Person node (`@id: #person`) instead of shipping as a second
+// Person node sharing the same `@id` — that was the duplicate-@id collision
+// reported in issue #164.
+const homePersonExtras = {
   worksFor: { '@id': `${SITE_URL}/#ai-workflow-service` },
 };
 ---
-<BaseLayout title="Dawson Wang" description={homeDescription} structuredData={[serviceJsonLd, homePersonServiceGraphLinkJsonLd]}>
+<BaseLayout title="Dawson Wang" description={homeDescription} structuredData={serviceJsonLd} personExtras={homePersonExtras}>
   <Hero />
   <RecentConsultations />
   <ToolsIBuilt />
