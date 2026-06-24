@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
 import { topicBySlug, daysForTopic, topicsWithPosts, topicsForDay, chipVariantFor } from '../../lib/topics';
 import { isTopPerformer } from '../../lib/metrics';
 import { SITE_URL, breadcrumbJsonLd } from '../../lib/seo';
@@ -63,6 +64,7 @@ const topicBreadcrumbJsonLd = breadcrumbJsonLd([
 ---
 <BaseLayout title={topicPageTitle} description={topicPageDescription} structuredData={[topicJsonLd, topicBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
+    <BreadcrumbNav items={[{ label: 'Home', href: '/' }, { label: 'Topics', href: '/topics' }, { label: topic.title }]} />
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPIC · {filtered.length} POSTS</div>
     <div class="flex items-baseline gap-3 mb-3">
       <span class={`chip chip-${variant}`}>{topic.slug}</span>

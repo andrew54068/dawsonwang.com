@@ -7,6 +7,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SlideCarousel from '../../components/SlideCarousel.astro';
 import MetricsBlock from '../../components/MetricsBlock.astro';
 import ExternalLinks from '../../components/ExternalLinks.astro';
+import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
 import { isTopPerformer } from '../../lib/metrics';
 import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
 import { SITE_URL, cleanDescription, breadcrumbJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_WIDTH, DEFAULT_OG_IMAGE_HEIGHT } from '../../lib/seo';
@@ -139,6 +140,7 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
     <div class="grid grid-cols-1 md:grid-cols-[1fr_160px] gap-x-12 gap-y-6">
 
       <div class="min-w-0 max-w-2xl">
+        <BreadcrumbNav items={[{ label: 'Home', href: '/' }, { label: 'Days', href: '/days' }, { label: `Day ${day.data.dayNumber}` }]} />
         <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">
           DAY {String(day.data.dayNumber).padStart(3, '0')}{publishDate ? ` · ${publishDate.slice(0, 10)}` : ''}
         </div>

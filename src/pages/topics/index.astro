@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopicCard from '../../components/TopicCard.astro';
+import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
 import { topicsWithPosts, daysForTopic } from '../../lib/topics';
 import { SITE_URL, breadcrumbJsonLd } from '../../lib/seo';
 
@@ -59,6 +60,7 @@ const topicsIndexBreadcrumbJsonLd = breadcrumbJsonLd([
 ---
 <BaseLayout title={topicsIndexTitle} description={topicsIndexDescription} structuredData={[topicTaxonomyJsonLd, topicCollectionJsonLd, topicsIndexBreadcrumbJsonLd]}>
   <article class="max-w-5xl mx-auto px-8 py-16">
+    <BreadcrumbNav items={[{ label: 'Home', href: '/' }, { label: 'Topics' }]} />
     <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPICS · {topics.length} CATEGORIES</div>
     <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
         style="font-size: clamp(2.5rem, 5vw, 4rem);">
