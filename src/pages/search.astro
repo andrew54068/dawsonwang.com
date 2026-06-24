@@ -2,12 +2,21 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
+import { serializeSearchFallbackIndex } from '../lib/search-fallback';
 
 const days = await getCollection('days');
 const total = days.length;
 const searchTitle = 'AI 工作流文章搜尋';
 const searchDescription = `從 ${total} 篇 Dawson Wang 的 AI 工具落地日誌中，用關鍵字或語意搜尋 Claude Code、MCP、automation、內容流程與團隊導入案例。`;
 const searchUrl = absoluteUrl('/search');
+const SEARCH_FALLBACK_BODY_CHARS = 1200;
+const searchFallbackIndexJson = serializeSearchFallbackIndex(
+  days.map((day) => ({
+    day: day.data.dayNumber,
+    subtitle: day.data.subtitle,
+    body: day.data.body.replace(/\s+/g, ' ').trim().slice(0, SEARCH_FALLBACK_BODY_CHARS),
+  })),
+);
 const searchResultsPageJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SearchResultsPage',
@@ -73,18 +82,33 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
     <section id="search-results" class="mt-2 max-w-3xl"></section>
   </article>
 
+  <script type="application/json" id="search-fallback-index" set:html={searchFallbackIndexJson}></script>
+
   <script>
+    import {
+      parseSearchFallbackIndexJson,
+      runSearchFallback,
+      type SearchFallbackDoc,
+      type SearchFallbackHit,
+    } from '../lib/search-fallback';
     import { semanticSearch, warmUpSemantic, type SemanticHit } from '../lib/semantic-search-client';
 
+    const RESULT_LIMIT = 15;
     const form = document.getElementById('search-form') as HTMLFormElement;
     const input = document.getElementById('q') as HTMLInputElement;
     const statusEl = document.getElementById('search-status') as HTMLDivElement;
     const resultsEl = document.getElementById('search-results') as HTMLDivElement;
     const modeRadios = form.querySelectorAll<HTMLInputElement>('input[name="mode"]');
+    const fallbackIndexEl = document.getElementById('search-fallback-index');
 
-    function getMode(): 'keyword' | 'semantic' {
+    type SearchMode = 'keyword' | 'semantic';
+    type SearchRow = { day: number; subtitle: string; excerpt?: string; meta?: string };
+
+    let fallbackIndex: SearchFallbackDoc[] | null = null;
+
+    function getMode(): SearchMode {
       const checked = form.querySelector<HTMLInputElement>('input[name="mode"]:checked');
-      return (checked?.value as 'keyword' | 'semantic') ?? 'keyword';
+      return (checked?.value as SearchMode) ?? 'keyword';
     }
 
     function setStatus(text: string) {
@@ -102,12 +126,12 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
       resultsEl.innerHTML = `<p class="font-serif italic text-muted text-sm py-6">${escapeHtml(msg)}</p>`;
     }
 
-    function renderResults(rows: Array<{ day: number; subtitle: string; excerpt?: string; meta?: string }>) {
+    function renderResults(rows: SearchRow[]) {
       if (!rows.length) return renderEmpty();
       const html = rows
         .map(r => {
           const excerpt = r.excerpt
-            ? `<span class="block font-serif text-sm text-muted leading-relaxed mt-1">${r.excerpt}</span>`
+            ? `<span class="block font-serif text-sm text-muted leading-relaxed mt-1">${escapeHtml(r.excerpt)}</span>`
             : '';
           const meta = r.meta
             ? `<span class="toc-meta">${escapeHtml(r.meta)}</span>`
@@ -120,6 +144,48 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
         })
         .join('');
       resultsEl.innerHTML = html;
+    }
+
+    function loadFallbackIndex(): SearchFallbackDoc[] {
+      if (fallbackIndex) return fallbackIndex;
+      fallbackIndex = parseSearchFallbackIndexJson(fallbackIndexEl?.textContent ?? '[]');
+      return fallbackIndex;
+    }
+
+    function fallbackMeta(hit: SearchFallbackHit): string {
+      switch (hit.matchSource) {
+        case 'subtitle+body':
+          return '精準命中：標題＋內文';
+        case 'subtitle':
+          return '精準命中：標題';
+        default:
+          return '精準命中：內文';
+      }
+    }
+
+    function buildFallbackRows(query: string): SearchRow[] {
+      return runSearchFallback(loadFallbackIndex(), query, RESULT_LIMIT).map(hit => ({
+        day: hit.day,
+        subtitle: hit.subtitle,
+        excerpt: hit.excerpt,
+        meta: fallbackMeta(hit),
+      }));
+    }
+
+    function mergeRows(primaryRows: SearchRow[], fallbackRows: SearchRow[]) {
+      const seen = new Set(primaryRows.map(row => row.day));
+      const merged = [...primaryRows];
+      let added = 0;
+
+      for (const row of fallbackRows) {
+        if (seen.has(row.day)) continue;
+        if (merged.length >= RESULT_LIMIT) break;
+        merged.push(row);
+        seen.add(row.day);
+        added += 1;
+      }
+
+      return { rows: merged, added };
     }
 
     // ---------- pagefind (keyword) ----------
@@ -146,22 +212,44 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
 
     async function runKeyword(q: string) {
       setStatus('搜尋中…');
+      const fallbackRows = buildFallbackRows(q);
+
       try {
         const pf = await loadPagefind();
         const search = await pf.search(q);
-        const top = await Promise.all(search.results.slice(0, 15).map((r: any) => r.data()));
-        const rows = top.map(d => {
+        const top = await Promise.all(search.results.slice(0, RESULT_LIMIT).map((r: any) => r.data()));
+        const primaryRows = top.map(d => {
           const day = parseInt(d.meta?.day ?? '0', 10);
           const subtitle = (d.meta?.title || '').replace(/\s*\|\s*Dawson Wang.*$/, '');
           return {
             day,
             subtitle,
             excerpt: d.excerpt as string,
-          };
+          } satisfies SearchRow;
         });
+
+        const { rows, added } = mergeRows(primaryRows, fallbackRows);
+        if (!rows.length) {
+          renderEmpty();
+          setStatus('沒有找到相關文章');
+          return;
+        }
+
         renderResults(rows);
-        setStatus(`找到 ${search.results.length} 篇相關文章 · 關鍵字`);
+        if (added > 0 && search.results.length > 0) {
+          setStatus(`Pagefind 找到 ${search.results.length} 篇 · 精準字串補強 ${added} 篇`);
+        } else if (added > 0) {
+          setStatus(`Pagefind 未命中；精準字串補強找到 ${added} 篇`);
+        } else {
+          setStatus(`找到 ${search.results.length} 篇相關文章 · 關鍵字`);
+        }
       } catch (err: any) {
+        if (fallbackRows.length > 0) {
+          renderResults(fallbackRows);
+          setStatus(`關鍵字索引暫時不可用，改用精準字串搜尋 · ${fallbackRows.length} 篇`);
+          return;
+        }
+
         renderEmpty(err?.message ?? '搜尋失敗');
         setStatus('');
       }
@@ -180,7 +268,7 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
       try {
         await ensureSemantic();
         setStatus('語意比對中…');
-        const hits = await semanticSearch(q, 15);
+        const hits = await semanticSearch(q, RESULT_LIMIT);
         const rows = hits.map((h: SemanticHit) => ({
           day: h.doc.day,
           subtitle: h.doc.subtitle,
@@ -234,6 +322,7 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
 
     // Pre-fetch the active mode's index in the background so the first
     // search feels instant (semantic stays lazy until user picks it).
-    loadPagefind().catch(() => { /* graceful in dev */ });
+    void loadPagefind().catch(() => { /* graceful in dev */ });
+    void loadFallbackIndex();
   </script>
 </BaseLayout>

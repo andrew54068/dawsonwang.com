@@ -62,7 +62,11 @@ describe('production-critical website flows', () => {
     expect(searchPage).toContain('value="semantic"');
     expect(searchPage).toContain('loadPagefind');
     expect(searchPage).toContain('/pagefind/pagefind.js');
-    expect(searchPage).toContain('semanticSearch(q, 15)');
+    expect(searchPage).toContain('semanticSearch(q, RESULT_LIMIT)');
+    expect(searchPage).toContain('id="search-fallback-index"');
+    expect(searchPage).toContain('parseSearchFallbackIndexJson');
+    expect(searchPage).toContain('runSearchFallback');
+    expect(searchPage).toContain('Pagefind 未命中；精準字串補強找到');
     expect(searchPage).toContain('new URLSearchParams(window.location.search).get(\'q\')');
   });
 
