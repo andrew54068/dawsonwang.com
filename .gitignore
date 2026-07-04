@@ -47,3 +47,4 @@ public/search/
 # Claude Code local-only tooling (branch sandboxes, bullpen workflow symlinks)
 .claude/worktrees/
 .claude/workflows/
+.env*
