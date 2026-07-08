@@ -31,10 +31,11 @@
 //   --no-poll         Deploy but skip the post-deploy production poll.
 //
 // One-time setup (see scripts/DEPLOY.md):
-//   cd <this repo> && npx vercel@latest login   # choose Email — GitHub is NOT required
-//   npx vercel@latest link                      # pick the existing dawsonwang.com project
-//   (optional, CI-grade) echo 'VERCEL_TOKEN=…' >> .env   # from https://vercel.com/account/tokens
-// Auth is either the `vercel login` session OR VERCEL_TOKEN; a token is not required.
+//   npx vercel@latest link              # pick the existing dawsonwang.com project (writes .vercel/project.json)
+//   echo 'VERCEL_TOKEN=…' >> .env        # from https://vercel.com/account/tokens (Email login — GitHub NOT required)
+// Real deploys AUTHENTICATE WITH VERCEL_TOKEN (from .env), scoped to the linked project
+// via .vercel/project.json — never a `vercel login` session, which may be tied to the
+// suspended GitHub account. Only --dry-run runs without a token.
 //
 // Config (env overrides, all optional):
 //   DAWSONWANG_DIR    site repo (default: this repo's location)
@@ -109,20 +110,33 @@ function fromEnvFile(key: string): string | undefined {
   return undefined;
 }
 
-/** Token is OPTIONAL — if absent, the Vercel CLI uses your `vercel login` session. */
-function resolveTokenOptional(): string {
-  return (process.env.VERCEL_TOKEN || fromEnvFile('VERCEL_TOKEN') || '').trim();
+/** Real deploys REQUIRE the project's Vercel token (env or the site's .env) so auth is
+ *  the token itself — never a `vercel login` session that may be tied to the suspended
+ *  GitHub account. Dry-runs deploy nothing, so they need no token. */
+function resolveToken(dryRun: boolean): string {
+  const token = (process.env.VERCEL_TOKEN || fromEnvFile('VERCEL_TOKEN') || '').trim();
+  if (!token && !dryRun) {
+    throw new Error(
+      'VERCEL_TOKEN is required for a real deploy but was not found. Create a token at ' +
+      'https://vercel.com/account/tokens (Email login — GitHub NOT required) and add VERCEL_TOKEN=… to ' +
+      path.join(SITE_DIR, '.env') +
+      '. The deploy authenticates with this token, scoped to the linked project via ' +
+      '.vercel/project.json — GitHub is never a dependency. See scripts/DEPLOY.md',
+    );
+  }
+  return token;
 }
 
-/** Fail fast (before a multi-minute build) if Vercel auth is missing entirely. */
+/** Fail fast (before a multi-minute build) if the Vercel token is missing/expired. */
 function ensureAuth(token: string): void {
   const env = { ...process.env } as NodeJS.ProcessEnv;
   if (token) env.VERCEL_TOKEN = token;
   const res = spawnSync('npx', [VERCEL_CLI, 'whoami'], { cwd: SITE_DIR, env, encoding: 'utf8', stdio: ['inherit', 'pipe', 'pipe'] });
   if (res.status !== 0) {
     throw new Error(
-      'Not authenticated with Vercel. Either run `npx vercel@latest login` (choose Email — GitHub is not required), ' +
-      'or create a token at https://vercel.com/account/tokens and add VERCEL_TOKEN=… to ' + path.join(SITE_DIR, '.env') + '. See scripts/DEPLOY.md',
+      'Vercel token rejected (whoami failed) — the VERCEL_TOKEN in ' + path.join(SITE_DIR, '.env') +
+      ' is missing or expired. Create a fresh token at https://vercel.com/account/tokens ' +
+      '(Email login — GitHub is NOT required) and update .env. See scripts/DEPLOY.md',
     );
   }
   log(`vercel auth OK (${(res.stdout || '').trim() || 'logged in'})`);
@@ -235,7 +249,7 @@ function deploy(token: string): string {
   ensureProjectLink();
   log('deploying prebuilt output to production…');
   const env = { ...process.env } as NodeJS.ProcessEnv;
-  if (token) env.VERCEL_TOKEN = token; // env, never --token (ps-visible); else use the `vercel login` session
+  if (token) env.VERCEL_TOKEN = token; // token in env, never --token (ps-visible)
   const out = run('npx', [VERCEL_CLI, 'deploy', '--prebuilt', '--prod', '--archive=tgz'], {
     cwd: WORKTREE,
     env,
@@ -264,8 +278,8 @@ async function poll(day: number): Promise<void> {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const token = args.dryRun ? '' : resolveTokenOptional();
-  if (!args.dryRun) ensureAuth(token); // fail fast before a multi-minute build if not logged in / no token
+  const token = resolveToken(args.dryRun);
+  if (!args.dryRun) ensureAuth(token); // fail fast before a multi-minute build if the token is missing/expired
 
   ensureWorktree();
   seedSearchIndex();
