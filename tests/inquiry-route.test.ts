@@ -113,4 +113,19 @@ describe('POST /api/inquiry — Notion payload', () => {
     expect(res.status).toBe(303);
     expect(pagesCreateMock).toHaveBeenCalledTimes(1);
   });
+
+  test('rejects an email with a single-character TLD with 400 Invalid payload', async () => {
+    // The exact value from the original bug report. It must never reach Notion.
+    const res = await POST({ request: buildRequest({ email: 'a@b.c' }, '6.6.6.6') } as any);
+    expect(res.status).toBe(400);
+    expect(await res.text()).toBe('Invalid payload');
+    expect(pagesCreateMock).not.toHaveBeenCalled();
+  });
+
+  test('accepts a whitespace-padded email and stores it trimmed', async () => {
+    const res = await POST({ request: buildRequest({ email: '  wang@example.com  ' }, '7.7.7.7') } as any);
+    expect(res.status).toBe(303);
+    const props = pagesCreateMock.mock.calls[0][0].properties;
+    expect(props.Email).toMatchObject({ title: [{ text: { content: 'wang@example.com' } }] });
+  });
 });

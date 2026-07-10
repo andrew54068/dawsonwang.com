@@ -18,13 +18,26 @@ async function copyDir(src: string, dest: string) {
 const dirs = await fs.readdir(SRC, { withFileTypes: true });
 for (const dir of dirs) {
   if (!dir.isDirectory() || !/^day\d+$/.test(dir.name)) continue;
-  const slidesSrc = path.join(SRC, dir.name, 'slides');
-  const slidesDest = path.join(DEST, dir.name, 'slides');
+  const dayRoot = path.join(SRC, dir.name);
+  const dayDest = path.join(DEST, dir.name);
+
+  // Copy slides (PNG/JPEG/WebP)
+  const slidesSrc = path.join(dayRoot, 'slides');
   try {
     await fs.access(slidesSrc);
-    await copyDir(slidesSrc, slidesDest);
+    await copyDir(slidesSrc, path.join(dayDest, 'slides'));
   } catch {
     // No slides for this day
   }
+
+  // Copy share artifacts (MP4/GIF) from day root
+  const rootEntries = await fs.readdir(dayRoot, { withFileTypes: true });
+  const shareFiles = rootEntries.filter(e => e.isFile() && /\.(mp4|gif)$/i.test(e.name));
+  if (shareFiles.length > 0) {
+    await fs.mkdir(dayDest, { recursive: true });
+    for (const f of shareFiles) {
+      await fs.copyFile(path.join(dayRoot, f.name), path.join(dayDest, f.name));
+    }
+  }
 }
-console.log('Slides copied to public/content/');
+console.log('Content assets copied to public/content/');

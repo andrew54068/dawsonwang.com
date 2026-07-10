@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import { RECENT_CONSULTATIONS } from '../data/homepage-cases';
+
+const days = await getCollection('days');
+const allDays = days.length;
+
+// Resolve each case against the live content collection so build fails loudly
+// if a referenced day disappears.
+const cases = RECENT_CONSULTATIONS.map(c => {
+  const day = days.find(d => d.data.dayNumber === c.dayNumber);
+  if (!day) {
+    throw new Error(
+      `RecentConsultations: day ${c.dayNumber} referenced in homepage-cases.ts ` +
+      `but no matching entry exists in the days collection.`
+    );
+  }
+  return { ...c, subtitle: day.data.subtitle };
+});
+---
+<section id="cases" class="max-w-5xl mx-auto px-8 py-20 border-t border-rule">
+  <div class="mb-10">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">
+      CASE STUDIES · 最近 {cases.length} 場諮詢
+    </div>
+    <h2 class="font-display text-ink leading-[1.1] tracking-[-0.02em] font-semibold"
+        style="font-size: clamp(1.75rem, 3.5vw, 2.5rem);">
+      他們本來卡在哪裡，<br />後來怎麼動起來。
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
+    {cases.map(c => (
+      <a
+        href={`/day/${c.dayNumber}`}
+        class="group flex flex-col p-7 bg-surface-1 hover:bg-surface-2 transition-colors duration-150 no-underline"
+      >
+        <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-3">
+          諮詢 · {c.vertical}
+        </div>
+        <h3 class="font-display text-ink text-xl font-semibold tracking-tight mb-4 leading-snug">
+          {c.outcome.replace(/。$/, '')}
+        </h3>
+        <dl class="font-display text-sm text-muted leading-relaxed space-y-3 mb-6 flex-1">
+          <div>
+            <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">客戶</dt>
+            <dd>{c.who}</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">痛點</dt>
+            <dd>{c.pain}</dd>
+          </div>
+        </dl>
+        <div class="border-t border-rule pt-4 flex justify-between items-baseline">
+          <span class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">
+            Day {String(c.dayNumber).padStart(3, '0')}
+          </span>
+          <span class="font-mono text-xs text-teal group-hover:text-ink transition-colors duration-150">
+            看完整案例 →
+          </span>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <div class="mt-5 text-right">
+    <a href="/days" class="font-mono text-xs text-teal hover:text-ink transition-colors duration-150 no-underline">
+      看所有 {allDays} 篇實作 →
+    </a>
+  </div>
+</section>

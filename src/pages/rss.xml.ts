@@ -6,6 +6,11 @@ import {
   absoluteUrl,
   cleanDescription,
 } from '../lib/seo';
+import {
+  latestDefinedPublishedAt,
+  publishedAtForManifest,
+  toRfc822IfPresent,
+} from '../lib/publish-metadata';
 
 function escapeXml(value: string) {
   return value
@@ -14,13 +19,6 @@ function escapeXml(value: string) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
-}
-
-function toRfc822(value: string | undefined | null): string {
-  if (!value) return new Date().toUTCString();
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return new Date().toUTCString();
-  return d.toUTCString();
 }
 
 const MAX_ITEMS = 30;
@@ -32,23 +30,16 @@ export async function GET() {
     .sort((a, b) => b.data.dayNumber - a.data.dayNumber)
     .slice(0, MAX_ITEMS);
 
-  const latestPublishedAt = sorted
-    .map(day => day.data.manifest?.threads?.publishedAt
-      ?? day.data.manifest?.facebook?.publishedAt
-      ?? day.data.manifest?.linkedin?.publishedAt)
-    .filter((value): value is string => Boolean(value))
-    .sort()
-    .at(-1) ?? new Date().toISOString();
+  const latestPublishedAt = latestDefinedPublishedAt(sorted.map(day => publishedAtForManifest(day.data.manifest)))
+    ?? new Date().toISOString();
 
   const selfUrl = absoluteUrl('/rss.xml');
   const siteHome = absoluteUrl('/');
-  const lastBuild = toRfc822(latestPublishedAt);
+  const lastBuild = toRfc822IfPresent(latestPublishedAt) ?? new Date().toUTCString();
 
   const itemsXml = sorted.map(day => {
-    const publishedAt = day.data.manifest?.threads?.publishedAt
-      ?? day.data.manifest?.facebook?.publishedAt
-      ?? day.data.manifest?.linkedin?.publishedAt
-      ?? latestPublishedAt;
+    const publishedAt = publishedAtForManifest(day.data.manifest);
+    const pubDate = toRfc822IfPresent(publishedAt);
     const url = absoluteUrl(`/day/${day.data.dayNumber}`);
     const titleRaw = `Day ${day.data.dayNumber} ${day.data.subtitle ?? ''}`.trim();
     const descRaw = cleanDescription(day.data.body ?? day.data.subtitle ?? DEFAULT_DESCRIPTION, 280);
@@ -57,7 +48,7 @@ export async function GET() {
       `      <title>${escapeXml(titleRaw)}</title>`,
       `      <link>${escapeXml(url)}</link>`,
       `      <guid isPermaLink="true">${escapeXml(url)}</guid>`,
-      `      <pubDate>${escapeXml(toRfc822(publishedAt))}</pubDate>`,
+      pubDate ? `      <pubDate>${escapeXml(pubDate)}</pubDate>` : '',
       `      <description>${escapeXml(descRaw)}</description>`,
       '    </item>',
     ].join('\n');

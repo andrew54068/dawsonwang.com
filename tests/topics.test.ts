@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { topicsForDay, daysForTopic, topicBySlug } from '../src/lib/topics';
+import { topicsForDay, daysForTopic, topicBySlug, topicsWithPosts } from '../src/lib/topics';
 import { chipVariantFor } from '../src/lib/topics';
 
 test('topicBySlug returns topic by slug', () => {
@@ -29,6 +29,24 @@ test('daysForTopic sorts newest-first', () => {
   // Both day 120 and 121 seeded with 'claude-code' in DAY_TOPICS.
   const days = daysForTopic('claude-code');
   expect(days).toEqual([...days].sort((a, b) => b - a));
+});
+
+test('daysForTopic can restrict results to real loaded day numbers', () => {
+  expect(daysForTopic('claude-code', [121])).toEqual([121]);
+  expect(daysForTopic('agents', [121])).toEqual([]);
+});
+
+test('topicsWithPosts excludes zero-post topics from crawlable topic surfaces', () => {
+  const topicSlugs = topicsWithPosts([120, 121]).map(topic => topic.slug);
+  expect(topicSlugs).toEqual(expect.arrayContaining(['claude-code', 'agents']));
+  expect(topicSlugs).toHaveLength(2);
+});
+
+test('topicsWithPosts only returns topics backed by tagged loaded days', () => {
+  const validDayNumbers = [121];
+  const topics = topicsWithPosts(validDayNumbers);
+  expect(topics.map(topic => topic.slug)).toEqual(['claude-code']);
+  expect(topics.every(topic => daysForTopic(topic.slug, validDayNumbers).length > 0)).toBe(true);
 });
 
 test('chipVariantFor returns the topic chip color', () => {
