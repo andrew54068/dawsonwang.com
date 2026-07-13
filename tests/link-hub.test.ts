@@ -1,0 +1,30 @@
+import { describe, expect, test } from 'vitest';
+import { LINK_GROUPS } from '../src/data/link-hub';
+
+describe('links page content', () => {
+  test('contains the three expected groups and seven supplied destinations', () => {
+    expect(LINK_GROUPS.map(group => group.id)).toEqual(['social', 'explore', 'collaborate']);
+    expect(LINK_GROUPS.flatMap(group => group.links)).toHaveLength(7);
+    expect(LINK_GROUPS.flatMap(group => group.links).map(link => link.href)).toEqual([
+      'https://www.threads.com/@andrew54068',
+      'https://www.facebook.com/andrew.wang.716',
+      'https://www.instagram.com/andrew54068',
+      'https://www.dawsonwang.com/proof',
+      'https://www.dawsonwang.com/days',
+      'https://calendar.app.google/FBHsAyW6zJ529aAb6',
+      'https://calendar.app.google/xLSLkAUNnc2MVSsd9',
+    ]);
+  });
+
+  test('marks external destinations separately from first-party destinations', () => {
+    const links = LINK_GROUPS.flatMap(group => group.links);
+    expect(links.every(link => link.external)).toBe(true);
+  });
+
+  test('gives every link a visible label and descriptive supporting copy', () => {
+    for (const link of LINK_GROUPS.flatMap(group => group.links)) {
+      expect(link.label.trim()).not.toBe('');
+      expect(link.description.trim()).not.toBe('');
+    }
+  });
+});
