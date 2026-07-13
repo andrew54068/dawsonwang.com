@@ -36,6 +36,8 @@ interface Props {
   articleAuthorUrl?: string;
   articleTags?: string[];
   noindex?: boolean;
+  showNav?: boolean;
+  showFooter?: boolean;
 }
 
 const {
@@ -52,6 +54,8 @@ const {
   articleAuthorUrl,
   articleTags,
   noindex = false,
+  showNav = true,
+  showFooter = true,
 } = Astro.props;
 const robotsContent = noindex
   ? 'noindex, nofollow'
@@ -142,9 +146,9 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
     )}
   </head>
   <body class="bg-paper text-ink font-sans">
-    <Nav />
+    {showNav && <Nav />}
     <main><slot /></main>
-    <Footer />
+    {showFooter && <Footer />}
     <SiteAnalytics />
   </body>
 </html>

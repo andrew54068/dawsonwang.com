@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LINK_GROUPS } from '../data/link-hub';
+
+const description = 'Dawson Wang 的社群、作品集、文章與合作預約入口。';
+---
+
+<BaseLayout title="Dawson Wang · Links" description={description} showNav={false} showFooter={false}>
+  <div class="links-page">
+    <div class="links-shell">
+      <header class="links-header">
+        <a class="home-link" href="/" aria-label="回到 Dawson Wang 首頁">
+          dawsonwang.com <span aria-hidden="true">↗</span>
+        </a>
+        <div class="identity">
+          <div class="portrait-frame">
+            <img
+              src="/dawson.webp"
+              alt="Dawson Wang，AI 工具落地實踐者"
+              width="640"
+              height="800"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+          <div>
+            <p class="identity-kicker">AI workflow / Taiwan</p>
+            <h1>Dawson Wang</h1>
+            <p class="identity-lede">把 AI 工具搬進你的實際工作流。</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="link-groups" aria-label="Dawson Wang links">
+        {LINK_GROUPS.map(group => (
+          <section class="link-group" aria-labelledby={`group-${group.id}`}>
+            <h2 id={`group-${group.id}`}><span aria-hidden="true">//</span> {group.label}</h2>
+            <div class="link-list">
+              {group.links.map(link => (
+                <a
+                  class="link-card"
+                  href={link.href}
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noopener noreferrer' : undefined}
+                >
+                  <span class="link-copy">
+                    <span class="link-label">{link.label}</span>
+                    <span class="link-description">{link.description}</span>
+                  </span>
+                  <span class="link-arrow" aria-hidden="true">↗</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        ))}
+      </section>
+
+      <footer class="links-footer">
+        <span>Built in Taipei · GMT+8</span>
+        <a href="/">回到主頁 <span aria-hidden="true">→</span></a>
+      </footer>
+    </div>
+  </div>
+</BaseLayout>

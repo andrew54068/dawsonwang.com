@@ -1,5 +1,9 @@
 import { describe, expect, test } from 'vitest';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { LINK_GROUPS } from '../src/data/link-hub';
+
+const source = (relativePath: string) => readFileSync(path.join(process.cwd(), relativePath), 'utf8');
 
 describe('links page content', () => {
   test('contains the three expected groups and seven supplied destinations', () => {
@@ -26,5 +30,17 @@ describe('links page content', () => {
       expect(link.label.trim()).not.toBe('');
       expect(link.description.trim()).not.toBe('');
     }
+  });
+
+  test('links route uses the standalone shell and renders every group', () => {
+    const page = source('src/pages/links.astro');
+    const layout = source('src/layouts/BaseLayout.astro');
+
+    expect(page).toContain("import { LINK_GROUPS } from '../data/link-hub';");
+    expect(page).toContain('showNav={false}');
+    expect(page).toContain('showFooter={false}');
+    expect(page).toContain('LINK_GROUPS.map');
+    expect(layout).toContain('showNav = true');
+    expect(layout).toContain('showFooter = true');
   });
 });
