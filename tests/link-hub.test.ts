@@ -43,4 +43,15 @@ describe('links page content', () => {
     expect(layout).toContain('showNav = true');
     expect(layout).toContain('showFooter = true');
   });
+
+  test('links route includes the responsive and accessibility hooks', () => {
+    const page = source('src/pages/links.astro');
+
+    expect(page).toContain('class="links-page"');
+    expect(page).toContain('class="link-card"');
+    expect(page).toContain(':focus-visible');
+    expect(page).toContain('prefers-reduced-motion: reduce');
+    expect(page).toMatch(/min-height:\s*(44|64)px/);
+    expect(page).toContain('linear-gradient');
+  });
 });
