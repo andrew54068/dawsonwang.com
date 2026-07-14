@@ -13,16 +13,30 @@ describe('links page content', () => {
       'https://www.threads.com/@andrew54068',
       'https://www.facebook.com/andrew.wang.716',
       'https://www.instagram.com/andrew54068',
-      'https://www.dawsonwang.com/proof',
-      'https://www.dawsonwang.com/days',
+      '/proof',
+      '/days',
       'https://calendar.app.google/FBHsAyW6zJ529aAb6',
       'https://calendar.app.google/xLSLkAUNnc2MVSsd9',
     ]);
   });
 
-  test('marks external destinations separately from first-party destinations', () => {
-    const links = LINK_GROUPS.flatMap(group => group.links);
-    expect(links.every(link => link.external)).toBe(true);
+  test('uses same-site paths for first-party destinations', () => {
+    const links = Object.fromEntries(
+      LINK_GROUPS.flatMap(group => group.links).map(link => [link.id, link]),
+    );
+
+    expect(links.proof).toMatchObject({ href: '/proof', external: false });
+    expect(links.days).toMatchObject({ href: '/days', external: false });
+  });
+
+  test('keeps social and calendar destinations external', () => {
+    const links = Object.fromEntries(
+      LINK_GROUPS.flatMap(group => group.links).map(link => [link.id, link]),
+    );
+
+    for (const id of ['threads', 'facebook', 'instagram', 'consultation', 'partnership']) {
+      expect(links[id]).toMatchObject({ external: true });
+    }
   });
 
   test('gives every link a visible label and descriptive supporting copy', () => {

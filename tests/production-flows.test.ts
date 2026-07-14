@@ -73,5 +73,7 @@ describe('production-critical website flows', () => {
     for (const href of ['href="/"', 'href="/days"', 'href="/topics"', 'href="/search"', 'href="/#inquire"']) {
       expect(`${nav}\n${footer}`).toContain(href);
     }
+    expect(footer).toContain('社群與其他入口');
+    expect(footer).toContain('href="/links"');
   });
 });
