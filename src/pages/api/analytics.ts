@@ -42,17 +42,18 @@ function validatePayload(payload: unknown) {
   const referrer = body.referrer === undefined ? undefined : trimmedString(body.referrer, MAX_URL_CHARS);
   const title = body.title === undefined ? undefined : trimmedString(body.title, MAX_TITLE_CHARS);
   const sentAt = body.sentAt === undefined ? undefined : trimmedString(body.sentAt, MAX_TIMESTAMP_CHARS);
+  const properties = body.properties === undefined ? undefined : body.properties;
 
   if (!type || !path || !url) return null;
+  if (properties !== undefined && !isAnalyticsProperties(properties)) return null;
 
   if (type === 'pageview') {
-    return { type, path, url, referrer, title, sentAt };
+    return { type, path, url, referrer, title, sentAt, properties };
   }
 
   if (type === 'event') {
     const name = trimmedString(body.name, MAX_NAME_CHARS);
     if (!name) return null;
-    if (body.properties !== undefined && !isAnalyticsProperties(body.properties)) return null;
     return {
       type,
       name,
@@ -61,7 +62,7 @@ function validatePayload(payload: unknown) {
       referrer,
       title,
       sentAt,
-      properties: body.properties,
+      properties,
     };
   }
 

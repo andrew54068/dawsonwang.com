@@ -100,6 +100,30 @@ describe('createAnalyticsApi', () => {
     });
   });
 
+  test('merges attribution into self-hosted pageviews and custom events', () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 202 }));
+    const api = createAnalyticsApi(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'self-hosted' }), {
+      fetchImpl: fetchMock,
+      navigatorImpl: undefined,
+      path: '/links?utm_source=qr',
+      href: 'https://dawsonwang.com/links?utm_source=qr',
+      referrer: '',
+      title: 'Links | Dawson Wang',
+      attribution: { attribution_first_source: 'qr' },
+    });
+
+    api.pageview();
+    api.event('link_click', { link_id: 'threads' });
+
+    const pageviewBody = JSON.parse((fetchMock.mock.calls[0][1] as RequestInit).body as string);
+    const eventBody = JSON.parse((fetchMock.mock.calls[1][1] as RequestInit).body as string);
+    expect(pageviewBody.properties).toEqual({ attribution_first_source: 'qr' });
+    expect(eventBody.properties).toEqual({
+      attribution_first_source: 'qr',
+      link_id: 'threads',
+    });
+  });
+
   test('none provider is a no-op for pageviews and events', () => {
     const fetchMock = vi.fn();
     const vercelDispatch = vi.fn();
@@ -172,6 +196,24 @@ describe('installAnalytics', () => {
     expect(targetWindow.dwAnalytics).toBeDefined();
     expect(fetchMock).not.toHaveBeenCalled();
     expect(va).not.toHaveBeenCalled();
+  });
+
+  test('emits one landing attribution event for a tagged Vercel visit', () => {
+    const { targetWindow, targetDocument, va } = fakeEnvironment();
+    targetWindow.location.search = '?utm_source=qr&utm_medium=offline';
+    targetWindow.location.href = 'https://dawsonwang.com/links?utm_source=qr&utm_medium=offline';
+
+    installAnalytics(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'vercel' }), targetWindow, targetDocument);
+
+    expect(va).toHaveBeenCalledWith('event', {
+      name: 'landing_attribution',
+      data: {
+        attribution_first_source: 'qr',
+        attribution_first_medium: 'offline',
+        attribution_last_source: 'qr',
+        attribution_last_medium: 'offline',
+      },
+    });
   });
 
   test('none registers a no-op api and sends nothing on load', () => {

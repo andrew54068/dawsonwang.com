@@ -1,4 +1,5 @@
 import type { AnalyticsConfig, AnalyticsEventProperties } from './analytics';
+import { captureAttribution, toAnalyticsProperties } from './analytics-attribution';
 
 export interface AnalyticsApi {
   pageview(path?: string): void;
@@ -12,6 +13,7 @@ export interface AnalyticsApiDependencies {
   href: string;
   referrer: string;
   title: string;
+  attribution?: Record<string, string>;
   vercelDispatch?: (event: 'event' | 'pageview', properties?: unknown) => void;
 }
 
@@ -70,6 +72,10 @@ export function createAnalyticsApi(
   config: AnalyticsConfig,
   deps: AnalyticsApiDependencies
 ): AnalyticsApi {
+  const withAttribution = (properties?: AnalyticsEventProperties) => (
+    sanitizeProperties({ ...deps.attribution, ...properties })
+  );
+
   return {
     pageview(path = deps.path) {
       if (!config.enabled) return;
@@ -86,6 +92,7 @@ export function createAnalyticsApi(
           url: absoluteUrl(path, deps.href),
           referrer: deps.referrer || undefined,
           title: deps.title || undefined,
+          properties: withAttribution(),
           sentAt: new Date().toISOString(),
         }, deps);
       }
@@ -95,7 +102,7 @@ export function createAnalyticsApi(
       const trimmedName = name.trim();
       if (!trimmedName || !config.enabled) return;
 
-      const sanitizedProperties = sanitizeProperties(properties);
+      const sanitizedProperties = withAttribution(properties);
 
       if (config.provider === 'vercel') {
         deps.vercelDispatch?.('event', sanitizedProperties
@@ -126,6 +133,15 @@ export function installAnalytics(
   targetDocument: Document = document
 ): AnalyticsApi {
   const path = `${targetWindow.location.pathname}${targetWindow.location.search}` || '/';
+  const storage = (() => {
+    try {
+      return targetWindow.sessionStorage;
+    } catch {
+      return undefined;
+    }
+  })();
+  const captured = captureAttribution(targetWindow.location.search, storage);
+  const attribution = toAnalyticsProperties(captured.state);
   const api = createAnalyticsApi(config, {
     fetchImpl: targetWindow.fetch.bind(targetWindow),
     navigatorImpl: targetWindow.navigator,
@@ -133,10 +149,15 @@ export function installAnalytics(
     href: targetWindow.location.href,
     referrer: targetDocument.referrer,
     title: targetDocument.title,
+    attribution,
     vercelDispatch: targetWindow.va?.bind(targetWindow) as AnalyticsApiDependencies['vercelDispatch'],
   });
 
   targetWindow.dwAnalytics = api;
+
+  if (config.provider === 'vercel' && captured.hasIncoming) {
+    api.event('landing_attribution');
+  }
 
   if (config.autoTrackPageviews) {
     api.pageview(path);
