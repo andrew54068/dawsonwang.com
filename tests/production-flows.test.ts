@@ -75,8 +75,8 @@ describe('production-critical website flows', () => {
       expect(`${nav}\n${footer}`).toContain(href);
     }
     expect(footer).toContain('社群與其他入口');
-    expect(footer).toContain('utm_source=site');
-    expect(footer).toContain('utm_medium=footer');
-    expect(footer).toContain('utm_content=links-hub');
+    expect(footer).toContain(
+      'href="/links?utm_source=site&utm_medium=footer&utm_campaign=navigation&utm_content=links-hub"',
+    );
   });
 });

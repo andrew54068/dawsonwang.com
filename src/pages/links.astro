@@ -73,7 +73,7 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
     link.addEventListener('click', () => {
       trackEvent('link_click', {
         link_id: link.dataset.linkId ?? 'unknown',
-        placement: 'links_page',
+        placement: link.dataset.linkPlacement ?? 'links_page',
       });
     });
   });

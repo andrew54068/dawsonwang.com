@@ -74,7 +74,8 @@ describe('links page content', () => {
 
     expect(page).toContain('data-analytics-link');
     expect(page).toContain('data-link-id={link.id}');
+    expect(page).toContain('data-link-placement="links_page"');
     expect(page).toContain("trackEvent('link_click'");
-    expect(page).toContain("placement: 'links_page'");
+    expect(page).toContain('placement: link.dataset.linkPlacement');
   });
 });
