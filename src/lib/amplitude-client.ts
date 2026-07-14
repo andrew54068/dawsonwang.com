@@ -34,10 +34,9 @@ export function createAmplitudeBridge(client: AmplitudeClient): AmplitudeBridge 
     initialize,
 
     event(name, properties) {
-      void initialize().then(
-        () => client.track(name, properties),
-        () => undefined,
-      );
+      const initialization = initialize();
+      client.track(name, properties);
+      void initialization.catch(() => undefined);
     },
 
     pageview() {

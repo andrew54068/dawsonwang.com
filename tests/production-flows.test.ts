@@ -12,11 +12,14 @@ describe('production-critical website flows', () => {
 
     expect(frontmatter).not.toContain('@amplitude/unified');
     expect(siteAnalytics).toContain(
-      "import { amplitudeBridge, initializeAmplitude } from '../lib/amplitude-client';",
+      "const { amplitudeBridge, initializeAmplitude } = await import('../lib/amplitude-client');",
     );
     expect(siteAnalytics).toContain("if (config.provider === 'amplitude')");
     expect(siteAnalytics).toContain('window.dwAmplitude = amplitudeBridge;');
     expect(siteAnalytics).toContain('initializeAmplitude()');
+    expect(siteAnalytics).not.toContain(
+      "import { amplitudeBridge, initializeAmplitude } from '../lib/amplitude-client';",
+    );
     expect(siteAnalytics).toContain(
       "{analyticsConfig.provider === 'vercel' && analyticsConfig.enableSpeedInsights && <SpeedInsights />}",
     );

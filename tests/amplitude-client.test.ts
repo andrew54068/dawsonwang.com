@@ -6,7 +6,7 @@ import {
 } from '../src/lib/amplitude-client';
 
 describe('Amplitude browser bridge', () => {
-  test('initializes once with the required options and flushes queued events', async () => {
+  test('initializes once with the required options and dispatches events', async () => {
     const initAll = vi.fn().mockResolvedValue(undefined);
     const track = vi.fn();
     const bridge = createAmplitudeBridge({ initAll, track });
@@ -23,6 +23,22 @@ describe('Amplitude browser bridge', () => {
     expect(initAll).toHaveBeenCalledWith(AMPLITUDE_API_KEY, AMPLITUDE_INIT_OPTIONS);
     expect(track).toHaveBeenCalledTimes(1);
     expect(track).toHaveBeenCalledWith('link_click', { link_id: 'threads' });
+  });
+
+  test('dispatches events immediately while initialization is still pending', () => {
+    let resolveInitialization!: () => void;
+    const initialization = new Promise<void>((resolve) => {
+      resolveInitialization = resolve;
+    });
+    const initAll = vi.fn().mockReturnValue(initialization);
+    const track = vi.fn();
+    const bridge = createAmplitudeBridge({ initAll, track });
+
+    bridge.event('link_click', { link_id: 'days' });
+
+    expect(initAll).toHaveBeenCalledTimes(1);
+    expect(track).toHaveBeenCalledWith('link_click', { link_id: 'days' });
+    resolveInitialization();
   });
 
   test('does not send an explicit pageview because Amplitude autocapture owns pageviews', async () => {
