@@ -6,6 +6,22 @@ const root = process.cwd();
 const source = (relativePath: string) => readFileSync(path.join(root, relativePath), 'utf8');
 
 describe('production-critical website flows', () => {
+  test('initializes Amplitude only from the browser analytics entry point', () => {
+    const siteAnalytics = source('src/components/SiteAnalytics.astro');
+    const frontmatter = siteAnalytics.slice(0, siteAnalytics.indexOf('---'));
+
+    expect(frontmatter).not.toContain('@amplitude/unified');
+    expect(siteAnalytics).toContain(
+      "import { amplitudeBridge, initializeAmplitude } from '../lib/amplitude-client';",
+    );
+    expect(siteAnalytics).toContain("if (config.provider === 'amplitude')");
+    expect(siteAnalytics).toContain('window.dwAmplitude = amplitudeBridge;');
+    expect(siteAnalytics).toContain('initializeAmplitude()');
+    expect(siteAnalytics).toContain(
+      "{analyticsConfig.provider === 'vercel' && analyticsConfig.enableSpeedInsights && <SpeedInsights />}",
+    );
+  });
+
   test('homepage renders the correct business page and appointment request form', () => {
     const home = source('src/pages/index.astro');
     const inquiryForm = source('src/components/InquiryForm.astro');
