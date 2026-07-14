@@ -18,6 +18,7 @@ describe('production-critical website flows', () => {
     expect(inquiryForm).toContain('id="inquire"');
     expect(inquiryForm).toMatch(/<form[^>]+action="\/api\/inquiry"[^>]+method="POST"/s);
     expect(inquiryForm).toContain('告訴我你想用 AI');
+    expect(inquiryForm).toContain("trackEvent('inquiry_submit')");
   });
 
   test('appointment request form posts every field required by the API contract', () => {
@@ -74,6 +75,8 @@ describe('production-critical website flows', () => {
       expect(`${nav}\n${footer}`).toContain(href);
     }
     expect(footer).toContain('社群與其他入口');
-    expect(footer).toContain('href="/links"');
+    expect(footer).toContain('utm_source=site');
+    expect(footer).toContain('utm_medium=footer');
+    expect(footer).toContain('utm_content=links-hub');
   });
 });

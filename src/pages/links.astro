@@ -40,6 +40,9 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
                 <a
                   class="link-card"
                   href={link.href}
+                  data-analytics-link
+                  data-link-id={link.id}
+                  data-link-placement="links_page"
                   target={link.external ? '_blank' : undefined}
                   rel={link.external ? 'noopener noreferrer' : undefined}
                 >
@@ -62,6 +65,19 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  import { trackEvent } from '../lib/analytics-client';
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-analytics-link]').forEach(link => {
+    link.addEventListener('click', () => {
+      trackEvent('link_click', {
+        link_id: link.dataset.linkId ?? 'unknown',
+        placement: 'links_page',
+      });
+    });
+  });
+</script>
 
 <style>
   .links-page {

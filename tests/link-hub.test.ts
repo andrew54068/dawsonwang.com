@@ -68,4 +68,13 @@ describe('links page content', () => {
     expect(page).toMatch(/min-height:\s*(44|64)px/);
     expect(page).toContain('linear-gradient');
   });
+
+  test('instruments link cards with stable IDs and click events', () => {
+    const page = source('src/pages/links.astro');
+
+    expect(page).toContain('data-analytics-link');
+    expect(page).toContain('data-link-id={link.id}');
+    expect(page).toContain("trackEvent('link_click'");
+    expect(page).toContain("placement: 'links_page'");
+  });
 });
