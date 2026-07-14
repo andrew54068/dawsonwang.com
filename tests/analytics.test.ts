@@ -3,12 +3,22 @@ import { createAnalyticsApi, installAnalytics } from '../src/lib/analytics-clien
 import { resolveAnalyticsConfig } from '../src/lib/analytics';
 
 describe('resolveAnalyticsConfig', () => {
-  test('defaults to optional Vercel analytics with speed insights enabled', () => {
+  test('defaults to Amplitude with browser autocapture and Session Replay', () => {
     expect(resolveAnalyticsConfig({})).toEqual({
-      provider: 'vercel',
+      provider: 'amplitude',
       enabled: true,
       endpoint: null,
-      enableSpeedInsights: true,
+      enableSpeedInsights: false,
+      autoTrackPageviews: false,
+    });
+  });
+
+  test('supports an explicit Amplitude provider', () => {
+    expect(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'amplitude' })).toEqual({
+      provider: 'amplitude',
+      enabled: true,
+      endpoint: null,
+      enableSpeedInsights: false,
       autoTrackPageviews: false,
     });
   });
@@ -109,6 +119,44 @@ describe('createAnalyticsApi', () => {
       name: 'cta_click',
       data: { source: 'hero', ordinal: 1 },
     });
+  });
+
+  test('amplitude provider dispatches custom events with attribution', () => {
+    const amplitudeDispatch = vi.fn();
+    const api = createAnalyticsApi(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'amplitude' }), {
+      fetchImpl: vi.fn(),
+      navigatorImpl: undefined,
+      path: '/links',
+      href: 'https://dawsonwang.com/links',
+      referrer: '',
+      title: 'Links',
+      attribution: { attribution_first_source: 'qr' },
+      amplitudeDispatch,
+    });
+
+    api.event('link_click', { link_id: 'threads' });
+
+    expect(amplitudeDispatch).toHaveBeenCalledWith('event', 'link_click', {
+      attribution_first_source: 'qr',
+      link_id: 'threads',
+    });
+  });
+
+  test('amplitude provider leaves pageviews to autocapture', () => {
+    const amplitudeDispatch = vi.fn();
+    const api = createAnalyticsApi(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'amplitude' }), {
+      fetchImpl: vi.fn(),
+      navigatorImpl: undefined,
+      path: '/links',
+      href: 'https://dawsonwang.com/links',
+      referrer: '',
+      title: 'Links',
+      amplitudeDispatch,
+    });
+
+    api.pageview();
+
+    expect(amplitudeDispatch).not.toHaveBeenCalled();
   });
 
   test('vercel provider never sends more than two custom event properties', () => {
@@ -319,6 +367,30 @@ describe('installAnalytics', () => {
     });
     const payload = va.mock.calls[0]?.[1] as { data?: Record<string, unknown> };
     expect(Object.keys(payload.data ?? {})).toHaveLength(2);
+  });
+
+  test('emits a full landing attribution event through the Amplitude bridge', () => {
+    const { targetWindow, targetDocument } = fakeEnvironment();
+    const amplitudeEvent = vi.fn();
+    targetWindow.dwAmplitude = {
+      event: amplitudeEvent,
+      pageview: vi.fn(),
+    };
+    targetWindow.location.search = '?utm_source=qr&utm_medium=offline&utm_campaign=2026-talk&utm_content=slide-cta';
+    targetWindow.location.href = 'https://dawsonwang.com/links?utm_source=qr&utm_medium=offline&utm_campaign=2026-talk&utm_content=slide-cta';
+
+    installAnalytics(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'amplitude' }), targetWindow, targetDocument);
+
+    expect(amplitudeEvent).toHaveBeenCalledWith('landing_attribution', {
+      attribution_first_source: 'qr',
+      attribution_first_medium: 'offline',
+      attribution_first_campaign: '2026-talk',
+      attribution_first_content: 'slide-cta',
+      attribution_last_source: 'qr',
+      attribution_last_medium: 'offline',
+      attribution_last_campaign: '2026-talk',
+      attribution_last_content: 'slide-cta',
+    });
   });
 
   test('none registers a no-op api and sends nothing on load', () => {

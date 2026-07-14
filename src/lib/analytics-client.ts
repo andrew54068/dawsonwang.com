@@ -15,11 +15,22 @@ export interface AnalyticsApiDependencies {
   title: string;
   attribution?: Record<string, string>;
   vercelDispatch?: (event: 'event' | 'pageview', properties?: unknown) => void;
+  amplitudeDispatch?: (
+    event: 'event' | 'pageview',
+    nameOrPath?: string,
+    properties?: AnalyticsEventProperties,
+  ) => void;
+}
+
+interface AnalyticsAmplitudeBridge {
+  event(name: string, properties?: AnalyticsEventProperties): void;
+  pageview(path?: string, properties?: AnalyticsEventProperties): void;
 }
 
 declare global {
   interface Window {
     dwAnalytics?: AnalyticsApi;
+    dwAmplitude?: AnalyticsAmplitudeBridge;
     va?: (event: 'beforeSend' | 'event' | 'pageview', properties?: unknown) => void;
   }
 }
@@ -144,6 +155,11 @@ export function createAnalyticsApi(
     pageview(path = deps.path) {
       if (!config.enabled) return;
 
+      if (config.provider === 'amplitude') {
+        // Amplitude's required autocapture configuration owns pageviews.
+        return;
+      }
+
       if (config.provider === 'vercel') {
         deps.vercelDispatch?.('pageview', { route: path, path });
         return;
@@ -165,6 +181,11 @@ export function createAnalyticsApi(
     event(name, properties) {
       const trimmedName = name.trim();
       if (!trimmedName || !config.enabled) return;
+
+      if (config.provider === 'amplitude') {
+        deps.amplitudeDispatch?.('event', trimmedName, withAttribution(properties));
+        return;
+      }
 
       if (config.provider === 'vercel') {
         const data = vercelEventData(trimmedName, properties, deps.attribution);
@@ -218,11 +239,23 @@ export function installAnalytics(
     title: targetDocument.title,
     attribution,
     vercelDispatch: targetWindow.va?.bind(targetWindow) as AnalyticsApiDependencies['vercelDispatch'],
+    amplitudeDispatch: targetWindow.dwAmplitude
+      ? (event, nameOrPath, properties) => {
+        if (event === 'event' && nameOrPath) {
+          targetWindow.dwAmplitude?.event(nameOrPath, properties);
+          return;
+        }
+
+        if (event === 'pageview') {
+          targetWindow.dwAmplitude?.pageview(nameOrPath, properties);
+        }
+      }
+      : undefined,
   });
 
   targetWindow.dwAnalytics = api;
 
-  if (config.provider === 'vercel' && captured.hasIncoming) {
+  if ((config.provider === 'vercel' || config.provider === 'amplitude') && captured.hasIncoming) {
     api.event('landing_attribution');
   }
 
