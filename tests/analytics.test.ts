@@ -47,6 +47,17 @@ describe('resolveAnalyticsConfig', () => {
 });
 
 describe('createAnalyticsApi', () => {
+  const populatedAttribution = {
+    attribution_first_source: 'qr',
+    attribution_first_medium: 'offline',
+    attribution_first_campaign: '2026-talk',
+    attribution_first_content: 'slide-cta',
+    attribution_last_source: 'threads',
+    attribution_last_medium: 'social',
+    attribution_last_campaign: 'profile',
+    attribution_last_content: 'bio',
+  };
+
   test('self-hosted provider posts pageviews to the configured endpoint', () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 202 }));
     const api = createAnalyticsApi(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'self-hosted' }), {
@@ -98,6 +109,100 @@ describe('createAnalyticsApi', () => {
       name: 'cta_click',
       data: { source: 'hero', ordinal: 1 },
     });
+  });
+
+  test('vercel provider never sends more than two custom event properties', () => {
+    const vercelDispatch = vi.fn();
+    const api = createAnalyticsApi(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'vercel' }), {
+      fetchImpl: vi.fn(),
+      navigatorImpl: undefined,
+      path: '/links',
+      href: 'https://dawsonwang.com/links',
+      referrer: '',
+      title: 'Links',
+      attribution: populatedAttribution,
+      vercelDispatch,
+    });
+
+    api.event('cta_click', { source: 'hero', ordinal: 1, extra: 'ignored' });
+
+    const payload = vercelDispatch.mock.calls[0]?.[1] as { data?: Record<string, unknown> };
+    expect(Object.keys(payload.data ?? {})).toHaveLength(2);
+  });
+
+  test('vercel link_click keeps exactly the required link contract', () => {
+    const vercelDispatch = vi.fn();
+    const api = createAnalyticsApi(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'vercel' }), {
+      fetchImpl: vi.fn(),
+      navigatorImpl: undefined,
+      path: '/links',
+      href: 'https://dawsonwang.com/links',
+      referrer: '',
+      title: 'Links',
+      attribution: populatedAttribution,
+      vercelDispatch,
+    });
+
+    api.event('link_click', {
+      link_id: 'threads',
+      placement: 'links_page',
+      source: 'extra-field-that-must-not-be-sent',
+    });
+
+    expect(vercelDispatch).toHaveBeenCalledWith('event', {
+      name: 'link_click',
+      data: {
+        link_id: 'threads',
+        placement: 'links_page',
+      },
+    });
+  });
+
+  test('vercel inquiry_submit uses compact attribution and omits placement', () => {
+    const vercelDispatch = vi.fn();
+    const api = createAnalyticsApi(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'vercel' }), {
+      fetchImpl: vi.fn(),
+      navigatorImpl: undefined,
+      path: '/',
+      href: 'https://dawsonwang.com/',
+      referrer: '',
+      title: 'Home',
+      attribution: populatedAttribution,
+      vercelDispatch,
+    });
+
+    api.event('inquiry_submit', {
+      placement: 'homepage_inquiry',
+      name: 'Person Example',
+    });
+
+    expect(vercelDispatch).toHaveBeenCalledWith('event', {
+      name: 'inquiry_submit',
+      data: {
+        utm_source: 'threads',
+        utm_content: 'bio',
+      },
+    });
+    const payload = vercelDispatch.mock.calls[0]?.[1] as { data?: Record<string, unknown> };
+    expect(Object.keys(payload.data ?? {})).toHaveLength(2);
+  });
+
+  test('vercel custom event values are capped at 255 characters', () => {
+    const vercelDispatch = vi.fn();
+    const api = createAnalyticsApi(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'vercel' }), {
+      fetchImpl: vi.fn(),
+      navigatorImpl: undefined,
+      path: '/',
+      href: 'https://dawsonwang.com/',
+      referrer: '',
+      title: 'Home',
+      vercelDispatch,
+    });
+
+    api.event('cta_click', { source: 'x'.repeat(300) });
+
+    const payload = vercelDispatch.mock.calls[0]?.[1] as { data?: Record<string, string> };
+    expect(payload.data?.source).toHaveLength(255);
   });
 
   test('merges attribution into self-hosted pageviews and custom events', () => {
@@ -198,22 +303,22 @@ describe('installAnalytics', () => {
     expect(va).not.toHaveBeenCalled();
   });
 
-  test('emits one landing attribution event for a tagged Vercel visit', () => {
+  test('emits one compact landing attribution event for a tagged Vercel visit', () => {
     const { targetWindow, targetDocument, va } = fakeEnvironment();
-    targetWindow.location.search = '?utm_source=qr&utm_medium=offline';
-    targetWindow.location.href = 'https://dawsonwang.com/links?utm_source=qr&utm_medium=offline';
+    targetWindow.location.search = '?utm_source=qr&utm_medium=offline&utm_campaign=2026-talk&utm_content=slide-cta';
+    targetWindow.location.href = 'https://dawsonwang.com/links?utm_source=qr&utm_medium=offline&utm_campaign=2026-talk&utm_content=slide-cta';
 
     installAnalytics(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'vercel' }), targetWindow, targetDocument);
 
     expect(va).toHaveBeenCalledWith('event', {
       name: 'landing_attribution',
       data: {
-        attribution_first_source: 'qr',
-        attribution_first_medium: 'offline',
-        attribution_last_source: 'qr',
-        attribution_last_medium: 'offline',
+        utm_source: 'qr',
+        utm_content: 'slide-cta',
       },
     });
+    const payload = va.mock.calls[0]?.[1] as { data?: Record<string, unknown> };
+    expect(Object.keys(payload.data ?? {})).toHaveLength(2);
   });
 
   test('none registers a no-op api and sends nothing on load', () => {

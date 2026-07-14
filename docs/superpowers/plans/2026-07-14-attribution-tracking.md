@@ -4,7 +4,7 @@
 
 **Goal:** Capture whitelisted UTM attribution in the browsing session and attach it to pageviews, link-hub clicks, and successful inquiry events.
 
-**Architecture:** Add a pure attribution module that parses the four supported UTM keys, stores first-touch and last-touch state in sessionStorage, and flattens the state into scalar analytics properties. Extend the existing analytics client/API rather than adding a second transport; add narrow event wiring to the link hub and inquiry form.
+**Architecture:** Add a pure attribution module that parses the four supported UTM keys, stores first-touch and last-touch state in sessionStorage, and flattens the state into scalar analytics properties. Extend the existing analytics client/API rather than adding a second transport; self-hosted analytics receives full flattened attribution, while Vercel custom events receive compact event-specific data that fits the lowest paid provider limit.
 
 **Tech Stack:** Astro 6, TypeScript, Vitest, Yarn 4, existing Vercel/self-hosted analytics adapters.
 
@@ -15,6 +15,7 @@
 - Store only first-party session state under dw_attribution; do not set a server-readable cookie.
 - Preserve first-touch values and replace last-touch values when a new tagged URL is visited.
 - Keep analytics properties scalar and exclude inquiry form contents and personally identifying fields.
+- Keep Vercel custom-event data to at most two scalar properties; Vercel event names, custom keys, and scalar values must be no longer than 255 characters.
 - Keep the no-JavaScript inquiry fallback unchanged.
 - Do not add durable analytics storage in this change; the current self-hosted endpoint continues to log validated events.
 
@@ -271,7 +272,9 @@ git commit -m "feat: capture session campaign attribution"
 
 **Interfaces:**
 - AnalyticsApiDependencies gains optional attribution: Record<string, string>.
-- createAnalyticsApi merges attribution into every custom event and self-hosted pageview.
+- createAnalyticsApi merges full attribution into self-hosted custom events and self-hosted pageviews.
+- createAnalyticsApi keeps the existing Vercel pageview dispatch shape and compacts Vercel custom events to at most two scalar properties.
+- Vercel link_click data is exactly link_id and placement; Vercel landing_attribution and inquiry_submit use compact utm_source and utm_content values derived from last/incoming attribution when present.
 - installAnalytics captures targetWindow.location.search using targetWindow.sessionStorage.
 
 - [ ] Step 1: Write failing analytics assertions
@@ -307,24 +310,26 @@ Add these assertions to tests/analytics.test.ts:
 Add a tagged Vercel installation test using the existing fake environment:
 
 ~~~ts
-  test('emits one landing attribution event for a tagged Vercel visit', () => {
+  test('emits one compact landing attribution event for a tagged Vercel visit', () => {
     const { targetWindow, targetDocument, va } = fakeEnvironment();
-    targetWindow.location.search = '?utm_source=qr&utm_medium=offline';
-    targetWindow.location.href = 'https://dawsonwang.com/links?utm_source=qr&utm_medium=offline';
+    targetWindow.location.search = '?utm_source=qr&utm_medium=offline&utm_campaign=2026-talk&utm_content=slide-cta';
+    targetWindow.location.href = 'https://dawsonwang.com/links?utm_source=qr&utm_medium=offline&utm_campaign=2026-talk&utm_content=slide-cta';
 
     installAnalytics(resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'vercel' }), targetWindow, targetDocument);
 
     expect(va).toHaveBeenCalledWith('event', {
       name: 'landing_attribution',
       data: {
-        attribution_first_source: 'qr',
-        attribution_first_medium: 'offline',
-        attribution_last_source: 'qr',
-        attribution_last_medium: 'offline',
+        utm_source: 'qr',
+        utm_content: 'slide-cta',
       },
     });
+    const payload = va.mock.calls[0]?.[1] as { data?: Record<string, unknown> };
+    expect(Object.keys(payload.data ?? {})).toHaveLength(2);
   });
 ~~~
+
+Add Vercel custom event cap tests to prove a populated first/last attribution state never creates more than two custom properties, link_click keeps exactly link_id and placement, inquiry_submit omits placement/form-like fields and uses compact utm_source/utm_content, and long Vercel custom values are capped at 255 characters.
 
 Add this pageview-properties assertion to tests/analytics-route.test.ts:
 
@@ -352,7 +357,7 @@ Run:
 yarn vitest run tests/analytics.test.ts tests/analytics-route.test.ts
 ~~~
 
-Expected: FAIL because attribution is not a dependency field, tagged installs do not emit landing_attribution, and pageview properties are not forwarded by the API.
+Expected: FAIL because attribution is not a dependency field, tagged installs do not emit compact landing_attribution, Vercel custom events are not capped, and pageview properties are not forwarded by the API.
 
 - [ ] Step 3: Extend analytics-client.ts with attribution context
 
@@ -367,7 +372,7 @@ export interface AnalyticsApiDependencies {
 }
 ~~~
 
-Inside createAnalyticsApi, merge the optional attribution before sanitizing:
+Inside createAnalyticsApi, keep the full self-hosted attribution merge before sanitizing:
 
 ~~~ts
 const withAttribution = (properties?: AnalyticsEventProperties) => (
@@ -375,7 +380,18 @@ const withAttribution = (properties?: AnalyticsEventProperties) => (
 );
 ~~~
 
-Use withAttribution(properties) for custom events. In the self-hosted pageview body, add properties: withAttribution(). Leave the Vercel pageview dispatch shape unchanged.
+Use withAttribution(properties) for self-hosted custom events. In the self-hosted pageview body, add properties: withAttribution(). Leave the Vercel pageview dispatch shape unchanged.
+
+Add a separate Vercel custom-event compaction path:
+
+~~~ts
+const VERCEL_MAX_CUSTOM_PROPERTIES = 2;
+const VERCEL_MAX_CUSTOM_LENGTH = 255;
+
+// link_click: compact to link_id and placement.
+// landing_attribution and inquiry_submit: compact to utm_source and utm_content.
+// Other Vercel custom events: keep at most two sanitized scalar properties, using compact attribution only when budget remains.
+~~~
 
 Inside installAnalytics, capture the session state before createAnalyticsApi:
 

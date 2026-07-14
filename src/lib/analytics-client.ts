@@ -24,6 +24,9 @@ declare global {
   }
 }
 
+const VERCEL_MAX_CUSTOM_PROPERTIES = 2;
+const VERCEL_MAX_CUSTOM_LENGTH = 255;
+
 function sanitizeProperties(properties?: AnalyticsEventProperties): AnalyticsEventProperties | undefined {
   if (!properties) return undefined;
 
@@ -34,6 +37,67 @@ function sanitizeProperties(properties?: AnalyticsEventProperties): AnalyticsEve
   ) as AnalyticsEventProperties;
 
   return Object.keys(sanitized).length > 0 ? sanitized : undefined;
+}
+
+function sanitizeVercelValue(
+  value: AnalyticsEventProperties[string] | undefined
+): AnalyticsEventProperties[string] | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value === 'string') return value.slice(0, VERCEL_MAX_CUSTOM_LENGTH);
+  return value;
+}
+
+function compactVercelProperties(
+  pairs: Array<[string, AnalyticsEventProperties[string] | undefined]>
+): AnalyticsEventProperties | undefined {
+  const compacted: AnalyticsEventProperties = {};
+
+  for (const [rawKey, rawValue] of pairs) {
+    if (Object.keys(compacted).length >= VERCEL_MAX_CUSTOM_PROPERTIES) break;
+
+    const key = rawKey.slice(0, VERCEL_MAX_CUSTOM_LENGTH);
+    const value = sanitizeVercelValue(rawValue);
+    if (!key || value === undefined) continue;
+
+    compacted[key] = value;
+  }
+
+  return Object.keys(compacted).length > 0 ? compacted : undefined;
+}
+
+function compactVercelAttribution(
+  attribution?: Record<string, string>
+): AnalyticsEventProperties | undefined {
+  return compactVercelProperties([
+    ['utm_source', attribution?.attribution_last_source ?? attribution?.attribution_first_source],
+    ['utm_content', attribution?.attribution_last_content ?? attribution?.attribution_first_content],
+  ]);
+}
+
+function vercelEventData(
+  name: string,
+  properties: AnalyticsEventProperties | undefined,
+  attribution?: Record<string, string>,
+): AnalyticsEventProperties | undefined {
+  const sanitizedProperties = sanitizeProperties(properties);
+
+  if (name === 'link_click') {
+    return compactVercelProperties([
+      ['link_id', sanitizedProperties?.link_id],
+      ['placement', sanitizedProperties?.placement],
+    ]);
+  }
+
+  if (name === 'landing_attribution' || name === 'inquiry_submit') {
+    return compactVercelAttribution(attribution);
+  }
+
+  const pairs = Object.entries(sanitizedProperties ?? {});
+  if (pairs.length < VERCEL_MAX_CUSTOM_PROPERTIES) {
+    pairs.push(...Object.entries(compactVercelAttribution(attribution) ?? {}));
+  }
+
+  return compactVercelProperties(pairs);
 }
 
 function postJson(
@@ -102,14 +166,16 @@ export function createAnalyticsApi(
       const trimmedName = name.trim();
       if (!trimmedName || !config.enabled) return;
 
-      const sanitizedProperties = withAttribution(properties);
-
       if (config.provider === 'vercel') {
-        deps.vercelDispatch?.('event', sanitizedProperties
-          ? { name: trimmedName, data: sanitizedProperties }
-          : { name: trimmedName });
+        const data = vercelEventData(trimmedName, properties, deps.attribution);
+        const vercelName = trimmedName.slice(0, VERCEL_MAX_CUSTOM_LENGTH);
+        deps.vercelDispatch?.('event', data
+          ? { name: vercelName, data }
+          : { name: vercelName });
         return;
       }
+
+      const sanitizedProperties = withAttribution(properties);
 
       if (config.provider === 'self-hosted' && config.endpoint) {
         postJson(config.endpoint, {
