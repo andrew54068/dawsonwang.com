@@ -228,4 +228,34 @@ describe('installAnalytics', () => {
     expect(fetchMock).not.toHaveBeenCalled();
     expect(va).not.toHaveBeenCalled();
   });
+
+  test('none provider does not capture tagged attribution or touch session storage', () => {
+    const { targetWindow, targetDocument, fetchMock, va } = fakeEnvironment();
+    const storage = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+    };
+    const sessionStorageGetter = vi.fn(() => storage);
+    Object.defineProperty(targetWindow, 'sessionStorage', {
+      configurable: true,
+      get: sessionStorageGetter,
+    });
+    targetWindow.location.search = '?utm_source=qr&utm_medium=offline';
+    targetWindow.location.href = 'https://dawsonwang.com/links?utm_source=qr&utm_medium=offline';
+
+    const api = installAnalytics(
+      resolveAnalyticsConfig({ PUBLIC_ANALYTICS_PROVIDER: 'none' }),
+      targetWindow,
+      targetDocument,
+    );
+    api.pageview();
+    api.event('cta_click', { source: 'hero' });
+
+    expect(targetWindow.dwAnalytics).toBe(api);
+    expect(sessionStorageGetter).not.toHaveBeenCalled();
+    expect(storage.getItem).not.toHaveBeenCalled();
+    expect(storage.setItem).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(va).not.toHaveBeenCalled();
+  });
 });

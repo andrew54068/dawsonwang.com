@@ -133,15 +133,16 @@ export function installAnalytics(
   targetDocument: Document = document
 ): AnalyticsApi {
   const path = `${targetWindow.location.pathname}${targetWindow.location.search}` || '/';
-  const storage = (() => {
-    try {
-      return targetWindow.sessionStorage;
-    } catch {
-      return undefined;
-    }
-  })();
-  const captured = captureAttribution(targetWindow.location.search, storage);
-  const attribution = toAnalyticsProperties(captured.state);
+  const captured = config.enabled
+    ? captureAttribution(targetWindow.location.search, (() => {
+      try {
+        return targetWindow.sessionStorage;
+      } catch {
+        return undefined;
+      }
+    })())
+    : { state: { firstTouch: {}, lastTouch: {} }, hasIncoming: false };
+  const attribution = config.enabled ? toAnalyticsProperties(captured.state) : undefined;
   const api = createAnalyticsApi(config, {
     fetchImpl: targetWindow.fetch.bind(targetWindow),
     navigatorImpl: targetWindow.navigator,

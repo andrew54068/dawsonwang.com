@@ -209,7 +209,7 @@
         });
         const message = inquiryErrorMessage(res);
         if (message === null) {
-          trackEvent('inquiry_submit');
+          trackEvent('inquiry_submit', { placement: 'homepage_inquiry' });
           form.hidden = true;
           success.hidden = false;
           success.focus(); // move focus off the now-hidden form

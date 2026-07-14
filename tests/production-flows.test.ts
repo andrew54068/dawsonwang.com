@@ -18,7 +18,10 @@ describe('production-critical website flows', () => {
     expect(inquiryForm).toContain('id="inquire"');
     expect(inquiryForm).toMatch(/<form[^>]+action="\/api\/inquiry"[^>]+method="POST"/s);
     expect(inquiryForm).toContain('告訴我你想用 AI');
-    expect(inquiryForm).toContain("trackEvent('inquiry_submit')");
+    expect(inquiryForm).toContain("trackEvent('inquiry_submit', { placement: 'homepage_inquiry' })");
+    expect(inquiryForm).toMatch(
+      /if \(message === null\) \{[\s\S]+trackEvent\('inquiry_submit', \{ placement: 'homepage_inquiry' \}\);[\s\S]+form\.hidden = true;/
+    );
   });
 
   test('appointment request form posts every field required by the API contract', () => {

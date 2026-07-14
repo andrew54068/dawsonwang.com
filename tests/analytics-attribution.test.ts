@@ -15,17 +15,16 @@ function storage(initial?: string) {
 
 describe('analytics attribution', () => {
   test('parses only supported UTM values and rejects empty or oversized values', () => {
+    const oversized = 'x'.repeat(101);
     const result = captureAttribution(
-      `?utm_source=qr&utm_medium=offline&utm_campaign=2026-talk&utm_content=slide-cta&email=person%40example.com&utm_term=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`,
+      `?utm_source=qr&utm_medium=&utm_campaign=2026-talk&utm_content=${oversized}&email=person%40example.com&utm_term=paid-search`,
       storage(),
     );
 
     expect(result.hasIncoming).toBe(true);
     expect(result.state.firstTouch).toEqual({
       utm_source: 'qr',
-      utm_medium: 'offline',
       utm_campaign: '2026-talk',
-      utm_content: 'slide-cta',
     });
     expect(result.state.lastTouch).toEqual(result.state.firstTouch);
   });
