@@ -50,4 +50,6 @@ public/search/
 .claude/workflows/
 .claude/skills/
 .agents/
+.playwright-mcp/
+case-ledger-desktop-top.png
 .env*
