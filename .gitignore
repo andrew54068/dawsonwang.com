@@ -48,4 +48,6 @@ public/search/
 .worktrees/
 .claude/worktrees/
 .claude/workflows/
+.claude/skills/
+.agents/
 .env*
