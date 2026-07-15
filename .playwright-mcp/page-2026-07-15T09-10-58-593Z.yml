@@ -1,0 +1,367 @@
+- generic [active] [ref=f1e1]:
+  - navigation [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - link "D Dawson Wang" [ref=f1e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f1e5]: D
+        - generic [ref=f1e6]: Dawson Wang
+      - list [ref=f1e7]:
+        - listitem [ref=f1e8]:
+          - link "作品集" [ref=f1e9] [cursor=pointer]:
+            - /url: /proof
+        - listitem [ref=f1e10]:
+          - link "所有文章" [ref=f1e11] [cursor=pointer]:
+            - /url: /days
+        - listitem [ref=f1e12]:
+          - link "主題" [ref=f1e13] [cursor=pointer]:
+            - /url: /topics
+        - listitem [ref=f1e14]:
+          - link "搜尋" [ref=f1e15] [cursor=pointer]:
+            - /url: /search
+      - generic [ref=f1e16]:
+        - button "切換為明亮主題" [ref=f1e17]
+        - link "預約諮詢 →" [ref=f1e21] [cursor=pointer]:
+          - /url: /#inquire
+  - main [ref=f1e22]:
+    - region [ref=f1e23]:
+      - heading "AI 工具落地與工作流諮詢" [level=1] [ref=f1e24]
+      - generic [ref=f1e25]:
+        - generic [ref=f1e27]:
+          - figure [ref=f1e33]:
+            - img "Dawson Wang，AI 工作流講師與顧問" [ref=f1e34]
+          - generic [ref=f1e35]:
+            - generic [ref=f1e36]: CASE
+            - strong [ref=f1e37]: "04"
+            - generic [ref=f1e38]: / 04
+        - navigation "Case Ledger scenes" [ref=f1e39]:
+          - link "00 CASE LEDGER / FIELD NOTES" [ref=f1e40] [cursor=pointer]:
+            - /url: "#opening"
+            - generic [ref=f1e41]: "00"
+            - emphasis [ref=f1e42]: CASE LEDGER / FIELD NOTES
+          - link "01 CASE 01 / 醫療" [ref=f1e43] [cursor=pointer]:
+            - /url: "#medical"
+            - generic [ref=f1e44]: "01"
+            - emphasis [ref=f1e45]: CASE 01 / 醫療
+          - link "02 CASE 02 / KOL 經紀" [ref=f1e46] [cursor=pointer]:
+            - /url: "#kol"
+            - generic [ref=f1e47]: "02"
+            - emphasis [ref=f1e48]: CASE 02 / KOL 經紀
+          - link "03 CASE 03 / LINE 工作流" [ref=f1e49] [cursor=pointer]:
+            - /url: "#line"
+            - generic [ref=f1e50]: "03"
+            - emphasis [ref=f1e51]: CASE 03 / LINE 工作流
+          - link "04 OFFICE HOURS / NEXT MOVE" [ref=f1e52] [cursor=pointer]:
+            - /url: "#office-hours"
+            - generic [ref=f1e53]: "04"
+            - emphasis [ref=f1e54]: OFFICE HOURS / NEXT MOVE
+        - generic [ref=f1e55]:
+          - article [ref=f1e56]:
+            - generic [ref=f1e57]:
+              - paragraph [ref=f1e58]: CASE LEDGER / FIELD NOTES
+              - heading "你缺的不是更多 AI 工具，是一條能跑的工作流。" [level=2] [ref=f1e59]
+              - paragraph [ref=f1e60]: 每個團隊的工具不同，但問題常常一樣：工作究竟在哪裡斷掉？
+              - list "CASE LEDGER / FIELD NOTES 標籤" [ref=f1e61]:
+                - listitem [ref=f1e62]: 診斷
+                - listitem [ref=f1e63]: 教學
+                - listitem [ref=f1e64]: 落地
+          - article [ref=f1e65]:
+            - generic [ref=f1e66]:
+              - paragraph [ref=f1e67]: CASE 01 / 醫療
+              - heading "把一份會更新的 SOP，變成診間能用的判斷。" [level=2] [ref=f1e68]
+              - paragraph [ref=f1e69]: 把複雜的 PDF 決策樹變成可查詢的上下文，支援醫師和病人的真實對話。
+              - list "CASE 01 / 醫療 標籤" [ref=f1e70]:
+                - listitem [ref=f1e71]: PDF SOP
+                - listitem [ref=f1e72]: decision tree
+                - listitem [ref=f1e73]: 即時查詢
+          - article [ref=f1e74]:
+            - generic [ref=f1e75]:
+              - paragraph [ref=f1e76]: CASE 02 / KOL 經紀
+              - heading "不是少用幾個工具，是讓一個案子重新看得懂。" [level=2] [ref=f1e77]
+              - paragraph [ref=f1e78]: 把 Spreadsheet 預算、LINE、Email、檔案與社群平台整理成一條可交接的工作流。
+              - list "CASE 02 / KOL 經紀 標籤" [ref=f1e79]:
+                - listitem [ref=f1e80]: 5+ 工具
+                - listitem [ref=f1e81]: workflow map
+                - listitem [ref=f1e82]: 可交接
+          - article [ref=f1e83]:
+            - generic [ref=f1e84]:
+              - paragraph [ref=f1e85]: CASE 03 / LINE 工作流
+              - heading "把散落的對話，帶回工作的上下文。" [level=2] [ref=f1e86]
+              - paragraph [ref=f1e87]: 有用的資訊其實已經在那裡；真正的工作是讓它在需要的時候找得到。
+              - list "CASE 03 / LINE 工作流 標籤" [ref=f1e88]:
+                - listitem [ref=f1e89]: LINE Desktop MCP
+                - listitem [ref=f1e90]: 本機資料
+                - listitem [ref=f1e91]: 可搜尋
+          - article [ref=f1e92]:
+            - generic [ref=f1e93]:
+              - paragraph [ref=f1e94]: OFFICE HOURS / NEXT MOVE
+              - heading "帶一個流程來，我們一起拆。" [level=2] [ref=f1e95]
+              - paragraph [ref=f1e96]: 從最耗費團隊時間的流程開始，帶走更清楚的診斷與一個可以執行的下一步。
+              - list "OFFICE HOURS / NEXT MOVE 標籤" [ref=f1e97]:
+                - listitem [ref=f1e98]: 30 分鐘
+                - listitem [ref=f1e99]: 線上
+                - listitem [ref=f1e100]: 從問題開始
+              - link "預約 30 分鐘 →" [ref=f1e101] [cursor=pointer]:
+                - /url: "#inquire"
+    - generic [ref=f1e102]:
+      - generic [ref=f1e103]:
+        - generic [ref=f1e104]: CASE STUDIES · 最近 3 場諮詢
+        - heading "他們本來卡在哪裡， 後來怎麼動起來。" [level=2] [ref=f1e105]: 他們本來卡在哪裡，後來怎麼動起來。
+      - generic [ref=f1e106]:
+        - link "諮詢 · 醫療 把 PDF SOP 拆成可查詢的決策樹（PyMuPDF + Claude），診間可即時帶病人理解選項 客戶 診所主治醫師 痛點 每位病人 2–3 分鐘，但療程的決策樹很複雜；國際 SOP 每 3 個月更新一次，看完一版就出兩版。 Day 096 看完整案例 →" [ref=f1e107] [cursor=pointer]:
+          - /url: /day/96
+          - generic [ref=f1e108]: 諮詢 · 醫療
+          - heading "把 PDF SOP 拆成可查詢的決策樹（PyMuPDF + Claude），診間可即時帶病人理解選項" [level=3] [ref=f1e109]
+          - generic [ref=f1e110]:
+            - generic [ref=f1e111]:
+              - term [ref=f1e112]: 客戶
+              - definition [ref=f1e113]: 診所主治醫師
+            - generic [ref=f1e114]:
+              - term [ref=f1e115]: 痛點
+              - definition [ref=f1e116]: 每位病人 2–3 分鐘，但療程的決策樹很複雜；國際 SOP 每 3 個月更新一次，看完一版就出兩版。
+          - generic [ref=f1e117]:
+            - generic [ref=f1e118]: Day 096
+            - generic [ref=f1e119]: 看完整案例 →
+        - link "諮詢 · KOL 經紀 找出「會用 AI」跟「用得好」之間的鴻溝，重新設計工作流 客戶 科技大廠 KOL 合作社群經理 痛點 一個案子分散在 Spreadsheet 預算、LINE 跟 agency、Email、檔案來回、社群平台發文 5+ 個工具。 Day 099 看完整案例 →" [ref=f1e120] [cursor=pointer]:
+          - /url: /day/99
+          - generic [ref=f1e121]: 諮詢 · KOL 經紀
+          - heading "找出「會用 AI」跟「用得好」之間的鴻溝，重新設計工作流" [level=3] [ref=f1e122]
+          - generic [ref=f1e123]:
+            - generic [ref=f1e124]:
+              - term [ref=f1e125]: 客戶
+              - definition [ref=f1e126]: 科技大廠 KOL 合作社群經理
+            - generic [ref=f1e127]:
+              - term [ref=f1e128]: 痛點
+              - definition [ref=f1e129]: 一個案子分散在 Spreadsheet 預算、LINE 跟 agency、Email、檔案來回、社群平台發文 5+ 個工具。
+          - generic [ref=f1e130]:
+            - generic [ref=f1e131]: Day 099
+            - generic [ref=f1e132]: 看完整案例 →
+        - link "諮詢 · LINE 重度使用者 用 LINE Desktop MCP 讓 AI 直接讀本機 LINE 對話——不用 API、不用申請開發者帳號 客戶 把工作群開在 LINE 的 PM / 老闆 痛點 對話散落 LINE 各群組和私聊，每次回顧某段都得自己慢慢翻。 Day 098 看完整案例 →" [ref=f1e133] [cursor=pointer]:
+          - /url: /day/98
+          - generic [ref=f1e134]: 諮詢 · LINE 重度使用者
+          - heading "用 LINE Desktop MCP 讓 AI 直接讀本機 LINE 對話——不用 API、不用申請開發者帳號" [level=3] [ref=f1e135]
+          - generic [ref=f1e136]:
+            - generic [ref=f1e137]:
+              - term [ref=f1e138]: 客戶
+              - definition [ref=f1e139]: 把工作群開在 LINE 的 PM / 老闆
+            - generic [ref=f1e140]:
+              - term [ref=f1e141]: 痛點
+              - definition [ref=f1e142]: 對話散落 LINE 各群組和私聊，每次回顧某段都得自己慢慢翻。
+          - generic [ref=f1e143]:
+            - generic [ref=f1e144]: Day 098
+            - generic [ref=f1e145]: 看完整案例 →
+      - link "看所有 165 篇實作 →" [ref=f1e147] [cursor=pointer]:
+        - /url: /days
+    - generic [ref=f1e148]:
+      - generic [ref=f1e149]:
+        - generic [ref=f1e150]: PERSONAL TOOLS · 我每天都在用
+        - heading "不只給客戶做， 我自己也每天用。" [level=2] [ref=f1e151]: 不只給客戶做，我自己也每天用。
+        - paragraph [ref=f1e152]: 下面這三個工具都從個人痛點出發，現在每天還在用——而且每一個都附完整源碼或步驟。
+      - generic [ref=f1e153]:
+        - article [ref=f1e154]:
+          - generic [ref=f1e155]: 知識管理
+          - heading "把 103 個 Arc 分頁變成 Obsidian 結構化筆記" [level=3] [ref=f1e156]
+          - generic [ref=f1e157]: 103 → 1
+          - generic [ref=f1e158]:
+            - generic [ref=f1e159]:
+              - term [ref=f1e160]: 起點
+              - definition [ref=f1e161]: 永遠看不完的「等等再看」分頁——資訊湧入的速度永遠比消化還快。
+            - generic [ref=f1e162]:
+              - term [ref=f1e163]: 產出
+              - definition [ref=f1e164]: Claude Code 一次轉成可搜尋知識庫，未來想用時找得回來。
+          - link "Day 071 · 看完整流程 →" [ref=f1e166] [cursor=pointer]:
+            - /url: /day/71
+        - article [ref=f1e167]:
+          - generic [ref=f1e168]: 學習工具
+          - heading "把 iPAS 195 題變成可以練習的網頁" [level=3] [ref=f1e169]
+          - generic [ref=f1e170]: 195 題 / 3 科 / 2 週
+          - generic [ref=f1e171]:
+            - generic [ref=f1e172]:
+              - term [ref=f1e173]: 起點
+              - definition [ref=f1e174]: 準備 iPAS AI 應用規劃師中級沒有像樣的線上題庫。
+            - generic [ref=f1e175]:
+              - term [ref=f1e176]: 產出
+              - definition [ref=f1e177]: 2 週上線一個證照題庫站，每題附解析，自己 ship 自己用。
+          - generic [ref=f1e178]:
+            - link "試用題庫 →" [ref=f1e179] [cursor=pointer]:
+              - /url: https://ipas-quiz-eight.vercel.app/
+            - link "Day 134 · 看完整流程 →" [ref=f1e180] [cursor=pointer]:
+              - /url: /day/134
+        - article [ref=f1e181]:
+          - generic [ref=f1e182]: 網站功能
+          - heading "幫網站加上語意搜尋——零月費、不用資料庫" [level=3] [ref=f1e183]
+          - generic [ref=f1e184]: 3 步 / $0 / 0 DB
+          - generic [ref=f1e185]:
+            - generic [ref=f1e186]:
+              - term [ref=f1e187]: 起點
+              - definition [ref=f1e188]: 朋友問：「你之前那篇講 Raycast 本地模型的，是哪一天？」我也答不出來。
+            - generic [ref=f1e189]:
+              - term [ref=f1e190]: 產出
+              - definition [ref=f1e191]: 3 步上線關鍵字 + 語意雙模式搜尋，整本站變成可問答的知識庫。
+          - generic [ref=f1e192]:
+            - link "試用本站搜尋 →" [ref=f1e193] [cursor=pointer]:
+              - /url: /search
+            - link "Day 139 · 看完整流程 →" [ref=f1e194] [cursor=pointer]:
+              - /url: /day/139
+    - generic [ref=f1e195]:
+      - generic [ref=f1e196]:
+        - generic [ref=f1e197]: SERVICES · 3 TIERS
+        - heading "三種介入深度， 同一套方法。" [level=2] [ref=f1e198]: 三種介入深度，同一套方法。
+        - paragraph [ref=f1e199]: 每個方案的產出都會 commit 到你們的 repo —— 沒有黑盒子，可驗收。
+      - generic [ref=f1e200]:
+        - generic [ref=f1e201]:
+          - generic [ref=f1e202]: 01 · implementation
+          - heading "AI 工具落地" [level=3] [ref=f1e203]
+          - paragraph [ref=f1e204]: 從 PoC 到上線、再到團隊接手。
+          - generic [ref=f1e205]: $ 預約討論後報價
+          - list [ref=f1e206]:
+            - listitem [ref=f1e207]: Claude Code 進駐你的團隊（skills、MCP、agent 工作流）
+            - listitem [ref=f1e208]: 把 PDF / SOP / 檔案變成可查詢的決策資產
+            - listitem [ref=f1e209]: 把散在 LINE / Email / Spreadsheet 的流程接起來
+          - generic [ref=f1e210]:
+            - generic [ref=f1e211]: featured
+            - link "聊聊合作 →" [ref=f1e212] [cursor=pointer]:
+              - /url: "#inquire"
+        - generic [ref=f1e213]:
+          - generic [ref=f1e214]: 02 · training
+          - heading "工作流培訓" [level=3] [ref=f1e215]
+          - paragraph [ref=f1e216]: 幫團隊建立持續使用 AI 的習慣與紀律。
+          - generic [ref=f1e217]: $ 預約討論後報價
+          - list [ref=f1e218]:
+            - listitem [ref=f1e219]: 團隊工作坊（半天 / 一天）
+            - listitem [ref=f1e220]: 1:1 教練（從個人工具出發）
+            - listitem [ref=f1e221]: 長期顧問陪跑（每週同步）
+          - generic [ref=f1e222]:
+            - generic [ref=f1e223]: available
+            - link "了解培訓 →" [ref=f1e224] [cursor=pointer]:
+              - /url: "#inquire"
+        - generic [ref=f1e225]:
+          - generic [ref=f1e226]: 03 · advisory
+          - heading "演講 / 顧問諮詢" [level=3] [ref=f1e227]
+          - paragraph [ref=f1e228]: 受邀演講、企業內訓、單次諮詢時段。
+          - generic [ref=f1e229]: $ 預約討論後報價
+          - list [ref=f1e230]:
+            - listitem [ref=f1e231]: 企業內訓（AI 工作流現況 / 落地路線圖）
+            - listitem [ref=f1e232]: 線上活動 / podcast 受訪
+            - listitem [ref=f1e233]: 1 hr pick-my-brain 諮詢時段
+          - generic [ref=f1e234]:
+            - generic [ref=f1e235]: available
+            - link "邀請演講 →" [ref=f1e236] [cursor=pointer]:
+              - /url: "#inquire"
+    - generic [ref=f1e237]:
+      - generic [ref=f1e238]:
+        - generic [ref=f1e239]: PROOF · 165 DAYS
+        - heading "每天一篇 AI 工具實戰。" [level=2] [ref=f1e240]
+        - paragraph [ref=f1e241]: 從 Claude Code skill 到 Threads bot、再到資安研究。完整公開：源碼、流程、踩雷、結果。
+      - generic [ref=f1e242]:
+        - complementary [ref=f1e243]:
+          - generic [ref=f1e244]: "165"
+          - generic [ref=f1e245]: 天連續產出
+        - generic [ref=f1e246]:
+          - figure "Threads · daily views 108 / 165" [ref=f1e247]:
+            - generic [ref=f1e248]:
+              - generic [ref=f1e249]: Threads · daily views
+              - generic [ref=f1e250]: 108 / 165
+            - generic [ref=f1e255]:
+              - generic [ref=f1e256]: 累計 368K 觀看
+              - generic [ref=f1e257]: peak day 8 · 56K
+          - figure "Facebook · daily reach 42" [ref=f1e258]:
+            - generic [ref=f1e259]:
+              - generic [ref=f1e260]: Facebook · daily reach
+              - generic [ref=f1e261]: "42"
+            - generic [ref=f1e305]:
+              - generic [ref=f1e306]: 累計 126K 觸及
+              - generic [ref=f1e307]: peak day 98 · 37K
+          - generic [ref=f1e308]: LinkedIn 另曝光 207 次
+      - link "看完整作品集 →" [ref=f1e310] [cursor=pointer]:
+        - /url: /proof
+    - generic [ref=f1e312]:
+      - generic [ref=f1e313]:
+        - generic [ref=f1e314]: CONSULTATION · ASYNC
+        - heading "告訴我你想用 AI 解決什麼。" [level=2] [ref=f1e315]: 告訴我你想用 AI解決什麼。
+        - paragraph [ref=f1e316]: 填表後 1–2 個工作日內回覆。 合適會附上預約連結；不合適會直接說。
+        - generic [ref=f1e317]:
+          - generic [ref=f1e318]:
+            - generic [ref=f1e319]: →
+            - generic [ref=f1e320]: 沒有 newsletter，沒有自動加群組
+          - generic [ref=f1e321]:
+            - generic [ref=f1e322]: →
+            - generic [ref=f1e323]: 所有對話都會保密
+          - generic [ref=f1e324]:
+            - generic [ref=f1e325]: →
+            - generic [ref=f1e326]: 報價在第二輪對話後給
+        - generic [ref=f1e327]: 最近諮詢的客戶來自：旅遊 · 醫療 · KOL 經紀 · 自媒體
+      - generic [ref=f1e328]:
+        - generic [ref=f1e329]:
+          - generic [ref=f1e330]: 姓名
+          - textbox "姓名" [ref=f1e331]
+        - generic [ref=f1e332]:
+          - generic [ref=f1e333]: Email
+          - textbox "Email" [invalid] [ref=f1e334]
+        - generic [ref=f1e335]:
+          - generic [ref=f1e336]: 公司 / 組織
+          - textbox "公司 / 組織" [ref=f1e337]
+        - generic [ref=f1e338]:
+          - generic [ref=f1e339]: 想用 AI 做什麼？
+          - textbox "想用 AI 做什麼？ 最多 300 字" [ref=f1e340]
+          - generic [ref=f1e341]: 最多 300 字
+        - group "團隊規模" [ref=f1e342]:
+          - generic [ref=f1e344]:
+            - generic [ref=f1e345] [cursor=pointer]:
+              - radio "1-5"
+              - generic [ref=f1e346]: 1-5
+            - generic [ref=f1e347] [cursor=pointer]:
+              - radio "6-30"
+              - generic [ref=f1e348]: 6-30
+            - generic [ref=f1e349] [cursor=pointer]:
+              - radio "31-100"
+              - generic [ref=f1e350]: 31-100
+            - generic [ref=f1e351] [cursor=pointer]:
+              - radio "100+"
+              - generic [ref=f1e352]: 100+
+        - group "預算量級（NTD）" [ref=f1e353]:
+          - generic [ref=f1e355]:
+            - generic [ref=f1e356] [cursor=pointer]:
+              - radio "< 10 萬"
+              - generic [ref=f1e357]: < 10 萬
+            - generic [ref=f1e358] [cursor=pointer]:
+              - radio "10–30 萬"
+              - generic [ref=f1e359]: 10–30 萬
+            - generic [ref=f1e360] [cursor=pointer]:
+              - radio "30–80 萬"
+              - generic [ref=f1e361]: 30–80 萬
+            - generic [ref=f1e362] [cursor=pointer]:
+              - radio "> 80 萬"
+              - generic [ref=f1e363]: "> 80 萬"
+        - group "時程" [ref=f1e364]:
+          - generic [ref=f1e366]:
+            - generic [ref=f1e367] [cursor=pointer]:
+              - radio "本月內"
+              - generic [ref=f1e368]: 本月內
+            - generic [ref=f1e369] [cursor=pointer]:
+              - radio "本季"
+              - generic [ref=f1e370]: 本季
+            - generic [ref=f1e371] [cursor=pointer]:
+              - radio "只是先了解"
+              - generic [ref=f1e372]: 只是先了解
+        - button "送出 →" [disabled] [ref=f1e373]
+  - contentinfo [ref=f1e374]:
+    - generic [ref=f1e375]:
+      - generic [ref=f1e376]:
+        - generic [ref=f1e377]: Dawson Wang
+        - generic [ref=f1e378]: 我幫台灣團隊把 AI 工具落地
+        - link "預約諮詢 →" [ref=f1e379] [cursor=pointer]:
+          - /url: /#inquire
+      - list [ref=f1e380]:
+        - listitem [ref=f1e381]:
+          - link "所有文章" [ref=f1e382] [cursor=pointer]:
+            - /url: /days
+        - listitem [ref=f1e383]:
+          - link "主題" [ref=f1e384] [cursor=pointer]:
+            - /url: /topics
+        - listitem [ref=f1e385]:
+          - link "作品集" [ref=f1e386] [cursor=pointer]:
+            - /url: /proof
+        - listitem [ref=f1e387]:
+          - link "搜尋" [ref=f1e388] [cursor=pointer]:
+            - /url: /search
+      - generic [ref=f1e389]: © 2026 Dawson Wang · GMT+8
