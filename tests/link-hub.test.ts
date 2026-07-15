@@ -6,9 +6,9 @@ import { LINK_GROUPS } from '../src/data/link-hub';
 const source = (relativePath: string) => readFileSync(path.join(process.cwd(), relativePath), 'utf8');
 
 describe('links page content', () => {
-  test('contains the three expected groups and seven supplied destinations', () => {
-    expect(LINK_GROUPS.map(group => group.id)).toEqual(['social', 'explore', 'collaborate']);
-    expect(LINK_GROUPS.flatMap(group => group.links)).toHaveLength(7);
+  test('contains the four expected groups and nine supplied destinations', () => {
+    expect(LINK_GROUPS.map(group => group.id)).toEqual(['social', 'explore', 'collaborate', 'contact']);
+    expect(LINK_GROUPS.flatMap(group => group.links)).toHaveLength(9);
     expect(LINK_GROUPS.flatMap(group => group.links).map(link => link.href)).toEqual([
       'https://www.threads.com/@andrew54068',
       'https://www.facebook.com/andrew.wang.716',
@@ -17,6 +17,8 @@ describe('links page content', () => {
       '/days',
       'https://calendar.app.google/FBHsAyW6zJ529aAb6',
       'https://calendar.app.google/xLSLkAUNnc2MVSsd9',
+      'mailto:dawsonwang54068@gmail.com',
+      'https://line.me/ti/p/~andrew54068',
     ]);
   });
 
@@ -34,7 +36,7 @@ describe('links page content', () => {
       LINK_GROUPS.flatMap(group => group.links).map(link => [link.id, link]),
     );
 
-    for (const id of ['threads', 'facebook', 'instagram', 'consultation', 'partnership']) {
+    for (const id of ['threads', 'facebook', 'instagram', 'consultation', 'partnership', 'email', 'line']) {
       expect(links[id]).toMatchObject({ external: true });
     }
   });
