@@ -1,6 +1,6 @@
 export const DEFAULT_ANALYTICS_ENDPOINT = '/api/analytics';
 
-export const ANALYTICS_PROVIDERS = ['none', 'vercel', 'self-hosted'] as const;
+export const ANALYTICS_PROVIDERS = ['none', 'vercel', 'self-hosted', 'amplitude'] as const;
 export type AnalyticsProvider = (typeof ANALYTICS_PROVIDERS)[number];
 export type AnalyticsEventProperties = Record<string, string | number | boolean | null>;
 
@@ -14,10 +14,10 @@ export interface AnalyticsConfig {
 
 function normalizeProvider(raw: string | undefined): AnalyticsProvider {
   const candidate = raw?.trim().toLowerCase();
-  if (candidate === 'none' || candidate === 'vercel' || candidate === 'self-hosted') {
+  if (candidate === 'none' || candidate === 'vercel' || candidate === 'self-hosted' || candidate === 'amplitude') {
     return candidate;
   }
-  return 'vercel';
+  return 'amplitude';
 }
 
 export function resolveAnalyticsConfig(
@@ -39,6 +39,16 @@ export function resolveAnalyticsConfig(
     return {
       provider,
       enabled: false,
+      endpoint: null,
+      enableSpeedInsights: false,
+      autoTrackPageviews: false,
+    };
+  }
+
+  if (provider === 'amplitude') {
+    return {
+      provider,
+      enabled: true,
       endpoint: null,
       enableSpeedInsights: false,
       autoTrackPageviews: false,

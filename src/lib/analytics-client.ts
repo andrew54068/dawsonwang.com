@@ -1,4 +1,5 @@
 import type { AnalyticsConfig, AnalyticsEventProperties } from './analytics';
+import { captureAttribution, toAnalyticsProperties } from './analytics-attribution';
 
 export interface AnalyticsApi {
   pageview(path?: string): void;
@@ -12,15 +13,30 @@ export interface AnalyticsApiDependencies {
   href: string;
   referrer: string;
   title: string;
+  attribution?: Record<string, string>;
   vercelDispatch?: (event: 'event' | 'pageview', properties?: unknown) => void;
+  amplitudeDispatch?: (
+    event: 'event' | 'pageview',
+    nameOrPath?: string,
+    properties?: AnalyticsEventProperties,
+  ) => void;
+}
+
+interface AnalyticsAmplitudeBridge {
+  event(name: string, properties?: AnalyticsEventProperties): void;
+  pageview(path?: string, properties?: AnalyticsEventProperties): void;
 }
 
 declare global {
   interface Window {
     dwAnalytics?: AnalyticsApi;
+    dwAmplitude?: AnalyticsAmplitudeBridge;
     va?: (event: 'beforeSend' | 'event' | 'pageview', properties?: unknown) => void;
   }
 }
+
+const VERCEL_MAX_CUSTOM_PROPERTIES = 2;
+const VERCEL_MAX_CUSTOM_LENGTH = 255;
 
 function sanitizeProperties(properties?: AnalyticsEventProperties): AnalyticsEventProperties | undefined {
   if (!properties) return undefined;
@@ -32,6 +48,67 @@ function sanitizeProperties(properties?: AnalyticsEventProperties): AnalyticsEve
   ) as AnalyticsEventProperties;
 
   return Object.keys(sanitized).length > 0 ? sanitized : undefined;
+}
+
+function sanitizeVercelValue(
+  value: AnalyticsEventProperties[string] | undefined
+): AnalyticsEventProperties[string] | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value === 'string') return value.slice(0, VERCEL_MAX_CUSTOM_LENGTH);
+  return value;
+}
+
+function compactVercelProperties(
+  pairs: Array<[string, AnalyticsEventProperties[string] | undefined]>
+): AnalyticsEventProperties | undefined {
+  const compacted: AnalyticsEventProperties = {};
+
+  for (const [rawKey, rawValue] of pairs) {
+    if (Object.keys(compacted).length >= VERCEL_MAX_CUSTOM_PROPERTIES) break;
+
+    const key = rawKey.slice(0, VERCEL_MAX_CUSTOM_LENGTH);
+    const value = sanitizeVercelValue(rawValue);
+    if (!key || value === undefined) continue;
+
+    compacted[key] = value;
+  }
+
+  return Object.keys(compacted).length > 0 ? compacted : undefined;
+}
+
+function compactVercelAttribution(
+  attribution?: Record<string, string>
+): AnalyticsEventProperties | undefined {
+  return compactVercelProperties([
+    ['utm_source', attribution?.attribution_last_source ?? attribution?.attribution_first_source],
+    ['utm_content', attribution?.attribution_last_content ?? attribution?.attribution_first_content],
+  ]);
+}
+
+function vercelEventData(
+  name: string,
+  properties: AnalyticsEventProperties | undefined,
+  attribution?: Record<string, string>,
+): AnalyticsEventProperties | undefined {
+  const sanitizedProperties = sanitizeProperties(properties);
+
+  if (name === 'link_click') {
+    return compactVercelProperties([
+      ['link_id', sanitizedProperties?.link_id],
+      ['placement', sanitizedProperties?.placement],
+    ]);
+  }
+
+  if (name === 'landing_attribution' || name === 'inquiry_submit') {
+    return compactVercelAttribution(attribution);
+  }
+
+  const pairs = Object.entries(sanitizedProperties ?? {});
+  if (pairs.length < VERCEL_MAX_CUSTOM_PROPERTIES) {
+    pairs.push(...Object.entries(compactVercelAttribution(attribution) ?? {}));
+  }
+
+  return compactVercelProperties(pairs);
 }
 
 function postJson(
@@ -70,9 +147,18 @@ export function createAnalyticsApi(
   config: AnalyticsConfig,
   deps: AnalyticsApiDependencies
 ): AnalyticsApi {
+  const withAttribution = (properties?: AnalyticsEventProperties) => (
+    sanitizeProperties({ ...deps.attribution, ...properties })
+  );
+
   return {
     pageview(path = deps.path) {
       if (!config.enabled) return;
+
+      if (config.provider === 'amplitude') {
+        // Amplitude's required autocapture configuration owns pageviews.
+        return;
+      }
 
       if (config.provider === 'vercel') {
         deps.vercelDispatch?.('pageview', { route: path, path });
@@ -86,6 +172,7 @@ export function createAnalyticsApi(
           url: absoluteUrl(path, deps.href),
           referrer: deps.referrer || undefined,
           title: deps.title || undefined,
+          properties: withAttribution(),
           sentAt: new Date().toISOString(),
         }, deps);
       }
@@ -95,14 +182,21 @@ export function createAnalyticsApi(
       const trimmedName = name.trim();
       if (!trimmedName || !config.enabled) return;
 
-      const sanitizedProperties = sanitizeProperties(properties);
-
-      if (config.provider === 'vercel') {
-        deps.vercelDispatch?.('event', sanitizedProperties
-          ? { name: trimmedName, data: sanitizedProperties }
-          : { name: trimmedName });
+      if (config.provider === 'amplitude') {
+        deps.amplitudeDispatch?.('event', trimmedName, withAttribution(properties));
         return;
       }
+
+      if (config.provider === 'vercel') {
+        const data = vercelEventData(trimmedName, properties, deps.attribution);
+        const vercelName = trimmedName.slice(0, VERCEL_MAX_CUSTOM_LENGTH);
+        deps.vercelDispatch?.('event', data
+          ? { name: vercelName, data }
+          : { name: vercelName });
+        return;
+      }
+
+      const sanitizedProperties = withAttribution(properties);
 
       if (config.provider === 'self-hosted' && config.endpoint) {
         postJson(config.endpoint, {
@@ -126,6 +220,16 @@ export function installAnalytics(
   targetDocument: Document = document
 ): AnalyticsApi {
   const path = `${targetWindow.location.pathname}${targetWindow.location.search}` || '/';
+  const captured = config.enabled
+    ? captureAttribution(targetWindow.location.search, (() => {
+      try {
+        return targetWindow.sessionStorage;
+      } catch {
+        return undefined;
+      }
+    })())
+    : { state: { firstTouch: {}, lastTouch: {} }, hasIncoming: false };
+  const attribution = config.enabled ? toAnalyticsProperties(captured.state) : undefined;
   const api = createAnalyticsApi(config, {
     fetchImpl: targetWindow.fetch.bind(targetWindow),
     navigatorImpl: targetWindow.navigator,
@@ -133,10 +237,27 @@ export function installAnalytics(
     href: targetWindow.location.href,
     referrer: targetDocument.referrer,
     title: targetDocument.title,
+    attribution,
     vercelDispatch: targetWindow.va?.bind(targetWindow) as AnalyticsApiDependencies['vercelDispatch'],
+    amplitudeDispatch: targetWindow.dwAmplitude
+      ? (event, nameOrPath, properties) => {
+        if (event === 'event' && nameOrPath) {
+          targetWindow.dwAmplitude?.event(nameOrPath, properties);
+          return;
+        }
+
+        if (event === 'pageview') {
+          targetWindow.dwAmplitude?.pageview(nameOrPath, properties);
+        }
+      }
+      : undefined,
   });
 
   targetWindow.dwAnalytics = api;
+
+  if ((config.provider === 'vercel' || config.provider === 'amplitude') && captured.hasIncoming) {
+    api.event('landing_attribution');
+  }
 
   if (config.autoTrackPageviews) {
     api.pageview(path);

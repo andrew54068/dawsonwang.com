@@ -6,6 +6,25 @@ const root = process.cwd();
 const source = (relativePath: string) => readFileSync(path.join(root, relativePath), 'utf8');
 
 describe('production-critical website flows', () => {
+  test('initializes Amplitude only from the browser analytics entry point', () => {
+    const siteAnalytics = source('src/components/SiteAnalytics.astro');
+    const frontmatter = siteAnalytics.slice(0, siteAnalytics.indexOf('---'));
+
+    expect(frontmatter).not.toContain('@amplitude/unified');
+    expect(siteAnalytics).toContain(
+      "const { amplitudeBridge, initializeAmplitude } = await import('../lib/amplitude-client');",
+    );
+    expect(siteAnalytics).toContain("if (config.provider === 'amplitude')");
+    expect(siteAnalytics).toContain('window.dwAmplitude = amplitudeBridge;');
+    expect(siteAnalytics).toContain('initializeAmplitude()');
+    expect(siteAnalytics).not.toContain(
+      "import { amplitudeBridge, initializeAmplitude } from '../lib/amplitude-client';",
+    );
+    expect(siteAnalytics).toContain(
+      "{analyticsConfig.provider === 'vercel' && analyticsConfig.enableSpeedInsights && <SpeedInsights />}",
+    );
+  });
+
   test('homepage renders the correct business page and appointment request form', () => {
     const home = source('src/pages/index.astro');
     const inquiryForm = source('src/components/InquiryForm.astro');
@@ -18,6 +37,10 @@ describe('production-critical website flows', () => {
     expect(inquiryForm).toContain('id="inquire"');
     expect(inquiryForm).toMatch(/<form[^>]+action="\/api\/inquiry"[^>]+method="POST"/s);
     expect(inquiryForm).toContain('告訴我你想用 AI');
+    expect(inquiryForm).toContain("trackEvent('inquiry_submit', { placement: 'homepage_inquiry' })");
+    expect(inquiryForm).toMatch(
+      /if \(message === null\) \{[\s\S]+trackEvent\('inquiry_submit', \{ placement: 'homepage_inquiry' \}\);[\s\S]+form\.hidden = true;/
+    );
   });
 
   test('appointment request form posts every field required by the API contract', () => {
@@ -73,5 +96,9 @@ describe('production-critical website flows', () => {
     for (const href of ['href="/"', 'href="/days"', 'href="/topics"', 'href="/search"', 'href="/#inquire"']) {
       expect(`${nav}\n${footer}`).toContain(href);
     }
+    expect(footer).toContain('社群與其他入口');
+    expect(footer).toContain(
+      'href="/links?utm_source=site&utm_medium=footer&utm_campaign=navigation&utm_content=links-hub"',
+    );
   });
 });

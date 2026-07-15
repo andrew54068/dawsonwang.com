@@ -9,7 +9,7 @@ const analyticsConfig = resolveAnalyticsConfig(import.meta.env);
 const serializedConfig = JSON.stringify(analyticsConfig).replace(/</g, '\\u003c');
 ---
 {analyticsConfig.provider === 'vercel' && <Analytics />}
-{analyticsConfig.enableSpeedInsights && <SpeedInsights />}
+{analyticsConfig.provider === 'vercel' && analyticsConfig.enableSpeedInsights && <SpeedInsights />}
 <script type="application/json" id="dw-analytics-config" is:inline set:html={serializedConfig} />
 <script>
   // Processed (bundled) script: Astro/Vite resolves this import into a hashed
@@ -17,8 +17,20 @@ const serializedConfig = JSON.stringify(analyticsConfig).replace(/</g, '\\u003c'
   // the bare specifier to the browser unresolved.
   import { installAnalytics } from '../lib/analytics-client';
 
+  const installConfiguredAnalytics = async (config: Parameters<typeof installAnalytics>[0]) => {
+    if (config.provider === 'amplitude') {
+      const { amplitudeBridge, initializeAmplitude } = await import('../lib/amplitude-client');
+      window.dwAmplitude = amplitudeBridge;
+      void initializeAmplitude().catch((error) => {
+        console.error('[analytics] Amplitude initialization failed', error);
+      });
+    }
+
+    installAnalytics(config);
+  };
+
   const configElement = document.getElementById('dw-analytics-config');
   if (configElement?.textContent) {
-    installAnalytics(JSON.parse(configElement.textContent));
+    void installConfiguredAnalytics(JSON.parse(configElement.textContent));
   }
 </script>

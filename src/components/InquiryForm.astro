@@ -155,6 +155,7 @@
     INQUIRY_EMAIL_HINT,
     INQUIRY_NETWORK_ERROR,
   } from '../lib/inquiry-client';
+  import { trackEvent } from '../lib/analytics-client';
 
   const email = document.getElementById('inq-email') as HTMLInputElement | null;
   const hint = document.getElementById('inq-email-hint') as HTMLElement | null;
@@ -208,6 +209,7 @@
         });
         const message = inquiryErrorMessage(res);
         if (message === null) {
+          trackEvent('inquiry_submit', { placement: 'homepage_inquiry' });
           form.hidden = true;
           success.hidden = false;
           success.focus(); // move focus off the now-hidden form
@@ -227,4 +229,3 @@
     refresh(false);
   }
 </script>
-

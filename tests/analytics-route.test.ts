@@ -39,6 +39,20 @@ describe('POST /api/analytics', () => {
     expect(String(infoSpy.mock.calls[0]?.[1] ?? '')).toContain('"type":"pageview"');
   });
 
+  test('accepts scalar attribution properties on pageviews', async () => {
+    const res = await POST({
+      request: buildRequest({
+        type: 'pageview',
+        path: '/links?utm_source=qr',
+        url: 'https://dawsonwang.com/links?utm_source=qr',
+        properties: { attribution_first_source: 'qr' },
+      }),
+    } as any);
+
+    expect(res.status).toBe(202);
+    expect(String(infoSpy.mock.calls[0]?.[1] ?? '')).toContain('attribution_first_source');
+  });
+
   test('rejects cross-origin callers', async () => {
     const res = await POST({
       request: buildRequest(
