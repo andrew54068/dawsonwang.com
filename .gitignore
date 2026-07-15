@@ -48,4 +48,8 @@ public/search/
 .worktrees/
 .claude/worktrees/
 .claude/workflows/
+.claude/skills/
+.agents/
+.playwright-mcp/
+case-ledger-desktop-top.png
 .env*

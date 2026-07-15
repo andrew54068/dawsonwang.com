@@ -7,7 +7,7 @@ export interface LinkHubLink {
 }
 
 export interface LinkHubGroup {
-  id: 'social' | 'explore' | 'collaborate';
+  id: 'social' | 'explore' | 'collaborate' | 'contact';
   label: string;
   links: readonly LinkHubLink[];
 }
@@ -76,6 +76,26 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
         label: '合作洽談',
         href: 'https://calendar.app.google/xLSLkAUNnc2MVSsd9',
         description: '談演講、培訓、顧問或 AI 工具落地',
+        external: true,
+      },
+    ],
+  },
+  {
+    id: 'contact',
+    label: '聯絡',
+    links: [
+      {
+        id: 'email',
+        label: 'Email',
+        href: 'mailto:dawsonwang54068@gmail.com',
+        description: '直接寫信給我，聊聊你的需求',
+        external: true,
+      },
+      {
+        id: 'line',
+        label: 'LINE',
+        href: 'https://line.me/ti/p/~andrew54068',
+        description: '加 LINE 好友，用訊息直接找我',
         external: true,
       },
     ],
