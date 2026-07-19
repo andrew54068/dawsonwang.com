@@ -32,10 +32,40 @@ const links = [
         </svg>
       </button>
       <a href="/#inquire"
-         class="nav-cta text-white text-[13px] font-display font-semibold px-3.5 py-1.5 rounded-md transition-transform duration-150 no-underline">
+         class="nav-cta hidden sm:inline-block text-white text-[13px] font-display font-semibold px-3.5 py-1.5 rounded-md transition-transform duration-150 no-underline">
         預約諮詢 →
       </a>
+      <button id="menu-toggle" type="button" aria-label="開啟選單" aria-controls="mobile-menu" aria-expanded="false"
+              class="sm:hidden w-8 h-8 grid place-items-center rounded-md bg-surface-1 hover:bg-surface-2 border border-rule text-muted hover:text-ink transition-colors duration-150">
+        <svg class="menu-open" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg class="menu-close" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+        </svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile-only dropdown: the desktop link row is display:none below `sm`,
+       so this is the only way to reach the section pages on phones. -->
+  <div id="mobile-menu" class="sm:hidden absolute top-full left-0 right-0 border-b border-rule bg-paper/95 backdrop-blur-md shadow-lg">
+    <ul class="max-w-5xl mx-auto px-8 py-3 flex flex-col gap-1 list-none m-0">
+      {links.map(l => (
+        <li>
+          <a href={l.href} class="mobile-link block px-3 py-2.5 text-muted text-sm font-display hover:text-ink hover:bg-surface-1 rounded-md transition-colors duration-150 no-underline">{l.label}</a>
+        </li>
+      ))}
+      <li>
+        <a href="/#inquire"
+           class="mobile-link nav-cta mt-1 block text-center text-white text-sm font-display font-semibold px-3.5 py-2.5 rounded-md no-underline">
+          預約諮詢 →
+        </a>
+      </li>
+    </ul>
   </div>
 </nav>
 
@@ -47,6 +77,31 @@ const links = [
   #theme-toggle .theme-moon { display: none; }
   :root[data-theme="stripe"] #theme-toggle .theme-sun  { display: none; }
   :root[data-theme="stripe"] #theme-toggle .theme-moon { display: block; }
+
+  /* Hamburger ⇄ close icon, driven by the button's expanded state. */
+  #menu-toggle .menu-close { display: none; }
+  #menu-toggle[aria-expanded="true"] .menu-open  { display: none; }
+  #menu-toggle[aria-expanded="true"] .menu-close { display: block; }
+
+  /* Mobile dropdown: hidden + non-interactive until opened, with a subtle
+     fade/slide. `sm:hidden` (display:none ≥640px) keeps it phones-only; we
+     drive visibility here rather than toggling `display` so it can animate. */
+  #mobile-menu {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 160ms ease, transform 160ms ease, visibility 160ms;
+  }
+  #mobile-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-menu { transition: none; }
+  }
 
   /* Saturated CTA — high contrast against both Linear and Stripe surfaces.
      Uses brick (Linear: purple, Stripe: indigo) so it's the most visible
@@ -94,6 +149,57 @@ const links = [
     btn.addEventListener('click', () => {
       const cur = document.documentElement.dataset.theme === 'stripe' ? 'stripe' : 'linear';
       apply(cur === 'stripe' ? 'linear' : 'stripe', btn);
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!toggle || !menu) return;
+
+    function setOpen(open: boolean) {
+      menu!.classList.toggle('is-open', open);
+      toggle!.setAttribute('aria-expanded', String(open));
+      toggle!.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+
+    function isOpen() {
+      return menu!.classList.contains('is-open');
+    }
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setOpen(!isOpen());
+    });
+
+    // Close after tapping a link (covers same-page anchors like /#inquire
+    // that don't trigger a fresh page load).
+    menu.querySelectorAll('.mobile-link').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    // Tap outside the menu closes it.
+    document.addEventListener('click', (e) => {
+      if (!isOpen()) return;
+      const target = e.target as Node;
+      if (!menu!.contains(target) && !toggle!.contains(target)) setOpen(false);
+    });
+
+    // Escape closes and returns focus to the toggle.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        (toggle as HTMLElement).focus();
+      }
+    });
+
+    // Crossing into desktop layout hides the panel via CSS; reset state so it
+    // isn't stuck "open" if the viewport shrinks again.
+    const mq = window.matchMedia('(min-width: 640px)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
     });
   })();
 </script>
