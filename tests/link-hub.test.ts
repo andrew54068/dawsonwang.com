@@ -7,9 +7,11 @@ const source = (relativePath: string) => readFileSync(path.join(process.cwd(), r
 
 describe('links page content', () => {
   test('contains the four expected groups and nine supplied destinations', () => {
-    expect(LINK_GROUPS.map(group => group.id)).toEqual(['social', 'explore', 'collaborate', 'contact']);
+    expect(LINK_GROUPS.map(group => group.id)).toEqual(['contact', 'social', 'explore', 'collaborate']);
     expect(LINK_GROUPS.flatMap(group => group.links)).toHaveLength(9);
     expect(LINK_GROUPS.flatMap(group => group.links).map(link => link.href)).toEqual([
+      'mailto:dawsonwang54068@gmail.com',
+      'https://line.me/ti/p/~andrew54068',
       'https://www.threads.com/@andrew54068',
       'https://www.facebook.com/andrew.wang.716',
       'https://www.instagram.com/andrew54068',
@@ -17,8 +19,6 @@ describe('links page content', () => {
       '/days',
       'https://calendar.app.google/FBHsAyW6zJ529aAb6',
       'https://calendar.app.google/xLSLkAUNnc2MVSsd9',
-      'mailto:dawsonwang54068@gmail.com',
-      'https://line.me/ti/p/~andrew54068',
     ]);
   });
 
