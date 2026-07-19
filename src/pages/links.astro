@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 import { LINK_GROUPS } from '../data/link-hub';
 
 const description = 'Dawson Wang 的社群、作品集、文章與合作預約入口。';
@@ -40,12 +41,16 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
                 <a
                   class="link-card"
                   href={link.href}
+                  style={`--accent: ${link.accent};`}
                   data-analytics-link
                   data-link-id={link.id}
                   data-link-placement="links_page"
                   target={link.external ? '_blank' : undefined}
                   rel={link.external ? 'noopener noreferrer' : undefined}
                 >
+                  <span class="link-icon" aria-hidden="true">
+                    <Icon name={link.icon} />
+                  </span>
                   <span class="link-copy">
                     <span class="link-label">{link.label}</span>
                     <span class="link-description">{link.description}</span>
@@ -233,9 +238,8 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
     display: flex;
     min-height: 64px;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 12px 16px;
+    gap: 14px;
+    padding: 12px 14px;
     border: 1px solid var(--color-rule);
     background: color-mix(in oklab, var(--color-surface-1) 82%, transparent);
     color: inherit;
@@ -244,19 +248,44 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
   }
 
   .link-card:hover {
-    border-color: color-mix(in oklab, var(--color-teal) 70%, var(--color-rule));
+    border-color: color-mix(in oklab, var(--accent, var(--color-teal)) 60%, var(--color-rule));
     background: var(--color-surface-2);
     transform: translateX(4px);
   }
 
   .link-card:focus-visible {
-    outline: 2px solid var(--color-teal);
+    outline: 2px solid var(--accent, var(--color-teal));
     outline-offset: 3px;
-    border-color: var(--color-teal);
+    border-color: var(--accent, var(--color-teal));
+  }
+
+  .link-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid color-mix(in oklab, var(--accent) 32%, var(--color-rule));
+    background: color-mix(in oklab, var(--accent) 13%, var(--color-surface-1));
+    color: var(--accent);
+    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+  }
+
+  .link-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .link-card:hover .link-icon {
+    border-color: color-mix(in oklab, var(--accent) 55%, var(--color-rule));
+    background: color-mix(in oklab, var(--accent) 22%, var(--color-surface-1));
+    transform: scale(1.04);
   }
 
   .link-copy {
     display: grid;
+    flex: 1;
+    min-width: 0;
     gap: 4px;
   }
 
@@ -316,11 +345,16 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .link-card {
+    .link-card,
+    .link-icon {
       transition: none;
     }
 
     .link-card:hover {
+      transform: none;
+    }
+
+    .link-card:hover .link-icon {
       transform: none;
     }
   }
