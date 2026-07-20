@@ -66,6 +66,10 @@ install_agent() {
       <key>Hour</key><integer>$DEPLOY_HOUR</integer>
       <key>Minute</key><integer>0</integer>
     </dict>
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>CI</key><string>1</string>
+    </dict>
     <key>StandardOutPath</key>
     <string>$LOG_DIR/daily-deploy.out.log</string>
     <key>StandardErrorPath</key>
