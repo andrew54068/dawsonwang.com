@@ -198,6 +198,8 @@ function build(args: Args): void {
     }
   }
   // Offline build: force the semantic step to skip so Cloudflare can't block a publish.
+  // Only build-time scripts are affected — /api/embed resolves these keys per request
+  // from the Vercel project's env (src/lib/runtime-env.ts), never from the build.
   log('building offline (CF_ACCOUNT_ID/CF_API_TOKEN unset → semantic step ships the seeded index)…');
   run('yarn', ['build'], { cwd: WORKTREE, env: { ...base, CF_ACCOUNT_ID: '', CF_API_TOKEN: '' } });
 }

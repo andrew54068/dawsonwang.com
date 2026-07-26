@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { Client as NotionClient } from '@notionhq/client';
 import { InquirySchema } from '../../lib/inquiry-schema';
 import { isAllowedOrigin, trustedClientIp } from '../../lib/origin-guard';
+import { readEnv } from '../../lib/runtime-env';
 
 export const prerender = false;
 
@@ -54,7 +55,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   }
 
   const ip = trustedClientIp(clientAddress, request);
-  const limit = parseInt(import.meta.env.INQUIRY_RATE_LIMIT_PER_HOUR ?? '10', 10);
+  const limit = parseInt(readEnv('INQUIRY_RATE_LIMIT_PER_HOUR') ?? '10', 10);
   if (rateLimited(ip, limit)) {
     return new Response('Too many requests', { status: 429 });
   }
@@ -74,11 +75,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return new Response('Invalid payload', { status: 400 });
   }
 
-  const apiKey = import.meta.env.RESEND_API_KEY;
-  const fromEmail = import.meta.env.RESEND_FROM_EMAIL;
-  const toEmail = import.meta.env.RESEND_TO_EMAIL;
-  const notionKey = import.meta.env.NOTION_API_KEY;
-  const notionDb = import.meta.env.NOTION_INQUIRY_DB_ID;
+  // Runtime lookup, not import.meta.env — see src/lib/runtime-env.ts.
+  const apiKey = readEnv('RESEND_API_KEY');
+  const fromEmail = readEnv('RESEND_FROM_EMAIL');
+  const toEmail = readEnv('RESEND_TO_EMAIL');
+  const notionKey = readEnv('NOTION_API_KEY');
+  const notionDb = readEnv('NOTION_INQUIRY_DB_ID');
 
   if (!apiKey || !fromEmail || !toEmail || !notionKey || !notionDb) {
     console.error('[inquiry] Missing required env vars', {

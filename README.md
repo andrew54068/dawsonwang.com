@@ -45,6 +45,12 @@ Semantic search generation uses Cloudflare Workers AI:
 
 The inquiry API uses additional deployment secrets documented in `.env.example`.
 
+Server routes (`/api/embed`, `/api/inquiry`) read these through `readEnv()` in
+`src/lib/runtime-env.ts`, which resolves `process.env` per request and falls back to
+`import.meta.env` for `astro dev`. Do not read secrets from `import.meta.env` directly in
+server code: Astro inlines it at build time, so a prebuilt deploy would freeze — or blank
+out — whatever the build machine happened to have, and bake the secret into the artifact.
+
 ## Analytics
 
 The site now exposes a provider-neutral analytics entry point for pageviews and future custom events.

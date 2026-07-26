@@ -9,6 +9,8 @@
  * For real rate limiting, layer a persistent KV-backed limiter on top.
  */
 
+import { readEnv } from './runtime-env';
+
 function parseHost(value: string | null): string | null {
   if (!value) return null;
   try {
@@ -22,8 +24,7 @@ let cachedAllowed: Set<string> | null = null;
 function allowedHosts(): Set<string> {
   if (cachedAllowed) return cachedAllowed;
   const raw =
-    import.meta.env.ALLOWED_ORIGINS ??
-    'https://dawsonwang.com,https://www.dawsonwang.com';
+    readEnv('ALLOWED_ORIGINS') ?? 'https://dawsonwang.com,https://www.dawsonwang.com';
   const hosts = raw
     .split(',')
     .map((s: string) => parseHost(s.trim()))

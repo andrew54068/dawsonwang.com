@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { isAllowedOrigin } from '../../lib/origin-guard';
+import { readEnv } from '../../lib/runtime-env';
 
 export const prerender = false;
 
@@ -17,8 +18,9 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ error: 'Payload too large' }, 413);
   }
 
-  const accountId = import.meta.env.CF_ACCOUNT_ID;
-  const apiToken = import.meta.env.CF_API_TOKEN;
+  // Runtime lookup, not import.meta.env — see src/lib/runtime-env.ts.
+  const accountId = readEnv('CF_ACCOUNT_ID');
+  const apiToken = readEnv('CF_API_TOKEN');
   if (!accountId || !apiToken) {
     console.error('[embed] CF_ACCOUNT_ID / CF_API_TOKEN not set');
     return json({ error: 'Service unavailable' }, 503);

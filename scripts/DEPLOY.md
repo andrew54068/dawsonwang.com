@@ -63,7 +63,10 @@ npx tsx scripts/deploy-local.ts --day 185 --fresh-semantic
 3. **Offline build** — `CF_ACCOUNT_ID= CF_API_TOKEN= yarn build` so a Cloudflare hiccup
    in the semantic-index step can never block a publish. Keyword search (pagefind) is
    built fresh for every day; the committed semantic index is seeded from the main repo
-   and shipped as-is (use `--fresh-semantic` to re-embed new days).
+   and shipped as-is (use `--fresh-semantic` to re-embed new days). This blanking is
+   build-time only: server routes resolve secrets per request from the Vercel project's
+   environment via `src/lib/runtime-env.ts`, so nothing the build lacks (this worktree
+   has no `.env`) can disable a live endpoint.
 4. **Header preservation** — merges `vercel.json` security headers (CSP, X-Frame-Options,
    …) into `.vercel/output/config.json`, because a bare `astro build` drops them. Refuses
    to deploy if the CSP is missing. (See `scripts/lib/merge-output-headers.ts` + its test.)
