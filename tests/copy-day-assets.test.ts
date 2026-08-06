@@ -1,0 +1,83 @@
+import { test, expect, beforeEach, afterEach } from 'vitest';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import { copyDayAssets } from '../src/lib/copy-day-assets';
+
+let tmp: string;
+let src: string;
+let dest: string;
+
+beforeEach(async () => {
+  tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'day-assets-'));
+  src = path.join(tmp, 'content', 'day219');
+  dest = path.join(tmp, 'public', 'content', 'day219');
+  await fs.mkdir(path.join(src, 'slides'), { recursive: true });
+  await fs.mkdir(path.join(src, 'attachments'), { recursive: true });
+});
+
+afterEach(async () => {
+  await fs.rm(tmp, { recursive: true, force: true });
+});
+
+const exists = async (p: string) =>
+  await fs.access(p).then(() => true, () => false);
+
+test('copies slides', async () => {
+  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), 'png');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(true);
+});
+
+// The Day 219 gap: source.md embeds ![](./attachments/photo.jpeg), the page
+// renders an <img> for it, but the asset copy only ever walked slides/ — so
+// every embedded attachment 404'd in production (day213, day218, day219).
+test('copies attachments embedded by source.md', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'photo.jpeg'), 'jpeg');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'photo.jpeg'))).toBe(true);
+});
+
+test('copies both slides and attachments in one pass', async () => {
+  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), 'png');
+  await fs.writeFile(path.join(src, 'attachments', 'a.jpg'), 'jpg');
+  await fs.writeFile(path.join(src, 'attachments', 'b.webp'), 'webp');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(true);
+  expect(await exists(path.join(dest, 'attachments', 'a.jpg'))).toBe(true);
+  expect(await exists(path.join(dest, 'attachments', 'b.webp'))).toBe(true);
+});
+
+test('skips non-image files in attachments', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'notes.md'), '# notes');
+  await fs.writeFile(path.join(src, 'attachments', 'keep.png'), 'png');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'notes.md'))).toBe(false);
+  expect(await exists(path.join(dest, 'attachments', 'keep.png'))).toBe(true);
+});
+
+test('copies root-level share artifacts (mp4/gif)', async () => {
+  await fs.writeFile(path.join(src, 'share.mp4'), 'mp4');
+  await fs.writeFile(path.join(src, 'loop.gif'), 'gif');
+  await fs.writeFile(path.join(src, 'source.md'), '# not an asset');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'share.mp4'))).toBe(true);
+  expect(await exists(path.join(dest, 'loop.gif'))).toBe(true);
+  expect(await exists(path.join(dest, 'source.md'))).toBe(false);
+});
+
+test('tolerates a day with neither slides nor attachments', async () => {
+  const bare = path.join(tmp, 'content', 'day001');
+  await fs.mkdir(bare, { recursive: true });
+  await fs.writeFile(path.join(bare, 'source.md'), 'Day 1 x');
+  await expect(
+    copyDayAssets(bare, path.join(tmp, 'public', 'content', 'day001')),
+  ).resolves.not.toThrow();
+});
+
+test('copies nested subdirectories of attachments', async () => {
+  await fs.mkdir(path.join(src, 'attachments', 'raw'), { recursive: true });
+  await fs.writeFile(path.join(src, 'attachments', 'raw', 'deep.png'), 'png');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'raw', 'deep.png'))).toBe(true);
+});
