@@ -53,3 +53,67 @@ test('keeps GFM tables rendering (gfm must stay enabled)', () => {
   const html = renderMarkdown('| a | b |\n|---|---|\n| 1 | 2 |');
   expect(html).toContain('<table>');
 });
+
+// Day 219: source.md embeds photos as ![](./attachments/photo.jpeg). Rendered
+// verbatim, the browser resolves that relative to /day/219 and 404s. Slides
+// already ship absolute (/content/dayNNN/slides/…); markdown images must too.
+const srcs = (html: string) => [...html.matchAll(/<img[^>]*\ssrc="([^"]*)"/g)].map(m => m[1]);
+
+test('rewrites ./attachments/ image src to an absolute content path', () => {
+  const html = renderMarkdown('![合照](./attachments/photo.jpeg)', { dayNumber: 219 });
+  expect(srcs(html)).toEqual(['/content/day219/attachments/photo.jpeg']);
+});
+
+test('rewrites attachments/ without the leading ./', () => {
+  const html = renderMarkdown('![x](attachments/photo.jpeg)', { dayNumber: 219 });
+  expect(srcs(html)).toEqual(['/content/day219/attachments/photo.jpeg']);
+});
+
+test('pads the day number the same way slides do', () => {
+  const html = renderMarkdown('![x](./attachments/a.png)', { dayNumber: 3 });
+  expect(srcs(html)).toEqual(['/content/day03/attachments/a.png']);
+});
+
+test('leaves absolute and remote image srcs alone', () => {
+  const html = renderMarkdown(
+    '![a](https://cdn.example/a.png)\n\n![b](/content/day01/slides/x.png)',
+    { dayNumber: 219 },
+  );
+  expect(srcs(html)).toEqual(['https://cdn.example/a.png', '/content/day01/slides/x.png']);
+});
+
+test('leaves relative images untouched when no day number is given', () => {
+  const html = renderMarkdown('![x](./attachments/photo.jpeg)');
+  expect(srcs(html)).toEqual(['./attachments/photo.jpeg']);
+});
+
+test('preserves alt text while rewriting', () => {
+  const html = renderMarkdown('![兩天工作坊結束後](./attachments/p.jpeg)', { dayNumber: 219 });
+  expect(html).toContain('alt="兩天工作坊結束後"');
+});
+
+// The day page always calls with a dayNumber, so the scoped instance MUST keep
+// the CJK-boundary url tokenizer — otherwise the fullwidth-paren autolink bug
+// silently comes back on every day page while the plain path stays green.
+test('keeps the CJK URL boundary fix when a dayNumber is passed', () => {
+  const html = renderMarkdown('介紹過：https://dawsonwang.com/day/141）測完', { dayNumber: 219 });
+  expect(hrefs(html)).toEqual(['https://dawsonwang.com/day/141']);
+});
+
+test('keeps GFM tables when a dayNumber is passed', () => {
+  const html = renderMarkdown('| a | b |\n|---|---|\n| 1 | 2 |', { dayNumber: 219 });
+  expect(html).toContain('<table>');
+});
+
+// Regression: the url tokenizer returns false for text with no URL, falling
+// through to marked's default. A per-call Marked clone lost the tokenizer's
+// rules binding and threw "Cannot read properties of undefined (reading
+// 'inline')" — but only on this fallback path, which no dayNumber test hit.
+test('renders plain CJK prose with a dayNumber (url tokenizer fallback path)', () => {
+  const html = renderMarkdown('這是一段沒有網址的中文內容。', { dayNumber: 1 });
+  expect(html).toContain('這是一段沒有網址的中文內容。');
+});
+
+test('renders an email autolink with a dayNumber without throwing', () => {
+  expect(() => renderMarkdown('寫信給 me@example.com 謝謝', { dayNumber: 1 })).not.toThrow();
+});

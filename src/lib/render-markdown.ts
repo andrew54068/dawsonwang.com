@@ -55,6 +55,41 @@ const md = new Marked({
   },
 });
 
-export function renderMarkdown(body: string): string {
-  return md.parse(body) as string;
+// source.md embeds day-local assets with a relative path, e.g.
+// ![合照](./attachments/photo.jpeg). Emitted verbatim the browser resolves it
+// against /day/219 and 404s, so rewrite it to the same absolute /content/dayNN/
+// prefix the slide carousel already uses. Remote and root-relative srcs are
+// already resolvable and are left alone.
+function absolutiseImageSrc(href: string, dayNumber: number): string {
+  if (/^([a-z][a-z0-9+.-]*:|\/\/|\/)/i.test(href)) return href;
+  const pad = String(dayNumber).padStart(2, '0');
+  return `/content/day${pad}/${href.replace(/^\.\//, '')}`;
+}
+
+// The image renderer is registered once on the shared instance and reads the
+// day being rendered from here. Cloning the instance per call instead would
+// re-wrap the custom `url` tokenizer and strip its rules binding, which blows
+// up ("Cannot read properties of undefined (reading 'inline')") the moment a
+// line has no URL and falls through to marked's default tokenizer.
+// md.parse is synchronous, so this can't interleave between days.
+let currentDayNumber: number | undefined;
+
+md.use({
+  renderer: {
+    image({ href, title, text }: Tokens.Image): string {
+      const src =
+        currentDayNumber === undefined ? href : absolutiseImageSrc(href, currentDayNumber);
+      const titleAttr = title ? ` title="${title}"` : '';
+      return `<img src="${src}" alt="${text}"${titleAttr}>`;
+    },
+  },
+});
+
+export function renderMarkdown(body: string, opts?: { dayNumber?: number }): string {
+  currentDayNumber = opts?.dayNumber;
+  try {
+    return md.parse(body) as string;
+  } finally {
+    currentDayNumber = undefined;
+  }
 }
