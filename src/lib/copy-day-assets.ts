@@ -14,6 +14,12 @@ import path from 'node:path';
  * transcripts, mail captures). Copying the directory verbatim would publish all
  * of it at guessable URLs, so only the files the markdown actually references
  * are copied.
+ *
+ * That allow-list has to be authoritative, not additive: public/content/ is
+ * gitignored, and the deploy worktree is reused across builds (`git reset
+ * --hard` leaves gitignored dirs alone), so anything an earlier build published
+ * lingers on disk and gets re-shipped forever. Each day's attachments/ output is
+ * therefore deleted and rebuilt from the current markdown on every run.
  */
 
 const IMAGE_RE = /\.(png|jpe?g|webp)$/i;
@@ -68,6 +74,12 @@ export function referencedAttachments(markdown: string): string[] {
 }
 
 async function copyReferencedAttachments(dayRoot: string, dayDest: string) {
+  // Drop whatever a previous build published before repopulating, so an
+  // attachment that source.md no longer embeds (or that a wholesale copy shipped
+  // before this allow-list existed) stops being served. Must happen before the
+  // no-markdown bail-out: a day that loses its source.md must lose its output too.
+  await fs.rm(path.join(dayDest, ATTACHMENTS_DIR), { recursive: true, force: true });
+
   const markdown = await readIfPresent(path.join(dayRoot, SOURCE_MARKDOWN));
   if (!markdown) return; // no rendered markdown -> nothing embeds an attachment
 

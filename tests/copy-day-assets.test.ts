@@ -90,6 +90,43 @@ test('publishes nothing from attachments when the day has no source.md', async (
   expect(await exists(path.join(dest, 'attachments', 'private.png'))).toBe(false);
 });
 
+// public/content/ is gitignored and the deploy worktree is reused between builds,
+// so an additive copy never retires anything: files an earlier build published
+// (e.g. the wholesale attachments/ copy this allow-list replaced) would keep
+// shipping. The copy has to be authoritative over the destination.
+test('removes an already-published attachment the markdown no longer references', async () => {
+  await fs.mkdir(path.join(dest, 'attachments', 'raw'), { recursive: true });
+  await fs.writeFile(path.join(dest, 'attachments', 'private-email.jpeg'), 'stale');
+  await fs.writeFile(path.join(dest, 'attachments', 'raw', 'transcript.png'), 'stale');
+  await fs.writeFile(path.join(src, 'attachments', 'shown.png'), 'png');
+  await fs.writeFile(path.join(src, 'source.md'), '![shown](./attachments/shown.png)');
+
+  await copyDayAssets(src, dest);
+
+  expect(await exists(path.join(dest, 'attachments', 'private-email.jpeg'))).toBe(false);
+  expect(await exists(path.join(dest, 'attachments', 'raw', 'transcript.png'))).toBe(false);
+  expect(await exists(path.join(dest, 'attachments', 'shown.png'))).toBe(true);
+});
+
+test('removes already-published attachments when the day loses its source.md', async () => {
+  await fs.mkdir(path.join(dest, 'attachments'), { recursive: true });
+  await fs.writeFile(path.join(dest, 'attachments', 'private-email.jpeg'), 'stale');
+
+  await copyDayAssets(src, dest);
+
+  expect(await exists(path.join(dest, 'attachments', 'private-email.jpeg'))).toBe(false);
+});
+
+test('leaves published slides alone while pruning attachments', async () => {
+  await fs.mkdir(path.join(dest, 'slides'), { recursive: true });
+  await fs.writeFile(path.join(dest, 'slides', '01-cover.png'), 'png');
+  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), 'png');
+
+  await copyDayAssets(src, dest);
+
+  expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(true);
+});
+
 // day03/source.md points at ./attachments/day3.jpg while the file on disk is
 // image.jpg — stale names exist in the content repo and must not break the build.
 test('tolerates a referenced attachment that is missing on disk', async () => {
