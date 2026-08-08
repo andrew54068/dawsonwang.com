@@ -1,0 +1,253 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PROJECTS, STATUS_LABELS, STATUS_CLASSES, type Project } from '../data/projects';
+import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
+
+const days = await getCollection('days');
+const availableDays = new Set<number>(days.map(d => d.data.dayNumber));
+// The 100days submodule can legitimately lag behind the canonical content dir
+// (`yarn deploy` rsyncs the fresh tree; a bare `yarn dev` uses whatever the
+// submodule pins). So: a referenced day at or below the newest loaded day but
+// missing is a real typo → fail the build. A day beyond it is just content this
+// checkout hasn't got yet → render the ref without a link instead of 404-ing.
+const newestLoadedDay = days.reduce((max, d) => Math.max(max, d.data.dayNumber), 0);
+
+interface DayRef {
+  dayNumber: number;
+  href: string | null;
+}
+
+function resolveDays(project: Project): DayRef[] {
+  return project.days.map(dayNumber => {
+    if (availableDays.has(dayNumber)) {
+      return { dayNumber, href: `/day/${dayNumber}` };
+    }
+    if (dayNumber <= newestLoadedDay) {
+      throw new Error(
+        `projects.ts: "${project.slug}" references day ${dayNumber}, but no such ` +
+        `entry exists in the days collection (newest loaded day is ${newestLoadedDay}). ` +
+        `Fix the day number in src/data/projects.ts.`
+      );
+    }
+    return { dayNumber, href: null };
+  });
+}
+
+const resolved = PROJECTS.map(project => ({ project, dayRefs: resolveDays(project) }));
+const featured = resolved.filter(r => r.project.featured);
+const rest = resolved.filter(r => !r.project.featured);
+
+const openSourceCount = PROJECTS.filter(p => p.repo).length;
+const writeupCount = new Set(PROJECTS.flatMap(p => p.days)).size;
+// Span the whole build log, not just the newest day that happens to have a
+// project attached — so the header keeps counting up as new days land.
+const spanEnd = newestLoadedDay;
+
+const projectsTitle = '側專案作品｜Dawson Wang 做過的工具';
+const projectsDescription = `Day 1–${spanEnd} 公開建造記錄裡真正做出來的 ${PROJECTS.length} 個側專案：MCP server、Claude Code plugin、macOS 驅動、自動化 bot 與網站，${openSourceCount} 個附開源碼，每個都連得到當天的完整寫法。`;
+const projectsUrl = absoluteUrl('/projects');
+
+const projectsCollectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${projectsUrl}#collectionpage`,
+  name: projectsTitle,
+  description: projectsDescription,
+  url: projectsUrl,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: { '@id': `${SITE_URL}/#person` },
+  breadcrumb: { '@id': `${projectsUrl}#breadcrumb` },
+  mainEntity: {
+    '@type': 'ItemList',
+    name: '側專案作品',
+    numberOfItems: PROJECTS.length,
+    itemListElement: PROJECTS.map((project, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': project.repo ? 'SoftwareSourceCode' : 'CreativeWork',
+        '@id': `${projectsUrl}#${project.slug}`,
+        name: project.name,
+        description: `${project.tagline}——${project.outcome}`,
+        url: `${projectsUrl}#${project.slug}`,
+        keywords: project.stack.join(', '),
+        creator: { '@id': `${SITE_URL}/#person` },
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        ...(project.repo ? { codeRepository: project.repo } : {}),
+        ...(project.demo ? { sameAs: absoluteUrl(project.demo) } : {}),
+      },
+    })),
+  },
+};
+
+const projectsBreadcrumbJsonLd = breadcrumbJsonLd([
+  { name: 'Home', url: '/' },
+  { name: 'Projects', url: '/projects' },
+], projectsUrl);
+---
+<BaseLayout
+  title={projectsTitle}
+  description={projectsDescription}
+  structuredData={[projectsCollectionJsonLd, projectsBreadcrumbJsonLd]}
+>
+  <article class="max-w-5xl mx-auto px-8 py-16">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">
+      SIDE PROJECTS · DAY 1–{spanEnd}
+    </div>
+    <h1
+      class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
+      style="font-size: clamp(2.5rem, 5vw, 4rem);"
+    >
+      每個工具，<br />都是先痛過<span class="text-teal">才做的</span>。
+    </h1>
+    <p class="font-display text-muted text-lg leading-relaxed mt-4 max-w-2xl">
+      這 {spanEnd} 天裡我沒有為了做作品集而做東西——每一個都是自己卡住了、受不了了，才動手。
+      下面 {PROJECTS.length} 個是真的做出來、而且到現在還在用的，其中 {openSourceCount} 個附源碼。
+      每張卡片都連得回當天那篇，裡面有完整的做法跟踩到的雷。
+    </p>
+
+    <dl class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
+      <div class="bg-surface-1 px-5 py-4">
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">專案</dt>
+        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">{PROJECTS.length}</dd>
+      </div>
+      <div class="bg-surface-1 px-5 py-4">
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">開源</dt>
+        <dd class="font-mono text-teal mt-1" style="font-size: 28px;">{openSourceCount}</dd>
+      </div>
+      <div class="bg-surface-1 px-5 py-4">
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">相關文章</dt>
+        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">{writeupCount}</dd>
+      </div>
+      <div class="bg-surface-1 px-5 py-4">
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">連續天數</dt>
+        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">{spanEnd}</dd>
+      </div>
+    </dl>
+
+    <section class="mt-16">
+      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">
+        FEATURED · {featured.length} PROJECTS
+      </div>
+      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-6">最有代表性的四個</h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {featured.map(({ project, dayRefs }) => (
+          <article id={project.slug} class="project-card flex flex-col bg-surface-1 border border-rule rounded-xl p-7 scroll-mt-20">
+            <div class="flex items-start justify-between gap-3 mb-3">
+              <span class="font-mono text-[11px] uppercase tracking-[.08em] text-ochre">{project.kind}</span>
+              <span class={STATUS_CLASSES[project.status]}>{STATUS_LABELS[project.status]}</span>
+            </div>
+
+            <h3 class="font-display text-ink text-xl font-semibold tracking-tight leading-snug">{project.name}</h3>
+            <p class="font-display text-teal text-sm mt-1.5 leading-snug">{project.tagline}</p>
+
+            <dl class="font-display text-sm text-muted leading-relaxed space-y-3 mt-5 mb-6 flex-1">
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">起點</dt>
+                <dd>{project.problem}</dd>
+              </div>
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">產出</dt>
+                <dd>{project.outcome}</dd>
+              </div>
+            </dl>
+
+            <div class="flex flex-wrap gap-1.5 mb-5">
+              {project.stack.map(tag => <span class="chip chip-outline">{tag}</span>)}
+            </div>
+
+            <div class="border-t border-rule pt-4 mt-auto flex flex-col gap-3">
+              {(project.repo || project.demo) && (
+                <div class="flex flex-wrap gap-2">
+                  {project.demo && (
+                    <a href={project.demo} class="btn-ochre text-[13px]">{project.demoLabel ?? '試用 →'}</a>
+                  )}
+                  {project.repo && (
+                    <a href={project.repo} rel="noopener" class="btn-ghost text-[13px]">原始碼 →</a>
+                  )}
+                </div>
+              )}
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">寫法在</span>
+                {dayRefs.map(ref => ref.href
+                  ? <a href={ref.href} class="font-mono text-[11px] text-muted hover:text-teal transition-colors duration-150 no-underline">Day {String(ref.dayNumber).padStart(3, '0')}</a>
+                  : <span class="font-mono text-[11px] text-faint">Day {String(ref.dayNumber).padStart(3, '0')}</span>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-16">
+      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">
+        EVERYTHING ELSE · {rest.length} PROJECTS
+      </div>
+      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-6">其他做出來的東西</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
+        {rest.map(({ project, dayRefs }) => (
+          <article id={project.slug} class="project-card flex flex-col bg-surface-1 p-6 scroll-mt-20">
+            <div class="flex items-start justify-between gap-3 mb-2">
+              <span class="font-mono text-[11px] uppercase tracking-[.08em] text-ochre">{project.kind}</span>
+              <span class={STATUS_CLASSES[project.status]}>{STATUS_LABELS[project.status]}</span>
+            </div>
+
+            <h3 class="font-display text-ink text-lg font-semibold tracking-tight leading-snug">{project.name}</h3>
+            <p class="font-display text-teal text-sm mt-1 leading-snug">{project.tagline}</p>
+            <p class="font-display text-muted text-sm leading-relaxed mt-3 flex-1">{project.outcome}</p>
+
+            <div class="flex flex-wrap gap-1.5 mt-4">
+              {project.stack.map(tag => <span class="chip chip-outline">{tag}</span>)}
+            </div>
+
+            <div class="border-t border-rule pt-3 mt-4 flex flex-wrap items-center gap-x-3 gap-y-1">
+              {project.repo && (
+                <a href={project.repo} rel="noopener"
+                   class="font-mono text-[11px] uppercase tracking-[.08em] text-ink hover:text-teal transition-colors duration-150 no-underline">原始碼 →</a>
+              )}
+              {project.demo && (
+                <a href={project.demo}
+                   class="font-mono text-[11px] uppercase tracking-[.08em] text-ink hover:text-teal transition-colors duration-150 no-underline">{project.demoLabel ?? '試用 →'}</a>
+              )}
+              {dayRefs.map(ref => ref.href
+                ? <a href={ref.href} class="font-mono text-[11px] text-faint hover:text-teal transition-colors duration-150 no-underline">Day {String(ref.dayNumber).padStart(3, '0')}</a>
+                : <span class="font-mono text-[11px] text-faint">Day {String(ref.dayNumber).padStart(3, '0')}</span>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <aside class="mt-16 bg-surface-1 border border-rule rounded-xl p-7 relative overflow-hidden">
+      <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-px"
+            style="background: linear-gradient(90deg, var(--color-brick), var(--color-teal));"></span>
+      <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">想要一個這樣的東西？</div>
+      <h3 class="font-display text-ink text-xl font-semibold tracking-tight">你的團隊也卡在某個流程上</h3>
+      <p class="font-display text-muted text-sm leading-relaxed mt-3 max-w-md">
+        上面每一個都是從一個具體的痛點開始的。跟我說說你的情境，1–2 個工作日內回信。
+      </p>
+      <div class="mt-5 flex flex-wrap gap-2">
+        <a href="/#inquire" class="btn-ochre">填表諮詢 →</a>
+        <a href="/proof" class="btn-ghost">看諮詢案例 →</a>
+      </div>
+    </aside>
+  </article>
+</BaseLayout>
+
+<style>
+  .project-card {
+    transition: border-color 150ms ease, transform 150ms ease;
+  }
+  .project-card:hover {
+    border-color: color-mix(in oklab, var(--color-teal) 35%, var(--color-rule));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .project-card { transition: none; }
+  }
+</style>
