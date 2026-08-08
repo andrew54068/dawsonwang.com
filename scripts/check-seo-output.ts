@@ -125,7 +125,14 @@ function assertDiscoveryAlternates(haystack: string, label: string) {
 }
 
 function assertLocaleStack(haystack: string, label: string) {
-  assertIncludes(haystack, `<html lang="${siteLanguage}">`, `${label} html lang`);
+  // Match the opening <html> tag on its lang attribute only. BaseLayout also carries the
+  // default palette there (`<html lang="zh-Hant-TW" data-theme="stripe">`), so an exact-literal
+  // `<html lang="…">` check goes red the moment any other attribute is added to the tag.
+  assertMatch(
+    haystack,
+    new RegExp(`<html lang="${escapeRegExp(siteLanguage)}"[\\s>]`),
+    `${label} html lang`
+  );
   assertIncludes(haystack, `<meta property="og:locale" content="${siteLocale}"`, `${label} og:locale`);
 }
 
