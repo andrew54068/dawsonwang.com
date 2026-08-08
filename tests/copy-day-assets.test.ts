@@ -34,6 +34,14 @@ test('copies slides', async () => {
 // every embedded attachment 404'd in production (day213, day218, day219).
 test('copies attachments embedded by source.md', async () => {
   await fs.writeFile(path.join(src, 'attachments', 'photo.jpeg'), 'jpeg');
+  await fs.writeFile(path.join(src, 'source.md'), '![合照](./attachments/photo.jpeg)');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'photo.jpeg'))).toBe(true);
+});
+
+test('copies an attachment referenced without the leading ./', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'photo.jpeg'), 'jpeg');
+  await fs.writeFile(path.join(src, 'source.md'), '![x](attachments/photo.jpeg)');
   await copyDayAssets(src, dest);
   expect(await exists(path.join(dest, 'attachments', 'photo.jpeg'))).toBe(true);
 });
@@ -42,6 +50,10 @@ test('copies both slides and attachments in one pass', async () => {
   await fs.writeFile(path.join(src, 'slides', '01-cover.png'), 'png');
   await fs.writeFile(path.join(src, 'attachments', 'a.jpg'), 'jpg');
   await fs.writeFile(path.join(src, 'attachments', 'b.webp'), 'webp');
+  await fs.writeFile(
+    path.join(src, 'source.md'),
+    '![a](./attachments/a.jpg)\n\n![b](./attachments/b.webp)',
+  );
   await copyDayAssets(src, dest);
   expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(true);
   expect(await exists(path.join(dest, 'attachments', 'a.jpg'))).toBe(true);
@@ -51,9 +63,47 @@ test('copies both slides and attachments in one pass', async () => {
 test('skips non-image files in attachments', async () => {
   await fs.writeFile(path.join(src, 'attachments', 'notes.md'), '# notes');
   await fs.writeFile(path.join(src, 'attachments', 'keep.png'), 'png');
+  await fs.writeFile(
+    path.join(src, 'source.md'),
+    '[notes](./attachments/notes.md)\n\n![keep](./attachments/keep.png)',
+  );
   await copyDayAssets(src, dest);
   expect(await exists(path.join(dest, 'attachments', 'notes.md'))).toBe(false);
   expect(await exists(path.join(dest, 'attachments', 'keep.png'))).toBe(true);
+});
+
+// public/content/ ships to the public site; the 100Days repo it is copied from is
+// private and its attachments/ trees hold unpublished working material (raw agent
+// transcripts, mail screenshots). Only what the page actually renders may leave.
+test('does not publish attachments the markdown never references', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'referenced.png'), 'png');
+  await fs.writeFile(path.join(src, 'attachments', 'private-email.jpeg'), 'jpeg');
+  await fs.writeFile(path.join(src, 'source.md'), '![shown](./attachments/referenced.png)');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'referenced.png'))).toBe(true);
+  expect(await exists(path.join(dest, 'attachments', 'private-email.jpeg'))).toBe(false);
+});
+
+test('publishes nothing from attachments when the day has no source.md', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'private.png'), 'png');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'private.png'))).toBe(false);
+});
+
+// day03/source.md points at ./attachments/day3.jpg while the file on disk is
+// image.jpg — stale names exist in the content repo and must not break the build.
+test('tolerates a referenced attachment that is missing on disk', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'image.jpg'), 'jpg');
+  await fs.writeFile(path.join(src, 'source.md'), '![x](./attachments/day3.jpg)');
+  await expect(copyDayAssets(src, dest)).resolves.not.toThrow();
+  expect(await exists(path.join(dest, 'attachments', 'day3.jpg'))).toBe(false);
+});
+
+test('ignores an /attachments/ segment inside a remote URL', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'a.png'), 'png');
+  await fs.writeFile(path.join(src, 'source.md'), '![x](https://cdn.example/attachments/a.png)');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'a.png'))).toBe(false);
 });
 
 test('copies root-level share artifacts (mp4/gif)', async () => {
@@ -78,6 +128,14 @@ test('tolerates a day with neither slides nor attachments', async () => {
 test('copies nested subdirectories of attachments', async () => {
   await fs.mkdir(path.join(src, 'attachments', 'raw'), { recursive: true });
   await fs.writeFile(path.join(src, 'attachments', 'raw', 'deep.png'), 'png');
+  await fs.writeFile(path.join(src, 'source.md'), '![deep](./attachments/raw/deep.png)');
   await copyDayAssets(src, dest);
   expect(await exists(path.join(dest, 'attachments', 'raw', 'deep.png'))).toBe(true);
+});
+
+test('copies nested subdirectories of slides without a markdown reference', async () => {
+  await fs.mkdir(path.join(src, 'slides', 'raw'), { recursive: true });
+  await fs.writeFile(path.join(src, 'slides', 'raw', 'deep.png'), 'png');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'slides', 'raw', 'deep.png'))).toBe(true);
 });
