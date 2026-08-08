@@ -92,6 +92,30 @@ test('preserves alt text while rewriting', () => {
   expect(html).toContain('alt="兩天工作坊結束後"');
 });
 
+// The src rewrite must not cost marked's own escaping: a hand-rolled
+// `<img src="${src}" alt="${text}">` let a quote in the alt close the attribute
+// and open a live event handler on the day page.
+test('escapes a double quote in alt instead of closing the attribute', () => {
+  const html = renderMarkdown('![alt" onerror="alert(1)](./attachments/x.png)', { dayNumber: 219 });
+  expect(html).not.toContain('onerror="alert(1)"');
+  expect(html).toContain('alt="alt&quot; onerror=&quot;alert(1)"');
+});
+
+test('escapes HTML metacharacters in alt', () => {
+  const html = renderMarkdown('![a & b <c>](./attachments/x.png)', { dayNumber: 219 });
+  expect(html).toContain('alt="a &amp; b &lt;c&gt;"');
+});
+
+test('escapes a double quote in the image title', () => {
+  const html = renderMarkdown('![x](./attachments/x.png "a \\"title\\"")', { dayNumber: 219 });
+  expect(html).toContain('title="a &quot;title&quot;"');
+});
+
+test('URL-encodes a space in the rewritten image src', () => {
+  const html = renderMarkdown('![x](<./attachments/a b.png>)', { dayNumber: 219 });
+  expect(srcs(html)).toEqual(['/content/day219/attachments/a%20b.png']);
+});
+
 // The day page always calls with a dayNumber, so the scoped instance MUST keep
 // the CJK-boundary url tokenizer — otherwise the fullwidth-paren autolink bug
 // silently comes back on every day page while the plain path stays green.

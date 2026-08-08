@@ -1,4 +1,4 @@
-import { Marked, type Tokens } from 'marked';
+import { Marked, type Token, type Tokens } from 'marked';
 
 // GFM autolinks bare URLs, but its boundary regex (/[^\s<]*/) keeps consuming
 // CJK characters and fullwidth punctuation. A URL written inline in Chinese,
@@ -66,7 +66,7 @@ function absolutiseImageSrc(href: string, dayNumber: number): string {
   return `/content/day${pad}/${href.replace(/^\.\//, '')}`;
 }
 
-// The image renderer is registered once on the shared instance and reads the
+// The token walker is registered once on the shared instance and reads the
 // day being rendered from here. Cloning the instance per call instead would
 // re-wrap the custom `url` tokenizer and strip its rules binding, which blows
 // up ("Cannot read properties of undefined (reading 'inline')") the moment a
@@ -74,14 +74,15 @@ function absolutiseImageSrc(href: string, dayNumber: number): string {
 // md.parse is synchronous, so this can't interleave between days.
 let currentDayNumber: number | undefined;
 
+// Rewrite the href on the token rather than overriding the `image` renderer, so
+// marked's own renderer still emits the tag. It HTML-escapes `alt` and `title`
+// and runs the src through cleanUrl()'s encodeURI; a hand-rolled
+// `<img src="${src}" alt="${text}">` silently drops all three, so an alt
+// containing `"` or `<` would inject attributes/markup into the day page.
 md.use({
-  renderer: {
-    image({ href, title, text }: Tokens.Image): string {
-      const src =
-        currentDayNumber === undefined ? href : absolutiseImageSrc(href, currentDayNumber);
-      const titleAttr = title ? ` title="${title}"` : '';
-      return `<img src="${src}" alt="${text}"${titleAttr}>`;
-    },
+  walkTokens(token: Token) {
+    if (token.type !== 'image' || currentDayNumber === undefined) return;
+    token.href = absolutiseImageSrc(token.href, currentDayNumber);
   },
 });
 
