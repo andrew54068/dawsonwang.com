@@ -13,6 +13,12 @@ export interface Deck {
   segment: string;
 }
 
+/**
+ * How attendees joined. Maps 1:1 onto schema.org's eventAttendanceMode in
+ * /speaking's Event markup, so keep it honest with `format`.
+ */
+export type Attendance = 'offline' | 'online' | 'mixed';
+
 export interface Engagement {
   slug: string;
   /** Host organisation. */
@@ -21,8 +27,21 @@ export interface Engagement {
   title: string;
   /** When it ran, human-readable. */
   when: string;
+  /**
+   * Machine-readable start, ISO 8601. Emitted as the Event's `startDate`, which
+   * schema.org and Google both require — an Event without it is rejected whole.
+   *
+   * Reduced precision is allowed (`2026-06`, `2026`) and is the right answer when
+   * the exact day isn't recorded anywhere: a month we can source beats a day we
+   * made up. Tighten it whenever the real date turns up.
+   */
+  start: string;
+  /** Machine-readable end, ISO 8601. Only for multi-day / multi-session runs. */
+  end?: string;
   /** Format + scale, e.g. `兩天工作坊 · 實體 24 人 + 線上 40+`. */
   format: string;
+  /** Physical, online, or both — drives eventAttendanceMode. */
+  attendance: Attendance;
   /** Who was in the room. */
   audience: string;
   /** What the session covered, in order. */
@@ -41,7 +60,10 @@ export const ENGAGEMENTS: Engagement[] = [
     venue: '高雄市立中正高工',
     title: '教師 AI 應用研習',
     when: '2026 年 8 月 4–5 日',
+    start: '2026-08-04',
+    end: '2026-08-05',
     format: '兩天工作坊 · 實體與線上同步',
+    attendance: 'mixed',
     audience: '一般科目、專業科目、實習科目的老師——不預設任何一門專業知識',
     outline: [
       'AI 現在發展到哪裡，以及其他人實際怎麼用',
@@ -65,7 +87,11 @@ export const ENGAGEMENTS: Engagement[] = [
     venue: '奇美醫院',
     title: 'AI 簡報工作流',
     when: '2026 年',
+    // Month precision: Day 170 is the prep write-up, published 2026-06-20. The
+    // exact session day isn't written down anywhere.
+    start: '2026-06',
     format: '院內內訓 · 概念講解加實作',
+    attendance: 'offline',
     audience: '從醫師到行政，三十幾人同場',
     outline: [
       '同一份內容為什麼你做了三次——真正省時的不是「生」第一份，是「重製」',
@@ -84,7 +110,12 @@ export const ENGAGEMENTS: Engagement[] = [
     venue: '醫療院所系列課程',
     title: '衛福部支持的 AI 應用課程',
     when: '2026 年 · 多場',
+    // A run of sessions, not one date: Day 179 covers the June one, Day 187 the
+    // two in July. Month precision for the same reason as 奇美.
+    start: '2026-06',
+    end: '2026-07',
     format: '2.5 小時起 · 概念加實作',
+    attendance: 'offline',
     audience: '非工程師為主。同一間教室裡，有人連介面都還不熟，也有人已經在自己 vibe code',
     outline: [
       '四個大家對 AI 共同的不安：怕它講錯、回答空泛、成果有 AI 味、用久了失憶',

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ENGAGEMENTS, PRINCIPLES, TESTIMONIALS, type Engagement } from '../data/speaking';
+import { ENGAGEMENTS, PRINCIPLES, TESTIMONIALS, type Attendance, type Engagement } from '../data/speaking';
 import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 
 // Photos are copies of the Day 219 workshop attachments, resized into
@@ -51,6 +51,12 @@ const speakingTitle = 'AI 講師 · 企業內訓與教師研習｜Dawson Wang';
 const speakingDescription = '醫療院所內訓、高中職教師研習、衛福部支持的 AI 應用課程。課程以實作為主——走完課程學員電腦裡真的多出一份成品，而且掛得上網路。全部簡報公開可看。';
 const speakingUrl = absoluteUrl('/speaking');
 
+const ATTENDANCE_MODE: Record<Attendance, string> = {
+  offline: 'https://schema.org/OfflineEventAttendanceMode',
+  online: 'https://schema.org/OnlineEventAttendanceMode',
+  mixed: 'https://schema.org/MixedEventAttendanceMode',
+};
+
 const speakingJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
@@ -75,7 +81,11 @@ const speakingJsonLd = {
         '@id': `${speakingUrl}#${engagement.slug}`,
         name: `${engagement.venue} — ${engagement.title}`,
         description: engagement.takeaway,
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        // startDate is required for Event — omit it and Google throws the whole
+        // item out. See the field docs in src/data/speaking.ts.
+        startDate: engagement.start,
+        ...(engagement.end ? { endDate: engagement.end } : {}),
+        eventAttendanceMode: ATTENDANCE_MODE[engagement.attendance],
         eventStatus: 'https://schema.org/EventScheduled',
         location: { '@type': 'Place', name: engagement.venue, address: { '@type': 'PostalAddress', addressCountry: 'TW' } },
         performer: { '@id': `${SITE_URL}/#person` },
