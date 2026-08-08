@@ -1,4 +1,4 @@
-import { Marked, type Tokens } from 'marked';
+import { Marked, type Token, type Tokens } from 'marked';
 
 // GFM autolinks bare URLs, but its boundary regex (/[^\s<]*/) keeps consuming
 // CJK characters and fullwidth punctuation. A URL written inline in Chinese,
@@ -55,6 +55,42 @@ const md = new Marked({
   },
 });
 
-export function renderMarkdown(body: string): string {
-  return md.parse(body) as string;
+// source.md embeds day-local assets with a relative path, e.g.
+// ![合照](./attachments/photo.jpeg). Emitted verbatim the browser resolves it
+// against /day/219 and 404s, so rewrite it to the same absolute /content/dayNN/
+// prefix the slide carousel already uses. Remote and root-relative srcs are
+// already resolvable and are left alone.
+function absolutiseImageSrc(href: string, dayNumber: number): string {
+  if (/^([a-z][a-z0-9+.-]*:|\/\/|\/)/i.test(href)) return href;
+  const pad = String(dayNumber).padStart(2, '0');
+  return `/content/day${pad}/${href.replace(/^\.\//, '')}`;
+}
+
+// The token walker is registered once on the shared instance and reads the
+// day being rendered from here. Cloning the instance per call instead would
+// re-wrap the custom `url` tokenizer and strip its rules binding, which blows
+// up ("Cannot read properties of undefined (reading 'inline')") the moment a
+// line has no URL and falls through to marked's default tokenizer.
+// md.parse is synchronous, so this can't interleave between days.
+let currentDayNumber: number | undefined;
+
+// Rewrite the href on the token rather than overriding the `image` renderer, so
+// marked's own renderer still emits the tag. It HTML-escapes `alt` and `title`
+// and runs the src through cleanUrl()'s encodeURI; a hand-rolled
+// `<img src="${src}" alt="${text}">` silently drops all three, so an alt
+// containing `"` or `<` would inject attributes/markup into the day page.
+md.use({
+  walkTokens(token: Token) {
+    if (token.type !== 'image' || currentDayNumber === undefined) return;
+    token.href = absolutiseImageSrc(token.href, currentDayNumber);
+  },
+});
+
+export function renderMarkdown(body: string, opts?: { dayNumber?: number }): string {
+  currentDayNumber = opts?.dayNumber;
+  try {
+    return md.parse(body) as string;
+  } finally {
+    currentDayNumber = undefined;
+  }
 }

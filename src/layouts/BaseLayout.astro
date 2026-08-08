@@ -83,7 +83,10 @@ const allStructuredData = [...baseStructuredData, ...pageStructuredData];
 const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_URL]));
 ---
 <!DOCTYPE html>
-<html lang="zh-Hant-TW">
+<!-- Light ("stripe") is the default, and it ships in the server HTML rather than
+     being applied by script — so visitors with JS disabled, and the very first
+     paint, both get the light palette. Dark is the opt-in that removes it. -->
+<html lang="zh-Hant-TW" data-theme="stripe">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -115,7 +118,7 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={resolvedOgImageAlt} />
-    <meta name="theme-color" content="#0A0A0B" />
+    <meta name="theme-color" content="#FFFFFF" />
     <link rel="alternate" type="text/plain" title="Dawson Wang AI-readable site summary" href="/llms.txt" />
     <link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml" />
     {personSameAsUrls.map(url => <link rel="me" href={url} />)}
@@ -127,18 +130,19 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
     <script is:inline>
       // Apply persisted theme before first paint to avoid a flash of the
-      // wrong palette. Only "stripe" is opt-in; the default (linear) needs
-      // no attribute. URL ?theme=... overrides localStorage for one visit.
+      // wrong palette. The markup already carries data-theme="stripe" (light),
+      // so this only has to strip it when the visitor opted into dark.
+      // URL ?theme=... overrides localStorage for one visit.
       (function () {
         try {
           const url = new URL(window.location.href);
           const fromUrl = url.searchParams.get('theme');
           const fromLs = localStorage.getItem('dw_theme');
           const theme = fromUrl || fromLs;
-          if (theme === 'stripe') {
-            document.documentElement.dataset.theme = 'stripe';
+          if (theme === 'linear') {
+            delete document.documentElement.dataset.theme;
           }
-        } catch (_) { /* SSR / private mode — silently fall back to default */ }
+        } catch (_) { /* SSR / private mode — silently keep the light default */ }
       })();
     </script>
     {allStructuredData.length > 0 && (

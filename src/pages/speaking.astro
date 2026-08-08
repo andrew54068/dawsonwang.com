@@ -1,0 +1,311 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ENGAGEMENTS, PRINCIPLES, TESTIMONIALS, type Attendance, type Engagement } from '../data/speaking';
+import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
+
+// Photos are copies of the Day 219 workshop attachments, resized into
+// public/speaking/. They live in public/ rather than being read from the
+// 100days submodule on purpose: the submodule can lag behind the canonical
+// content dir, and a hero image that vanishes on a stale checkout is worse
+// than a duplicated file.
+const HERO_PHOTO = '/speaking/ccvs-teaching.jpg';
+const GROUP_PHOTO = '/speaking/ccvs-group.jpg';
+
+const days = await getCollection('days');
+const availableDays = new Set<number>(days.map(d => d.data.dayNumber));
+const newestLoadedDay = days.reduce((max, d) => Math.max(max, d.data.dayNumber), 0);
+
+function dayHref(dayNumber: number, source: string): string | null {
+  if (availableDays.has(dayNumber)) return `/day/${dayNumber}`;
+  if (dayNumber <= newestLoadedDay) {
+    throw new Error(
+      `speaking.ts: ${source} references day ${dayNumber}, but no such entry exists ` +
+      `in the days collection (newest loaded day is ${newestLoadedDay}).`
+    );
+  }
+  // Beyond what this checkout loaded — the deploy rsyncs fresh content and the
+  // link resolves there. Render the ref unlinked rather than 404-ing.
+  return null;
+}
+
+interface ResolvedEngagement {
+  engagement: Engagement;
+  dayRefs: { dayNumber: number; href: string | null }[];
+}
+
+const resolved: ResolvedEngagement[] = ENGAGEMENTS.map(engagement => ({
+  engagement,
+  dayRefs: engagement.days.map(dayNumber => ({
+    dayNumber,
+    href: dayHref(dayNumber, `engagement "${engagement.slug}"`),
+  })),
+}));
+
+const principles = PRINCIPLES.map(p => ({ ...p, href: dayHref(p.day, `principle "${p.title}"`) }));
+
+const deckCount = ENGAGEMENTS.reduce((n, e) => n + e.decks.length, 0);
+const venueCount = ENGAGEMENTS.length;
+
+const speakingTitle = 'AI 講師 · 企業內訓與教師研習｜Dawson Wang';
+const speakingDescription = '醫療院所內訓、高中職教師研習、衛福部支持的 AI 應用課程。課程以實作為主——走完課程學員電腦裡真的多出一份成品，而且掛得上網路。全部簡報公開可看。';
+const speakingUrl = absoluteUrl('/speaking');
+
+const ATTENDANCE_MODE: Record<Attendance, string> = {
+  offline: 'https://schema.org/OfflineEventAttendanceMode',
+  online: 'https://schema.org/OnlineEventAttendanceMode',
+  mixed: 'https://schema.org/MixedEventAttendanceMode',
+};
+
+const speakingJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  '@id': `${speakingUrl}#profilepage`,
+  name: speakingTitle,
+  description: speakingDescription,
+  url: speakingUrl,
+  inLanguage: 'zh-Hant-TW',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: { '@id': `${SITE_URL}/#person` },
+  breadcrumb: { '@id': `${speakingUrl}#breadcrumb` },
+  primaryImageOfPage: absoluteUrl(HERO_PHOTO),
+  mainEntity: {
+    '@type': 'ItemList',
+    name: '授課紀錄',
+    numberOfItems: ENGAGEMENTS.length,
+    itemListElement: ENGAGEMENTS.map((engagement, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Event',
+        '@id': `${speakingUrl}#${engagement.slug}`,
+        name: `${engagement.venue} — ${engagement.title}`,
+        description: engagement.takeaway,
+        // startDate is required for Event — omit it and Google throws the whole
+        // item out. See the field docs in src/data/speaking.ts.
+        startDate: engagement.start,
+        ...(engagement.end ? { endDate: engagement.end } : {}),
+        eventAttendanceMode: ATTENDANCE_MODE[engagement.attendance],
+        eventStatus: 'https://schema.org/EventScheduled',
+        location: { '@type': 'Place', name: engagement.venue, address: { '@type': 'PostalAddress', addressCountry: 'TW' } },
+        performer: { '@id': `${SITE_URL}/#person` },
+        organizer: { '@type': 'Organization', name: engagement.venue },
+      },
+    })),
+  },
+};
+
+const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
+  { name: 'Home', url: '/' },
+  { name: 'Speaking', url: '/speaking' },
+], speakingUrl);
+---
+<BaseLayout
+  title={speakingTitle}
+  description={speakingDescription}
+  ogImage={HERO_PHOTO}
+  structuredData={[speakingJsonLd, speakingBreadcrumbJsonLd]}
+>
+  <article class="max-w-5xl mx-auto px-8 py-16">
+    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">SPEAKING · 講師邀約</div>
+    <h1
+      class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
+      style="font-size: clamp(2.5rem, 5vw, 4rem);"
+    >
+      聽完覺得有收穫不算。<br />要<span class="text-teal">帶著成品</span>離開教室。
+    </h1>
+    <p class="font-display text-muted text-lg leading-relaxed mt-4 max-w-2xl">
+      我教的不是「AI 有哪些工具」，是把 AI 接進你原本就在做的那條流程。
+      課程以實作為主：走完課程，學員的電腦裡真的多出一份可以編輯的成品，
+      而且自己做的東西真的掛得上網路、別人打得開。
+    </p>
+
+    <figure class="mt-10">
+      <img
+        src={HERO_PHOTO}
+        alt="Dawson Wang 在中正高工電腦教室授課，站在教師之間講解"
+        width="1600" height="1200" loading="eager" decoding="async"
+        class="w-full rounded-xl border border-rule object-cover"
+        style="aspect-ratio: 4 / 3; max-height: 460px;"
+      />
+      <figcaption class="font-mono text-[11px] text-faint mt-2">
+        中正高工教師 AI 應用研習 · 實作進行中
+      </figcaption>
+    </figure>
+
+    <dl class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
+      <div class="bg-surface-1 px-5 py-4">
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">授課單位</dt>
+        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">{venueCount}</dd>
+      </div>
+      <div class="bg-surface-1 px-5 py-4">
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">公開簡報</dt>
+        <dd class="font-mono text-teal mt-1" style="font-size: 28px;">{deckCount}</dd>
+      </div>
+      <div class="bg-surface-1 px-5 py-4">
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">最長場次</dt>
+        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">2<span class="text-base ml-1">天</span></dd>
+      </div>
+      <div class="bg-surface-1 px-5 py-4">
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">授課領域</dt>
+        <dd class="font-display text-ink text-sm mt-2 leading-snug">醫療 · 教育</dd>
+      </div>
+    </dl>
+
+    <section class="mt-16">
+      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">ENGAGEMENTS</div>
+      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-6">授課紀錄</h2>
+
+      <div class="flex flex-col gap-5">
+        {resolved.map(({ engagement, dayRefs }) => (
+          <article id={engagement.slug} class="engagement-card bg-surface-1 border border-rule rounded-xl p-7 scroll-mt-20">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <h3 class="font-display text-ink text-xl font-semibold tracking-tight">
+                {engagement.venue}
+                <span class="text-muted font-normal"> · {engagement.title}</span>
+              </h3>
+              <span class="font-mono text-[11px] text-faint">{engagement.when}</span>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 mt-3">
+              <span class="chip chip-teal">{engagement.format}</span>
+            </div>
+
+            <dl class="font-display text-sm text-muted leading-relaxed mt-5 space-y-4">
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">受眾</dt>
+                <dd>{engagement.audience}</dd>
+              </div>
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-1.5">課程路線</dt>
+                <dd>
+                  <ol class="list-none p-0 m-0 space-y-1.5">
+                    {engagement.outline.map((step, i) => (
+                      <li class="flex gap-2.5">
+                        <span class="font-mono text-[11px] text-teal shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </dd>
+              </div>
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">帶走什麼</dt>
+                <dd class="text-ink">{engagement.takeaway}</dd>
+              </div>
+            </dl>
+
+            {engagement.decks.length > 0 && (
+              <div class="mt-6">
+                <div class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-2">簡報（公開可看）</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {engagement.decks.map(deck => (
+                    <a href={deck.url} rel="noopener"
+                       class="deck-link flex items-baseline justify-between gap-3 px-4 py-3 rounded-lg border border-rule no-underline">
+                      <span class="font-display text-ink text-sm leading-snug">{deck.title}</span>
+                      <span class="font-mono text-[10px] uppercase tracking-[.06em] text-faint shrink-0">{deck.segment} ↗</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div class="border-t border-rule pt-4 mt-6 flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">現場記錄</span>
+              {dayRefs.map(ref => ref.href
+                ? <a href={ref.href} class="font-mono text-[11px] text-muted hover:text-teal transition-colors duration-150 no-underline">Day {String(ref.dayNumber).padStart(3, '0')}</a>
+                : <span class="font-mono text-[11px] text-faint">Day {String(ref.dayNumber).padStart(3, '0')}</span>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-16">
+      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">METHOD</div>
+      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-2">課怎麼設計的</h2>
+      <p class="font-display text-muted text-base leading-relaxed max-w-2xl mb-6">
+        中正高工那場的回饋比我預期的好，據說是因為教材設計跟其他研習不太一樣。
+        這套做法不是一次想出來的，是在醫院那幾場來回跑了幾趟、加上跟助教討論之後才長出來的。
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
+        {principles.map(p => (
+          <div class="bg-surface-1 p-6 flex flex-col">
+            <h3 class="font-display text-ink text-base font-semibold tracking-tight leading-snug">{p.title}</h3>
+            <p class="font-display text-muted text-sm leading-relaxed mt-2 flex-1">{p.body}</p>
+            <div class="mt-3">
+              {p.href
+                ? <a href={p.href} class="font-mono text-[11px] text-faint hover:text-teal transition-colors duration-150 no-underline">Day {String(p.day).padStart(3, '0')} →</a>
+                : <span class="font-mono text-[11px] text-faint">Day {String(p.day).padStart(3, '0')}</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {TESTIMONIALS.length > 0 && (
+      <section class="mt-16">
+        <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">FEEDBACK · {TESTIMONIALS.length}</div>
+        <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-6">學員回饋</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {TESTIMONIALS.map(t => (
+            <figure class="bg-surface-1 border border-rule rounded-xl p-6 m-0">
+              <blockquote class="font-display text-ink text-base leading-relaxed m-0">「{t.quote}」</blockquote>
+              <figcaption class="font-mono text-[11px] text-faint mt-3">— {t.attribution}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <figure class="mt-16">
+      <img
+        src={GROUP_PHOTO}
+        alt="兩天工作坊結束後，Dawson Wang 與中正高工的老師們合照"
+        width="1600" height="1200" loading="lazy" decoding="async"
+        class="w-full rounded-xl border border-rule object-cover"
+        style="aspect-ratio: 4 / 3; max-height: 460px;"
+      />
+      <figcaption class="font-mono text-[11px] text-faint mt-2">
+        兩天工作坊結束後，和中正高工的老師們合照
+      </figcaption>
+    </figure>
+
+    <aside class="mt-16 bg-surface-1 border border-rule rounded-xl p-7 relative overflow-hidden">
+      <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-px"
+            style="background: linear-gradient(90deg, var(--color-brick), var(--color-teal));"></span>
+      <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">講師邀約</div>
+      <h3 class="font-display text-ink text-xl font-semibold tracking-tight">想找我去你的單位上一堂</h3>
+      <p class="font-display text-muted text-sm leading-relaxed mt-3 max-w-md">
+        企業內訓、教師研習、社群分享都可以。跟我說你的受眾是誰、想解決什麼，
+        我會把課程依照程度重新排一次。1–2 個工作日內回信。
+      </p>
+      <div class="mt-5 flex flex-wrap gap-2">
+        <a href="/#inquire" class="btn-ochre">談談你的場次 →</a>
+        <a href="/projects" class="btn-ghost">看我做的工具 →</a>
+      </div>
+    </aside>
+  </article>
+</BaseLayout>
+
+<style>
+  .engagement-card {
+    transition: border-color 150ms ease;
+  }
+  .engagement-card:hover {
+    border-color: color-mix(in oklab, var(--color-teal) 30%, var(--color-rule));
+  }
+  .deck-link {
+    background: var(--color-paper);
+    transition: border-color 150ms ease, background 150ms ease;
+  }
+  .deck-link:hover {
+    border-color: color-mix(in oklab, var(--color-teal) 45%, var(--color-rule));
+    background: color-mix(in oklab, var(--color-teal) 7%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .engagement-card, .deck-link { transition: none; }
+  }
+</style>

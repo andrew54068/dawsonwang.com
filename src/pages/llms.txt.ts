@@ -15,6 +15,8 @@ export async function GET() {
     '',
     '## Core pages',
     `- [Home](${SITE_URL}/): AI 工具落地服務、作品證明、預約諮詢`,
+    `- [Projects](${SITE_URL}/projects): side projects built during the Day 1–219 build log — MCP servers, Claude Code plugins, a macOS driver, automation bots, and web apps, most with public source`,
+    `- [Speaking](${SITE_URL}/speaking): AI lecturer profile — hospital staff training, vocational high school teacher workshops, and Ministry of Health-supported AI courses, with public slide decks`,
     `- [Proof](${SITE_URL}/proof): public implementation record and project evidence`,
     `- [All posts](${SITE_URL}/days): daily AI workflow implementation notes`,
     `- [Topics](${SITE_URL}/topics): posts grouped by AI workflow themes`,

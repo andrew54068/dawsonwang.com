@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  /* === Linear-dark (default) === */
+  /* === Linear-dark — the opt-in theme (no data-theme attribute) === */
   --color-paper: #0A0A0B;      /* base background */
   --color-surface-1: #131316;  /* card / panel */
   --color-surface-2: #1B1B20;  /* elevated surface */
@@ -25,7 +25,10 @@
   --font-mono:    "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* === Stripe-clean light theme — opt-in via [data-theme="stripe"] === */
+/* === Stripe-clean light theme — THE DEFAULT ===
+   BaseLayout renders data-theme="stripe" on <html>, so these tokens win unless
+   the visitor opts into dark, which strips the attribute and falls back to the
+   Linear-dark values in @theme above. */
 :root[data-theme="stripe"] {
   --color-paper: #FFFFFF;
   --color-surface-1: #FFFFFF;  /* white cards on bg-soft sections */

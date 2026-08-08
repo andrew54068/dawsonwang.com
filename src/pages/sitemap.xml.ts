@@ -37,6 +37,8 @@ export async function GET() {
 
   const urls = [
     entry('/', '1.0', 'weekly', latestPublishedAt),
+    entry('/projects', '0.9', 'weekly', latestPublishedAt),
+    entry('/speaking', '0.9', 'weekly', latestPublishedAt),
     entry('/proof', '0.9', 'weekly', latestPublishedAt),
     entry('/days', '0.9', 'daily', latestPublishedAt),
     entry('/topics', '0.7', 'weekly', latestPublishedAt),

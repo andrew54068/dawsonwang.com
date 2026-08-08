@@ -1,10 +1,21 @@
 ---
+// `button: true` renders as an outlined pill instead of a plain text link — it
+// reads as a button without competing with the saturated 預約諮詢 CTA.
 const links = [
+  { href: '/projects', label: '專案', button: true },
+  { href: '/speaking', label: '講師', button: true },
   { href: '/proof', label: '作品集' },
   { href: '/days', label: '所有文章' },
   { href: '/topics', label: '主題' },
   { href: '/search', label: '搜尋' },
 ];
+// Highlight the section the visitor is currently in. `/day/12` counts as being
+// under `/days` so the deep article pages don't drop the nav's sense of place.
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+function isCurrent(href: string) {
+  if (href === '/days') return path === '/days' || path.startsWith('/day/');
+  return path === href || path.startsWith(`${href}/`);
+}
 ---
 <nav class="sticky top-0 z-40 border-b border-rule bg-paper/85 backdrop-blur-md">
   <div class="max-w-5xl mx-auto px-8 h-14 flex items-center justify-between gap-4">
@@ -13,10 +24,12 @@ const links = [
             style="background: linear-gradient(135deg, var(--color-brick), var(--color-teal));">D</span>
       <span class="font-display font-semibold text-ink text-sm tracking-tight">Dawson Wang</span>
     </a>
-    <ul class="hidden sm:flex gap-1 list-none p-0 m-0 items-center">
+    <ul class="hidden md:flex gap-1 list-none p-0 m-0 items-center">
       {links.map(l => (
         <li>
-          <a href={l.href} class="px-3 py-1.5 text-muted text-[13px] font-display hover:text-ink hover:bg-surface-1 rounded-md transition-colors duration-150 no-underline">{l.label}</a>
+          <a href={l.href}
+             aria-current={isCurrent(l.href) ? 'page' : undefined}
+             class={`${l.button ? 'nav-pill' : 'px-3 py-1.5 hover:bg-surface-1'} nav-link text-muted text-[13px] font-display hover:text-ink rounded-md transition-colors duration-150 no-underline`}>{l.label}</a>
         </li>
       ))}
     </ul>
@@ -32,11 +45,11 @@ const links = [
         </svg>
       </button>
       <a href="/#inquire"
-         class="nav-cta hidden sm:inline-block text-white text-[13px] font-display font-semibold px-3.5 py-1.5 rounded-md transition-transform duration-150 no-underline">
+         class="nav-cta hidden md:inline-block text-white text-[13px] font-display font-semibold px-3.5 py-1.5 rounded-md transition-transform duration-150 no-underline">
         預約諮詢 →
       </a>
       <button id="menu-toggle" type="button" aria-label="開啟選單" aria-controls="mobile-menu" aria-expanded="false"
-              class="sm:hidden w-8 h-8 grid place-items-center rounded-md bg-surface-1 hover:bg-surface-2 border border-rule text-muted hover:text-ink transition-colors duration-150">
+              class="md:hidden w-8 h-8 grid place-items-center rounded-md bg-surface-1 hover:bg-surface-2 border border-rule text-muted hover:text-ink transition-colors duration-150">
         <svg class="menu-open" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -50,13 +63,15 @@ const links = [
     </div>
   </div>
 
-  <!-- Mobile-only dropdown: the desktop link row is display:none below `sm`,
+  <!-- Mobile-only dropdown: the desktop link row is display:none below `md`,
        so this is the only way to reach the section pages on phones. -->
-  <div id="mobile-menu" class="sm:hidden absolute top-full left-0 right-0 border-b border-rule bg-paper/95 backdrop-blur-md shadow-lg">
+  <div id="mobile-menu" class="md:hidden absolute top-full left-0 right-0 border-b border-rule bg-paper/95 backdrop-blur-md shadow-lg">
     <ul class="max-w-5xl mx-auto px-8 py-3 flex flex-col gap-1 list-none m-0">
       {links.map(l => (
         <li>
-          <a href={l.href} class="mobile-link block px-3 py-2.5 text-muted text-sm font-display hover:text-ink hover:bg-surface-1 rounded-md transition-colors duration-150 no-underline">{l.label}</a>
+          <a href={l.href}
+             aria-current={isCurrent(l.href) ? 'page' : undefined}
+             class={`mobile-link nav-link block px-3 py-2.5 text-muted text-sm font-display hover:text-ink hover:bg-surface-1 rounded-md transition-colors duration-150 no-underline${l.button ? ' border border-rule' : ''}`}>{l.label}</a>
         </li>
       ))}
       <li>
@@ -70,6 +85,33 @@ const links = [
 </nav>
 
 <style>
+  /* Outlined pills for the two "promote me" entries (專案 / 講師) — they read as
+     buttons and group as a pair, but stay quieter than .nav-cta so the 預約諮詢
+     CTA keeps being the loudest thing in the bar. */
+  .nav-pill {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid color-mix(in oklab, var(--color-teal) 35%, var(--color-rule));
+    color: var(--color-teal);
+  }
+  .nav-pill:hover {
+    color: var(--color-teal);
+    background: color-mix(in oklab, var(--color-teal) 10%, transparent);
+    border-color: color-mix(in oklab, var(--color-teal) 55%, var(--color-rule));
+  }
+
+  /* Current section: the nav should say where you are. */
+  .nav-link[aria-current="page"] { color: var(--color-ink); }
+  .nav-pill[aria-current="page"] {
+    color: var(--color-teal);
+    background: color-mix(in oklab, var(--color-teal) 14%, transparent);
+    border-color: color-mix(in oklab, var(--color-teal) 55%, var(--color-rule));
+  }
+  .nav-link:focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--color-teal) 60%, transparent);
+    outline-offset: 2px;
+  }
+
   /* Icon swap: show what will happen on click.
      Default (Linear/dark) → show SUN (click → switch to light).
      Stripe (light)        → show MOON (click → switch to dark). */
@@ -84,7 +126,7 @@ const links = [
   #menu-toggle[aria-expanded="true"] .menu-close { display: block; }
 
   /* Mobile dropdown: hidden + non-interactive until opened, with a subtle
-     fade/slide. `sm:hidden` (display:none ≥640px) keeps it phones-only; we
+     fade/slide. `md:hidden` (display:none ≥768px) keeps it phones-only; we
      drive visibility here rather than toggling `display` so it can animate. */
   #mobile-menu {
     opacity: 0;
@@ -197,7 +239,7 @@ const links = [
 
     // Crossing into desktop layout hides the panel via CSS; reset state so it
     // isn't stuck "open" if the viewport shrinks again.
-    const mq = window.matchMedia('(min-width: 640px)');
+    const mq = window.matchMedia("(min-width: 768px)");
     mq.addEventListener('change', (e) => {
       if (e.matches) setOpen(false);
     });
