@@ -100,6 +100,13 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
         {slides[0].testimonial ? `— ${slides[0].testimonial.attribution}` : ''}
       </p>
     </div>
+
+    {/* The panel above only repeats copy each slide already carries in its own
+        sr-only block, so it stays aria-hidden. This counter is the one live
+        region: the track drifts on its own every few seconds, and a position
+        update is what a reader needs to hear — re-reading the whole quote on a
+        timer would talk over them. */}
+    <p class="sr-only" role="status" aria-live="polite" data-proof-status>第 1 張，共 {slides.length} 張</p>
   </section>
 )}
 
@@ -118,6 +125,7 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     const captionEl = carousel.querySelector<HTMLElement>('[data-proof-caption]');
     const quoteEl = carousel.querySelector<HTMLElement>('[data-proof-quote]');
     const attributionEl = carousel.querySelector<HTMLElement>('[data-proof-attribution]');
+    const statusEl = carousel.querySelector<HTMLElement>('[data-proof-status]');
     if (!viewport) return;
 
     const real = Array.from(viewport.querySelectorAll<HTMLElement>('[data-proof-slide]'));
@@ -173,6 +181,15 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     // overlap, so a single boolean would let whichever ends first restart it.
     const holds = new Set<string>();
 
+    // Re-writing identical text still re-fires a live region, so only speak
+    // when the position actually changed.
+    const announce = (index: number) => {
+      if (!statusEl) return;
+      const position = ((index - origin) % realCount + realCount) % realCount;
+      const text = `第 ${position + 1} 張，共 ${realCount} 張`;
+      if (statusEl.textContent !== text) statusEl.textContent = text;
+    };
+
     const paint = (index: number) => {
       current = index;
       slides.forEach((slide, i) => slide.setAttribute('data-current', i === index ? 'true' : 'false'));
@@ -183,6 +200,7 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
         if (captionEl) captionEl.textContent = next.caption;
         if (quoteEl) quoteEl.textContent = next.quote;
         if (attributionEl) attributionEl.textContent = next.attribution;
+        announce(index);
       };
 
       if (!panel || reduceMotion.matches) {
