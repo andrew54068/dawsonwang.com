@@ -177,6 +177,11 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
 
     let current = origin;
     let timer: number | null = null;
+    // Which photo's words the panel is showing. The markup ships slide 0's
+    // caption and quote, so the panel starts already painted — tracking that
+    // is what stops the first paint() fading identical text out and back in.
+    let painted = 0;
+    let swapTimer: number | null = null;
     // Distinct reasons to hold the timer: a hover and an off-screen scroll can
     // overlap, so a single boolean would let whichever ends first restart it.
     const holds = new Set<string>();
@@ -202,14 +207,32 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     const paint = (index: number) => {
       highlight(index);
 
-      const next = copy[copyIndexOf(index)];
+      const target = copyIndexOf(index);
+      // The fade only earns its cost when the words actually change. Landing on
+      // the copy already on screen — on load, or on any move between a real card
+      // and its clone — must not blink the panel for a zero-content swap.
+      if (target === painted) {
+        announce(index);
+        return;
+      }
+
+      const next = copy[target];
       if (!next) return;
+      painted = target;
+
       const write = () => {
         if (captionEl) captionEl.textContent = next.caption;
         if (quoteEl) quoteEl.textContent = next.quote;
         if (attributionEl) attributionEl.textContent = next.attribution;
         announce(index);
       };
+
+      // A fast swipe can start a second swap inside the first one's fade. Drop
+      // the pending timeout or it would fade *in* on the slide we already left,
+      // then flip to this one unfaded — the half-changed state the fade exists
+      // to prevent.
+      if (swapTimer !== null) window.clearTimeout(swapTimer);
+      swapTimer = null;
 
       if (!panel || reduceMotion.matches) {
         write();
@@ -218,7 +241,8 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
       // Swap the text at the bottom of a short fade so the quote never appears
       // half-changed against the photo that no longer matches it.
       panel.classList.add('is-swapping');
-      window.setTimeout(() => {
+      swapTimer = window.setTimeout(() => {
+        swapTimer = null;
         write();
         panel.classList.remove('is-swapping');
       }, 160);
@@ -331,7 +355,8 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     reduceMotion.addEventListener('change', () => (reduceMotion.matches ? stop() : start()));
 
     // Land on the first real card before anything paints, so inserting the head
-    // clones never shows as a jump.
+    // clones never shows as a jump. The panel already carries this card's words
+    // from the server render, so this only moves the highlight onto it.
     viewport.scrollLeft = centerOffset(slides[origin]);
     paint(origin);
 
