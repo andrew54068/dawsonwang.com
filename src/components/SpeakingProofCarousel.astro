@@ -86,7 +86,7 @@ const { slides } = Astro.props;
 
       <div class="proof-controls border-t border-rule">
         <button class="proof-button" type="button" data-proof-prev aria-label="上一張講師課程照片">←</button>
-        <div class="proof-dots" role="tablist" aria-label="切換課程照片">
+        <div class="proof-dots" role="group" aria-label="切換課程照片">
           {slides.map((slide, index) => (
             <button
               class="proof-dot"
