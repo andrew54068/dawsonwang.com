@@ -478,6 +478,38 @@ if (!existsSync(outDir)) {
   assertIncludes(search, `"@id":"${siteUrl}/search#breadcrumb"`, '/search BreadcrumbList @id');
   assertMatch(search, new RegExp(`"@type":"SearchResultsPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/search#breadcrumb"\\}`), '/search SearchResultsPage breadcrumb → #breadcrumb graph link');
 
+  const speaking = readGenerated('speaking/index.html');
+  assertTitleStack(speaking, 'AI 講師 · 企業內訓與教師研習 | Dawson Wang', '/speaking');
+  assertIncludes(speaking, `<link rel="canonical" href="${siteUrl}/speaking"`, '/speaking canonical');
+  assertCanonicalOgUrlParity(speaking, '/speaking');
+  assertLocaleStack(speaking, '/speaking');
+  assertNonArticleSharedLayoutContract(speaking, '/speaking', '/speaking');
+  assertDescriptionStack(speaking, '/speaking');
+  assertIncludes(speaking, `<meta property="og:image" content="${siteUrl}/speaking/ccvs-teaching.webp"`, '/speaking og:image WebP');
+  assertIncludes(speaking, '<meta property="og:image:width" content="1600"', '/speaking og:image:width');
+  assertIncludes(speaking, '<meta property="og:image:height" content="1200"', '/speaking og:image:height');
+  assertIncludes(speaking, 'id="speaking-proof"', '/speaking proof carousel section');
+  assertIncludes(speaking, 'data-speaking-proof-carousel', '/speaking proof carousel behavior hook');
+  assertIncludes(speaking, 'aria-roledescription="carousel"', '/speaking proof carousel aria role description');
+  assertIncludes(speaking, 'aria-live="polite"', '/speaking proof carousel live counter');
+  if (/\/speaking\/[^"]+\.jpg/.test(speaking)) fail('/speaking still references JPG public speaking images');
+  const speakingWebpImages = Array.from(speaking.matchAll(/<img[^>]+src="(\/speaking\/[^"]+\.webp)"[^>]*>/g));
+  if (speakingWebpImages.length < 5) fail(`/speaking renders only ${speakingWebpImages.length} WebP speaking images`);
+  for (const match of speakingWebpImages) {
+    const imageTag = match[0];
+    const imageSrc = match[1] ?? 'unknown';
+    if (!/\bwidth="\d+"/.test(imageTag) || !/\bheight="\d+"/.test(imageTag)) {
+      fail(`/speaking image ${imageSrc} is missing width/height attributes`);
+    }
+  }
+  const speakingJsonLd = extractJsonLdScript(speaking, '/speaking');
+  assertRootEntityGraph(speakingJsonLd, '/speaking');
+  assertJsonLdInLanguage(speakingJsonLd, 'ProfilePage', '/speaking');
+  assertMatch(speakingJsonLd, /"@type":"ProfilePage"[\s\S]*?"primaryImageOfPage":"https:\/\/dawsonwang\.com\/speaking\/ccvs-teaching\.webp"/, '/speaking ProfilePage primary image WebP');
+  assertMatch(speakingJsonLd, /"@type":"Event"[\s\S]*?"startDate":"2026-08-04"/, '/speaking Event startDate preserved');
+  assertIncludes(speakingJsonLd, `"@id":"${siteUrl}/speaking#breadcrumb"`, '/speaking BreadcrumbList @id');
+  assertMatch(speakingJsonLd, new RegExp(`"@type":"ProfilePage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/speaking#breadcrumb"\\}`), '/speaking ProfilePage breadcrumb → #breadcrumb graph link');
+
   if (generatedDayPages.length !== days.length) {
     const missing = days
       .filter(day => !existsSync(path.join(outDir, `day/${day.number}/index.html`)))
