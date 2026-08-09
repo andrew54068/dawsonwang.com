@@ -25,6 +25,13 @@ describe('Amplitude browser bridge', () => {
     expect(track).toHaveBeenCalledWith('link_click', { link_id: 'threads' });
   });
 
+  // Guides & Surveys injects a <script> from cdn.amplitude.com on every page
+  // load. This site does not use it, and allowing it would mean widening
+  // script-src to a third-party CDN — see tests/security-headers.test.ts.
+  test('skips Guides & Surveys so no third-party CDN script is injected', () => {
+    expect(AMPLITUDE_INIT_OPTIONS.engagement).toEqual({ skip: true });
+  });
+
   test('dispatches events immediately while initialization is still pending', () => {
     let resolveInitialization!: () => void;
     const initialization = new Promise<void>((resolve) => {

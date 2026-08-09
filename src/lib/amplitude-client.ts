@@ -6,6 +6,10 @@ export const AMPLITUDE_API_KEY = '4999ee21afb5d662d56000007168ee7f';
 export const AMPLITUDE_INIT_OPTIONS = {
   analytics: { autocapture: true },
   sessionReplay: { sampleRate: 1 },
+  // initAll() also wires up Guides & Surveys, which unconditionally injects a
+  // <script> from https://cdn.amplitude.com. This site does not use that
+  // product, so skip it rather than open script-src to a third-party CDN.
+  engagement: { skip: true },
 };
 
 interface AmplitudeClient {
