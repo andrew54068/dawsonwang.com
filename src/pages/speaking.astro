@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ENGAGEMENTS, PRINCIPLES, TESTIMONIALS, type Attendance, type Engagement } from '../data/speaking';
+import SpeakingProofCarousel from '../components/SpeakingProofCarousel.astro';
+import { ENGAGEMENTS, PRINCIPLES, SPEAKING_PROOF_SLIDES, TESTIMONIALS, type Attendance, type Engagement } from '../data/speaking';
 import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 
 // Photos are copies of the Day 219 workshop attachments, resized into
@@ -9,8 +10,8 @@ import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 // 100days submodule on purpose: the submodule can lag behind the canonical
 // content dir, and a hero image that vanishes on a stale checkout is worse
 // than a duplicated file.
-const HERO_PHOTO = '/speaking/ccvs-teaching.jpg';
-const GROUP_PHOTO = '/speaking/ccvs-group.jpg';
+const HERO_PHOTO = '/speaking/ccvs-teaching.webp';
+const HERO_PHOTO_ALT = 'Dawson Wang 在中正高工電腦教室授課，站在教師之間講解';
 
 const days = await getCollection('days');
 const availableDays = new Set<number>(days.map(d => d.data.dayNumber));
@@ -43,11 +44,19 @@ const resolved: ResolvedEngagement[] = ENGAGEMENTS.map(engagement => ({
 }));
 
 const principles = PRINCIPLES.map(p => ({ ...p, href: dayHref(p.day, `principle "${p.title}"`) }));
+const testimonialsById = new Map(TESTIMONIALS.map(testimonial => [testimonial.id, testimonial]));
+const proofSlides = SPEAKING_PROOF_SLIDES.map(slide => {
+  const testimonial = slide.testimonialId ? testimonialsById.get(slide.testimonialId) : undefined;
+  if (slide.testimonialId && !testimonial) {
+    throw new Error(`speaking.ts: proof slide "${slide.id}" references missing testimonial "${slide.testimonialId}".`);
+  }
+  return { ...slide, testimonial };
+});
 
 const deckCount = ENGAGEMENTS.reduce((n, e) => n + e.decks.length, 0);
 const venueCount = ENGAGEMENTS.length;
 
-const speakingTitle = 'AI 講師 · 企業內訓與教師研習｜Dawson Wang';
+const speakingTitle = 'AI 講師 · 企業內訓與教師研習';
 const speakingDescription = '醫療院所內訓、高中職教師研習、衛福部支持的 AI 應用課程。課程以實作為主——走完課程學員電腦裡真的多出一份成品，而且掛得上網路。全部簡報公開可看。';
 const speakingUrl = absoluteUrl('/speaking');
 
@@ -104,6 +113,9 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
   title={speakingTitle}
   description={speakingDescription}
   ogImage={HERO_PHOTO}
+  ogImageWidth={1600}
+  ogImageHeight={1200}
+  ogImageAlt={HERO_PHOTO_ALT}
   structuredData={[speakingJsonLd, speakingBreadcrumbJsonLd]}
 >
   <article class="max-w-5xl mx-auto px-8 py-16">
@@ -123,7 +135,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
     <figure class="mt-10">
       <img
         src={HERO_PHOTO}
-        alt="Dawson Wang 在中正高工電腦教室授課，站在教師之間講解"
+        alt={HERO_PHOTO_ALT}
         width="1600" height="1200" loading="eager" decoding="async"
         class="w-full rounded-xl border border-rule object-cover"
         style="aspect-ratio: 4 / 3; max-height: 460px;"
@@ -245,33 +257,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
       </div>
     </section>
 
-    {TESTIMONIALS.length > 0 && (
-      <section class="mt-16">
-        <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">FEEDBACK · {TESTIMONIALS.length}</div>
-        <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-6">學員回饋</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {TESTIMONIALS.map(t => (
-            <figure class="bg-surface-1 border border-rule rounded-xl p-6 m-0">
-              <blockquote class="font-display text-ink text-base leading-relaxed m-0">「{t.quote}」</blockquote>
-              <figcaption class="font-mono text-[11px] text-faint mt-3">— {t.attribution}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-    )}
-
-    <figure class="mt-16">
-      <img
-        src={GROUP_PHOTO}
-        alt="兩天工作坊結束後，Dawson Wang 與中正高工的老師們合照"
-        width="1600" height="1200" loading="lazy" decoding="async"
-        class="w-full rounded-xl border border-rule object-cover"
-        style="aspect-ratio: 4 / 3; max-height: 460px;"
-      />
-      <figcaption class="font-mono text-[11px] text-faint mt-2">
-        兩天工作坊結束後，和中正高工的老師們合照
-      </figcaption>
-    </figure>
+    <SpeakingProofCarousel slides={proofSlides} />
 
     <aside class="mt-16 bg-surface-1 border border-rule rounded-xl p-7 relative overflow-hidden">
       <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-px"
