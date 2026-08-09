@@ -181,20 +181,28 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     // overlap, so a single boolean would let whichever ends first restart it.
     const holds = new Set<string>();
 
+    // Which of the five real photos a track index shows — clones included.
+    const copyIndexOf = (index: number) => ((index - origin) % realCount + realCount) % realCount;
+
+    // Moving the highlight is cheap and always safe; swapping the copy is not,
+    // so the two are separable (see the rebase in the scroll handler).
+    const highlight = (index: number) => {
+      current = index;
+      slides.forEach((slide, i) => slide.setAttribute('data-current', i === index ? 'true' : 'false'));
+    };
+
     // Re-writing identical text still re-fires a live region, so only speak
     // when the position actually changed.
     const announce = (index: number) => {
       if (!statusEl) return;
-      const position = ((index - origin) % realCount + realCount) % realCount;
-      const text = `第 ${position + 1} 張，共 ${realCount} 張`;
+      const text = `第 ${copyIndexOf(index) + 1} 張，共 ${realCount} 張`;
       if (statusEl.textContent !== text) statusEl.textContent = text;
     };
 
     const paint = (index: number) => {
-      current = index;
-      slides.forEach((slide, i) => slide.setAttribute('data-current', i === index ? 'true' : 'false'));
+      highlight(index);
 
-      const next = copy[((index - origin) % realCount + realCount) % realCount];
+      const next = copy[copyIndexOf(index)];
       if (!next) return;
       const write = () => {
         if (captionEl) captionEl.textContent = next.caption;
@@ -279,7 +287,11 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
           }
         }
 
-        if (nearest !== current) paint(nearest);
+        // A rebase swaps a real card for its pixel-identical clone, so the copy
+        // on screen is unchanged — repainting there would fade the same quote
+        // out and back in once per loop. Move the highlight only.
+        if (copyIndexOf(nearest) !== copyIndexOf(current)) paint(nearest);
+        else if (nearest !== current) highlight(nearest);
       }, 120);
     }, { passive: true });
 
