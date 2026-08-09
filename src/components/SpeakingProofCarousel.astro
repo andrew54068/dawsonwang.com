@@ -22,11 +22,13 @@ interface Props {
 }
 
 const { slides } = Astro.props;
+
+const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配公開回饋。';
 ---
 {slides.length > 0 && (
   <section
     id="speaking-proof"
-    class="mt-16 speaking-proof"
+    class="mt-10 speaking-proof"
     role="region"
     aria-roledescription="carousel"
     aria-label="講師課程照片與學員回饋"
@@ -42,229 +44,382 @@ const { slides } = Astro.props;
       </p>
     </div>
 
-    <div class="proof-shell border border-rule bg-surface-1 overflow-hidden">
-      <div class="proof-track">
-        {slides.map((slide, index) => (
-          <article
-            class="proof-slide"
-            data-proof-slide
-            data-proof-slide-index={index}
-            aria-hidden={index === 0 ? 'false' : 'true'}
-            hidden={index !== 0}
-          >
-            <figure class="proof-photo m-0">
-              <img
-                src={slide.image.src}
-                alt={slide.image.alt}
-                width={slide.image.width}
-                height={slide.image.height}
-                loading={index === 0 ? 'eager' : 'lazy'}
-                decoding="async"
-                sizes="(min-width: 1024px) 58rem, calc(100vw - 4rem)"
-              />
-              <figcaption class="font-mono text-[11px] text-faint">{slide.caption}</figcaption>
-            </figure>
+    {/* Photos only. The centred card is the subject; its neighbours peek in on
+        both sides as the sole hint that the track continues. Captions and
+        quotes live in the panel below so a peeking neighbour never leaks the
+        text belonging to a photo you cannot see yet.
 
-            <div class="proof-copy">
-              <div class="font-mono text-[11px] text-teal uppercase tracking-[.08em]">學員回饋</div>
-              {slide.testimonial ? (
-                <>
-                  <blockquote class="font-display text-ink leading-relaxed m-0">
-                    「{slide.testimonial.quote}」
-                  </blockquote>
-                  <p class="font-mono text-[11px] text-faint m-0">— {slide.testimonial.attribution}</p>
-                </>
-              ) : (
-                <p class="font-display text-muted text-base leading-relaxed m-0">
-                  這張照片保留課程現場的工作狀態，沒有搭配公開回饋。
-                </p>
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
+        Only the real five ship in the HTML — the loop clones are added by the
+        script, so no-JS readers get five photos and search engines get one copy
+        of each caption. */}
+    <div class="proof-viewport" data-proof-viewport tabindex="0" aria-label="課程照片，可左右捲動">
+      {slides.map((slide, index) => (
+        <article
+          class="proof-slide border border-rule bg-surface-1"
+          data-proof-slide
+          data-proof-slide-index={index}
+          data-current={index === 0 ? 'true' : 'false'}
+          aria-roledescription="slide"
+          aria-label={`第 ${index + 1} 張，共 ${slides.length} 張`}
+        >
+          {/* aspect-ratio, never the surrounding copy, decides this box — that
+              is what keeps all five photos exactly the same size. */}
+          <img
+            src={slide.image.src}
+            alt={slide.image.alt}
+            width={slide.image.width}
+            height={slide.image.height}
+            loading={index < 2 ? 'eager' : 'lazy'}
+            decoding="async"
+            sizes="(min-width: 1024px) 56rem, 90vw"
+          />
+          {/* The visible panel below is one shared slot, so pair each photo
+              with its own words here for screen readers. */}
+          <div class="sr-only">
+            <p>{slide.caption}</p>
+            <blockquote>
+              {slide.testimonial ? `「${slide.testimonial.quote}」` : NO_QUOTE}
+            </blockquote>
+            {slide.testimonial && <p>— {slide.testimonial.attribution}</p>}
+          </div>
+        </article>
+      ))}
+    </div>
 
-      <div class="proof-controls border-t border-rule">
-        <button class="proof-button" type="button" data-proof-prev aria-label="上一張講師課程照片">←</button>
-        <div class="proof-dots" role="group" aria-label="切換課程照片">
-          {slides.map((slide, index) => (
-            <button
-              class="proof-dot"
-              type="button"
-              data-proof-dot
-              data-proof-dot-index={index}
-              aria-label={`顯示第 ${index + 1} 張：${slide.caption}`}
-              aria-current={index === 0 ? 'true' : 'false'}
-            >
-              <span>{String(index + 1).padStart(2, '0')}</span>
-            </button>
-          ))}
-        </div>
-        <span class="proof-counter font-mono text-[11px] text-teal" data-proof-counter aria-live="polite">
-          1 / {slides.length}
-        </span>
-        <button class="proof-button" type="button" data-proof-next aria-label="下一張講師課程照片">→</button>
-      </div>
+    <div
+      class="proof-panel border border-rule bg-surface-1"
+      data-proof-panel
+      aria-hidden="true"
+    >
+      <p class="font-mono text-[11px] text-faint m-0" data-proof-caption>{slides[0].caption}</p>
+      <div class="font-mono text-[11px] text-teal uppercase tracking-[.08em]">學員回饋</div>
+      <blockquote class="font-display text-ink leading-relaxed m-0" data-proof-quote>
+        {slides[0].testimonial ? `「${slides[0].testimonial.quote}」` : NO_QUOTE}
+      </blockquote>
+      <p class="font-mono text-[11px] text-faint m-0" data-proof-attribution>
+        {slides[0].testimonial ? `— ${slides[0].testimonial.attribution}` : ''}
+      </p>
     </div>
   </section>
 )}
 
 <script>
+  const AUTOPLAY_MS = 5000;
+
+  interface PanelCopy {
+    caption: string;
+    quote: string;
+    attribution: string;
+  }
+
   document.querySelectorAll<HTMLElement>('[data-speaking-proof-carousel]').forEach((carousel) => {
-    const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-proof-slide]'));
-    const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-proof-dot]'));
-    const prev = carousel.querySelector<HTMLButtonElement>('[data-proof-prev]');
-    const next = carousel.querySelector<HTMLButtonElement>('[data-proof-next]');
-    const counter = carousel.querySelector<HTMLElement>('[data-proof-counter]');
-    if (slides.length === 0) return;
+    const viewport = carousel.querySelector<HTMLElement>('[data-proof-viewport]');
+    const panel = carousel.querySelector<HTMLElement>('[data-proof-panel]');
+    const captionEl = carousel.querySelector<HTMLElement>('[data-proof-caption]');
+    const quoteEl = carousel.querySelector<HTMLElement>('[data-proof-quote]');
+    const attributionEl = carousel.querySelector<HTMLElement>('[data-proof-attribution]');
+    if (!viewport) return;
 
-    let current = 0;
+    const real = Array.from(viewport.querySelectorAll<HTMLElement>('[data-proof-slide]'));
+    const realCount = real.length;
+    if (realCount === 0) return;
 
-    const show = (nextIndex: number) => {
-      current = (nextIndex + slides.length) % slides.length;
-      slides.forEach((slide, index) => {
-        const active = index === current;
-        slide.hidden = !active;
-        slide.setAttribute('aria-hidden', active ? 'false' : 'true');
-      });
-      dots.forEach((dot, index) => {
-        dot.setAttribute('aria-current', index === current ? 'true' : 'false');
-      });
-      if (counter) counter.textContent = `${current + 1} / ${slides.length}`;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // The sr-only block inside each card is the source of truth for the panel:
+    // no second copy of the strings to drift out of sync with the markup.
+    const copy: PanelCopy[] = real.map((slide) => {
+      const [caption, quote, attribution] = Array.from(
+        slide.querySelectorAll<HTMLElement>('.sr-only > *')
+      ).map(node => node.textContent?.trim() ?? '');
+      return { caption: caption ?? '', quote: quote ?? '', attribution: attribution ?? '' };
+    });
+
+    // A set of clones on each side is what makes the loop seamless: the card
+    // peeking to the left of the first photo is really the last photo, so there
+    // is never a dead edge to bump into. When the centre drifts out of the
+    // middle set we snap the scroll back by exactly one set width — the pixels
+    // under the cursor are identical, so the jump is invisible.
+    const canLoop = realCount >= 2;
+    if (canLoop) {
+      const cloneOf = (slide: HTMLElement) => {
+        const clone = slide.cloneNode(true) as HTMLElement;
+        clone.setAttribute('data-clone', 'true');
+        clone.setAttribute('aria-hidden', 'true');
+        clone.querySelectorAll('img').forEach(img => img.setAttribute('loading', 'lazy'));
+        return clone;
+      };
+      const head = real.map(cloneOf);
+      const tail = real.map(cloneOf);
+      head.forEach(clone => viewport.insertBefore(clone, real[0]));
+      tail.forEach(clone => viewport.appendChild(clone));
+    }
+
+    const slides = Array.from(viewport.querySelectorAll<HTMLElement>('[data-proof-slide]'));
+    // Offset of the first real slide inside the (possibly cloned) track.
+    const origin = canLoop ? realCount : 0;
+
+    // Centre the card: offsetLeft is measured from the viewport's padding box
+    // because .proof-viewport is position:relative.
+    const centerOffset = (slide: HTMLElement) =>
+      slide.offsetLeft - (viewport.clientWidth - slide.offsetWidth) / 2;
+
+    const setWidth = () =>
+      canLoop ? slides[origin].offsetLeft - slides[0].offsetLeft : 0;
+
+    let current = origin;
+    let timer: number | null = null;
+    // Distinct reasons to hold the timer: a hover and an off-screen scroll can
+    // overlap, so a single boolean would let whichever ends first restart it.
+    const holds = new Set<string>();
+
+    const paint = (index: number) => {
+      current = index;
+      slides.forEach((slide, i) => slide.setAttribute('data-current', i === index ? 'true' : 'false'));
+
+      const next = copy[((index - origin) % realCount + realCount) % realCount];
+      if (!next) return;
+      const write = () => {
+        if (captionEl) captionEl.textContent = next.caption;
+        if (quoteEl) quoteEl.textContent = next.quote;
+        if (attributionEl) attributionEl.textContent = next.attribution;
+      };
+
+      if (!panel || reduceMotion.matches) {
+        write();
+        return;
+      }
+      // Swap the text at the bottom of a short fade so the quote never appears
+      // half-changed against the photo that no longer matches it.
+      panel.classList.add('is-swapping');
+      window.setTimeout(() => {
+        write();
+        panel.classList.remove('is-swapping');
+      }, 160);
     };
 
-    prev?.addEventListener('click', () => show(current - 1));
-    next?.addEventListener('click', () => show(current + 1));
-    dots.forEach((dot, index) => dot.addEventListener('click', () => show(index)));
+    const scrollToSlide = (index: number) => {
+      const target = Math.min(Math.max(index, 0), slides.length - 1);
+      viewport.scrollTo({
+        left: centerOffset(slides[target]),
+        behavior: reduceMotion.matches ? 'auto' : 'smooth',
+      });
+      paint(target);
+    };
+
+    const stop = () => {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    const start = () => {
+      stop();
+      if (holds.size > 0 || reduceMotion.matches || realCount < 2) return;
+      timer = window.setInterval(() => scrollToSlide(current + 1), AUTOPLAY_MS);
+    };
+
+    const hold = (reason: string) => {
+      holds.add(reason);
+      stop();
+    };
+
+    const release = (reason: string) => {
+      holds.delete(reason);
+      start();
+    };
+
+    // Manual scrolling (swipe, trackpad, keyboard) is the source of truth for
+    // which card is centred — recompute from the scroll offset, don't assume.
+    let scrollSettle: number | null = null;
+    viewport.addEventListener('scroll', () => {
+      if (scrollSettle !== null) window.clearTimeout(scrollSettle);
+      scrollSettle = window.setTimeout(() => {
+        const middle = viewport.scrollLeft + viewport.clientWidth / 2;
+        let nearest = 0;
+        let best = Infinity;
+        slides.forEach((slide, index) => {
+          const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - middle);
+          if (distance < best) {
+            best = distance;
+            nearest = index;
+          }
+        });
+
+        // Rebase into the middle set. Assigning scrollLeft is instant, and the
+        // clone under the centre is pixel-identical to the real card it maps
+        // to, so nothing visibly moves.
+        if (canLoop) {
+          const width = setWidth();
+          if (nearest >= origin + realCount) {
+            nearest -= realCount;
+            viewport.scrollLeft -= width;
+          } else if (nearest < origin) {
+            nearest += realCount;
+            viewport.scrollLeft += width;
+          }
+        }
+
+        if (nearest !== current) paint(nearest);
+      }, 120);
+    }, { passive: true });
+
     carousel.addEventListener('keydown', (event) => {
       if (!carousel.contains(document.activeElement)) return;
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        show(current - 1);
+        scrollToSlide(current - 1);
       }
       if (event.key === 'ArrowRight') {
         event.preventDefault();
-        show(current + 1);
+        scrollToSlide(current + 1);
       }
     });
+
+    // With no pause button on screen, these holds are the pause mechanism:
+    // hovering, or tabbing into the track, stops the drift.
+    carousel.addEventListener('pointerenter', () => hold('pointer'));
+    carousel.addEventListener('pointerleave', () => release('pointer'));
+    carousel.addEventListener('focusin', () => hold('focus'));
+    carousel.addEventListener('focusout', () => {
+      if (!carousel.contains(document.activeElement)) release('focus');
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) hold('tab');
+      else release('tab');
+    });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        entries => entries.forEach(entry => (entry.isIntersecting ? release('offscreen') : hold('offscreen'))),
+        { threshold: 0.25 }
+      ).observe(carousel);
+    }
+
+    reduceMotion.addEventListener('change', () => (reduceMotion.matches ? stop() : start()));
+
+    // Land on the first real card before anything paints, so inserting the head
+    // clones never shows as a jump.
+    viewport.scrollLeft = centerOffset(slides[origin]);
+    paint(origin);
+
+    // Percentage widths mean every resize moves the centre — put it back.
+    let resizeSettle: number | null = null;
+    window.addEventListener('resize', () => {
+      if (resizeSettle !== null) window.clearTimeout(resizeSettle);
+      resizeSettle = window.setTimeout(() => {
+        viewport.scrollLeft = centerOffset(slides[current]);
+      }, 150);
+    });
+
+    start();
   });
 </script>
 
 <style>
-  .proof-shell {
-    border-radius: 8px;
+  .proof-viewport {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    /* Half the leftover width on each side, so every card — first and last
+       included — sits dead centre. */
+    padding-inline: 4%;
+    padding-block: 2px;
+    /* The peeking neighbours carry the affordance; a native bar under the photo
+       would only add a stray line. */
+    scrollbar-width: none;
+  }
+
+  .proof-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .proof-viewport:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
   }
 
   .proof-slide {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
-    min-height: 460px;
-  }
-
-  .proof-photo {
-    display: grid;
-    grid-template-rows: minmax(0, 1fr) auto;
-    gap: 10px;
+    /* 92% + 4% padding either side leaves roughly a 20px sliver of each
+       neighbour — just enough to read as "there is more". */
+    flex: 0 0 92%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    min-width: 0;
     padding: 12px;
-    border-right: 1px solid var(--color-rule);
-    background: var(--color-paper);
+    border-radius: 12px;
+    overflow: hidden;
+    /* Neighbours read as context, not as competing subjects. */
+    opacity: 0.42;
+    transition: opacity 320ms ease;
   }
 
-  .proof-photo img {
+  .proof-slide[data-current="true"] {
+    opacity: 1;
+  }
+
+  .proof-slide img {
     display: block;
     width: 100%;
-    height: 100%;
-    min-height: 360px;
+    aspect-ratio: 4 / 3;
+    max-height: 440px;
     object-fit: cover;
     border-radius: 8px;
   }
 
-  .proof-copy {
+  .proof-panel {
     display: flex;
-    min-width: 0;
     flex-direction: column;
     justify-content: center;
-    gap: 18px;
-    padding: clamp(24px, 4vw, 42px);
-  }
-
-  .proof-copy blockquote {
-    font-size: clamp(1.25rem, 2.3vw, 2rem);
-  }
-
-  .proof-controls {
-    display: grid;
-    grid-template-columns: 48px minmax(0, 1fr) auto 48px;
-    align-items: center;
     gap: 12px;
-    padding: 12px;
+    margin-top: 16px;
+    padding: clamp(20px, 3vw, 32px);
+    border-radius: 12px;
+    /* Reserve room for the longest testimonial so swapping quotes never nudges
+       the page under the reader. */
+    min-height: 200px;
+    transition: opacity 160ms ease;
   }
 
-  .proof-button,
-  .proof-dot {
-    min-width: 44px;
-    min-height: 44px;
-    border: 1px solid var(--color-rule);
-    border-radius: 8px;
-    background: var(--color-paper);
-    color: var(--color-muted);
-    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+  .proof-panel.is-swapping {
+    opacity: 0;
   }
 
-  .proof-button:hover,
-  .proof-dot:hover,
-  .proof-dot[aria-current="true"] {
-    border-color: color-mix(in oklab, var(--color-teal) 45%, var(--color-rule));
-    background: color-mix(in oklab, var(--color-teal) 8%, transparent);
-    color: var(--color-ink);
-  }
-
-  .proof-dots {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .proof-dot {
-    font-family: var(--font-mono);
-    font-size: 11px;
+  .proof-panel blockquote {
+    font-size: clamp(1.1rem, 1.7vw, 1.5rem);
   }
 
   @media (max-width: 820px) {
+    .proof-viewport {
+      gap: 12px;
+      padding-inline: 5%;
+    }
+
     .proof-slide {
-      grid-template-columns: 1fr;
+      flex: 0 0 90%;
+    }
+
+    .proof-slide img {
+      max-height: none;
+    }
+
+    .proof-panel {
       min-height: 0;
-    }
-
-    .proof-photo {
-      border-right: 0;
-      border-bottom: 1px solid var(--color-rule);
-    }
-
-    .proof-photo img {
-      min-height: 0;
-      aspect-ratio: 4 / 3;
-    }
-
-    .proof-controls {
-      grid-template-columns: 48px 1fr 48px;
-    }
-
-    .proof-counter {
-      grid-column: 1 / -1;
-      grid-row: 1;
-      justify-self: center;
-    }
-
-    .proof-dots {
-      justify-content: center;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .proof-button,
-    .proof-dot {
+    .proof-viewport {
+      scroll-behavior: auto;
+    }
+
+    .proof-slide,
+    .proof-panel {
       transition: none;
     }
   }

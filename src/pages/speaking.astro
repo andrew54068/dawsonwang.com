@@ -132,18 +132,10 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
       而且自己做的東西真的掛得上網路、別人打得開。
     </p>
 
-    <figure class="mt-10">
-      <img
-        src={HERO_PHOTO}
-        alt={HERO_PHOTO_ALT}
-        width="1600" height="1200" loading="eager" decoding="async"
-        class="w-full rounded-xl border border-rule object-cover"
-        style="aspect-ratio: 4 / 3; max-height: 460px;"
-      />
-      <figcaption class="font-mono text-[11px] text-faint mt-2">
-        中正高工教師 AI 應用研習 · 實作進行中
-      </figcaption>
-    </figure>
+    {/* The carousel opens the page: its first slide is HERO_PHOTO, so a separate
+        hero figure above it would just show the same photo twice. HERO_PHOTO is
+        still the og:image and primaryImageOfPage. */}
+    <SpeakingProofCarousel slides={proofSlides} />
 
     <dl class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
       <div class="bg-surface-1 px-5 py-4">
@@ -256,8 +248,6 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
         ))}
       </div>
     </section>
-
-    <SpeakingProofCarousel slides={proofSlides} />
 
     <aside class="mt-16 bg-surface-1 border border-rule rounded-xl p-7 relative overflow-hidden">
       <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-px"
