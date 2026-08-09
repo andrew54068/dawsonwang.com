@@ -171,19 +171,134 @@ export const PRINCIPLES: Principle[] = [
 
 // Attendee feedback pulled from the post-session surveys.
 //
-// EMPTY ON PURPOSE — the survey responses live in a Google Drive folder the
-// connected account can't read (see the note in /speaking's page comment).
-// Fill this in and the 學員回饋 section renders itself; the page skips the whole
-// section while the array is empty, so nothing looks broken in the meantime.
-//
-// When adding: quote the response, keep the attribution non-identifying
-// (role + venue, never a name), and only include feedback given knowing it
-// would be shared.
+// Keep quotes exact, attribution non-identifying (role + venue, never a name),
+// and include only feedback cleared for public sharing.
 export interface Testimonial {
+  id: string;
+  engagementSlug: Engagement['slug'];
+  theme: string;
   /** The response, quoted. Trim to the sharp sentence — don't paraphrase. */
   quote: string;
   /** Non-identifying attribution, e.g. `專業科目教師 · 中正高工`. */
   attribution: string;
+  shareApproved: true;
 }
 
-export const TESTIMONIALS: Testimonial[] = [];
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    id: 'ccvs-individual-help',
+    engagementSlug: 'ccvs',
+    theme: 'individual-help',
+    quote: '講師單獨講解時 有確實解答我的問題',
+    attribution: '專業群科教師 · 中正高工',
+    shareApproved: true,
+  },
+  {
+    id: 'ccvs-hands-on-result',
+    engagementSlug: 'ccvs',
+    theme: 'hands-on-result',
+    quote: '感謝講師細心的指導 我聽得懂 也做得出來 超讚的',
+    attribution: '專業群科教師 · 中正高工',
+    shareApproved: true,
+  },
+  {
+    id: 'ccvs-audience-fit',
+    engagementSlug: 'ccvs',
+    theme: 'audience-fit',
+    quote: '教學準備充足，能從學生的角度思考其需求，讚！',
+    attribution: '語文／社會科教師 · 中正高工',
+    shareApproved: true,
+  },
+  {
+    id: 'ccvs-systematic-clarity',
+    engagementSlug: 'ccvs',
+    theme: 'systematic-clarity',
+    quote: '對ai的認識有更系統化的理解，除了教導大家做出成品，還具體説明是如何做出來，這部份講解的很清楚。',
+    attribution: '數學／自然科教師 · 中正高工',
+    shareApproved: true,
+  },
+  {
+    id: 'ccvs-security-balance',
+    engagementSlug: 'ccvs',
+    theme: 'theory-security-balance',
+    quote: '反重力智慧程式設計，好棒！深入淺出的授課，實作與理論及資安並重，很讚！',
+    attribution: '語文／社會科教師 · 中正高工',
+    shareApproved: true,
+  },
+];
+
+export interface SpeakingProofSlide {
+  id: string;
+  engagementSlug: Engagement['slug'];
+  image: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
+  caption: string;
+  testimonialId?: Testimonial['id'];
+}
+
+export const SPEAKING_PROOF_SLIDES: SpeakingProofSlide[] = [
+  {
+    id: 'ccvs-teaching',
+    engagementSlug: 'ccvs',
+    image: {
+      src: '/speaking/ccvs-teaching.webp',
+      alt: 'Dawson Wang 在中正高工電腦教室中穿梭於老師座位之間講解 AI 實作流程',
+      width: 1600,
+      height: 1200,
+    },
+    caption: '中正高工教師 AI 應用研習 · 實作中穿梭講解',
+    testimonialId: 'ccvs-hands-on-result',
+  },
+  {
+    id: 'ccvs-front',
+    engagementSlug: 'ccvs',
+    image: {
+      src: '/speaking/ccvs-2026-front.webp',
+      alt: 'Dawson Wang 站在中正高工電腦教室白板前，用麥克風說明課程開場',
+      width: 1600,
+      height: 1200,
+    },
+    caption: '從共同案例開始，先把 AI 協作的問題講清楚',
+    testimonialId: 'ccvs-audience-fit',
+  },
+  {
+    id: 'ccvs-room',
+    engagementSlug: 'ccvs',
+    image: {
+      src: '/speaking/ccvs-2026-room.webp',
+      alt: '中正高工電腦教室內，多位老師坐在桌機前跟著課程完成 AI 實作',
+      width: 1600,
+      height: 1200,
+    },
+    caption: '不是工具展示，而是把同一條備課工作流走完',
+    testimonialId: 'ccvs-systematic-clarity',
+  },
+  {
+    id: 'ccvs-helping',
+    engagementSlug: 'ccvs',
+    image: {
+      src: '/speaking/ccvs-2026-helping.webp',
+      alt: 'Dawson Wang 走到老師座位旁，陪同檢查螢幕上的 AI 實作成果',
+      width: 1600,
+      height: 1200,
+    },
+    caption: '實作時間走到台下，處理每個人真正卡住的地方',
+    testimonialId: 'ccvs-individual-help',
+  },
+  {
+    id: 'ccvs-group',
+    engagementSlug: 'ccvs',
+    image: {
+      src: '/speaking/ccvs-group.webp',
+      alt: '兩天工作坊結束後，Dawson Wang 與中正高工老師們在電腦教室合照',
+      width: 1600,
+      height: 1200,
+    },
+    caption: '兩天工作坊結束後，和中正高工老師們合照',
+    testimonialId: 'ccvs-security-balance',
+  },
+];
