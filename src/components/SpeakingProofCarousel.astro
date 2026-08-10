@@ -303,26 +303,40 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
       }, GRACE_MS);
     };
 
+    // Which card the track is actually showing right now, from pixels alone.
+    const nearestSlide = () => {
+      const middle = viewport.scrollLeft + viewport.clientWidth / 2;
+      let nearest = 0;
+      let best = Infinity;
+      slides.forEach((slide, index) => {
+        const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - middle);
+        if (distance < best) {
+          best = distance;
+          nearest = index;
+        }
+      });
+      return nearest;
+    };
+
     // Manual scrolling (swipe, trackpad, keyboard) is the source of truth for
     // which card is centred — recompute from the scroll offset, don't assume.
     let scrollSettle: number | null = null;
+    const cancelSettle = () => {
+      if (scrollSettle === null) return;
+      window.clearTimeout(scrollSettle);
+      scrollSettle = null;
+    };
     viewport.addEventListener('scroll', () => {
       // Mid-drag the scroll offset is the finger, not a resting position. A
       // rebase here would move the track out from under the pointer and leave
       // the drag's own reference offset stale; endDrag settles it instead.
+      // pointerdown drops any settle already queued, so nothing survives this
+      // guard to fire from inside the drag.
       if (dragPointer !== null) return;
-      if (scrollSettle !== null) window.clearTimeout(scrollSettle);
+      cancelSettle();
       scrollSettle = window.setTimeout(() => {
-        const middle = viewport.scrollLeft + viewport.clientWidth / 2;
-        let nearest = 0;
-        let best = Infinity;
-        slides.forEach((slide, index) => {
-          const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - middle);
-          if (distance < best) {
-            best = distance;
-            nearest = index;
-          }
-        });
+        scrollSettle = null;
+        let nearest = nearestSlide();
 
         // Rebase into the middle set. Assigning scrollLeft is instant, and the
         // clone under the centre is pixel-identical to the real card it maps
@@ -379,12 +393,31 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
 
     viewport.addEventListener('pointerdown', (event) => {
       if (event.pointerType === 'touch' || event.button !== 0) return;
+      // Set this first: freezing the scroll below can emit one more scroll
+      // event, and the guard in that handler is what stops it queueing a fresh
+      // settle for the drag to fight.
       dragPointer = event.pointerId;
+      // Snapping off before the freeze, or `mandatory` would drag the track to
+      // the nearest card edge as the press lands.
+      viewport.classList.add('is-dragging');
+
+      // An autoplay tick a moment before the press leaves two things running.
+      // A settle is queued ~120ms out and would rebase `current` off a mid-drag
+      // offset — the guard above only silences later scroll events, it cannot
+      // unschedule this one. And the smooth scroll itself is still animating,
+      // which would make dragStartScroll one frame of an animation rather than
+      // a resting offset. Drop the first, freeze the second.
+      cancelSettle();
+      viewport.scrollTo({ left: viewport.scrollLeft, behavior: 'auto' });
+      // `current` is the autoplay's *destination*, set the instant the smooth
+      // scroll started. After the freeze the card on screen may be the previous
+      // one, so re-read it from pixels — endDrag counts drag steps from here.
+      highlight(nearestSlide());
+
       dragStartX = event.clientX;
       dragStartScroll = viewport.scrollLeft;
       dragMoved = false;
       hold('drag');
-      viewport.classList.add('is-dragging');
       // Capture so a drag that runs off the edge of the card keeps tracking.
       viewport.setPointerCapture(event.pointerId);
     });
@@ -408,15 +441,15 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
       viewport.classList.remove('is-dragging');
       if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
 
-      if (moved) {
-        const steps = Math.abs(dx) < DRAG_THRESHOLD_PX
-          ? 0
-          : Math.sign(dx) * Math.max(1, Math.round(Math.abs(dx) / stride()));
-        // Even a below-threshold drag ends in a scrollToSlide: snapping is off
-        // during the drag, so something has to put the card back on centre.
-        scrollToSlide(current + steps);
-        grace();
-      }
+      const steps = !moved || Math.abs(dx) < DRAG_THRESHOLD_PX
+        ? 0
+        : Math.sign(dx) * Math.max(1, Math.round(Math.abs(dx) / stride()));
+      // Every press ends in a scrollToSlide, even one that never moved:
+      // pointerdown froze the track wherever the autoplay scroll had reached
+      // and snapping was off throughout, so something has to put the card back
+      // on centre.
+      scrollToSlide(current + steps);
+      grace();
       release('drag');
     };
 
