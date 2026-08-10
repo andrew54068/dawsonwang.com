@@ -111,7 +111,13 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
 )}
 
 <script>
-  const AUTOPLAY_MS = 5000;
+  const AUTOPLAY_MS = 2000;
+  // How far a mouse drag has to travel before it counts as "next photo" rather
+  // than a slip of the hand while clicking.
+  const DRAG_THRESHOLD_PX = 40;
+  // After a manual move, sit still long enough to actually look at the photo —
+  // at a 2s cadence the drift would otherwise yank it away mid-drag-release.
+  const GRACE_MS = 4000;
 
   interface PanelCopy {
     caption: string;
@@ -182,9 +188,13 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     // is what stops the first paint() fading identical text out and back in.
     let painted = 0;
     let swapTimer: number | null = null;
-    // Distinct reasons to hold the timer: a hover and an off-screen scroll can
+    // Distinct reasons to hold the timer: a drag and an off-screen scroll can
     // overlap, so a single boolean would let whichever ends first restart it.
     const holds = new Set<string>();
+    // Id of the pointer currently dragging the track, if any. Declared up here
+    // because the scroll handler below has to know to keep its hands off while
+    // a drag is driving scrollLeft directly.
+    let dragPointer: number | null = null;
 
     // Which of the five real photos a track index shows — clones included.
     const copyIndexOf = (index: number) => ((index - origin) % realCount + realCount) % realCount;
@@ -280,10 +290,27 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
       start();
     };
 
+    // A deliberate move — drag or arrow key — buys a few seconds of stillness.
+    // Without it the 2s drift would slide the photo away the instant you let go,
+    // which reads as the carousel fighting you.
+    let graceTimer: number | null = null;
+    const grace = () => {
+      hold('manual');
+      if (graceTimer !== null) window.clearTimeout(graceTimer);
+      graceTimer = window.setTimeout(() => {
+        graceTimer = null;
+        release('manual');
+      }, GRACE_MS);
+    };
+
     // Manual scrolling (swipe, trackpad, keyboard) is the source of truth for
     // which card is centred — recompute from the scroll offset, don't assume.
     let scrollSettle: number | null = null;
     viewport.addEventListener('scroll', () => {
+      // Mid-drag the scroll offset is the finger, not a resting position. A
+      // rebase here would move the track out from under the pointer and leave
+      // the drag's own reference offset stale; endDrag settles it instead.
+      if (dragPointer !== null) return;
       if (scrollSettle !== null) window.clearTimeout(scrollSettle);
       scrollSettle = window.setTimeout(() => {
         const middle = viewport.scrollLeft + viewport.clientWidth / 2;
@@ -324,17 +351,81 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
         scrollToSlide(current - 1);
+        grace();
       }
       if (event.key === 'ArrowRight') {
         event.preventDefault();
         scrollToSlide(current + 1);
+        grace();
       }
     });
 
-    // With no pause button on screen, these holds are the pause mechanism:
-    // hovering, or tabbing into the track, stops the drift.
-    carousel.addEventListener('pointerenter', () => hold('pointer'));
-    carousel.addEventListener('pointerleave', () => release('pointer'));
+    // Grab-and-drag for mouse and pen. Touch is left alone on purpose: the
+    // viewport already scrolls natively there, and driving scrollLeft by hand
+    // would replace real momentum with a worse imitation of it.
+    //
+    // Distance between two neighbouring cards, so a long drag lands where it
+    // looks like it should instead of always advancing exactly one.
+    const stride = () =>
+      slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : viewport.clientWidth;
+
+    let dragStartX = 0;
+    let dragStartScroll = 0;
+    let dragMoved = false;
+
+    // Photos are draggable by default in every browser; the ghost image would
+    // hijack the gesture the moment the pointer left the card.
+    viewport.addEventListener('dragstart', event => event.preventDefault());
+
+    viewport.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'touch' || event.button !== 0) return;
+      dragPointer = event.pointerId;
+      dragStartX = event.clientX;
+      dragStartScroll = viewport.scrollLeft;
+      dragMoved = false;
+      hold('drag');
+      viewport.classList.add('is-dragging');
+      // Capture so a drag that runs off the edge of the card keeps tracking.
+      viewport.setPointerCapture(event.pointerId);
+    });
+
+    viewport.addEventListener('pointermove', (event) => {
+      if (dragPointer !== event.pointerId) return;
+      const dx = event.clientX - dragStartX;
+      // A few pixels of travel is a click with a shaky hand, not a drag.
+      if (!dragMoved && Math.abs(dx) < 3) return;
+      dragMoved = true;
+      viewport.scrollLeft = dragStartScroll - dx;
+    });
+
+    const endDrag = (event: PointerEvent) => {
+      if (dragPointer !== event.pointerId) return;
+      // Positive: dragged leftwards, i.e. pulling the next photo into view.
+      const dx = dragStartX - event.clientX;
+      const moved = dragMoved;
+      dragPointer = null;
+      dragMoved = false;
+      viewport.classList.remove('is-dragging');
+      if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
+
+      if (moved) {
+        const steps = Math.abs(dx) < DRAG_THRESHOLD_PX
+          ? 0
+          : Math.sign(dx) * Math.max(1, Math.round(Math.abs(dx) / stride()));
+        // Even a below-threshold drag ends in a scrollToSlide: snapping is off
+        // during the drag, so something has to put the card back on centre.
+        scrollToSlide(current + steps);
+        grace();
+      }
+      release('drag');
+    };
+
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+
+    // Tabbing into the track is the keyboard reader's pause. Hovering used to
+    // hold it too, but the section is most of the screen on /speaking — the
+    // pointer sits over it while you read, so the drift never got to start.
     carousel.addEventListener('focusin', () => hold('focus'));
     carousel.addEventListener('focusout', () => {
       if (!carousel.contains(document.activeElement)) release('focus');
@@ -388,6 +479,18 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     /* The peeking neighbours carry the affordance; a native bar under the photo
        would only add a stray line. */
     scrollbar-width: none;
+    cursor: grab;
+  }
+
+  /* Snapping has to be off for the duration: with `mandatory` on, every
+     scrollLeft we write mid-drag gets pulled back to the nearest card and the
+     track judders instead of following the pointer. endDrag turns it back on
+     and then scrolls to a definite slide, so the card still lands centred. */
+  .proof-viewport.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    user-select: none;
   }
 
   .proof-viewport::-webkit-scrollbar {
@@ -420,6 +523,7 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
 
   .proof-slide img {
     display: block;
+    -webkit-user-drag: none;
     width: 100%;
     aspect-ratio: 4 / 3;
     max-height: 440px;
