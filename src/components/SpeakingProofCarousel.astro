@@ -188,8 +188,9 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     // is what stops the first paint() fading identical text out and back in.
     let painted = 0;
     let swapTimer: number | null = null;
-    // Distinct reasons to hold the timer: a drag and an off-screen scroll can
-    // overlap, so a single boolean would let whichever ends first restart it.
+    // Distinct reasons to hold the timer: a hover, a drag and an off-screen
+    // scroll can overlap, so a single boolean would let whichever ends first
+    // restart it.
     const holds = new Set<string>();
     // Id of the pointer currently dragging the track, if any. Declared up here
     // because the scroll handler below has to know to keep its hands off while
@@ -456,10 +457,37 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     viewport.addEventListener('pointerup', endDrag);
     viewport.addEventListener('pointercancel', endDrag);
 
-    // Tabbing into the track is the keyboard reader's pause. Hovering used to
-    // hold it too, but the section is most of the screen on /speaking — the
-    // pointer sits over it while you read, so the drift never got to start.
-    carousel.addEventListener('focusin', () => hold('focus'));
+    // With no pause button on screen, these two holds are the pause mechanism —
+    // WCAG 2.2.2 needs one for anything that moves on its own indefinitely, and
+    // prefers-reduced-motion only covers readers who set that OS preference.
+    //
+    // Hovering hangs off the viewport, not the whole section: the section is
+    // most of the screen on /speaking, so holding on it meant the pointer
+    // resting anywhere while you read stopped the drift from ever starting.
+    // The strip of photos is small enough that moving off it is deliberate.
+    viewport.addEventListener('pointerenter', () => hold('pointer'));
+    viewport.addEventListener('pointerleave', (event) => {
+      // Setting pointer capture re-targets boundary events, so a drag can emit
+      // a leave without the pointer having gone anywhere. The drag's own hold
+      // owns the pause until endDrag, which runs before capture is released.
+      if (dragPointer === event.pointerId) return;
+      release('pointer');
+    });
+
+    // Tabbing into the track is the keyboard reader's pause — but only keyboard
+    // focus counts. The viewport carries tabindex=0, so a mouse press on it
+    // focuses it as well, and that focus never leaves while the reader keeps
+    // using the carousel: counting it would strand a hold nothing releases and
+    // kill the drift permanently after the first click.
+    const keyboardFocus = (target: EventTarget | null) => {
+      if (!(target instanceof Element)) return false;
+      if (typeof CSS === 'undefined' || typeof CSS.supports !== 'function') return true;
+      if (!CSS.supports('selector(:focus-visible)')) return true;
+      return target.matches(':focus-visible');
+    };
+    carousel.addEventListener('focusin', (event) => {
+      if (keyboardFocus(event.target)) hold('focus');
+    });
     carousel.addEventListener('focusout', () => {
       if (!carousel.contains(document.activeElement)) release('focus');
     });
