@@ -385,6 +385,11 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
       slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : viewport.clientWidth;
 
     let dragStartX = 0;
+    // Last coordinate we actually believe. `pointercancel` is built without
+    // coordinate fields, so it arrives with clientX === 0; reading the drag
+    // distance off the cancel event would measure from the left edge of the
+    // viewport instead of from where the pointer really was.
+    let dragLastX = 0;
     let dragStartScroll = 0;
     let dragMoved = false;
 
@@ -416,6 +421,7 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
       highlight(nearestSlide());
 
       dragStartX = event.clientX;
+      dragLastX = event.clientX;
       dragStartScroll = viewport.scrollLeft;
       dragMoved = false;
       hold('drag');
@@ -425,6 +431,7 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
 
     viewport.addEventListener('pointermove', (event) => {
       if (dragPointer !== event.pointerId) return;
+      dragLastX = event.clientX;
       const dx = event.clientX - dragStartX;
       // A few pixels of travel is a click with a shaky hand, not a drag.
       if (!dragMoved && Math.abs(dx) < 3) return;
@@ -435,14 +442,20 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
     const endDrag = (event: PointerEvent) => {
       if (dragPointer !== event.pointerId) return;
       // Positive: dragged leftwards, i.e. pulling the next photo into view.
-      const dx = dragStartX - event.clientX;
+      // Measured against the last coordinate we saw rather than the ending
+      // event's own, because a `pointercancel` carries no coordinates.
+      const dx = dragStartX - dragLastX;
       const moved = dragMoved;
       dragPointer = null;
       dragMoved = false;
       viewport.classList.remove('is-dragging');
       if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
 
-      const steps = !moved || Math.abs(dx) < DRAG_THRESHOLD_PX
+      // A cancel is the gesture being taken away — by the compositor claiming a
+      // pen pan, or by the OS interrupting mid-drag — not the reader finishing
+      // one. However far the track was pulled, an aborted gesture commits
+      // nothing and the card goes back where it started.
+      const steps = event.type === 'pointercancel' || !moved || Math.abs(dx) < DRAG_THRESHOLD_PX
         ? 0
         : Math.sign(dx) * Math.max(1, Math.round(Math.abs(dx) / stride()));
       // Every press ends in a scrollToSlide, even one that never moved:
