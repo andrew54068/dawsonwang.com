@@ -53,8 +53,13 @@ const proofSlides = SPEAKING_PROOF_SLIDES.map(slide => {
   return { ...slide, testimonial };
 });
 
-const deckCount = ENGAGEMENTS.reduce((n, e) => n + e.decks.length, 0);
 const venueCount = ENGAGEMENTS.length;
+// Both hand-counted. Neither has a per-engagement source in the data — an
+// engagement is a booking, not a session, so 中正高工's two days and the
+// 醫療院所 run's several dates all collapse into one entry above. Sessions and
+// heads are only on the sign-in sheets, so this is the one place they live.
+const sessionCount = 6;
+const attendeeTotal = 170;
 
 const speakingTitle = 'AI 講師 · 企業內訓與教師研習';
 const speakingDescription = '醫療院所內訓、高中職教師研習、衛福部支持的 AI 應用課程。課程以實作為主——走完課程學員電腦裡真的多出一份成品，而且掛得上網路。全部簡報公開可看。';
@@ -143,12 +148,12 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
         <dd class="font-mono text-ink mt-1" style="font-size: 28px;">{venueCount}</dd>
       </div>
       <div class="bg-surface-1 px-5 py-4">
-        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">公開簡報</dt>
-        <dd class="font-mono text-teal mt-1" style="font-size: 28px;">{deckCount}</dd>
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">授課場次</dt>
+        <dd class="font-mono text-teal mt-1" style="font-size: 28px;">{sessionCount}</dd>
       </div>
       <div class="bg-surface-1 px-5 py-4">
-        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">最長場次</dt>
-        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">2<span class="text-base ml-1">天</span></dd>
+        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">累積人次</dt>
+        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">{attendeeTotal}</dd>
       </div>
       <div class="bg-surface-1 px-5 py-4">
         <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">授課領域</dt>
