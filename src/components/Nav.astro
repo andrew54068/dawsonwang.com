@@ -179,6 +179,9 @@ function isCurrent(href: string) {
       } else {
         delete document.documentElement.dataset.theme;
       }
+      // Keep the mobile browser chrome tinted like the page it frames.
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'stripe' ? '#FFFFFF' : '#0A0A0B');
       try { localStorage.setItem(STORAGE_KEY, theme); } catch (_) {}
       el.setAttribute('aria-label', theme === 'stripe' ? '切換為暗色主題' : '切換為明亮主題');
     }
