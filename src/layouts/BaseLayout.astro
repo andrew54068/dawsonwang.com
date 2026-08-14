@@ -38,6 +38,9 @@ interface Props {
   noindex?: boolean;
   showNav?: boolean;
   showFooter?: boolean;
+  /** Palette this route ships in the server HTML when the visitor has no stored
+   *  preference. Articles read better dark, marketing pages read better light. */
+  defaultTheme?: 'stripe' | 'linear';
 }
 
 const {
@@ -56,7 +59,9 @@ const {
   noindex = false,
   showNav = true,
   showFooter = true,
+  defaultTheme = 'stripe',
 } = Astro.props;
+const isLightDefault = defaultTheme === 'stripe';
 const robotsContent = noindex
   ? 'noindex, nofollow'
   : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
@@ -83,10 +88,11 @@ const allStructuredData = [...baseStructuredData, ...pageStructuredData];
 const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_URL]));
 ---
 <!DOCTYPE html>
-<!-- Light ("stripe") is the default, and it ships in the server HTML rather than
-     being applied by script — so visitors with JS disabled, and the very first
-     paint, both get the light palette. Dark is the opt-in that removes it. -->
-<html lang="zh-Hant-TW" data-theme="stripe">
+<!-- The route's default palette ships in the server HTML rather than being applied
+     by script — so visitors with JS disabled, and the very first paint, both get
+     the right one. Light ("stripe") is the attribute; dark ("linear") is its
+     absence, which falls through to the @theme tokens. -->
+<html lang="zh-Hant-TW" data-theme={isLightDefault ? 'stripe' : undefined}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -118,7 +124,7 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={resolvedOgImageAlt} />
-    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="theme-color" content={isLightDefault ? '#FFFFFF' : '#0A0A0B'} />
     <link rel="alternate" type="text/plain" title="Dawson Wang AI-readable site summary" href="/llms.txt" />
     <link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml" />
     {personSameAsUrls.map(url => <link rel="me" href={url} />)}
@@ -129,20 +135,27 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
     <script is:inline>
-      // Apply persisted theme before first paint to avoid a flash of the
-      // wrong palette. The markup already carries data-theme="stripe" (light),
-      // so this only has to strip it when the visitor opted into dark.
-      // URL ?theme=... overrides localStorage for one visit.
+      // Apply the persisted theme before first paint to avoid a flash of the
+      // wrong palette. Precedence: URL ?theme=... > localStorage > the route's
+      // own default, which is already on <html> in the served markup — so with
+      // no stored preference this is a no-op and the route keeps its default.
       (function () {
+        const root = document.documentElement;
+        function paintMeta(theme) {
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'stripe' ? '#FFFFFF' : '#0A0A0B');
+        }
         try {
-          const url = new URL(window.location.href);
-          const fromUrl = url.searchParams.get('theme');
+          const pageDefault = root.dataset.theme === 'stripe' ? 'stripe' : 'linear';
+          const fromUrl = new URL(window.location.href).searchParams.get('theme');
           const fromLs = localStorage.getItem('dw_theme');
-          const theme = fromUrl || fromLs;
-          if (theme === 'linear') {
-            delete document.documentElement.dataset.theme;
-          }
-        } catch (_) { /* SSR / private mode — silently keep the light default */ }
+          const theme = fromUrl === 'stripe' || fromUrl === 'linear'
+            ? fromUrl
+            : (fromLs === 'stripe' || fromLs === 'linear' ? fromLs : pageDefault);
+          if (theme === 'stripe') root.dataset.theme = 'stripe';
+          else delete root.dataset.theme;
+          if (theme !== pageDefault) paintMeta(theme);
+        } catch (_) { /* SSR / private mode — silently keep the route default */ }
       })();
     </script>
     {allStructuredData.length > 0 && (
