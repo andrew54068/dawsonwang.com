@@ -8,6 +8,9 @@
 // It replaces the old content-pipeline Phase 6.7 (git push → gh workflow run
 // sync-100days → Vercel git rebuild → poll) with a fully local flow:
 //
+//   0. Categorize any new day into /topics (scripts/categorize-days.ts) and
+//      commit the tags to the deploy ref — the worktree in step 1 is reset to
+//      that ref, so an uncommitted tag would never reach the build.
 //   1. Ensure an isolated git worktree pinned to the deploy ref (default: main),
 //      so your working branch (e.g. the redesign) is never disturbed.
 //   2. Refresh the site's content from the canonical 100Days working tree (rsync,
@@ -22,13 +25,16 @@
 //
 // Usage:
 //   npx tsx scripts/deploy-local.ts [--day N] [--dry-run] [--fresh-semantic] [--no-poll]
+//                                   [--skip-categorize]
 //
 //   --dry-run         Build + verify output, DO NOT deploy or poll (studio dry-runs
-//                     and local checks use this — no VERCEL_TOKEN needed).
+//                     and local checks use this — no VERCEL_TOKEN needed). Still
+//                     categorizes, but never commits.
 //   --day N           The day number to verify in the build and poll after deploy.
 //   --fresh-semantic  Try a networked semantic-index rebuild (needs CF_* keys),
 //                     falling back to the offline build if it fails.
 //   --no-poll         Deploy but skip the post-deploy production poll.
+//   --skip-categorize Don't auto-tag new days into /topics (see step 0).
 //
 // One-time setup (see scripts/DEPLOY.md):
 //   npx vercel@latest link              # pick the existing dawsonwang.com project (writes .vercel/project.json)
@@ -50,6 +56,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { mergeVercelHeadersIntoConfig } from './lib/merge-output-headers';
+import { categorizeNewDays, listContentDays, resolveContentDir } from './categorize-days';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SITE_DIR = process.env.DAWSONWANG_DIR ?? path.resolve(HERE, '..');
@@ -61,15 +68,16 @@ const PROD_HOST = 'https://dawsonwang.com';
 // Pin to a vetted version in .env (VERCEL_CLI=vercel@<version>) for supply-chain safety.
 const VERCEL_CLI = process.env.VERCEL_CLI ?? fromEnvFile('VERCEL_CLI') ?? 'vercel@latest';
 
-interface Args { dryRun: boolean; freshSemantic: boolean; noPoll: boolean; day?: number }
+interface Args { dryRun: boolean; freshSemantic: boolean; noPoll: boolean; skipCategorize: boolean; day?: number }
 
 function parseArgs(argv: string[]): Args {
-  const a: Args = { dryRun: false, freshSemantic: false, noPoll: false };
+  const a: Args = { dryRun: false, freshSemantic: false, noPoll: false, skipCategorize: false };
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t === '--dry-run') a.dryRun = true;
     else if (t === '--fresh-semantic') a.freshSemantic = true;
     else if (t === '--no-poll') a.noPoll = true;
+    else if (t === '--skip-categorize') a.skipCategorize = true;
     else if (t === '--day') a.day = Number(argv[++i]);
     else if (t.startsWith('--day=')) a.day = Number(t.slice('--day='.length));
     else throw new Error(`unknown argument: ${t}`);
@@ -140,6 +148,143 @@ function ensureAuth(token: string): void {
     );
   }
   log(`vercel auth OK (${(res.stdout || '').trim() || 'logged in'})`);
+}
+
+const TOPICS_REL = 'src/data/topics.ts';
+
+/** Day numbers tagged in topics.ts *as committed on DEPLOY_REF* — what the build sees. */
+function taggedOnRef(): Set<number> | null {
+  try {
+    const committed = git(['show', `${DEPLOY_REF}:${TOPICS_REL}`]);
+    return new Set([...committed.matchAll(/^\s*(\d+)\s*:\s*\[/gm)].map(m => parseInt(m[1], 10)));
+  } catch {
+    return null; // topics.ts not on the ref (unlikely) — nothing to compare against
+  }
+}
+
+/** Days that exist in content but carry no topic on the ref about to be built. */
+function daysMissingFromRef(): number[] {
+  const tagged = taggedOnRef();
+  if (!tagged) return [];
+  try {
+    return listContentDays(resolveContentDir(CONTENT_SRC))
+      .map(d => d.day)
+      .filter(d => !tagged.has(d))
+      .sort((a, b) => a - b);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Step 0 — tag any new day into /topics and commit it to DEPLOY_REF.
+ *
+ * The commit is not incidental: ensureWorktree() resets the build worktree to
+ * DEPLOY_REF, so a tag that is merely written to disk would be discarded before
+ * the build ever sees it. Committing is what makes the new day appear on /topics.
+ *
+ * The decision to commit is keyed off what's MISSING ON THE REF, not off "did
+ * this run write something". Those differ: categorizeNewDays() reads DAY_TOPICS
+ * from the working-tree file, so once a day has been written but not committed
+ * (a prior run that hit the guard, or a manual `yarn categorize`), it looks
+ * "already tagged" on disk and no further run would ever commit it — /topics
+ * would stay incomplete forever while every deploy reported success.
+ *
+ * Guarded so an unattended 08:00 run can never sweep up in-progress work: it
+ * commits only when no OTHER path is already staged AND HEAD is on DEPLOY_REF.
+ * Otherwise it leaves the file written and says exactly what to run.
+ */
+function categorize(args: Args): void {
+  if (args.skipCategorize) { log('skipping day categorization (--skip-categorize)'); return; }
+
+  let tagged: Awaited<ReturnType<typeof categorizeNewDays>>['tagged'];
+  try {
+    ({ tagged } = categorizeNewDays({ contentDir: CONTENT_SRC, dryRun: args.dryRun }));
+  } catch (e) {
+    // Never let tagging break a publish — the day pages themselves don't depend on it.
+    log(`WARNING: categorization failed (${(e as Error).message}); continuing without new topic tags`);
+    return;
+  }
+
+  if (tagged.length) {
+    log(`categorizing ${tagged.length} new day(s) for /topics…`);
+    for (const t of tagged) {
+      log(`  day${t.day} → ${t.slugs.join(', ')}${t.lowConfidence ? '   ⚠ low confidence — review this one' : ''}`);
+    }
+  }
+
+  if (args.dryRun) {
+    log(`dry-run: ${TOPICS_REL} not written, not committed`);
+    return;
+  }
+
+  const missing = daysMissingFromRef();
+  if (missing.length === 0) {
+    log(`every content day is tagged for /topics on ${DEPLOY_REF}`);
+    return;
+  }
+
+  // Only a working-tree edit can close the gap; if the file already matches the
+  // ref there is nothing to commit and verifyTopicsCoverage() will say so.
+  const pending = git(['diff', '--name-only', DEPLOY_REF, '--', TOPICS_REL]).trim();
+  if (!pending) {
+    log(`WARNING: day ${missing.join(', ')} still untagged and ${TOPICS_REL} matches ${DEPLOY_REF} — nothing to commit`);
+    return;
+  }
+
+  commitTopics(missing);
+}
+
+function commitTopics(days: number[]): void {
+  const bail = (why: string) => {
+    log(`WARNING: ${why}`);
+    log(`  ${TOPICS_REL} is written but UNCOMMITTED, so day ${days.join(', ')} will NOT appear on /topics in this deploy.`);
+    log(`  Finish manually:  git add ${TOPICS_REL} && git commit -m 'content(topics): tag day${days[0]}'`);
+  };
+
+  // Only ALREADY-STAGED changes to other paths are dangerous: the commit below
+  // stages topics.ts by path and runs without -a, so unstaged edits and
+  // untracked files cannot be swept into it. Blocking on those too would strand
+  // the tags on any day there's a scratch file lying around — which is most days.
+  const staged = git(['status', '--porcelain'])
+    .split('\n')
+    .filter(Boolean)
+    .map(line => ({ index: line[0], path: line.slice(3).split(' -> ').pop()! }))
+    .filter(e => e.index !== ' ' && e.index !== '?' && e.path !== TOPICS_REL);
+
+  if (staged.length) {
+    log(`WARNING: refusing to auto-commit — ${staged.length} other path(s) are already staged:`);
+    for (const e of staged.slice(0, 5)) log(`    ${e.path}`);
+    if (staged.length > 5) log(`    … and ${staged.length - 5} more`);
+    bail('committing now would fold that staged work into the topics commit');
+    return;
+  }
+
+  const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
+  if (branch !== DEPLOY_REF) {
+    bail(`HEAD is on '${branch}' but this deploy builds '${DEPLOY_REF}' — a commit here would land on the wrong branch`);
+    return;
+  }
+
+  const list = days.length === 1 ? `day${days[0]}` : `day${days[days.length - 1]}–day${days[0]}`;
+  git(['add', TOPICS_REL]);
+  git(['commit', '-m', `content(topics): categorize ${list} for /topics`]);
+  log(`committed ${TOPICS_REL} to ${DEPLOY_REF} (${git(['rev-parse', '--short', 'HEAD'])})`);
+}
+
+/**
+ * Warn when the ref about to be built is missing tags for days that exist in
+ * content. Catches the case where a previous run wrote topics.ts but couldn't
+ * commit it — from then on those days look "already tagged" on disk, so
+ * categorize() goes quiet while /topics stays incomplete.
+ */
+function verifyTopicsCoverage(): void {
+  const missing = daysMissingFromRef();
+  if (missing.length) {
+    log(`WARNING: ${missing.length} day(s) missing from ${TOPICS_REL} on ${DEPLOY_REF}: ${missing.join(', ')}`);
+    log(`  They will build as day pages but will NOT be listed on /topics.`);
+    log(`  Fix with:  yarn categorize && git add ${TOPICS_REL} && git commit -m 'content(topics): tag missing days'`);
+  }
 }
 
 function ensureWorktree(): void {
@@ -282,6 +427,9 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const token = resolveToken(args.dryRun);
   if (!args.dryRun) ensureAuth(token); // fail fast before a multi-minute build if the token is missing/expired
+
+  categorize(args);        // must precede ensureWorktree: it resets the worktree to DEPLOY_REF
+  verifyTopicsCoverage();
 
   ensureWorktree();
   seedSearchIndex();

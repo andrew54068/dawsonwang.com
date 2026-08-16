@@ -52,10 +52,19 @@ npx tsx scripts/deploy-local.ts --day 185 --dry-run
 
 # Refresh the semantic search index for new days too (needs CF_* keys in .env; falls back to offline on failure):
 npx tsx scripts/deploy-local.ts --day 185 --fresh-semantic
+
+# Deploy without auto-tagging new days into /topics:
+npx tsx scripts/deploy-local.ts --day 185 --skip-categorize
 ```
 
 ## How it works
 
+0. **Categorize new days** — tags any day that isn't in `DAY_TOPICS` yet and commits
+   `src/data/topics.ts` to `main`, so the day shows up on
+   [/topics](https://www.dawsonwang.com/topics). This runs *before* the worktree step
+   on purpose: step 1 resets the worktree to `main`, so an uncommitted tag would be
+   thrown away before the build ever saw it. See
+   [Day categorization](#day-categorization) below. Skip with `--skip-categorize`.
 1. **Isolated worktree** — builds `main` in `../.dawsonwang-deploy` (a detached git
    worktree), so your current working branch and uncommitted edits are never touched.
 2. **Content refresh** — `rsync` from `/Users/dawson/Documents/100Days/content` into
@@ -75,6 +84,45 @@ npx tsx scripts/deploy-local.ts --day 185 --fresh-semantic
    passed via the `VERCEL_TOKEN` env var (never `--token`, which is visible in `ps`).
 6. **Poll** — waits for `https://dawsonwang.com/day/N` to return 200 before returning, so
    Phase 7's social posts never link to a not-yet-live (404-cached) page.
+
+## Day categorization
+
+Every day under `100days/content` needs at least one topic slug in `DAY_TOPICS`
+(`src/data/topics.ts`) or it never appears on `/topics`. That used to be a manual edit,
+so a freshly published day was invisible there until someone remembered. The deploy now
+does it (step 0), and you can also run it on its own:
+
+```bash
+yarn categorize                 # tag untagged days, write src/data/topics.ts
+yarn categorize --dry-run       # show the tags, touch nothing
+yarn categorize --explain       # show per-topic scores behind each pick
+yarn categorize --eval          # agreement against the hand-tagged days
+yarn categorize --tune          # refit the damp column after editing keywords
+yarn categorize --day 227 --retag   # re-tag one day, overwriting its slugs
+```
+
+Classification is an **offline keyword scorer** (`scripts/lib/day-topic-classifier.ts`) —
+no network, no API key, no cost, and the same `source.md` always yields the same slugs,
+which matters because the output gets committed. Measured against the 226 hand-tagged
+days: **91.6%** of days land in at least one topic you'd have picked, **62.8%** get the
+primary topic exactly right (precision 55.0%, recall 68.1%).
+
+So treat it as a good first pass, not a final word. Correcting a slug is a one-line edit
+to `src/data/topics.ts`, and it sticks: only *untagged* days are ever classified, unless
+you pass `--retag`.
+
+**Auto-commit guard.** Step 0 commits only when no other path is already staged and
+`HEAD` is on the deploy ref. Unstaged edits and untracked files don't block it (the
+commit stages `topics.ts` by path and runs without `-a`, so they can't be swept in).
+When it can't commit safely it leaves the file written, says exactly what to run, and
+lets the deploy continue — tagging never blocks a publish.
+
+**Coverage warning.** Because the write happens before the commit, a day that got written
+but not committed would look "already tagged" on disk forever while `/topics` stayed
+incomplete. Every deploy therefore re-checks the *committed* `topics.ts` on the deploy ref
+against the real content dir and warns loudly about any day missing from it. Note that
+`tests/topics.test.ts` can't catch this — it reads the pinned `100days` submodule
+(day165), not `/Users/dawson/Documents/100Days/content`.
 
 ## When GitHub comes back
 
