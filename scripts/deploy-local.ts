@@ -57,6 +57,7 @@ import { fileURLToPath } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { mergeVercelHeadersIntoConfig } from './lib/merge-output-headers';
 import { categorizeNewDays, listContentDays, resolveContentDir } from './categorize-days';
+import { stagedPathsOtherThan } from './lib/git-staged';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SITE_DIR = process.env.DAWSONWANG_DIR ?? path.resolve(HERE, '..');
@@ -246,15 +247,14 @@ function commitTopics(days: number[]): void {
   // stages topics.ts by path and runs without -a, so unstaged edits and
   // untracked files cannot be swept into it. Blocking on those too would strand
   // the tags on any day there's a scratch file lying around — which is most days.
-  const staged = git(['status', '--porcelain'])
-    .split('\n')
-    .filter(Boolean)
-    .map(line => ({ index: line[0], path: line.slice(3).split(' -> ').pop()! }))
-    .filter(e => e.index !== ' ' && e.index !== '?' && e.path !== TOPICS_REL);
+  //
+  // Deliberately NOT `git status --porcelain` — see scripts/lib/git-staged.ts
+  // for why that format plus this file's trimming git() helper is a trap.
+  const staged = stagedPathsOtherThan(git, TOPICS_REL);
 
   if (staged.length) {
     log(`WARNING: refusing to auto-commit — ${staged.length} other path(s) are already staged:`);
-    for (const e of staged.slice(0, 5)) log(`    ${e.path}`);
+    for (const p of staged.slice(0, 5)) log(`    ${p}`);
     if (staged.length > 5) log(`    … and ${staged.length - 5} more`);
     bail('committing now would fold that staged work into the topics commit');
     return;
