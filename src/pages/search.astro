@@ -68,23 +68,42 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
       </fieldset>
     </form>
 
-    <div id="search-status" class="mt-6 font-mono text-xs text-faint min-h-[1.5em]"></div>
+    <div class="mt-6 flex flex-wrap items-center gap-3">
+      <div id="search-status" class="font-mono text-xs text-faint min-h-[1.5em]"></div>
+      <button
+        id="share-link"
+        type="button"
+        class="ml-auto font-mono text-xs text-faint hover:text-ink border border-rule rounded-full px-3 py-1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        disabled
+      >複製搜尋連結</button>
+    </div>
 
     <section id="search-results" class="mt-2 max-w-3xl"></section>
   </article>
 
   <script>
     import { semanticSearch, warmUpSemantic, type SemanticHit } from '../lib/semantic-search-client';
+    import {
+      buildSearchUrl,
+      parseSearchParams,
+      DEFAULT_SEARCH_MODE,
+      type SearchMode,
+    } from '../lib/search-params';
 
     const form = document.getElementById('search-form') as HTMLFormElement;
     const input = document.getElementById('q') as HTMLInputElement;
     const statusEl = document.getElementById('search-status') as HTMLDivElement;
     const resultsEl = document.getElementById('search-results') as HTMLDivElement;
+    const shareBtn = document.getElementById('share-link') as HTMLButtonElement;
     const modeRadios = form.querySelectorAll<HTMLInputElement>('input[name="mode"]');
 
-    function getMode(): 'keyword' | 'semantic' {
+    function getMode(): SearchMode {
       const checked = form.querySelector<HTMLInputElement>('input[name="mode"]:checked');
-      return (checked?.value as 'keyword' | 'semantic') ?? 'keyword';
+      return (checked?.value as SearchMode) ?? DEFAULT_SEARCH_MODE;
+    }
+
+    function setMode(mode: SearchMode) {
+      modeRadios.forEach(r => { r.checked = r.value === mode; });
     }
 
     function setStatus(text: string) {
@@ -195,11 +214,48 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
       }
     }
 
+    // ---------- shareable URL ----------
+    // Keep the address bar in sync with query + mode on every keystroke and
+    // mode switch, so whatever is on screen is always what gets copied.
+    // Always replaceState: search-as-you-type is a filter, not a navigation,
+    // and pushing per keystroke would bury the page the visitor arrived from.
+    function currentState() {
+      return { query: input.value.trim(), mode: getMode() };
+    }
+
+    function syncUrl() {
+      // Base off the live pathname so a trailing-slash variant stays intact.
+      const url = buildSearchUrl(currentState(), window.location.pathname) + window.location.hash;
+      if (`${window.location.origin}${url}` === window.location.href) return;
+      window.history.replaceState(null, '', url);
+    }
+
+    function refreshShareButton() {
+      shareBtn.disabled = !input.value.trim();
+      shareBtn.textContent = '複製搜尋連結';
+    }
+
+    shareBtn.addEventListener('click', async () => {
+      const link = buildSearchUrl(
+        currentState(),
+        `${window.location.origin}${window.location.pathname}`,
+      );
+      try {
+        await navigator.clipboard.writeText(link);
+        shareBtn.textContent = '已複製 ✓';
+      } catch {
+        shareBtn.textContent = '請手動複製網址列';
+      }
+      window.setTimeout(refreshShareButton, 2000);
+    });
+
     // ---------- input handling ----------
     let debounce: number | undefined;
     function schedule() {
       const q = input.value.trim();
       if (debounce) window.clearTimeout(debounce);
+      syncUrl();
+      refreshShareButton();
       if (!q) {
         renderEmpty('輸入查詢字以開始');
         setStatus('');
@@ -214,23 +270,31 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
     }
 
     input.addEventListener('input', schedule);
-    modeRadios.forEach(r => r.addEventListener('change', () => {
-      if (input.value.trim()) schedule();
-    }));
+    modeRadios.forEach(r => r.addEventListener('change', schedule));
     form.addEventListener('submit', e => {
       e.preventDefault();
       schedule();
     });
 
-    // Honor ?q= so links from search engines (and the WebSite SearchAction
-    // JSON-LD) land directly on a populated result set.
-    const initialQuery = new URLSearchParams(window.location.search).get('q')?.trim() ?? '';
-    if (initialQuery) {
-      input.value = initialQuery;
-      schedule();
-    } else {
-      renderEmpty('輸入查詢字以開始');
+    // Honor ?q= / ?keywords= plus ?mode= (or ?type=) so links from search
+    // engines, the WebSite SearchAction JSON-LD, and shared URLs land directly
+    // on a populated result set in the right mode.
+    function applyUrlState() {
+      const state = parseSearchParams(window.location.search);
+      input.value = state.query;
+      setMode(state.mode);
+      refreshShareButton();
+      if (state.query) {
+        // Also rewrites ?keywords=/?type= aliases to the canonical ?q=/?mode=.
+        schedule();
+      } else {
+        renderEmpty('輸入查詢字以開始');
+        setStatus('');
+      }
     }
+
+    window.addEventListener('popstate', applyUrlState);
+    applyUrlState();
 
     // Pre-fetch the active mode's index in the background so the first
     // search feels instant (semantic stays lazy until user picks it).

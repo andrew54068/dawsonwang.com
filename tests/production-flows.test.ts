@@ -86,7 +86,25 @@ describe('production-critical website flows', () => {
     expect(searchPage).toContain('loadPagefind');
     expect(searchPage).toContain('/pagefind/pagefind.js');
     expect(searchPage).toContain('semanticSearch(q, 15)');
-    expect(searchPage).toContain('new URLSearchParams(window.location.search).get(\'q\')');
+  });
+
+  test('search page keeps query + mode in a shareable URL', () => {
+    const searchPage = source('src/pages/search.astro');
+
+    // Deep links (?q= / ?keywords= / ?mode=) hydrate the form on load...
+    expect(searchPage).toContain('parseSearchParams(window.location.search)');
+    expect(searchPage).toContain('setMode(state.mode)');
+    // ...and every keystroke / mode switch writes the state back into the URL.
+    expect(searchPage).toContain('buildSearchUrl(currentState()');
+    expect(searchPage).toContain("input.addEventListener('input', schedule)");
+    expect(searchPage).toContain("r.addEventListener('change', schedule)");
+    // replaceState, never pushState: typing is a filter, not a navigation, so
+    // Back must still return to whatever page the visitor arrived from.
+    expect(searchPage).toContain("window.history.replaceState(null, '', url)");
+    expect(searchPage).not.toContain('pushState');
+    expect(searchPage).toContain("window.addEventListener('popstate'");
+    expect(searchPage).toContain('id="share-link"');
+    expect(searchPage).toContain('navigator.clipboard.writeText(link)');
   });
 
   test('navigation exposes core production journeys', () => {
