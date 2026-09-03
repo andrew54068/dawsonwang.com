@@ -697,6 +697,7 @@ if (!existsSync(outDir)) {
   assertIncludes(sitemap, `<loc>${siteUrl}/</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/days</loc>`, 'sitemap');
   assertIncludes(sitemap, `<loc>${siteUrl}/topics</loc>`, 'sitemap');
+  assertIncludes(sitemap, `<loc>${siteUrl}/business-registration</loc>`, 'sitemap');
   for (const topic of activeTopics) {
     assertIncludes(sitemap, `<loc>${siteUrl}/topics/${topic.slug}</loc>`, 'sitemap');
   }
@@ -706,6 +707,7 @@ if (!existsSync(outDir)) {
   if (latestPublishedAt) {
     assertSitemapEntry(sitemap, '/', '1.0', 'weekly', latestPublishedAt);
     assertSitemapEntry(sitemap, '/proof', '0.9', 'weekly', latestPublishedAt);
+    assertSitemapEntry(sitemap, '/business-registration', '0.7', 'yearly', latestPublishedAt);
     assertSitemapEntry(sitemap, '/days', '0.9', 'daily', latestPublishedAt);
     assertSitemapEntry(sitemap, '/topics', '0.7', 'weekly', latestPublishedAt);
     assertSitemapEntry(sitemap, '/search', '0.5', 'monthly', latestPublishedAt);
@@ -734,7 +736,7 @@ if (!existsSync(outDir)) {
 
   const llms = readGenerated('llms.txt');
   assertIncludes(llms, '# Dawson Wang', 'llms.txt');
-  for (const llmsCorePath of ['/', '/proof', '/days', '/topics', '/search']) {
+  for (const llmsCorePath of ['/', '/proof', '/business-registration', '/days', '/topics', '/search']) {
     const expectedUrl = llmsCorePath === '/' ? `${siteUrl}/` : `${siteUrl}${llmsCorePath}`;
     assertIncludes(llms, expectedUrl, `llms.txt core page ${llmsCorePath}`);
   }
@@ -781,6 +783,31 @@ if (!existsSync(outDir)) {
     const escaped = escapeJsonString(project.name);
     assertIncludes(proofJsonLd, escaped, `/proof ItemList contains project name ${project.name}`);
   }
+
+  // /business-registration public guide — sanitized Article + BreadcrumbList JSON-LD.
+  const businessRegistration = readGenerated('business-registration/index.html');
+  assertTitleStack(businessRegistration, '行號設立時間順序指引｜8 個工作天 vs 33 天實測 | Dawson Wang', '/business-registration');
+  assertIncludes(businessRegistration, `<link rel="canonical" href="${siteUrl}/business-registration"`, '/business-registration canonical');
+  assertCanonicalOgUrlParity(businessRegistration, '/business-registration');
+  assertLocaleStack(businessRegistration, '/business-registration');
+  assertSelfHreflangAlternates(businessRegistration, '/business-registration', '/business-registration');
+  assertDescriptionStack(businessRegistration, '/business-registration');
+  assertDefaultSocialCardStack(businessRegistration, '/business-registration');
+  assertIncludes(businessRegistration, 'data-pagefind-body', '/business-registration Pagefind body marker');
+  assertIncludes(businessRegistration, '8 個工作天', '/business-registration visible field note');
+  assertIncludes(businessRegistration, '33 天', '/business-registration visible field note');
+  assertIncludes(businessRegistration, '10 天什麼都沒發生', '/business-registration gantt gap copy');
+  assertIncludes(businessRegistration, '行號設立', '/business-registration nav/footer label');
+  assertMatch(businessRegistration, /<script type="application\/ld\+json"[^>]*>.*"@type":"Article".*<\/script>/s, '/business-registration Article JSON-LD');
+  assertMatch(businessRegistration, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/business-registration BreadcrumbList JSON-LD');
+  assertJsonLdInLanguage(businessRegistration, 'Article', '/business-registration');
+  const businessRegistrationJsonLd = extractJsonLdScript(businessRegistration, '/business-registration');
+  assertRootEntityGraph(businessRegistrationJsonLd, '/business-registration');
+  assertIncludes(businessRegistrationJsonLd, `"author":{"@id":"${siteUrl}/#person"}`, '/business-registration Article author → #person graph link');
+  assertIncludes(businessRegistrationJsonLd, `"publisher":{"@id":"${siteUrl}/#person"}`, '/business-registration Article publisher → #person graph link');
+  assertIncludes(businessRegistrationJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/business-registration Article isPartOf #website graph link');
+  assertIncludes(businessRegistrationJsonLd, `"@id":"${siteUrl}/business-registration#breadcrumb"`, '/business-registration BreadcrumbList @id');
+  assertMatch(businessRegistrationJsonLd, new RegExp(`"@type":"Article"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/business-registration#breadcrumb"\\}`), '/business-registration Article breadcrumb → #breadcrumb graph link');
 
   // RSS feed
   assertIncludes(sitemap, `<loc>${siteUrl}/rss.xml</loc>`, 'sitemap rss entry');

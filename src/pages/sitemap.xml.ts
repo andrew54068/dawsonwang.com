@@ -40,6 +40,7 @@ export async function GET() {
     entry('/projects', '0.9', 'weekly', latestPublishedAt),
     entry('/speaking', '0.9', 'weekly', latestPublishedAt),
     entry('/proof', '0.9', 'weekly', latestPublishedAt),
+    entry('/business-registration', '0.7', 'yearly', latestPublishedAt),
     entry('/days', '0.9', 'daily', latestPublishedAt),
     entry('/topics', '0.7', 'weekly', latestPublishedAt),
     entry('/search', '0.5', 'monthly', latestPublishedAt),

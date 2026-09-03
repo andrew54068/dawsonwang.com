@@ -121,7 +121,7 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
       resultsEl.innerHTML = `<p class="font-serif italic text-muted text-sm py-6">${escapeHtml(msg)}</p>`;
     }
 
-    function renderResults(rows: Array<{ day: number; subtitle: string; excerpt?: string; meta?: string }>) {
+    function renderResults(rows: Array<{ day: number; subtitle: string; excerpt?: string; meta?: string; href?: string; num?: string }>) {
       if (!rows.length) return renderEmpty();
       const html = rows
         .map(r => {
@@ -131,8 +131,8 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
           const meta = r.meta
             ? `<span class="toc-meta">${escapeHtml(r.meta)}</span>`
             : `<span class="toc-meta"></span>`;
-          return `<a href="/day/${r.day}" class="toc-row group">
-            <span class="toc-num">${r.day}</span>
+          return `<a href="${escapeHtml(r.href ?? `/day/${r.day}`)}" class="toc-row group">
+            <span class="toc-num">${escapeHtml(r.num ?? String(r.day))}</span>
             <span class="toc-title">${escapeHtml(r.subtitle || '')}${excerpt}</span>
             ${meta}
           </a>`;
@@ -171,11 +171,14 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
         const top = await Promise.all(search.results.slice(0, 15).map((r: any) => r.data()));
         const rows = top.map(d => {
           const day = parseInt(d.meta?.day ?? '0', 10);
+          const isDay = Number.isFinite(day) && day > 0;
           const subtitle = (d.meta?.title || '').replace(/\s*\|\s*Dawson Wang.*$/, '');
           return {
             day,
             subtitle,
             excerpt: d.excerpt as string,
+            href: isDay ? undefined : d.url,
+            num: isDay ? undefined : '§',
           };
         });
         renderResults(rows);
