@@ -48,7 +48,7 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
       {
         id: 'threads',
         label: 'Threads',
-        href: 'https://www.threads.com/@andrew54068',
+        href: 'https://www.threads.com/@dawson54068',
         description: '每天拆解 AI 工具與實際工作流',
         external: true,
         icon: 'threads',
@@ -66,7 +66,7 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
       {
         id: 'instagram',
         label: 'Instagram',
-        href: 'https://www.instagram.com/andrew54068',
+        href: 'https://www.instagram.com/dawson54068',
         description: '工作之外，也記錄正在發生的事',
         external: true,
         icon: 'instagram',

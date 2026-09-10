@@ -12,9 +12,9 @@ describe('links page content', () => {
     expect(LINK_GROUPS.flatMap(group => group.links).map(link => link.href)).toEqual([
       'mailto:dawsonwang54068@gmail.com',
       'https://line.me/ti/p/~andrew54068',
-      'https://www.threads.com/@andrew54068',
+      'https://www.threads.com/@dawson54068',
       'https://www.facebook.com/andrew.wang.716',
-      'https://www.instagram.com/andrew54068',
+      'https://www.instagram.com/dawson54068',
       '/proof',
       '/days',
       'https://calendar.app.google/FBHsAyW6zJ529aAb6',
