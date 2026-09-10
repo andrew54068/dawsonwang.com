@@ -50,7 +50,7 @@ export const PROJECTS: Project[] = [
     kind: 'MCP Server',
     stack: ['cua-driver', 'macOS AX API', 'MCP', 'Claude Code'],
     days: [98, 172, 175],
-    repo: 'https://github.com/andrew54068/line-cua-mcp',
+    repo: 'https://gitlab.com/andrew54068/line-cua-mcp',
     featured: true,
   },
   {
@@ -78,7 +78,7 @@ export const PROJECTS: Project[] = [
     kind: 'macOS Driver',
     stack: ['ezIFD', 'arm64', 'PC/SC', 'Claude Code'],
     days: [183, 184],
-    repo: 'https://github.com/andrew54068/ez100pu-apple-silicon',
+    repo: 'https://gitlab.com/andrew54068/ez100pu-apple-silicon',
     featured: true,
   },
   {
@@ -91,7 +91,7 @@ export const PROJECTS: Project[] = [
     kind: 'Claude Code Plugin',
     stack: ['Claude Code Plugin', 'Codex', 'symlink'],
     days: [117, 119, 166],
-    repo: 'https://github.com/andrew54068/claude-plugins',
+    repo: 'https://gitlab.com/andrew54068/claude-plugins',
     featured: true,
   },
   {
@@ -104,7 +104,7 @@ export const PROJECTS: Project[] = [
     kind: 'Claude Code Plugin',
     stack: ['Claude Code Skill', 'settings.json'],
     days: [7, 8],
-    repo: 'https://github.com/andrew54068/claude-plugins',
+    repo: 'https://gitlab.com/andrew54068/claude-plugins',
   },
   {
     slug: 'threads-patrol-bot',
