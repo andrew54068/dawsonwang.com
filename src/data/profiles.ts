@@ -5,7 +5,7 @@
 // Each entry MUST be an absolute canonical profile URL pointing at Dawson's
 // real account on that platform (no UTM, tracking params, or redirects).
 export const PERSON_SAME_AS_URLS: readonly string[] = [
-  'https://gitlab.com/andrew54068',
+  'https://github.com/andrew54068',
 ];
 
 // Canonical X / Twitter profile used for social-card attribution meta tags.
