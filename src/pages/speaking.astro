@@ -2,14 +2,12 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SpeakingProofCarousel from '../components/SpeakingProofCarousel.astro';
-import { ENGAGEMENTS, PRINCIPLES, SPEAKING_PROOF_SLIDES, TESTIMONIALS, type Attendance, type Engagement } from '../data/speaking';
+import { ENGAGEMENTS, PRINCIPLES, RECENT_HOSPITAL_SURVEY, SPEAKING_PROOF_SLIDES, TESTIMONIALS, type Attendance, type Engagement } from '../data/speaking';
 import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 
-// Photos are copies of the Day 219 workshop attachments, resized into
-// public/speaking/. They live in public/ rather than being read from the
-// 100days submodule on purpose: the submodule can lag behind the canonical
-// content dir, and a hero image that vanishes on a stale checkout is worse
-// than a duplicated file.
+// Curated course photos are resized into public/speaking/. They live in public/
+// rather than being read from the 100days submodule or Drive at build time: both
+// sources can be unavailable or stale, and proof images must remain deployable.
 const HERO_PHOTO = '/speaking/ccvs-teaching.webp';
 const HERO_PHOTO_ALT = 'Dawson Wang 在中正高工電腦教室授課，站在教師之間講解';
 
@@ -53,13 +51,16 @@ const proofSlides = SPEAKING_PROOF_SLIDES.map(slide => {
   return { ...slide, testimonial };
 });
 
-const venueCount = ENGAGEMENTS.length;
-// Both hand-counted. Neither has a per-engagement source in the data — an
-// engagement is a booking, not a session, so 中正高工's two days and the
-// 醫療院所 run's several dates all collapse into one entry above. Sessions and
-// heads are only on the sign-in sheets, so this is the one place they live.
-const sessionCount = 6;
-const attendeeTotal = 170;
+// Six physical teaching sites: 中正高工、奇美總院、柳營奇美、部立臺南、
+// 臺南新樓、佳里奇美. A grouped engagement is not the same thing as a site.
+const venueCount = 6;
+// Seven hospital dates plus the two-day 中正高工 workshop.
+const sessionCount = 9;
+// The previous verified total was 170. September added at least 45 新樓
+// pre-course respondents, 17 佳里 post-course respondents and 18 柳營
+// pre-course respondents. These are response records rather than sign-in
+// sheets, so publish a conservative lower bound rather than false precision.
+const attendeeTotal = '250+';
 
 const speakingTitle = 'AI 講師 · 企業內訓與教師研習';
 const speakingDescription = '醫療院所內訓、高中職教師研習、衛福部支持的 AI 應用課程。課程以實作為主——走完課程學員電腦裡真的多出一份成品，而且掛得上網路。全部簡報公開可看。';
@@ -142,6 +143,32 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
         still the og:image and primaryImageOfPage. */}
     <SpeakingProofCarousel slides={proofSlides} />
 
+    <section id="recent-hospital-survey" class="mt-8 border border-rule rounded-xl overflow-hidden bg-surface-1" aria-labelledby="recent-hospital-survey-title">
+      <div class="px-5 py-4 border-b border-rule flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">2026/09 · 佳里＋柳營</div>
+          <h2 id="recent-hospital-survey-title" class="font-display text-ink text-lg font-semibold tracking-tight">兩場匿名課後問卷</h2>
+        </div>
+        <p class="font-display text-muted text-xs leading-relaxed max-w-sm m-0">
+          共 {RECENT_HOSPITAL_SURVEY.responses} 份回覆。只呈現整體結果，不引用未取得公開同意的個別留言。
+        </p>
+      </div>
+      <dl class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-rule">
+        <div class="bg-surface-1 px-5 py-4">
+          <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">平均評分</dt>
+          <dd class="font-mono text-ink text-2xl mt-1">{RECENT_HOSPITAL_SURVEY.averageScore}</dd>
+        </div>
+        <div class="bg-surface-1 px-5 py-4">
+          <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">完成六步實作</dt>
+          <dd class="font-mono text-teal text-2xl mt-1">{RECENT_HOSPITAL_SURVEY.completedAllSteps}</dd>
+        </div>
+        <div class="bg-surface-1 px-5 py-4">
+          <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">會／應該會用在工作</dt>
+          <dd class="font-mono text-ink text-2xl mt-1">{RECENT_HOSPITAL_SURVEY.likelyToUseAtWork}</dd>
+        </div>
+      </dl>
+    </section>
+
     <dl class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
       <div class="bg-surface-1 px-5 py-4">
         <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">授課單位</dt>
@@ -185,6 +212,14 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
                 <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">受眾</dt>
                 <dd>{engagement.audience}</dd>
               </div>
+              {engagement.sessions && (
+                <div>
+                  <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-1.5">已完成場次</dt>
+                  <dd class="flex flex-wrap gap-1.5">
+                    {engagement.sessions.map(session => <span class="chip">{session}</span>)}
+                  </dd>
+                </div>
+              )}
               <div>
                 <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-1.5">課程路線</dt>
                 <dd>
@@ -258,10 +293,10 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
       <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-px"
             style="background: linear-gradient(90deg, var(--color-brick), var(--color-teal));"></span>
       <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">講師邀約</div>
-      <h3 class="font-display text-ink text-xl font-semibold tracking-tight">想找我去你的單位上一堂</h3>
+      <h3 class="font-display text-ink text-xl font-semibold tracking-tight">一起設計一場真正用得上的 AI 實作課</h3>
       <p class="font-display text-muted text-sm leading-relaxed mt-3 max-w-md">
-        企業內訓、教師研習、社群分享都可以。跟我說你的受眾是誰、想解決什麼，
-        我會把課程依照程度重新排一次。1–2 個工作日內回信。
+        企業內訓、教師研習、社群分享都可以。告訴我受眾是誰、想解決什麼，
+        我會依照程度與工作情境重新安排課程。1–2 個工作日內回信。
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
         <a href="/#inquire" class="btn-ochre">談談你的場次 →</a>

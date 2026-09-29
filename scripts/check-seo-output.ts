@@ -492,6 +492,18 @@ if (!existsSync(outDir)) {
   assertIncludes(speaking, 'data-speaking-proof-carousel', '/speaking proof carousel behavior hook');
   assertIncludes(speaking, 'aria-roledescription="carousel"', '/speaking proof carousel aria role description');
   assertIncludes(speaking, 'aria-live="polite"', '/speaking proof carousel live counter');
+  assertIncludes(speaking, '/speaking/qimei-jiali-2026.webp', '/speaking 2026-09-17 佳里奇美 proof photo');
+  assertIncludes(speaking, '/speaking/qimei-liuying-2026.webp', '/speaking 2026-09-21 柳營奇美 proof photo');
+  assertIncludes(speaking, 'id="recent-hospital-survey"', '/speaking recent hospital survey proof');
+  assertIncludes(speaking, '4.82 / 5', '/speaking recent hospital survey average score');
+  assertIncludes(speaking, '29 / 33', '/speaking recent hospital survey hands-on completion');
+  assertIncludes(speaking, '31 / 33', '/speaking recent hospital survey work intent');
+  assertIncludes(speaking, '>9</dd>', '/speaking verified session count');
+  assertIncludes(speaking, '>250+</dd>', '/speaking conservative attendee total');
+  for (const session of ['06/27 奇美醫院總院', '07/04 奇美醫院總院', '07/16 柳營奇美醫院', '07/31 部立臺南醫院', '09/07 臺南新樓醫院', '09/17 佳里奇美醫院', '09/21 柳營奇美醫院']) {
+    assertIncludes(speaking, session, `/speaking hospital session ${session}`);
+  }
+  if (/trAIgon/i.test(speaking)) fail('/speaking mentions trAIgon in the hospital-and-school-only version');
   if (/\/speaking\/[^"]+\.jpg/.test(speaking)) fail('/speaking still references JPG public speaking images');
   const speakingWebpImages = Array.from(speaking.matchAll(/<img[^>]+src="(\/speaking\/[^"]+\.webp)"[^>]*>/g));
   if (speakingWebpImages.length < 5) fail(`/speaking renders only ${speakingWebpImages.length} WebP speaking images`);

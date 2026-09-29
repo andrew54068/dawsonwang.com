@@ -23,7 +23,7 @@ interface Props {
 
 const { slides } = Astro.props;
 
-const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配公開回饋。';
+const NO_QUOTE = '這場次採匿名整體統計，不引用未取得公開同意的個別回覆。';
 ---
 {slides.length > 0 && (
   <section
@@ -40,7 +40,7 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
         <h2 class="font-display text-ink font-semibold tracking-tight text-2xl">現場照片與學員回饋</h2>
       </div>
       <p class="font-display text-muted text-sm leading-relaxed max-w-md m-0">
-        從同一場中正高工研習挑出幾個不同片段：講解、實作、台下協助，以及課後合照。
+        從教師研習到醫療院所內訓：講解、實作、台下協助，以及課後合照。
       </p>
     </div>
 
@@ -49,8 +49,8 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
         quotes live in the panel below so a peeking neighbour never leaks the
         text belonging to a photo you cannot see yet.
 
-        Only the real five ship in the HTML — the loop clones are added by the
-        script, so no-JS readers get five photos and search engines get one copy
+        Only the real slides ship in the HTML — the loop clones are added by the
+        script, so no-JS readers get every photo and search engines get one copy
         of each caption. */}
     <div class="proof-viewport" data-proof-viewport tabindex="0" aria-label="課程照片，可左右捲動">
       {slides.map((slide, index) => (
@@ -63,7 +63,7 @@ const NO_QUOTE = '這張照片保留課程現場的工作狀態，沒有搭配�
           aria-label={`第 ${index + 1} 張，共 ${slides.length} 張`}
         >
           {/* aspect-ratio, never the surrounding copy, decides this box — that
-              is what keeps all five photos exactly the same size. */}
+              is what keeps every photo exactly the same size. */}
           <img
             src={slide.image.src}
             alt={slide.image.alt}

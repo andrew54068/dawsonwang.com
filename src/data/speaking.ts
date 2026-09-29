@@ -48,6 +48,8 @@ export interface Engagement {
   outline: string[];
   /** The concrete thing attendees walked out with. */
   takeaway: string;
+  /** Delivered dates shown on the page when one entry groups a series. */
+  sessions?: string[];
   decks: Deck[];
   /** Day write-ups covering this engagement, ascending. */
   days: number[];
@@ -109,24 +111,50 @@ export const ENGAGEMENTS: Engagement[] = [
     slug: 'moh-hospital-series',
     venue: '醫療院所系列課程',
     title: '衛福部支持的 AI 應用課程',
-    when: '2026 年 · 多場',
-    // A run of sessions, not one date: Day 179 covers the June one, Day 187 the
-    // two in July. Month precision for the same reason as 奇美.
+    when: '2026 年 6–9 月 · 7 場',
+    // A run of sessions, not one date. The exact delivered dates come from the
+    // lecture media folders; the entry remains one series in structured data.
     start: '2026-06',
-    end: '2026-07',
+    end: '2026-09',
     format: '2.5 小時起 · 概念加實作',
     attendance: 'offline',
-    audience: '非工程師為主。同一間教室裡，有人連介面都還不熟，也有人已經在自己 vibe code',
+    audience: '護理、行政、醫事技術、醫師與藥事人員；多數不是工程背景',
     outline: [
-      '四個大家對 AI 共同的不安：怕它講錯、回答空泛、成果有 AI 味、用久了失憶',
-      'AI 1.0 / 2.0 / 3.0——每個人口中的「AI」其實不是同一種東西',
-      '留時間讓大家拿自己手上的案例動手改',
+      '查資料時，一次要求重點、數據、來源連結和原文',
+      '長文件拆成卡片，保留來源，不必從頭讀完',
+      '先讓 AI 反問，把需求問清楚再回答',
+      '長對話先寫交接資訊，再換一個乾淨對話',
+      '一次產三種語氣，由人選擇，不只說「自然一點」',
+      '帶著自己的模板，做出真的能繼續修改的簡報',
     ],
-    takeaway: '簡報由簡入深準備，搭配事前問卷和現場互動調查，動態調整整場的內容跟難度。',
-    decks: [],
+    takeaway: '9 月兩場共收到 33 份匿名課後回饋：29 人完成六個實作步驟，31 人表示會或應該會把方法用在工作上。',
+    sessions: [
+      '06/27 奇美醫院總院',
+      '07/04 奇美醫院總院',
+      '07/16 柳營奇美醫院',
+      '07/31 部立臺南醫院',
+      '09/07 臺南新樓醫院',
+      '09/17 佳里奇美醫院',
+      '09/21 柳營奇美醫院',
+    ],
+    decks: [
+      { url: 'https://slide.dawsonwang.com/0907-tainan-sinlau', title: '把雜事交給 AI，把時間留給病人', segment: '新樓醫院' },
+      { url: 'https://slide.dawsonwang.com/0917-qimei-jiali', title: '把雜事交給 AI，把時間留給病人', segment: '佳里奇美' },
+      { url: 'https://slide.dawsonwang.com/0921-qimei-liuying', title: '把雜事交給 AI，把時間留給病人', segment: '柳營奇美' },
+    ],
     days: [179, 187],
   },
 ];
+
+// Anonymous post-course responses from the 2026-09-17 佳里 and 2026-09-21
+// 柳營 sessions. Keep this aggregate-only: neither form asked respondents for
+// permission to publish individual quotes.
+export const RECENT_HOSPITAL_SURVEY = {
+  responses: 33,
+  averageScore: '4.82 / 5',
+  completedAllSteps: '29 / 33',
+  likelyToUseAtWork: '31 / 33',
+} as const;
 
 // How the sessions are designed — this is the part that gets the feedback,
 // so it earns its own section rather than being buried in an engagement card.
@@ -153,8 +181,8 @@ export const PRINCIPLES: Principle[] = [
     day: 187,
   },
   {
-    title: '別預期他們會主動發問',
-    body: '即使一直鼓勵發問也不要期待踴躍。要在實作的時候走到台下私下問——有些人根本不知道「原來這個可以問」，或不知道自己卡住的地方是一個需要發問的問題。',
+    title: '把協助帶到每個人的座位旁',
+    body: '實作時間我會走到座位旁，一個一個確認進度。很多卡點只有看到操作畫面才說得清楚；在當下找出問題、一起完成下一步，比等大家舉手更有效。',
     day: 187,
   },
   {
@@ -254,18 +282,6 @@ export const SPEAKING_PROOF_SLIDES: SpeakingProofSlide[] = [
     testimonialId: 'ccvs-hands-on-result',
   },
   {
-    id: 'ccvs-front',
-    engagementSlug: 'ccvs',
-    image: {
-      src: '/speaking/ccvs-2026-front.webp',
-      alt: 'Dawson Wang 站在中正高工電腦教室白板前，用麥克風說明課程開場',
-      width: 1600,
-      height: 1200,
-    },
-    caption: '從共同案例開始，先把 AI 協作的問題講清楚',
-    testimonialId: 'ccvs-audience-fit',
-  },
-  {
     id: 'ccvs-room',
     engagementSlug: 'ccvs',
     image: {
@@ -300,5 +316,27 @@ export const SPEAKING_PROOF_SLIDES: SpeakingProofSlide[] = [
     },
     caption: '兩天工作坊結束後，和中正高工老師們合照',
     testimonialId: 'ccvs-security-balance',
+  },
+  {
+    id: 'qimei-jiali',
+    engagementSlug: 'moh-hospital-series',
+    image: {
+      src: '/speaking/qimei-jiali-2026.webp',
+      alt: 'Dawson Wang 在佳里奇美醫院投影幕前講解如何把日常工作交給 AI 處理',
+      width: 1200,
+      height: 1600,
+    },
+    caption: '佳里奇美醫院 · 把雜事交給 AI，把時間留給病人 · 2026/09/17',
+  },
+  {
+    id: 'qimei-liuying',
+    engagementSlug: 'moh-hospital-series',
+    image: {
+      src: '/speaking/qimei-liuying-2026.webp',
+      alt: 'Dawson Wang 在柳營奇美醫院教室授課，學員在筆電前跟著進行 AI 實作',
+      width: 1200,
+      height: 1600,
+    },
+    caption: '柳營奇美醫院 · 從問答工具走到可直接操作的 AI 工作流 · 2026/09/21',
   },
 ];
