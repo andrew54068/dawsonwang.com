@@ -82,6 +82,7 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
   </article>
 
   <script>
+    import { loadPagefind } from '../lib/keyword-search-client';
     import { semanticSearch, warmUpSemantic, type SemanticHit } from '../lib/semantic-search-client';
     import {
       buildSearchUrl,
@@ -142,27 +143,6 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
     }
 
     // ---------- pagefind (keyword) ----------
-    let pagefindPromise: Promise<any> | null = null;
-    function loadPagefind() {
-      if (!pagefindPromise) {
-        pagefindPromise = (async () => {
-          try {
-            // Pagefind is emitted at build time by the pagefind CLI; in dev it
-            // does not exist. Build the URL dynamically so Vite's static
-            // analyzer skips resolution and the runtime fetch is what fails
-            // (caught below) instead of the dev transform step.
-            const pagefindUrl = `${window.location.origin}/pagefind/pagefind.js`;
-            const mod = await import(/* @vite-ignore */ pagefindUrl);
-            await mod.options?.({ excerptLength: 30 });
-            return mod;
-          } catch (err) {
-            throw new Error('關鍵字索引尚未產生。請執行 `yarn build` 後在 preview 模式測試。');
-          }
-        })();
-      }
-      return pagefindPromise;
-    }
-
     async function runKeyword(q: string) {
       setStatus('搜尋中…');
       try {

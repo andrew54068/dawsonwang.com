@@ -1,0 +1,73 @@
+<details id="webmcp-results" class="max-w-5xl mx-auto px-8 py-6 scroll-mt-24 break-words" hidden data-pagefind-ignore>
+  <summary class="font-mono text-sm cursor-pointer">AI 助理搜尋結果</summary>
+  <p id="webmcp-query" class="mt-4 text-muted" role="status"></p>
+  <ul id="webmcp-hits" class="mt-4 space-y-4"></ul>
+</details>
+<script>
+  import { loadPagefind } from '../lib/keyword-search-client';
+  import { semanticSearch } from '../lib/semantic-search-client';
+  import { publicPageUrl, registerWebMcp, type ModelContext, type ContentHit } from '../lib/webmcp';
+
+  const context = (document as Document & { modelContext?: ModelContext }).modelContext;
+  function plain(html: string) {
+    return new DOMParser().parseFromString(html, 'text/html').body.textContent ?? '';
+  }
+  function show(query: string, hits: ContentHit[]) {
+    const panel = document.getElementById('webmcp-results') as HTMLDetailsElement;
+    const list = document.getElementById('webmcp-hits')!;
+    document.getElementById('webmcp-query')!.textContent = `「${query}」· ${hits.length} 筆結果`;
+    list.replaceChildren(...hits.map(hit => {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = hit.url;
+      link.textContent = hit.title;
+      link.className = 'text-teal underline';
+      const excerpt = document.createElement('p');
+      excerpt.textContent = hit.excerpt;
+      item.append(link, excerpt);
+      return item;
+    }));
+    panel.hidden = false;
+    panel.open = true;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  void registerWebMcp(context, {
+    async search(query, mode, limit, scope) {
+      if (mode === 'semantic') {
+        return (await semanticSearch(query, limit)).map(hit => ({
+          title: hit.doc.subtitle, excerpt: plain(hit.doc.snippet),
+          url: new URL(`/day/${hit.doc.day}`, location.origin).href,
+        }));
+      }
+      const pagefind = await loadPagefind();
+      const found = await pagefind.search(query);
+      const hits: ContentHit[] = [];
+      for (const result of found.results) {
+        const data = await result.data();
+        let url: URL;
+        try { url = publicPageUrl(data.url, location.origin); } catch { continue; }
+        if (scope === 'articles' && !/^\/day\/[1-9]\d*\/?$/.test(url.pathname)) continue;
+        hits.push({ title: data.meta?.title ?? url.pathname, excerpt: plain(data.excerpt), url: url.href });
+        if (hits.length === limit) break;
+      }
+      return hits;
+    },
+    show,
+    async read(path) {
+      const url = publicPageUrl(path, location.origin);
+      const response = await fetch(url, { credentials: 'omit', redirect: 'error' });
+      if (!response.ok) throw new Error(`頁面讀取失敗（${response.status}）。`);
+      const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+      if (page.querySelector('meta[name="robots"]')?.getAttribute('content')?.includes('noindex')) throw new Error('此頁面不是公開內容。');
+      const main = page.querySelector('main');
+      if (!main) throw new Error('找不到頁面正文。');
+      main.querySelectorAll('script, style, form, input, textarea, select, button, [hidden], [data-pagefind-ignore]').forEach(node => node.remove());
+      const text = (main.textContent ?? '').replace(/\s+/g, ' ').trim();
+      const links = Array.from(main.querySelectorAll('a[href]')).flatMap(link => {
+        const target = new URL(link.getAttribute('href')!, url);
+        return /^https?:$/.test(target.protocol) ? [{ title: link.textContent?.trim(), url: target.href }] : [];
+      });
+      return { title: page.title, url: url.href, text: text.slice(0, 40000), truncated: text.length > 40000, links: links.slice(0, 100) };
+    },
+  }).catch(error => console.warn('WebMCP 工具註冊失敗', error));
+</script>

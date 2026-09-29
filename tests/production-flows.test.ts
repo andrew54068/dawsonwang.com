@@ -84,8 +84,15 @@ describe('production-critical website flows', () => {
     expect(searchPage).toContain('value="keyword" checked');
     expect(searchPage).toContain('value="semantic"');
     expect(searchPage).toContain('loadPagefind');
-    expect(searchPage).toContain('/pagefind/pagefind.js');
+    expect(searchPage).toContain("from '../lib/keyword-search-client'");
+    expect(source('src/lib/keyword-search-client.ts')).toContain('/pagefind/pagefind.js');
     expect(searchPage).toContain('semanticSearch(q, 15)');
+  });
+
+  test('keyword index uses the deployed client root so result URLs do not contain /client/', () => {
+    const { scripts } = JSON.parse(source('package.json'));
+    expect(scripts['search:keyword']).toBe('pagefind --site dist/client --output-path dist/pagefind');
+    expect(scripts.build).toContain('yarn search:keyword');
   });
 
   test('search page keeps query + mode in a shareable URL', () => {
