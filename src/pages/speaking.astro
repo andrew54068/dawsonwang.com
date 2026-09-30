@@ -129,16 +129,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
       而且自己做的東西真的掛得上網路、別人打得開。
     </p>
 
-    <section id="recent-hospital-survey" class="mt-10 border border-rule rounded-xl overflow-hidden bg-surface-1" aria-labelledby="recent-hospital-survey-title">
-      <div class="px-5 py-4 border-b border-rule flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">2026/09 · 佳里＋柳營</div>
-          <h2 id="recent-hospital-survey-title" class="font-display text-ink text-lg font-semibold tracking-tight">兩場匿名課後問卷</h2>
-        </div>
-        <p class="font-display text-muted text-xs leading-relaxed max-w-sm m-0">
-          共 {RECENT_HOSPITAL_SURVEY.responses} 份回覆。只呈現整體結果，不引用未取得公開同意的個別留言。
-        </p>
-      </div>
+    <section id="recent-hospital-survey" class="mt-10 border border-rule rounded-xl overflow-hidden bg-surface-1" aria-label="課後回饋數據">
       <dl class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-rule">
         <div class="bg-surface-1 px-5 py-4">
           <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">平均評分</dt>
@@ -179,7 +170,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
       <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
         <h2 id="lecture-sessions-title" class="font-display text-ink font-semibold tracking-tight text-2xl">每一場，分開看現場</h2>
         <p class="font-display text-muted text-sm leading-relaxed max-w-md m-0">
-          每場只留兩張：一張交代授課狀態，一張保留學員參與的樣子。
+          多數場次保留 3–4 張，分別交代講師、全場與互動。7/31 只有兩張原始照片，照實保留。
         </p>
       </div>
 
@@ -198,7 +189,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
               <p class="font-display text-muted text-sm leading-relaxed max-w-md m-0">{session.summary}</p>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-rule border-y border-rule">
+            <div class="lecture-photo-grid grid grid-cols-1 md:grid-cols-2 gap-px bg-rule border-y border-rule" data-photo-count={session.photos.length}>
               {session.photos.map(photo => (
                 <figure class="lecture-photo-frame bg-surface-2 m-0">
                   <img
@@ -371,6 +362,11 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
     height: 100%;
     object-fit: cover;
     transition: transform 300ms ease;
+  }
+  @media (min-width: 768px) {
+    .lecture-photo-grid[data-photo-count="3"] {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
   .lecture-session:hover .lecture-photo-frame img {
     transform: scale(1.0125);

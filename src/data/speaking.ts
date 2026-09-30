@@ -272,9 +272,9 @@ export interface LectureSession {
   decks: Deck[];
 }
 
-// Two deliberate photos per delivered lecture: one establishes the room or
-// teaching moment, the other shows participation. Raw Drive galleries stay out
-// of the site and build.
+// Three to four deliberate photos per delivered lecture establish the teacher,
+// room scale, and participation without shipping raw Drive galleries. The
+// 2026-07-31 session keeps its only two available source photos.
 export const LECTURE_SESSIONS: LectureSession[] = [
   {
     id: 'qimei-main-0627',
@@ -285,6 +285,7 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     photos: [
       { src: '/speaking/qimei-main-0627-01.webp', alt: 'Dawson Wang 走到奇美醫院總院學員座位旁，陪同確認筆電上的 AI 操作', width: 1108, height: 1477 },
       { src: '/speaking/qimei-main-0627-02.webp', alt: '奇美醫院總院講堂內，Dawson Wang 面對多排醫事人員講解 AI 工具演進', width: 1477, height: 1108 },
+      { src: '/speaking/qimei-main-0627-03.webp', alt: '從奇美醫院總院講堂後方看向舞台，Dawson Wang 在投影幕前授課，多排醫事人員在座位上參與', width: 1477, height: 1108 },
     ],
     decks: [{ url: 'https://slide.dawsonwang.com/0627-qimei', title: '把雜事交給 AI，把時間留給病人', segment: '完整簡報' }],
   },
@@ -297,6 +298,8 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     photos: [
       { src: '/speaking/qimei-main-0704-01.webp', alt: '奇美醫院總院講堂內，Dawson Wang 在大型 QR code 投影旁帶領現場實作', width: 1477, height: 1108 },
       { src: '/speaking/qimei-main-0704-02.webp', alt: '奇美醫院總院兩位學員在座位上使用筆電完成 AI 課程練習', width: 1108, height: 1477 },
+      { src: '/speaking/qimei-main-0704-03.webp', alt: '從奇美醫院總院講堂後方拍攝 Dawson Wang 面向多排學員說明課程步驟', width: 1477, height: 1108 },
+      { src: '/speaking/qimei-main-0704-04.webp', alt: 'Dawson Wang 在奇美醫院總院座席間與一組醫事人員面對面討論實作問題', width: 1108, height: 1477 },
     ],
     decks: [{ url: 'https://slide.dawsonwang.com/0704-qimei', title: '把雜事交給 AI，把時間留給病人', segment: '完整簡報' }],
   },
@@ -309,6 +312,7 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     photos: [
       { src: '/speaking/qimei-liuying-0716-01.webp', alt: 'Dawson Wang 在柳營奇美醫院大禮堂投影幕前講解 AI 對話交接實作', width: 1600, height: 1200 },
       { src: '/speaking/qimei-liuying-0716-02.webp', alt: 'Dawson Wang 在柳營奇美醫院講台前舉手說明課程重點，助教在後方操作', width: 1200, height: 1600 },
+      { src: '/speaking/qimei-liuying-0716-03.webp', alt: '柳營奇美醫院大禮堂側面視角，Dawson Wang 走到座席間查看醫事人員的筆電實作', width: 1200, height: 1600 },
     ],
     decks: [{ url: 'https://slide.dawsonwang.com/0716-qimei-liuying', title: '把雜事交給 AI，把時間留給病人', segment: '完整簡報' }],
   },
@@ -333,6 +337,7 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     photos: [
       { src: '/speaking/ccvs-2026-front.webp', alt: 'Dawson Wang 站在中正高工電腦教室白板前，用麥克風說明第一天課程', width: 1600, height: 1200 },
       { src: '/speaking/ccvs-2026-room.webp', alt: '中正高工電腦教室內，多位老師坐在桌機前跟著第一天課程完成 AI 實作', width: 1600, height: 1200 },
+      { src: '/speaking/ccvs-day-1-03.webp', alt: 'Dawson Wang 走到中正高工老師座位旁查看操作，教室內多排學員同步使用桌機實作', width: 1600, height: 1200 },
     ],
     decks: [
       { url: 'https://ccvs.dawsonwang.com', title: '讓 AI 加班，你準時下班', segment: '上午' },
@@ -348,6 +353,7 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     photos: [
       { src: '/speaking/ccvs-teaching.webp', alt: 'Dawson Wang 在中正高工電腦教室第二天穿梭於老師座位之間講解 AI 實作', width: 1600, height: 1200 },
       { src: '/speaking/ccvs-group.webp', alt: '中正高工兩天工作坊結束後，Dawson Wang 與參與研習的老師們在教室合照', width: 1600, height: 1200 },
+      { src: '/speaking/ccvs-2026-helping.webp', alt: '中正高工電腦教室內，Dawson Wang 站在老師座位旁陪同檢查 AI 實作成果', width: 1600, height: 1200 },
     ],
     decks: [
       { url: 'https://ccvs3.dawsonwang.com', title: '體驗一日軟體工程師', segment: '上午' },
@@ -363,6 +369,7 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     photos: [
       { src: '/speaking/sinlau-0907-01.webp', alt: 'Dawson Wang 在臺南新樓醫院課程封面投影前說明醫事人員的 AI 協作實戰', width: 1200, height: 1600 },
       { src: '/speaking/sinlau-0907-02.webp', alt: '臺南新樓醫院教室內，多位醫事人員在筆電前舉手回應 Dawson Wang 的現場調查', width: 1600, height: 1200 },
+      { src: '/speaking/sinlau-0907-03.webp', alt: '從臺南新樓醫院教室側後方拍攝 Dawson Wang 授課，多位醫事人員在筆電前跟著實作', width: 1200, height: 1600 },
     ],
     decks: [{ url: 'https://slide.dawsonwang.com/0907-tainan-sinlau', title: '把雜事交給 AI，把時間留給病人', segment: '完整簡報' }],
   },
@@ -375,6 +382,7 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     photos: [
       { src: '/speaking/qimei-jiali-2026.webp', alt: 'Dawson Wang 在佳里奇美醫院投影幕前講解如何把日常工作交給 AI 處理', width: 1200, height: 1600 },
       { src: '/speaking/qimei-jiali-2026-02.webp', alt: 'Dawson Wang 在佳里奇美醫院課程封面投影前介紹醫事人員 AI 協作實戰', width: 1200, height: 1600 },
+      { src: '/speaking/qimei-jiali-2026-03.webp', alt: '佳里奇美醫院教室另一側視角，Dawson Wang 手持麥克風在課程封面投影前授課', width: 1200, height: 1600 },
     ],
     decks: [{ url: 'https://slide.dawsonwang.com/0917-qimei-jiali', title: '把雜事交給 AI，把時間留給病人', segment: '完整簡報' }],
   },
@@ -387,6 +395,7 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     photos: [
       { src: '/speaking/qimei-liuying-2026.webp', alt: 'Dawson Wang 在柳營奇美醫院教室授課，學員在筆電前跟著進行 AI 實作', width: 1200, height: 1600 },
       { src: '/speaking/qimei-liuying-2026-02.webp', alt: '柳營奇美醫院學員使用筆電實作，Dawson Wang 在投影幕前說明 AI 工作落差', width: 900, height: 1600 },
+      { src: '/speaking/qimei-liuying-2026-03.webp', alt: '柳營奇美醫院教室側面全景，Dawson Wang 在投影幕前授課，多位醫事人員圍桌使用筆電實作', width: 900, height: 1600 },
     ],
     decks: [{ url: 'https://slide.dawsonwang.com/0921-qimei-liuying', title: '把雜事交給 AI，把時間留給病人', segment: '完整簡報' }],
   },
