@@ -12,21 +12,23 @@ interface ProofTestimonial {
   shareApproved: true;
 }
 
-interface SpeakingProofSlide {
+interface LecturePhoto {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+interface LectureSession {
   id: string;
-  engagementSlug: string;
-  image: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-  };
-  caption: string;
-  testimonialId?: string;
+  date: string;
+  venue: string;
+  title: string;
+  photos: LecturePhoto[];
 }
 
 type SpeakingModule = typeof import('../src/data/speaking') & {
-  SPEAKING_PROOF_SLIDES?: SpeakingProofSlide[];
+  LECTURE_SESSIONS?: LectureSession[];
 };
 
 const engagementSlugs = new Set(ENGAGEMENTS.map(engagement => engagement.slug));
@@ -67,38 +69,46 @@ describe('speaking proof content', () => {
     }
   });
 
-  test('uses a curated set of optimized public proof images instead of a raw gallery dump', async () => {
+  test('maps two curated optimized photos to each delivered lecture instead of mixing them in one gallery', async () => {
     const speaking = await import('../src/data/speaking') as SpeakingModule;
-    const slides = speaking.SPEAKING_PROOF_SLIDES;
-    const testimonialIds = new Set((TESTIMONIALS as ProofTestimonial[]).map(testimonial => testimonial.id));
+    const sessions = speaking.LECTURE_SESSIONS;
 
-    expect(Array.isArray(slides)).toBe(true);
-    if (!Array.isArray(slides)) return;
+    expect(Array.isArray(sessions)).toBe(true);
+    if (!Array.isArray(sessions)) return;
 
-    expect(slides.length).toBeGreaterThanOrEqual(4);
-    expect(slides.length).toBeLessThanOrEqual(6);
+    expect(sessions.map(session => session.date)).toEqual([
+      '2026-06-27',
+      '2026-07-04',
+      '2026-07-16',
+      '2026-07-31',
+      '2026-08-04',
+      '2026-08-05',
+      '2026-09-07',
+      '2026-09-17',
+      '2026-09-21',
+    ]);
 
-    const ids = new Set(slides.map(slide => slide.id));
-    const imagePaths = new Set(slides.map(slide => slide.image.src));
-    expect(ids.size).toBe(slides.length);
-    expect(imagePaths.size).toBe(slides.length);
+    const ids = new Set(sessions.map(session => session.id));
+    const imagePaths = new Set(sessions.flatMap(session => session.photos.map(photo => photo.src)));
+    expect(ids.size).toBe(sessions.length);
+    expect(imagePaths.size).toBe(sessions.length * 2);
 
-    for (const slide of slides) {
-      expect(slide.id).toMatch(/^[a-z0-9-]+$/);
-      expect(engagementSlugs.has(slide.engagementSlug)).toBe(true);
-      expect(slide.image.src).toMatch(/^\/speaking\/.+\.(webp|avif)$/);
-      expect(slide.image.alt.trim().length).toBeGreaterThan(20);
-      expect(slide.caption.trim().length).toBeGreaterThan(10);
-      expect(slide.image.width).toBeGreaterThan(0);
-      expect(slide.image.height).toBeGreaterThan(0);
+    for (const session of sessions) {
+      expect(session.id).toMatch(/^[a-z0-9-]+$/);
+      expect(session.venue.trim().length).toBeGreaterThan(3);
+      expect(session.title.trim().length).toBeGreaterThan(5);
+      expect(session.photos).toHaveLength(2);
 
-      if (slide.testimonialId) {
-        expect(testimonialIds.has(slide.testimonialId)).toBe(true);
+      for (const photo of session.photos) {
+        expect(photo.src).toMatch(/^\/speaking\/.+\.(webp|avif)$/);
+        expect(photo.alt.trim().length).toBeGreaterThan(20);
+        expect(photo.width).toBeGreaterThan(0);
+        expect(photo.height).toBeGreaterThan(0);
+
+        const assetPath = path.join(process.cwd(), 'public', photo.src.replace(/^\/+/, ''));
+        expect(existsSync(assetPath)).toBe(true);
+        expect(statSync(assetPath).size).toBeLessThan(500_000);
       }
-
-      const assetPath = path.join(process.cwd(), 'public', slide.image.src.replace(/^\/+/, ''));
-      expect(existsSync(assetPath)).toBe(true);
-      expect(statSync(assetPath).size).toBeLessThan(500_000);
     }
   });
 });

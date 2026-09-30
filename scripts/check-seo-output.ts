@@ -488,10 +488,10 @@ if (!existsSync(outDir)) {
   assertIncludes(speaking, `<meta property="og:image" content="${siteUrl}/speaking/ccvs-teaching.webp"`, '/speaking og:image WebP');
   assertIncludes(speaking, '<meta property="og:image:width" content="1600"', '/speaking og:image:width');
   assertIncludes(speaking, '<meta property="og:image:height" content="1200"', '/speaking og:image:height');
-  assertIncludes(speaking, 'id="speaking-proof"', '/speaking proof carousel section');
-  assertIncludes(speaking, 'data-speaking-proof-carousel', '/speaking proof carousel behavior hook');
-  assertIncludes(speaking, 'aria-roledescription="carousel"', '/speaking proof carousel aria role description');
-  assertIncludes(speaking, 'aria-live="polite"', '/speaking proof carousel live counter');
+  assertIncludes(speaking, 'id="lecture-sessions"', '/speaking per-lecture photo records');
+  if (speaking.includes('data-speaking-proof-carousel')) fail('/speaking still renders the mixed-event proof carousel');
+  const lectureSessionCards = speaking.match(/data-lecture-session/g) ?? [];
+  if (lectureSessionCards.length !== 9) fail(`/speaking renders ${lectureSessionCards.length} dated lecture cards instead of 9`);
   assertIncludes(speaking, '/speaking/qimei-jiali-2026.webp', '/speaking 2026-09-17 佳里奇美 proof photo');
   assertIncludes(speaking, '/speaking/qimei-liuying-2026.webp', '/speaking 2026-09-21 柳營奇美 proof photo');
   assertIncludes(speaking, 'id="recent-hospital-survey"', '/speaking recent hospital survey proof');
@@ -506,7 +506,7 @@ if (!existsSync(outDir)) {
   if (/trAIgon/i.test(speaking)) fail('/speaking mentions trAIgon in the hospital-and-school-only version');
   if (/\/speaking\/[^"]+\.jpg/.test(speaking)) fail('/speaking still references JPG public speaking images');
   const speakingWebpImages = Array.from(speaking.matchAll(/<img[^>]+src="(\/speaking\/[^"]+\.webp)"[^>]*>/g));
-  if (speakingWebpImages.length < 5) fail(`/speaking renders only ${speakingWebpImages.length} WebP speaking images`);
+  if (speakingWebpImages.length !== 18) fail(`/speaking renders ${speakingWebpImages.length} WebP lecture images instead of 18`);
   for (const match of speakingWebpImages) {
     const imageTag = match[0];
     const imageSrc = match[1] ?? 'unknown';

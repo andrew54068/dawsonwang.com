@@ -1,8 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SpeakingProofCarousel from '../components/SpeakingProofCarousel.astro';
-import { ENGAGEMENTS, PRINCIPLES, RECENT_HOSPITAL_SURVEY, SPEAKING_PROOF_SLIDES, TESTIMONIALS, type Attendance, type Engagement } from '../data/speaking';
+import { ENGAGEMENTS, LECTURE_SESSIONS, PRINCIPLES, RECENT_HOSPITAL_SURVEY, type Attendance, type Engagement } from '../data/speaking';
 import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 
 // Curated course photos are resized into public/speaking/. They live in public/
@@ -42,14 +41,6 @@ const resolved: ResolvedEngagement[] = ENGAGEMENTS.map(engagement => ({
 }));
 
 const principles = PRINCIPLES.map(p => ({ ...p, href: dayHref(p.day, `principle "${p.title}"`) }));
-const testimonialsById = new Map(TESTIMONIALS.map(testimonial => [testimonial.id, testimonial]));
-const proofSlides = SPEAKING_PROOF_SLIDES.map(slide => {
-  const testimonial = slide.testimonialId ? testimonialsById.get(slide.testimonialId) : undefined;
-  if (slide.testimonialId && !testimonial) {
-    throw new Error(`speaking.ts: proof slide "${slide.id}" references missing testimonial "${slide.testimonialId}".`);
-  }
-  return { ...slide, testimonial };
-});
 
 // Six physical teaching sites: 中正高工、奇美總院、柳營奇美、部立臺南、
 // 臺南新樓、佳里奇美. A grouped engagement is not the same thing as a site.
@@ -138,12 +129,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
       而且自己做的東西真的掛得上網路、別人打得開。
     </p>
 
-    {/* The carousel opens the page: its first slide is HERO_PHOTO, so a separate
-        hero figure above it would just show the same photo twice. HERO_PHOTO is
-        still the og:image and primaryImageOfPage. */}
-    <SpeakingProofCarousel slides={proofSlides} />
-
-    <section id="recent-hospital-survey" class="mt-8 border border-rule rounded-xl overflow-hidden bg-surface-1" aria-labelledby="recent-hospital-survey-title">
+    <section id="recent-hospital-survey" class="mt-10 border border-rule rounded-xl overflow-hidden bg-surface-1" aria-labelledby="recent-hospital-survey-title">
       <div class="px-5 py-4 border-b border-rule flex flex-wrap items-end justify-between gap-3">
         <div>
           <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">2026/09 · 佳里＋柳營</div>
@@ -188,9 +174,65 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
       </div>
     </dl>
 
+    <section id="lecture-sessions" class="mt-16" aria-labelledby="lecture-sessions-title">
+      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">LECTURES · {LECTURE_SESSIONS.length}</div>
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+        <h2 id="lecture-sessions-title" class="font-display text-ink font-semibold tracking-tight text-2xl">每一場，分開看現場</h2>
+        <p class="font-display text-muted text-sm leading-relaxed max-w-md m-0">
+          每場只留兩張：一張交代授課狀態，一張保留學員參與的樣子。
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-8">
+        {LECTURE_SESSIONS.map((session, index) => (
+          <article id={session.id} data-lecture-session class="lecture-session border border-rule rounded-xl overflow-hidden bg-surface-1 scroll-mt-20">
+            <header class="px-6 py-5 flex flex-wrap items-start justify-between gap-4">
+              <div class="min-w-0">
+                <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">
+                  {String(index + 1).padStart(2, '0')} · {session.date.replaceAll('-', '/')}
+                </div>
+                <h3 class="font-display text-ink text-xl font-semibold tracking-tight">
+                  {session.venue}<span class="text-muted font-normal"> · {session.title}</span>
+                </h3>
+              </div>
+              <p class="font-display text-muted text-sm leading-relaxed max-w-md m-0">{session.summary}</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-rule border-y border-rule">
+              {session.photos.map(photo => (
+                <figure class="lecture-photo-frame bg-surface-2 m-0">
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={photo.width}
+                    height={photo.height}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(min-width: 768px) 31rem, 100vw"
+                  />
+                </figure>
+              ))}
+            </div>
+
+            {session.decks.length > 0 && (
+              <div class="px-6 py-4 flex flex-wrap items-center gap-2">
+                <span class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mr-1">公開簡報</span>
+                {session.decks.map(deck => (
+                  <a href={deck.url} rel="noopener" class="deck-link inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-rule no-underline">
+                    <span class="font-display text-ink text-xs">{deck.title}</span>
+                    <span class="font-mono text-[10px] uppercase tracking-[.06em] text-faint">{deck.segment} ↗</span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+
     <section class="mt-16">
-      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">ENGAGEMENTS</div>
-      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-6">授課紀錄</h2>
+      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">CURRICULUM</div>
+      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-6">課程內容</h2>
 
       <div class="flex flex-col gap-5">
         {resolved.map(({ engagement, dayRefs }) => (
@@ -313,6 +355,26 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
   .engagement-card:hover {
     border-color: color-mix(in oklab, var(--color-teal) 30%, var(--color-rule));
   }
+  .lecture-session {
+    transition: border-color 150ms ease;
+  }
+  .lecture-session:hover {
+    border-color: color-mix(in oklab, var(--color-teal) 30%, var(--color-rule));
+  }
+  .lecture-photo-frame {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .lecture-photo-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 300ms ease;
+  }
+  .lecture-session:hover .lecture-photo-frame img {
+    transform: scale(1.0125);
+  }
   .deck-link {
     background: var(--color-paper);
     transition: border-color 150ms ease, background 150ms ease;
@@ -322,6 +384,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
     background: color-mix(in oklab, var(--color-teal) 7%, transparent);
   }
   @media (prefers-reduced-motion: reduce) {
-    .engagement-card, .deck-link { transition: none; }
+    .engagement-card, .lecture-session, .lecture-photo-frame img, .deck-link { transition: none; }
+    .lecture-session:hover .lecture-photo-frame img { transform: none; }
   }
 </style>
