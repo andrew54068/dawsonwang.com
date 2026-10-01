@@ -4,70 +4,48 @@ import { PERSONAL_TOOLS } from '../data/homepage-cases';
 
 const days = await getCollection('days');
 
-// Same defensive resolve as RecentConsultations — fail the build if a tool
-// references a day that no longer exists.
-const tools = PERSONAL_TOOLS.map(t => {
-  const day = days.find(d => d.data.dayNumber === t.dayNumber);
-  if (!day) {
+// Fail the build if a referenced tool day disappears.
+for (const t of PERSONAL_TOOLS) {
+  if (!days.find(d => d.data.dayNumber === t.dayNumber)) {
     throw new Error(
       `ToolsIBuilt: day ${t.dayNumber} referenced in homepage-cases.ts ` +
       `but no matching entry exists in the days collection.`
     );
   }
-  return t;
-});
+}
 ---
-<section class="max-w-5xl mx-auto px-8 py-20 border-t border-rule">
-  <div class="mb-10">
-    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">
-      PERSONAL TOOLS · 我每天都在用
+<section class="sec tools" aria-labelledby="tools-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">我自己也在用</p>
+      <h2 id="tools-title"><span class="ph">不只教別人，</span><span class="ph">我自己每天也在用。</span></h2>
+      <p class="sec-sub">連續 {days.length} 天，每天公開一篇 AI 實作：做法、踩到的雷、結果，全部攤開。</p>
     </div>
-    <h2 class="font-display text-ink leading-[1.1] tracking-[-0.02em] font-semibold"
-        style="font-size: clamp(1.75rem, 3.5vw, 2.5rem);">
-      不只給客戶做，<br />我自己也每天用。
-    </h2>
-    <p class="font-display text-muted text-lg leading-relaxed max-w-xl mt-3">
-      下面這三個工具都從個人痛點出發，現在每天還在用——而且每一個都附完整源碼或步驟。
-    </p>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
-    {tools.map(t => (
-      <article class="flex flex-col p-7 bg-surface-1">
-        <div class="font-mono text-[11px] uppercase tracking-[.08em] text-ochre mb-3">
-          {t.category}
-        </div>
-        <h3 class="font-display text-ink text-xl font-semibold tracking-tight mb-2 leading-snug">
-          {t.headline}
-        </h3>
-        <div class="font-mono text-xs text-teal mb-4">{t.numberHook}</div>
-        <dl class="font-display text-sm text-muted leading-relaxed space-y-3 mb-6 flex-1">
-          <div>
-            <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">起點</dt>
-            <dd>{t.pain}</dd>
+    <div class="tool-grid">
+      {PERSONAL_TOOLS.map((t, i) => (
+        <article class="tool reveal" data-reveal style={`--i:${i}`}>
+          <span class="doodle" aria-hidden="true"><svg class="icon"><use href={`#${t.icon}`}/></svg></span>
+          <h3>{t.headline}</h3>
+          <p>{t.outcome}</p>
+          <div class="tool-links">
+            {t.demoHref && (
+              <a class="text-link" href={t.demoHref}>{t.demoLabel ?? '試用 →'}</a>
+            )}
+            <a class="tool-day" href={`/day/${t.dayNumber}`}>Day {String(t.dayNumber).padStart(3, '0')} · 看完整流程 →</a>
           </div>
-          <div>
-            <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">產出</dt>
-            <dd>{t.outcome}</dd>
-          </div>
-        </dl>
-        <div class="border-t border-rule pt-4 flex flex-col gap-2">
-          {t.demoHref && t.demoLabel && (
-            <a
-              href={t.demoHref}
-              class="font-mono text-xs text-ink hover:text-teal transition-colors duration-150 no-underline"
-            >
-              {t.demoLabel}
-            </a>
-          )}
-          <a
-            href={`/day/${t.dayNumber}`}
-            class="font-mono text-[11px] uppercase tracking-[.08em] text-faint hover:text-teal transition-colors duration-150 no-underline"
-          >
-            Day {String(t.dayNumber).padStart(3, '0')} · 看完整流程 →
-          </a>
-        </div>
-      </article>
-    ))}
+        </article>
+      ))}
+    </div>
+    <div class="tools-more"><a class="text-link" href="/days">看全部 {days.length} 篇實作 <span aria-hidden="true">→</span></a></div>
   </div>
 </section>
+
+<style>
+  /* Small stack for the two per-tool links (demo + permalink). */
+  .tool-links { margin-top: 16px; display: grid; gap: 8px; }
+  .tool-links .tool-day {
+    display: inline-flex; align-items: center; min-height: 44px;
+    font-size: .96rem; color: var(--muted); text-decoration: none;
+  }
+  .tool-links .tool-day:hover { color: var(--persimmon-text); }
+</style>

@@ -1,13 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeIcons from '../components/home/HomeIcons.astro';
+import HomeNav from '../components/home/HomeNav.astro';
 import Hero from '../components/Hero.astro';
+import Venues from '../components/home/Venues.astro';
+import PainPoints from '../components/home/PainPoints.astro';
 import RecentConsultations from '../components/RecentConsultations.astro';
 import ToolsIBuilt from '../components/ToolsIBuilt.astro';
-import ProofExcerpt from '../components/ProofExcerpt.astro';
 import ServiceExplainer from '../components/ServiceExplainer.astro';
+import TrainingProof from '../components/home/TrainingProof.astro';
+import ProofExcerpt from '../components/ProofExcerpt.astro';
+import Process from '../components/home/Process.astro';
+import Faq from '../components/home/Faq.astro';
 import InquiryForm from '../components/InquiryForm.astro';
+import HomeFooter from '../components/home/HomeFooter.astro';
 import { SITE_URL } from '../lib/seo';
 import { SERVICES } from '../data/services';
+import '../styles/home-warm.css';
 
 const homeDescription = 'Dawson Wang 幫台灣團隊把 AI 工具落地到實際工作流：Claude Code、客製 skills、MCP server、agent 工作流、團隊培訓與顧問陪跑。';
 const inquireUrl = `${SITE_URL}/#inquire`;
@@ -60,11 +69,53 @@ const homePersonServiceGraphLinkJsonLd = {
   worksFor: { '@id': `${SITE_URL}/#ai-workflow-service` },
 };
 ---
-<BaseLayout title="Dawson Wang" description={homeDescription} structuredData={[serviceJsonLd, homePersonServiceGraphLinkJsonLd]}>
-  <Hero />
-  <RecentConsultations />
-  <ToolsIBuilt />
-  <ServiceExplainer />
-  <ProofExcerpt />
-  <InquiryForm />
+<BaseLayout
+  title="Dawson Wang"
+  description={homeDescription}
+  structuredData={[serviceJsonLd, homePersonServiceGraphLinkJsonLd]}
+  showNav={false}
+  showFooter={false}
+  wrapMain={false}
+>
+  <script is:inline>document.documentElement.classList.add('js');</script>
+  <div class="home-warm">
+    <HomeIcons />
+    <a class="skip" href="#main">跳到主要內容</a>
+    <HomeNav />
+    <main id="main" data-pagefind-body>
+      <Hero />
+      <Venues />
+      <PainPoints />
+      <RecentConsultations />
+      <ToolsIBuilt />
+      <ServiceExplainer />
+      <TrainingProof />
+      <ProofExcerpt />
+      <Process />
+      <Faq />
+      <InquiryForm />
+    </main>
+    <HomeFooter />
+  </div>
 </BaseLayout>
+
+<script>
+  // Scroll reveals: cards fade up, the collage drops in, chat bubbles pop one by
+  // one. Content is visible without JS; this only drives the entrance motion.
+  (() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const targets = document.querySelectorAll('[data-reveal]');
+    if (reduce || !('IntersectionObserver' in window)) {
+      targets.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      }
+    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
+    targets.forEach((el) => io.observe(el));
+  })();
+</script>

@@ -12,11 +12,15 @@ export interface ConsultingCase {
   dayNumber: number;
   /** Short uppercase tag rendered as the card's kicker (e.g. 醫療). */
   vertical: string;
+  /** Sprite icon id for the tag (see HomeIcons.astro). */
+  icon: string;
+  /** Crafted one-line headline for the card. */
+  headline: string;
   /** One-line "who" — the customer archetype, not their name. */
   who: string;
-  /** One-line "pain" — the situation they were stuck in. */
+  /** One-line "pain" — the situation they were stuck in (本來). */
   pain: string;
-  /** One-line "outcome" — what we shipped / unblocked. */
+  /** One-line "outcome" — what we shipped / unblocked (後來). */
   outcome: string;
 }
 
@@ -24,23 +28,29 @@ export const RECENT_CONSULTATIONS: ConsultingCase[] = [
   {
     dayNumber: 96,
     vertical: '醫療',
+    icon: 'i-pulse',
+    headline: '把厚厚的 SOP，變成看診時查得到的決策樹',
     who: '診所主治醫師',
-    pain: '每位病人 2–3 分鐘，但療程的決策樹很複雜；國際 SOP 每 3 個月更新一次，看完一版就出兩版。',
-    outcome: '把 PDF SOP 拆成可查詢的決策樹（PyMuPDF + Claude），診間可即時帶病人理解選項。',
+    pain: '每位病人只有 2–3 分鐘，療程選項卻很複雜；國際 SOP 每 3 個月更新一次，看完一版又出兩版。',
+    outcome: '把 PDF 版的 SOP 拆成可以直接查詢的決策樹，看診時能當場帶病人看懂有哪些選項。',
   },
   {
     dayNumber: 99,
-    vertical: 'KOL 經紀',
-    who: '科技大廠 KOL 合作社群經理',
-    pain: '一個案子分散在 Spreadsheet 預算、LINE 跟 agency、Email、檔案來回、社群平台發文 5+ 個工具。',
-    outcome: '找出「會用 AI」跟「用得好」之間的鴻溝，重新設計工作流。',
+    vertical: '行銷 / KOL 經紀',
+    icon: 'i-mega',
+    headline: '一個案子橫跨 5 個工具，重新設計整條流程',
+    who: '科技大廠的 KOL 合作社群經理',
+    pain: '預算在試算表、跟代理商用 LINE 溝通，再加上 Email、檔案來回傳、社群平台發文——一個案子橫跨 5 個以上的工具。',
+    outcome: '找出「會用 AI」跟「用得好」之間的落差，重新設計整條工作流程。',
   },
   {
     dayNumber: 98,
-    vertical: 'LINE 重度使用者',
-    who: '把工作群開在 LINE 的 PM / 老闆',
-    pain: '對話散落 LINE 各群組和私聊，每次回顧某段都得自己慢慢翻。',
-    outcome: '用 LINE Desktop MCP 讓 AI 直接讀本機 LINE 對話——不用 API、不用申請開發者帳號。',
+    vertical: '用 LINE 管工作的老闆',
+    icon: 'i-phone',
+    headline: '讓 AI 直接讀 LINE 對話，不用再自己慢慢翻',
+    who: '把工作群開在 LINE 的老闆、PM',
+    pain: '對話散在各個群組和私訊，每次要回顧某一段，都得自己慢慢往上翻。',
+    outcome: '讓 AI 直接讀取電腦裡的 LINE 對話幫你整理——不用申請 API，也不用開發者帳號。',
   },
 ];
 
@@ -52,6 +62,8 @@ export interface PersonalTool {
   dayNumber: number;
   /** Short uppercase tag rendered as the card's kicker (e.g. 知識管理). */
   category: string;
+  /** Sprite icon id for the doodle (see HomeIcons.astro). */
+  icon: string;
   /** Big, headline-sized one-liner — the "what". */
   headline: string;
   /** Punchy stat line, mono font (e.g. `103 → 1`). */
@@ -70,6 +82,7 @@ export const PERSONAL_TOOLS: PersonalTool[] = [
   {
     dayNumber: 71,
     category: '知識管理',
+    icon: 'i-book',
     headline: '把 103 個 Arc 分頁變成 Obsidian 結構化筆記',
     numberHook: '103 → 1',
     pain: '永遠看不完的「等等再看」分頁——資訊湧入的速度永遠比消化還快。',
@@ -78,6 +91,7 @@ export const PERSONAL_TOOLS: PersonalTool[] = [
   {
     dayNumber: 134,
     category: '學習工具',
+    icon: 'i-quiz',
     headline: '把 iPAS 195 題變成可以練習的網頁',
     numberHook: '195 題 / 3 科 / 2 週',
     pain: '準備 iPAS AI 應用規劃師中級沒有像樣的線上題庫。',
@@ -88,6 +102,7 @@ export const PERSONAL_TOOLS: PersonalTool[] = [
   {
     dayNumber: 139,
     category: '網站功能',
+    icon: 'i-chat-q',
     headline: '幫網站加上語意搜尋——零月費、不用資料庫',
     numberHook: '3 步 / $0 / 0 DB',
     pain: '朋友問：「你之前那篇講 Raycast 本地模型的，是哪一天？」我也答不出來。',

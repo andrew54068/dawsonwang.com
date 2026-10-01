@@ -1,0 +1,11 @@
+---
+import { VENUES } from '../../data/homepage-sections';
+---
+<section class="venues" aria-labelledby="venues-title">
+  <div class="wrap venues-in">
+    <h2 id="venues-title" class="venues-title"><svg class="icon" aria-hidden="true"><use href="#i-school"/></svg>曾受邀授課的單位</h2>
+    <ul class="pills">
+      {VENUES.map(v => <li>{v}</li>)}
+    </ul>
+  </div>
+</section>

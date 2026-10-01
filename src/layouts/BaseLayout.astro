@@ -39,6 +39,9 @@ interface Props {
   noindex?: boolean;
   showNav?: boolean;
   showFooter?: boolean;
+  /** When false, the page supplies its own <main> (and may bring its own
+   *  header/footer). Used by the warm homepage so its landmarks nest correctly. */
+  wrapMain?: boolean;
   /** Palette this route ships in the server HTML when the visitor has no stored
    *  preference. Articles read better dark, marketing pages read better light. */
   defaultTheme?: 'stripe' | 'linear';
@@ -60,6 +63,7 @@ const {
   noindex = false,
   showNav = true,
   showFooter = true,
+  wrapMain = true,
   defaultTheme = 'stripe',
 } = Astro.props;
 const isLightDefault = defaultTheme === 'stripe';
@@ -125,7 +129,7 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={resolvedOgImageAlt} />
-    <meta name="theme-color" content={isLightDefault ? '#FFFFFF' : '#0A0A0B'} />
+    <meta name="theme-color" content={isLightDefault ? '#fbf5ec' : '#17120e'} />
     <link rel="alternate" type="text/plain" title="Dawson Wang AI-readable site summary" href="/llms.txt" />
     <link rel="alternate" type="application/rss+xml" title="Dawson Wang RSS" href="/rss.xml" />
     {personSameAsUrls.map(url => <link rel="me" href={url} />)}
@@ -134,7 +138,7 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=LXGW+WenKai+TC:wght@700&family=Iansui&display=swap" rel="stylesheet" />
     <script is:inline>
       // Apply the persisted theme before first paint to avoid a flash of the
       // wrong palette. Precedence: URL ?theme=... > localStorage > the route's
@@ -144,7 +148,7 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
         const root = document.documentElement;
         function paintMeta(theme) {
           const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', theme === 'stripe' ? '#FFFFFF' : '#0A0A0B');
+          if (meta) meta.setAttribute('content', theme === 'stripe' ? '#fbf5ec' : '#17120e');
         }
         try {
           const pageDefault = root.dataset.theme === 'stripe' ? 'stripe' : 'linear';
@@ -165,7 +169,9 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
   </head>
   <body class="bg-paper text-ink font-sans">
     {showNav && <Nav />}
-    <main data-pagefind-body={!noindex && !isArticle ? true : undefined}><slot /></main>
+    {wrapMain
+      ? <main data-pagefind-body={!noindex && !isArticle ? true : undefined}><slot /></main>
+      : <slot />}
     {!noindex && <WebMcp />}
     {showFooter && <Footer />}
     <SiteAnalytics />

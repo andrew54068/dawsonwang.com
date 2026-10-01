@@ -1,0 +1,84 @@
+---
+import { RECENT_HOSPITAL_SURVEY, TESTIMONIALS } from '../../data/speaking';
+
+// Split "4.82 / 5" → ["4.82", "5"] so we can render the big number + small unit
+// like the design, while keeping the source string in speaking.ts canonical.
+const splitStat = (s: string): [string, string] => {
+  const [a, b] = s.split('/').map(x => x.trim());
+  return [a ?? s, b ?? ''];
+};
+const [avg, avgUnit] = splitStat(RECENT_HOSPITAL_SURVEY.averageScore);
+const [done, doneUnit] = splitStat(RECENT_HOSPITAL_SURVEY.completedAllSteps);
+const [use, useUnit] = splitStat(RECENT_HOSPITAL_SURVEY.likelyToUseAtWork);
+
+// The three 中正高工 teacher quotes (all shareApproved). Hospital sessions did
+// NOT clear individual quotes, so only these teacher-workshop ones surface here.
+const quoteIds = ['ccvs-hands-on-result', 'ccvs-audience-fit', 'ccvs-systematic-clarity'];
+const quotes = quoteIds
+  .map(id => TESTIMONIALS.find(t => t.id === id))
+  .filter((t): t is NonNullable<typeof t> => Boolean(t) && t!.shareApproved);
+
+// Two deliberate proof photos per the design; files live in public/speaking.
+const photos = [
+  { cls: 'p1', src: '/speaking/qimei-main-0627-02.webp', w: 1477, h: 1108, cap: '奇美醫院總院', alt: '奇美醫院總院講堂內，Dawson Wang 面對多排醫事人員講解 AI 工具演進' },
+  { cls: 'p2', src: '/speaking/ccvs-group.webp', w: 1600, h: 1200, cap: '中正高工・結業合照', alt: '中正高工兩天工作坊結束後，Dawson Wang 與參與研習的老師們在教室合照' },
+  { cls: 'p3', src: '/speaking/sinlau-0907-02.webp', w: 1600, h: 1200, cap: '臺南新樓醫院', alt: '臺南新樓醫院教室內，多位醫事人員在筆電前舉手回應現場調查' },
+];
+---
+<section class="band" id="training" aria-labelledby="training-title">
+  <div class="wrap">
+    <div class="training-head">
+      <div class="sec-head">
+        <p class="eyebrow">企業內訓</p>
+        <h2 id="training-title">聽完覺得有收穫不算，<br>要帶著成品離開教室。</h2>
+        <p class="sec-sub">課程以實作為主。實作時間我會走到每個人座位旁，一個一個確認進度——很多卡點，只有看到操作畫面才說得清楚。</p>
+      </div>
+      <ul class="scale-pills" aria-label="授課規模">
+        <li><b>9</b> 場授課</li>
+        <li><b>6</b> 個單位</li>
+        <li><b>250+</b> 人次</li>
+        <li>醫療與教育</li>
+      </ul>
+    </div>
+
+    <div class="training-grid">
+      <div class="collage" data-reveal>
+        {photos.map(p => (
+          <figure class={`polaroid ${p.cls}`}>
+            <img src={p.src} width={p.w} height={p.h} loading="lazy" decoding="async" alt={p.alt} />
+            <figcaption>{p.cap}</figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <div class="training-side">
+        <div class="survey reveal" data-reveal>
+          <p class="survey-src">2026 年 9 月，佳里奇美、柳營奇美兩場匿名課後問卷，共 {RECENT_HOSPITAL_SURVEY.responses} 份</p>
+          <dl class="survey-nums">
+            <div><dt>平均評分</dt><dd>{avg}<small>/ {avgUnit}</small></dd></div>
+            <div><dt>完成六步實作</dt><dd>{done}<small>/ {doneUnit}</small></dd></div>
+            <div><dt><span class="ph">會或應該會</span><span class="ph">用在工作上</span></dt><dd>{use}<small>/ {useUnit}</small></dd></div>
+          </dl>
+        </div>
+
+        <div class="chat" data-reveal role="group" aria-labelledby="chat-title">
+          <p class="chat-title" id="chat-title">學員回饋（已取得公開同意）</p>
+          {quotes.map(t => (
+            <div class="msg">
+              <span class="avatar" aria-hidden="true">師</span>
+              <div>
+                <p class="sender">{t.attribution}</p>
+                <blockquote class="bubble">{t.quote}</blockquote>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="training-ctas">
+      <a class="btn btn-primary btn-lg" href="#inquire">邀請到公司內訓 <span class="arr" aria-hidden="true">→</span></a>
+      <a class="text-link" href="/speaking">看所有授課場次 <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>

@@ -1,35 +1,39 @@
 ---
 import { getCollection } from 'astro:content';
-import { computeStatsSummary } from '../lib/metrics';
-import StatsCharts from './StatsCharts.astro';
-
 const days = await getCollection('days');
-const stats = computeStatsSummary(days);
+const totalDays = days.length;
 ---
-<section class="max-w-5xl mx-auto px-8 py-20 border-t border-rule">
-  <div class="mb-10">
-    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">PROOF · {stats.totalDays} DAYS</div>
-    <h2 class="font-display text-ink leading-[1.1] tracking-[-0.02em] font-semibold"
-        style="font-size: clamp(1.75rem, 3.5vw, 2.5rem);">
-      每天一篇 AI <span class="text-teal">工具實戰</span>。
-    </h2>
-    <p class="font-display text-muted text-lg leading-relaxed max-w-xl mt-3">
-      從 Claude Code skill 到 Threads bot、再到資安研究。完整公開：源碼、流程、踩雷、結果。
-    </p>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-8 items-start">
-    <aside class="bg-surface-1 border border-rule rounded-xl p-5">
-      <div class="font-mono font-medium text-ink leading-none mb-3" style="font-size: 36px;">
-        {stats.totalDays}
+<section class="sec proof-band" aria-labelledby="proof-title">
+  <div class="wrap">
+    <div class="proof-card reveal" data-reveal>
+      <div class="proof-copy">
+        <p class="eyebrow">公開實作紀錄</p>
+        <h2 id="proof-title">連續 {totalDays} 天，<br>每天一篇，全部公開。</h2>
+        <p class="sec-sub">做法、踩到的雷、結果都攤在網路上——不是簡報裡的截圖，是真的做得出來、交得出去。</p>
+        <a class="btn btn-soft btn-lg" href="/proof">看完整作品集 <span class="arr" aria-hidden="true">→</span></a>
       </div>
-      <div class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">天連續產出</div>
-    </aside>
-
-    <StatsCharts stats={stats} />
-  </div>
-
-  <div class="mt-8 text-right">
-    <a href="/proof" class="font-mono text-xs text-teal hover:text-ink transition-colors duration-150 no-underline">看完整作品集 →</a>
+      <p class="proof-big" aria-hidden="true">{totalDays}<small>天</small></p>
+    </div>
   </div>
 </section>
+
+<style>
+  .proof-card {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+    gap: clamp(24px, 4vw, 56px);
+    padding: clamp(28px, 4vw, 48px) clamp(26px, 4vw, 52px);
+    border-radius: 34px; background: var(--white);
+    border: 2px dashed var(--peach-deep); box-shadow: var(--shadow-sm);
+  }
+  .proof-card .sec-sub { margin-top: 14px; }
+  .proof-card .btn { margin-top: 24px; }
+  .proof-big {
+    margin: 0; display: flex; align-items: baseline; gap: 8px;
+    font: 700 clamp(4rem, 2rem + 8vw, 8.5rem)/.9 var(--f-hand); color: var(--persimmon-text);
+  }
+  .proof-big small { font: 700 1.4rem/1 var(--f-body); color: var(--ink); }
+  @media (max-width: 760px) {
+    .proof-card { grid-template-columns: 1fr; text-align: left; }
+    .proof-big { order: -1; }
+  }
+</style>

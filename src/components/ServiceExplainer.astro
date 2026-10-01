@@ -1,46 +1,29 @@
 ---
 import { SERVICES } from '../data/services';
 ---
-<section class="max-w-5xl mx-auto px-8 py-20 border-t border-rule">
-  <div class="mb-12">
-    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">SERVICES · 3 TIERS</div>
-    <h2 class="font-display text-ink leading-[1.1] tracking-[-0.02em] font-semibold"
-        style="font-size: clamp(1.75rem, 3.5vw, 2.5rem);">
-      三種介入深度，<br />同一套方法。
-    </h2>
-    <p class="font-display text-muted text-lg leading-relaxed max-w-xl mt-3">
-      每個方案的產出都會 commit 到你們的 repo —— 沒有黑盒子，可驗收。
-    </p>
-  </div>
-
-  <div class="grid md:grid-cols-3 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
-    {SERVICES.map((s, i) => (
-      <div class={`flex flex-col p-7 ${s.primary ? 'bg-surface-2' : 'bg-surface-1'}`}
-           style={s.primary
-             ? "background: linear-gradient(180deg, color-mix(in oklab, var(--color-brick) 16%, transparent), transparent 60%), var(--color-surface-2);"
-             : ""}>
-        <div class={`font-mono text-[11px] uppercase tracking-[.08em] mb-3 ${s.primary ? 'text-ochre' : 'text-faint'}`}>
-          {String(i + 1).padStart(2, '0')} · {s.id}
-        </div>
-        <h3 class="font-display text-ink text-xl font-semibold tracking-tight mb-1.5">{s.title}</h3>
-        <p class="font-display text-muted text-sm leading-relaxed mb-3">{s.blurb}</p>
-        <div class="font-mono text-xs text-faint mb-5">
-          <span class={s.primary ? 'text-ochre' : 'text-teal'}>$</span> 預約討論後報價
-        </div>
-        <ul class="list-none p-0 m-0 mb-6 font-display text-sm text-muted leading-relaxed flex-1">
-          {s.examples.map(e => (
-            <li class="relative pl-5 py-1.5 before:absolute before:left-0 before:top-3 before:w-3 before:h-px before:bg-teal">{e}</li>
-          ))}
-        </ul>
-        <div class="border-t border-rule pt-4 flex justify-between items-center">
-          <span class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">
-            {s.primary ? 'featured' : 'available'}
-          </span>
-          <a href={s.ctaHref} class="font-mono text-xs text-teal hover:text-ink transition-colors duration-150 no-underline">
-            {s.ctaLabel} →
-          </a>
-        </div>
-      </div>
-    ))}
+<section class="sec" id="services" aria-labelledby="services-title" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">服務內容</p>
+      <h2 id="services-title"><span class="ph">三種合作方式，</span><span class="ph">看你想走多深。</span></h2>
+      <p class="sec-sub">每個方案的成果都交到你們手上，沒有黑盒子，看得到、驗收得了。</p>
+    </div>
+    <div class="svc-grid">
+      {SERVICES.map((s, i) => (
+        <article class={`svc reveal${s.primary ? ' svc-main' : ''}`} data-reveal style={`--i:${i}`}>
+          {s.primary && <span class="svc-badge">主推方案</span>}
+          <span class="svc-num" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-ring" class="draw" stroke="currentColor"/></svg>{i + 1}</span>
+          <h3>{s.title}</h3>
+          <p class="svc-line">{s.blurb}</p>
+          <ul class="svc-list">
+            {s.examples.map(e => (
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>{e}</li>
+            ))}
+          </ul>
+          <p class="svc-price"><svg class="icon" aria-hidden="true"><use href="#i-chat-q"/></svg>預約討論後報價</p>
+          <a class={`btn btn-lg ${s.primary ? 'btn-white' : 'btn-outline'}`} href={s.ctaHref}>{s.ctaLabel} <span class="arr" aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
   </div>
 </section>

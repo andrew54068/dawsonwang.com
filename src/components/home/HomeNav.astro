@@ -1,0 +1,102 @@
+---
+// Warm homepage nav (Style E). Replaces the shared Nav on `/` only, so it
+// carries its own theme toggle (same mechanism as src/components/Nav.astro:
+// flips <html> data-theme + localStorage 'dw_theme') and must expose the full
+// site: homepage anchors plus /projects, /proof, /days. The CTA uses the
+// literal `/#inquire` that check-seo-output.ts looks for in the rendered home.
+const links = [
+  { href: '#services', label: '服務內容' },
+  { href: '#cases', label: '客戶案例' },
+  { href: '#training', label: '企業內訓' },
+  { href: '/projects', label: '專案' },
+  { href: '/proof', label: '作品集' },
+  { href: '/days', label: '實作文章' },
+];
+---
+<header class="nav" id="top">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="Dawson Wang，回到頁首">
+      <span class="brand-mark" aria-hidden="true">D</span>
+      <span class="brand-text"><strong>Dawson Wang</strong><small>AI 導入顧問</small></span>
+    </a>
+    <nav class="nav-links" aria-label="主要選單">
+      {links.map(l => <a href={l.href}>{l.label}</a>)}
+    </nav>
+    <button type="button" id="home-theme-toggle" class="nav-toggle" aria-label="切換主題">
+      <svg class="t-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+      </svg>
+      <svg class="t-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path>
+      </svg>
+    </button>
+    <a class="btn btn-primary nav-cta" href="/#inquire">預約諮詢 <span class="arr" aria-hidden="true">→</span></a>
+    <details class="nav-menu">
+      <summary aria-label="開啟選單">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.4c5.2-.6 10.8-.5 16 0M4 12.2c5.3-.3 10.7.2 16-.1M4 16.9c5.2.4 10.8-.3 16 0"/></svg>
+      </summary>
+      <nav class="menu-panel" aria-label="手機選單">
+        {links.map(l => <a href={l.href}>{l.label}</a>)}
+        <a href="/#inquire">預約諮詢 →</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  /* Theme toggle button — matches E's circular menu-summary look. */
+  .nav-toggle {
+    flex: none; width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    background: var(--white); border: 1.5px solid var(--rule); color: var(--ink);
+    transition: background-color .2s, border-color .2s;
+  }
+  .nav-toggle:hover { background: var(--peach); border-color: var(--persimmon); }
+  /* Show the icon for the action the click performs: light page → moon (go dark);
+     dark page → sun (go light). */
+  .nav-toggle .t-moon { display: block; }
+  .nav-toggle .t-sun { display: none; }
+  :global(html:not([data-theme="stripe"])) .nav-toggle .t-moon { display: none; }
+  :global(html:not([data-theme="stripe"])) .nav-toggle .t-sun { display: block; }
+</style>
+
+<script>
+  // Warm theme toggle — same storage key + attribute as the sitewide Nav, so a
+  // dark preference set here carries to other pages and vice versa.
+  (function () {
+    const KEY = 'dw_theme';
+    const btn = document.getElementById('home-theme-toggle');
+    if (!btn) return;
+    function apply(theme: 'linear' | 'stripe') {
+      if (theme === 'stripe') document.documentElement.dataset.theme = 'stripe';
+      else delete document.documentElement.dataset.theme;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'stripe' ? '#fbf5ec' : '#17120e');
+      try { localStorage.setItem(KEY, theme); } catch (_) {}
+      btn!.setAttribute('aria-label', theme === 'stripe' ? '切換為暗色主題' : '切換為明亮主題');
+    }
+    // Keep the theme-color meta honest with the current paint on load.
+    const cur = document.documentElement.dataset.theme === 'stripe' ? 'stripe' : 'linear';
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', cur === 'stripe' ? '#fbf5ec' : '#17120e');
+    btn.setAttribute('aria-label', cur === 'stripe' ? '切換為暗色主題' : '切換為明亮主題');
+    btn.addEventListener('click', () => {
+      const now = document.documentElement.dataset.theme === 'stripe' ? 'stripe' : 'linear';
+      apply(now === 'stripe' ? 'linear' : 'stripe');
+    });
+  })();
+
+  // Mobile menu: close after a pick, on outside tap, or on Escape.
+  (function () {
+    const menu = document.querySelector('.nav-menu') as HTMLDetailsElement | null;
+    if (!menu) return;
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.removeAttribute('open')));
+    document.addEventListener('click', (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.removeAttribute('open');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) { menu.removeAttribute('open'); menu.querySelector('summary')?.focus(); }
+    });
+  })();
+</script>

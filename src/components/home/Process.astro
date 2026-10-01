@@ -1,0 +1,27 @@
+---
+import { PROCESS_STEPS, PROMISES } from '../../data/homepage-sections';
+---
+<section class="sec" id="process" aria-labelledby="process-title">
+  <div class="wrap">
+    <div class="sec-head center">
+      <p class="eyebrow">合作流程</p>
+      <h2 id="process-title">合作怎麼開始？</h2>
+    </div>
+    <div class="steps-wrap" data-reveal>
+      <svg class="steps-path" viewBox="0 0 1000 64" preserveAspectRatio="none" aria-hidden="true"><path d="M118 32C180 4 300 60 372 32S560 4 627 32 820 60 882 32"/></svg>
+      <ol class="steps">
+        {PROCESS_STEPS.map((s, i) => (
+          <li class="step">
+            <span class="step-num" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-ring" class="draw" stroke="currentColor"/></svg>{i + 1}</span>
+            <div class="step-card"><h3><span class="sr-only">第 {i + 1} 步：</span>{s.title}</h3><p>{s.body}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <ul class="promises reveal" data-reveal>
+      {PROMISES.map(p => (
+        <li><svg class="icon" aria-hidden="true"><use href={`#${p.icon}`}/></svg>{p.text}</li>
+      ))}
+    </ul>
+  </div>
+</section>

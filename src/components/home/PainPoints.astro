@@ -1,0 +1,20 @@
+---
+import { PAIN_POINTS } from '../../data/homepage-sections';
+---
+<section class="band pain" aria-labelledby="pain-title">
+  <div class="wrap">
+    <div class="sec-head center">
+      <p class="eyebrow">先對一下狀況</p>
+      <h2 id="pain-title">這些狀況，<br>你公司是不是也有？</h2>
+    </div>
+    <ul class="pain-grid">
+      {PAIN_POINTS.map((p, i) => (
+        <li class="pain-card reveal" data-reveal style={`--i:${i}`}>
+          <span class="doodle" aria-hidden="true"><svg class="icon"><use href={`#${p.icon}`}/></svg></span>
+          <p>{p.text}</p>
+        </li>
+      ))}
+    </ul>
+    <p class="pain-close reveal" data-reveal><strong>不用砍掉重練。</strong>把 AI 接進你原本就在做的流程，從最花時間的那件雜事開始。</p>
+  </div>
+</section>

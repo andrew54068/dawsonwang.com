@@ -1,148 +1,127 @@
 ---
-// Progressive enhancement. Without JS the browser does a native POST and the
-// server 303-redirects to /inquiry-received. With JS the submit is intercepted:
-// strict client-side email check, then a fetch — so the visitor never lands on
-// the bare 303 redirect page or a raw "Invalid payload" server response.
+// Progressive enhancement, unchanged contract. Without JS the browser does a
+// native POST and the server 303-redirects to /inquiry-received. With JS the
+// submit is intercepted: strict client-side email check, then a fetch — so the
+// visitor never lands on the bare 303 or a raw server error. Only the visual
+// shell is restyled to the warm (Style E) look; field names, element IDs, the
+// honeypot and the submit flow are the same ones the server + tests expect.
 ---
-<section id="inquire" class="max-w-5xl mx-auto px-8 py-20 border-t border-rule">
-  <div class="grid md:grid-cols-[1fr_1.1fr] gap-12 items-start">
-    <div>
-      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">CONSULTATION · ASYNC</div>
-      <h2 class="font-display text-ink leading-[1.1] tracking-[-0.02em] font-semibold"
-          style="font-size: clamp(1.75rem, 3.5vw, 2.5rem);">
-        告訴我你想用 AI<br /><span class="text-teal">解決什麼</span>。
-      </h2>
-      <p class="font-display text-muted text-lg leading-relaxed mt-4 max-w-md">
-        填表後 1–2 個工作日內回覆。<br />
-        合適會附上預約連結；不合適會直接說。
-      </p>
-      <div class="mt-6 grid gap-2 font-mono text-xs text-faint">
-        <div class="flex gap-3"><span class="text-teal">→</span><span>沒有 newsletter，沒有自動加群組</span></div>
-        <div class="flex gap-3"><span class="text-teal">→</span><span>所有對話都會保密</span></div>
-        <div class="flex gap-3"><span class="text-teal">→</span><span>報價在第二輪對話後給</span></div>
+<section class="band inquire" id="inquire" aria-labelledby="inquire-title">
+  <div class="wrap inquire-grid">
+    <div class="inquire-copy">
+      <div class="sec-head">
+        <p class="eyebrow">預約諮詢</p>
+        <h2 id="inquire-title">告訴我你想用 AI<br>解決什麼。</h2>
+        <p class="sec-sub">填表後 1–2 個工作日內回覆。合適會附上預約連結；不合適會直接說。</p>
       </div>
-      <div class="mt-6 pt-4 border-t border-rule font-mono text-[11px] text-faint uppercase tracking-[.08em]">
-        最近諮詢的客戶來自：旅遊 · 醫療 · KOL 經紀 · 自媒體
+      <div class="me-card">
+        <img src="/dawson.webp" width="640" height="800" loading="lazy" decoding="async" alt="Dawson Wang 正式形象照" />
+        <div><strong>Dawson Wang</strong><span>AI 導入顧問</span></div>
       </div>
+      <p class="recent">最近諮詢的客戶來自：</p>
+      <ul class="pills">
+        <li>旅遊</li>
+        <li>醫療</li>
+        <li>KOL 經紀</li>
+        <li>自媒體</li>
+      </ul>
     </div>
 
-    <form id="inquiry-form" action="/api/inquiry" method="POST"
-          class="grid gap-6 bg-surface-1 border border-rule rounded-xl p-7">
-      <input type="text" name="hp_field" value="" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+    <form id="inquiry-form" class="form-card" action="/api/inquiry" method="POST">
+      <input type="text" name="hp_field" value="" tabindex="-1" autocomplete="off" class="hp-field" aria-hidden="true" />
 
-      <label class="grid gap-2">
-        <span class="mag-label">姓名</span>
-        <input type="text" name="name" required class="mag-input" />
-      </label>
+      <div class="field">
+        <label for="inq-name">姓名<span class="req">必填</span></label>
+        <input type="text" name="name" id="inq-name" required autocomplete="name" />
+      </div>
 
-      <label class="grid gap-2">
-        <span class="mag-label">Email</span>
-        <input
-          type="email"
-          name="email"
-          id="inq-email"
-          required
-          autocomplete="email"
-          aria-describedby="inq-email-hint"
-          class="mag-input"
-        />
+      <div class="field">
+        <label for="inq-email">Email<span class="req">必填</span></label>
+        <input type="email" name="email" id="inq-email" required autocomplete="email" inputmode="email" aria-describedby="inq-email-hint" />
         <span id="inq-email-hint" class="email-hint" aria-live="polite" hidden></span>
-      </label>
+      </div>
 
-      <label class="grid gap-2">
-        <span class="mag-label">公司 / 組織</span>
-        <input type="text" name="company" required maxlength="150" class="mag-input" />
-      </label>
+      <div class="field">
+        <label for="inq-company">公司 / 組織<span class="req">必填</span></label>
+        <input type="text" name="company" id="inq-company" required maxlength="150" autocomplete="organization" />
+      </div>
 
-      <label class="grid gap-2">
-        <span class="mag-label">想用 AI 做什麼？</span>
-        <textarea
-          name="goal"
-          required
-          maxlength="300"
-          rows="4"
-          class="mag-input resize-none"
-        ></textarea>
-        <span class="font-mono text-[10px] text-faint">最多 300 字</span>
-      </label>
+      <div class="field">
+        <label for="inq-goal">想用 AI 做什麼？<span class="req">必填</span></label>
+        <textarea name="goal" id="inq-goal" required maxlength="300" rows="4" aria-describedby="goal-hint" placeholder="例如：每天要從 LINE 群組整理客戶需求，很花時間⋯"></textarea>
+        <p class="hint" id="goal-hint">最多 300 字（目前 <span id="inq-goal-count">0</span> 字）</p>
+      </div>
 
-      <fieldset class="grid gap-3 border-0 p-0">
-        <legend class="mag-label">團隊規模</legend>
-        <div class="flex flex-wrap gap-2">
+      <fieldset class="chips-field">
+        <legend>團隊規模</legend>
+        <div class="chips">
           {['1-5', '6-30', '31-100', '100+'].map(v => (
-            <label class="radio-chip">
-              <input type="radio" name="team_size" value={v} required /><span>{v}</span>
-            </label>
+            <label class="chip"><input type="radio" name="team_size" value={v} required /><span>{v}</span></label>
           ))}
         </div>
       </fieldset>
 
-      <fieldset class="grid gap-3 border-0 p-0">
-        <legend class="mag-label">預算量級（NTD）</legend>
-        <div class="flex flex-wrap gap-2">
+      <fieldset class="chips-field">
+        <legend>預算量級（新台幣）</legend>
+        <div class="chips">
           {[
             { v: 'lt100k', l: '< 10 萬' },
             { v: '100k-300k', l: '10–30 萬' },
             { v: '300k-800k', l: '30–80 萬' },
             { v: 'gt800k', l: '> 80 萬' },
           ].map(o => (
-            <label class="radio-chip">
-              <input type="radio" name="budget" value={o.v} required /><span>{o.l}</span>
-            </label>
+            <label class="chip"><input type="radio" name="budget" value={o.v} required /><span>{o.l}</span></label>
           ))}
         </div>
       </fieldset>
 
-      <fieldset class="grid gap-3 border-0 p-0">
-        <legend class="mag-label">時程</legend>
-        <div class="flex flex-wrap gap-2">
+      <fieldset class="chips-field">
+        <legend>時程</legend>
+        <div class="chips">
           {[
             { v: 'this_month', l: '本月內' },
             { v: 'this_quarter', l: '本季' },
             { v: 'exploring', l: '只是先了解' },
           ].map(o => (
-            <label class="radio-chip">
-              <input type="radio" name="timeline" value={o.v} required /><span>{o.l}</span>
-            </label>
+            <label class="chip"><input type="radio" name="timeline" value={o.v} required /><span>{o.l}</span></label>
           ))}
         </div>
       </fieldset>
 
-      <p id="inq-error" class="form-error" role="alert" hidden></p>
-      <button type="submit" id="inq-submit" class="btn-ink mt-2 justify-self-start">送出 →</button>
+      <p class="form-error" id="inq-error" role="alert" hidden></p>
+      <button type="submit" id="inq-submit" class="btn btn-primary btn-lg btn-block">送出 →</button>
     </form>
 
-    <div id="inq-success" hidden tabindex="-1"
-         class="grid gap-3 content-start bg-surface-1 border border-rule rounded-xl p-7">
-      <div class="font-mono text-xs text-teal uppercase tracking-[.08em]">RECEIVED · OK</div>
-      <h3 class="font-display text-ink text-2xl font-semibold tracking-[-0.02em]">
-        <span class="text-teal">謝謝</span>。
-      </h3>
-      <p class="font-display text-muted leading-relaxed">
-        我會在 1–2 個工作日內回信。如果適合進一步聊，會附上 Google Calendar 預約連結。
-      </p>
+    <div id="inq-success" hidden tabindex="-1" class="form-card success-card">
+      <p class="eyebrow">已收到</p>
+      <h3><span>謝謝。</span></h3>
+      <p>我會在 1–2 個工作日內回信。如果適合進一步聊，會附上 Google Calendar 預約連結。</p>
     </div>
   </div>
 </section>
 
 <style>
+  /* Honeypot — present for bots, invisible to people. */
+  .hp-field { display: none; }
+
+  /* The two script-driven status elements E's stylesheet doesn't define. */
   .email-hint,
   .form-error {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 1.4;
-    letter-spacing: .02em;
-    color: var(--color-ochre); /* design system's warning/highlight token */
+    font-family: var(--f-body);
+    font-size: .98rem;
+    line-height: 1.5;
+    color: var(--persimmon-text);
   }
   .email-hint[hidden],
   .form-error[hidden] { display: none; }
 
-  /* Gate the send button until the email passes the shared rule. */
-  .btn-ink:disabled,
-  .btn-ink:disabled:hover {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
+  .btn-primary:disabled,
+  .btn-primary:disabled:hover { opacity: .45; cursor: not-allowed; transform: none; }
+
+  .success-card { align-content: start; gap: 14px; }
+  .success-card h3 { font-size: clamp(1.6rem, 1.2rem + 1vw, 2.1rem); }
+  .success-card h3 span { color: var(--leaf-text); }
+  .success-card p { color: var(--muted); line-height: 1.85; }
 </style>
 
 <script>
@@ -227,5 +206,12 @@
     });
 
     refresh(false);
+  }
+
+  // Live character count for the 300-character goal field (enhancement only).
+  const goalField = document.getElementById('inq-goal') as HTMLTextAreaElement | null;
+  const goalCount = document.getElementById('inq-goal-count');
+  if (goalField && goalCount) {
+    goalField.addEventListener('input', () => { goalCount.textContent = String(goalField.value.length); });
   }
 </script>

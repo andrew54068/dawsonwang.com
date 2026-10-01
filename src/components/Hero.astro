@@ -3,71 +3,65 @@ import { getCollection } from 'astro:content';
 const days = await getCollection('days');
 const totalDays = days.length;
 ---
-<section class="relative max-w-5xl mx-auto px-8 pt-20 pb-16 overflow-hidden">
-  <div aria-hidden="true" class="pointer-events-none absolute -top-40 -left-40 w-[640px] h-[640px] rounded-full opacity-60"
-       style="background: radial-gradient(circle at center, color-mix(in oklab, var(--color-brick) 22%, transparent), transparent 60%);"></div>
-  <div aria-hidden="true" class="pointer-events-none absolute -bottom-40 -right-40 w-[560px] h-[560px] rounded-full opacity-50"
-       style="background: radial-gradient(circle at center, color-mix(in oklab, var(--color-teal) 18%, transparent), transparent 60%);"></div>
-
-  <div class="relative grid grid-cols-1 md:grid-cols-[1fr_280px] gap-10 md:gap-12 items-end">
-    <div class="order-2 md:order-1">
-      <span class="kicker">
-        <span class="dot"></span>
-        <span>Day {totalDays} · shipping daily</span>
-      </span>
-      <h1 class="font-display text-ink mt-6 mb-6"
-          style="font-size: clamp(2.75rem, 6vw, 5rem); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance;">
-        把 <span style="background: linear-gradient(90deg, var(--color-brick), var(--color-teal)); -webkit-background-clip: text; background-clip: text; color: transparent;">AI 工具</span><br />
-        搬進你的<br />實際工作流。
-      </h1>
-      <p class="font-display text-muted text-lg leading-relaxed max-w-xl mb-6">
-        9 年新創軟體經驗。過去 {totalDays} 天每天公開實作 AI 工作流 ——
-        現在幫你的團隊把這套方法搬進生產環境。
-      </p>
-      <ul class="font-display text-muted text-base leading-relaxed max-w-xl mb-9 list-none p-0 m-0 space-y-2">
-        <li class="relative pl-5 before:absolute before:left-0 before:top-3 before:w-3 before:h-px before:bg-teal">
-          iOS → DevRel → Full Stack 跨領域工程經驗
-        </li>
-        <li class="relative pl-5 before:absolute before:left-0 before:top-3 before:w-3 before:h-px before:bg-teal">
-          iPAS AI 應用規劃師（中級）能力鑑定 · 經濟部產業發展署發證
-        </li>
-        <li class="relative pl-5 before:absolute before:left-0 before:top-3 before:w-3 before:h-px before:bg-teal">
-          已協助旅遊業把 AI 接進實際業務流程改善效率
-        </li>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="kicker load" style="--d:0"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg>中小企業 AI 導入顧問 · 企業內訓講師</p>
+      <h1 id="hero-title" class="load" style="--d:1">把雜事交給 AI，<br>把時間留給<span class="hl">客戶<svg class="hl-line" viewBox="0 0 200 36" preserveAspectRatio="none" aria-hidden="true"><path class="draw draw-in" pathLength="1" d="M5 20C48 11 108 7 195 13"/><path class="draw draw-in" pathLength="1" d="M28 30c46-6 104-7 150-3"/></svg></span>。</h1>
+      <p class="hero-sub load" style="--d:2">每天在 LINE、Excel、Email 之間重複做的事，我幫你找出哪些能交給 AI，再陪團隊一路用到上手。</p>
+      <div class="hero-ctas load" style="--d:3">
+        <a class="btn btn-primary btn-lg" href="#inquire">預約 30 分鐘諮詢 <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn btn-soft btn-lg" href="#cases">先看客戶案例 <span aria-hidden="true">↓</span></a>
+      </div>
+      <ul class="hero-trust load" style="--d:4">
+        <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>9 年新創軟體開發經驗</li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>iPAS AI 應用規劃師（中級）· 經濟部產業發展署發證</li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>已協助旅遊業把 AI 接進日常業務</li>
       </ul>
-      <div class="flex flex-wrap gap-3 items-center">
-        <a href="#inquire" class="btn-ink">預約 30 分鐘 →</a>
-        <a href="#cases" class="btn-ghost">看最近 3 個諮詢案例 ↓</a>
-      </div>
-      <div class="mt-11 flex flex-wrap gap-x-9 gap-y-3 font-mono text-xs text-faint">
-        <span class="flex gap-2"><span class="text-ink font-medium">{totalDays}</span><span>連續產出天數</span></span>
-        <span class="flex gap-2"><span class="text-ink font-medium">9 yr</span><span>新創軟體經驗</span></span>
-        <span class="flex gap-2"><span class="text-ink font-medium">2 wk</span><span>最短交付週期</span></span>
-        <span class="flex gap-2"><span class="text-ink font-medium">100 %</span><span>原始碼公開</span></span>
-      </div>
     </div>
 
-    <aside class="order-1 md:order-2 max-w-[280px] md:max-w-none">
-      <figure>
-        <div class="relative">
-          <span aria-hidden="true" class="absolute -top-2 -left-2 w-full h-full rounded-md"
-                style="background: linear-gradient(135deg, color-mix(in oklab, var(--color-brick) 40%, transparent), color-mix(in oklab, var(--color-teal) 30%, transparent));"></span>
-          <img
-            src="/dawson.webp"
-            alt="Dawson Wang，AI 工具落地實踐者"
-            width="640"
-            height="800"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-            class="relative block w-full aspect-[4/5] object-cover rounded-md border border-rule"
-          />
+    <figure class="hero-photo load-photo">
+      <svg class="blob blob-a" viewBox="0 0 600 600" aria-hidden="true"><path fill="currentColor" d="M452 98c58 46 92 128 78 207-14 80-75 157-157 187-81 31-183 14-247-42C62 395 37 296 64 214 91 132 170 67 256 54c86-13 138-2 196 44Z"/></svg>
+      <svg class="blob blob-b" viewBox="0 0 600 600" aria-hidden="true"><path fill="currentColor" d="M300 60c84 6 170 48 200 126 30 77 4 190-64 250-68 61-178 70-260 34C94 434 40 352 46 270 52 188 118 108 186 80c34-14 70-22 114-20Z"/></svg>
+      <svg class="doodle-spark draw" viewBox="0 0 60 60" aria-hidden="true"><path stroke="currentColor" stroke-width="4" d="M30 6v14M10 16l9 9M50 16l-9 9"/></svg>
+      <div class="photo-frame">
+        <div class="photo-inner">
+          <img src="/speaking/ccvs-2026-helping.webp" width="1600" height="1200" fetchpriority="high" decoding="async"
+               alt="Dawson Wang 站在中正高工電腦教室一位老師的座位旁，協助她完成 AI 實作">
+          <!-- Annotation in the photo's own 1600×1200 space, so the loop stays on Dawson at any size. -->
+          <svg class="annot" viewBox="0 0 1600 1200" aria-hidden="true" focusable="false">
+            <defs>
+              <filter id="note-shadow" x="-10%" y="-30%" width="120%" height="180%">
+                <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#2e231c" flood-opacity=".18"/>
+              </filter>
+            </defs>
+            <path class="draw draw-in halo" pathLength="1" d="M761 119C771 114 802 85 824 85C846 84 872 103 894 118C916 133 942 150 958 177C974 204 983 244 992 279C1000 314 1008 351 1008 387C1008 422 1003 463 991 490C979 517 956 533 936 548C916 563 894 578 871 577C849 576 825 557 802 541C780 524 755 506 739 479C723 451 713 411 705 375C697 339 689 299 691 263C692 227 701 189 714 160C727 131 746 104 767 89C788 74 828 72 840 69"/>
+            <path class="draw draw-in loop" pathLength="1" d="M761 119C771 114 802 85 824 85C846 84 872 103 894 118C916 133 942 150 958 177C974 204 983 244 992 279C1000 314 1008 351 1008 387C1008 422 1003 463 991 490C979 517 956 533 936 548C916 563 894 578 871 577C849 576 825 557 802 541C780 524 755 506 739 479C723 451 713 411 705 375C697 339 689 299 691 263C692 227 701 189 714 160C727 131 746 104 767 89C788 74 828 72 840 69"/>
+            <g class="note-d">
+              <g filter="url(#note-shadow)" transform="rotate(-4 1228 -95)">
+                <rect class="note-paper" x="856" y="-170" width="744" height="150" rx="20"/>
+                <text class="note-text" x="1228" y="-62" text-anchor="middle">我會走到你座位旁</text>
+                <rect class="note-tape" x="1168" y="-190" width="120" height="40" rx="5" transform="rotate(-7 1228 -170)"/>
+              </g>
+              <path class="draw draw-in arrow" pathLength="1" d="M1062 -6C1078 70 1060 160 1016 214M1055 198L1016 214L1024 173"/>
+            </g>
+          </svg>
         </div>
-        <figcaption class="mt-3 font-mono text-[11px] text-faint flex justify-between items-baseline">
-          <span>Dawson Wang</span>
-          <span class="text-teal">已寫 {totalDays} 篇</span>
-        </figcaption>
-      </figure>
-    </aside>
+      </div>
+      <svg class="doodle-squiggle draw" viewBox="0 0 110 30" aria-hidden="true"><path stroke="currentColor" stroke-width="4" d="M4 20c9-14 15 9 24-4s15 9 24-4 15 9 24-4 14 8 30-2"/></svg>
+      <figcaption class="hero-cap">
+        <svg class="draw" viewBox="0 0 40 44" aria-hidden="true"><path stroke="currentColor" stroke-width="2.6" d="M30 41C29 28 25 16 18 5M11 12L18 4.5 24.5 11"/></svg>
+        <span>我會走到<br>你座位旁</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <ul class="stickers" aria-label="重點數字">
+      <li class="sticker load-pop" style="--d:0"><p class="num">{totalDays}<small>天</small></p><p class="lbl">每天公開一篇 AI 實作</p></li>
+      <li class="sticker load-pop" style="--d:1"><p class="num">9<small>場</small></p><p class="lbl">醫院與學校內訓</p></li>
+      <li class="sticker load-pop" style="--d:2"><p class="num">250+<small>人次</small></p><p class="lbl">累積學員</p></li>
+      <li class="sticker load-pop" style="--d:3"><p class="num">4.82<small>/ 5</small></p><p class="lbl"><span class="ph">近兩場課後</span><span class="ph">匿名問卷平均</span><span class="ph">（33 份）</span></p></li>
+    </ul>
   </div>
 </section>
