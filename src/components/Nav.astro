@@ -182,7 +182,7 @@ function isCurrent(href: string) {
       }
       // Keep the mobile browser chrome tinted like the page it frames.
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', theme === 'stripe' ? '#FFFFFF' : '#0A0A0B');
+      if (meta) meta.setAttribute('content', theme === 'stripe' ? '#fbf5ec' : '#17120e');
       try { localStorage.setItem(STORAGE_KEY, theme); } catch (_) {}
       el.setAttribute('aria-label', theme === 'stripe' ? '切換為暗色主題' : '切換為明亮主題');
     }

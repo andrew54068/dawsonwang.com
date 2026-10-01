@@ -260,31 +260,31 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
 </BaseLayout>
 
 <style>
-  :global(body:has(.speaking-editorial)) { background: #f5f0e7; }
-  :global(html:not([data-theme="stripe"]) body:has(.speaking-editorial)) { background: #15191b; }
+  :global(body:has(.speaking-editorial)) { background: #fbf5ec; }
+  :global(html:not([data-theme="stripe"]) body:has(.speaking-editorial)) { background: #17120e; }
 
   .speaking-editorial {
-    --editorial-paper: #f5f0e7;
-    --editorial-surface: #fbf9f4;
-    --editorial-ink: #1b2930;
-    --editorial-muted: #657176;
-    --editorial-faint: #89928f;
-    --editorial-rule: #c9c8bf;
-    --editorial-accent: #789873;
-    --editorial-deep: #27383a;
+    --editorial-paper: #fbf5ec;
+    --editorial-surface: #fffdf8;
+    --editorial-ink: #2e231c;
+    --editorial-muted: #65564b;
+    --editorial-faint: #8a7a6a;
+    --editorial-rule: #ead8c4;
+    --editorial-accent: #b4501f;
+    --editorial-deep: #2e231c;
     color: var(--editorial-ink);
     background: var(--editorial-paper);
     font-family: "Noto Sans TC", system-ui, sans-serif;
   }
   :global(html:not([data-theme="stripe"])) .speaking-editorial {
-    --editorial-paper: #15191b;
-    --editorial-surface: #1d2425;
-    --editorial-ink: #f3efe5;
-    --editorial-muted: #b5b7ad;
-    --editorial-faint: #8b948c;
-    --editorial-rule: #465052;
-    --editorial-accent: #9dbb8d;
-    --editorial-deep: #0e1416;
+    --editorial-paper: #17120e;
+    --editorial-surface: #241b14;
+    --editorial-ink: #f4ece1;
+    --editorial-muted: #c7b7a7;
+    --editorial-faint: #9a8a7a;
+    --editorial-rule: #433529;
+    --editorial-accent: #f3995f;
+    --editorial-deep: #0f0b08;
   }
   .editorial-shell { max-width: 1160px; margin: 0 auto; padding: 4.5rem 2rem 6rem; }
   .editorial-kicker, .editorial-index, .editorial-proof dt, .editorial-stats dt, .editorial-engagement dt, .editorial-lecture-links > span, .editorial-decks > span, .editorial-days > span, .editorial-format, .editorial-day-label {
@@ -297,7 +297,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
   .editorial-kicker { color: var(--editorial-accent); }
   .editorial-hero { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: end; padding-bottom: 4rem; border-bottom: 1px solid var(--editorial-rule); }
   .editorial-hero-copy { padding-bottom: .75rem; }
-  .editorial-hero h1, .editorial-section h2, .editorial-cta h2 { font-family: "Noto Serif TC", "Songti TC", Georgia, serif; font-weight: 600; letter-spacing: -.045em; }
+  .editorial-hero h1, .editorial-section h2, .editorial-cta h2 { font-family: "LXGW WenKai TC", "Noto Sans TC", serif; font-weight: 600; letter-spacing: -.045em; }
   .editorial-hero h1 { margin: 1rem 0 1.5rem; font-size: clamp(2.45rem, 5.2vw, 5.25rem); line-height: 1.08; text-wrap: balance; }
   .editorial-hero h1 span { color: var(--editorial-accent); }
   .editorial-lede { max-width: 34rem; margin: 0; color: var(--editorial-muted); font-size: 1.04rem; line-height: 1.9; }
@@ -315,7 +315,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
   .editorial-text-link:hover { color: var(--editorial-accent); border-color: var(--editorial-accent); }
 
   .editorial-proof { display: grid; grid-template-columns: minmax(13rem, .85fr) minmax(0, 1.8fr); gap: 2rem; align-items: end; padding: 2.1rem 0; border-bottom: 1px solid var(--editorial-rule); }
-  .editorial-proof-heading h2 { margin: .45rem 0 .5rem; font-family: "Noto Serif TC", "Songti TC", Georgia, serif; font-size: 1.25rem; font-weight: 600; }
+  .editorial-proof-heading h2 { margin: .45rem 0 .5rem; font-family: "LXGW WenKai TC", "Noto Sans TC", serif; font-size: 1.25rem; font-weight: 600; }
   .editorial-proof-heading p, .editorial-section-heading p { max-width: 28rem; margin: 0; color: var(--editorial-muted); font-size: .78rem; line-height: 1.8; }
   .editorial-proof-stats, .editorial-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-left: 1px solid var(--editorial-rule); }
   .editorial-proof-stats > div, .editorial-stats > div { padding: .2rem 1.2rem; border-right: 1px solid var(--editorial-rule); }
@@ -332,7 +332,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
   .editorial-lectures { border-top: 1px solid var(--editorial-rule); }
   .editorial-lecture { padding: 2rem 0 2.5rem; border-bottom: 1px solid var(--editorial-rule); }
   .editorial-lecture-header { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(14rem, .8fr); gap: 2rem; align-items: start; margin-bottom: 1.35rem; }
-  .editorial-lecture h3, .editorial-engagement h3, .editorial-principle h3 { margin: .5rem 0 0; font-family: "Noto Serif TC", "Songti TC", Georgia, serif; font-weight: 600; letter-spacing: -.025em; }
+  .editorial-lecture h3, .editorial-engagement h3, .editorial-principle h3 { margin: .5rem 0 0; font-family: "LXGW WenKai TC", "Noto Sans TC", serif; font-weight: 600; letter-spacing: -.025em; }
   .editorial-lecture h3 { font-size: 1.25rem; line-height: 1.4; }
   .editorial-lecture h3 span, .editorial-engagement h3 span { color: var(--editorial-muted); font-weight: 400; }
   .editorial-lecture-header p { margin: 0; color: var(--editorial-muted); font-size: .78rem; line-height: 1.8; }
@@ -370,11 +370,11 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
   .editorial-principle h3 { font-size: 1.05rem; line-height: 1.5; }
   .editorial-principle p { margin: .7rem 0 1.25rem; color: var(--editorial-muted); font-size: .8rem; line-height: 1.85; }
   .editorial-day-label { color: var(--editorial-faint); }
-  .editorial-cta { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 3rem; margin-top: 7rem; padding: 3rem; background: var(--editorial-deep); color: #f3efe5; }
-  .editorial-cta .editorial-kicker { color: #a6c79a; }
+  .editorial-cta { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 3rem; margin-top: 7rem; padding: 3rem; background: var(--editorial-deep); color: #f4ece1; }
+  .editorial-cta .editorial-kicker { color: #f4ac81; }
   .editorial-cta h2 { max-width: 30rem; margin: .7rem 0 0; font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.25; }
-  .editorial-cta-copy p { margin: 0; color: #c3c8bb; font-size: .82rem; line-height: 1.9; }
-  .editorial-cta .editorial-text-link { color: #f3efe5; border-color: #64736d; }
+  .editorial-cta-copy p { margin: 0; color: #dccfc0; font-size: .82rem; line-height: 1.9; }
+  .editorial-cta .editorial-text-link { color: #f4ece1; border-color: #5a4a3c; }
 
   @media (max-width: 760px) {
     .editorial-shell { padding: 3rem 1.25rem 4rem; }

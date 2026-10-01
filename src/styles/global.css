@@ -2,51 +2,55 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  /* === Linear-dark — the opt-in theme (no data-theme attribute) === */
-  --color-paper: #0A0A0B;      /* base background */
-  --color-surface-1: #131316;  /* card / panel */
-  --color-surface-2: #1B1B20;  /* elevated surface */
-  --color-rule: #26262C;       /* hairline border */
+  /* === Warm DARK — the opt-in theme (no data-theme attribute) ===
+     Matches the home page's 溫暖陪跑 dark variant so the whole site is one
+     warm identity. Accent (brick) stays a saturated persimmon that carries
+     white text on buttons; teal/sage are a light leaf green for text on dark. */
+  --color-paper: #17120E;      /* base background */
+  --color-surface-1: #241B14;  /* card / panel */
+  --color-surface-2: #30251B;  /* elevated surface / hover */
+  --color-rule: #433529;       /* hairline border */
 
   /* Type */
-  --color-ink: #F4F4F5;        /* primary text */
-  --color-muted: #8B8B95;      /* secondary text */
-  --color-faint: #5C5C66;      /* tertiary / metadata */
+  --color-ink: #F4ECE1;        /* primary text */
+  --color-muted: #C7B7A7;      /* secondary text */
+  --color-faint: #9A8A7A;      /* tertiary / metadata */
 
   /* Accents */
-  --color-brick: #7B61FF;      /* primary accent (Linear purple) */
-  --color-teal: #59E6C9;       /* secondary accent / success-ish */
-  --color-ochre: #FFC56A;      /* warning / highlight */
-  --color-sage: #59E6C9;       /* alias for teal */
+  --color-brick: #C2551F;      /* primary accent / button fill (white text ≥4.5) */
+  --color-teal: #A8CFB0;       /* secondary accent / success-ish (text on dark) */
+  --color-ochre: #F4AC81;      /* warning / highlight */
+  --color-sage: #A8CFB0;       /* alias for teal */
 
-  --font-display: "Space Grotesk", "Noto Sans TC", system-ui, sans-serif;
-  --font-serif:   "Space Grotesk", "Noto Sans TC", system-ui, sans-serif;
-  --font-sans:    "Space Grotesk", "Noto Sans TC", system-ui, sans-serif;
+  --font-display: "LXGW WenKai TC", "Noto Sans TC", system-ui, sans-serif;
+  --font-serif:   "LXGW WenKai TC", "Noto Sans TC", system-ui, serif;
+  --font-sans:    "Noto Sans TC", system-ui, sans-serif;
   --font-mono:    "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* === Stripe-clean light theme — THE DEFAULT ===
+/* === Warm LIGHT — THE DEFAULT ===
    BaseLayout renders data-theme="stripe" on <html>, so these tokens win unless
    the visitor opts into dark, which strips the attribute and falls back to the
-   Linear-dark values in @theme above. */
+   warm-dark values in @theme above. Cream paper, persimmon primary, leaf-green
+   secondary — the same palette as the home page. */
 :root[data-theme="stripe"] {
-  --color-paper: #FFFFFF;
-  --color-surface-1: #FFFFFF;  /* white cards on bg-soft sections */
-  --color-surface-2: #F6F9FC;  /* Stripe's signature off-white */
-  --color-rule: #E3E8EE;
+  --color-paper: #FBF5EC;      /* cream base */
+  --color-surface-1: #FFFDF8;  /* warm-white cards */
+  --color-surface-2: #F3EAD9;  /* soft warm elevation / hover */
+  --color-rule: #EAD8C4;
 
-  --color-ink: #0A2540;        /* navy primary text */
-  --color-muted: #425466;
-  --color-faint: #8898AA;
+  --color-ink: #2E231C;        /* warm near-black text */
+  --color-muted: #65564B;
+  --color-faint: #8A7A6A;
 
-  --color-brick: #635BFF;      /* Stripe indigo */
-  --color-teal: #00A859;       /* success green for "positive" accents */
-  --color-ochre: #FF8F00;
-  --color-sage: #00A859;
+  --color-brick: #B4501F;      /* persimmon — button fill (white text 5.1), text on cream 4.7 */
+  --color-teal: #2F6646;       /* leaf green — text-safe on cream/white (5.4) */
+  --color-ochre: #A85A12;      /* warm amber, text-safe */
+  --color-sage: #2F6646;
 
-  --font-display: "Plus Jakarta Sans", "Noto Sans TC", system-ui, sans-serif;
-  --font-serif:   "Plus Jakarta Sans", "Noto Sans TC", system-ui, sans-serif;
-  --font-sans:    "Plus Jakarta Sans", "Noto Sans TC", system-ui, sans-serif;
+  --font-display: "LXGW WenKai TC", "Noto Sans TC", system-ui, sans-serif;
+  --font-serif:   "LXGW WenKai TC", "Noto Sans TC", system-ui, serif;
+  --font-sans:    "Noto Sans TC", system-ui, sans-serif;
 }
 
 @layer base {
@@ -326,29 +330,29 @@
    across the codebase, so a single selector covers them all. */
 :root[data-theme="stripe"] .bg-surface-1 {
   box-shadow:
-    0 1px 2px rgba(50, 50, 93, 0.05),
-    0 4px 12px -4px rgba(50, 50, 93, 0.08);
+    0 1px 2px rgba(46, 35, 28, 0.05),
+    0 4px 12px -4px rgba(46, 35, 28, 0.08);
 }
 :root[data-theme="stripe"] .bg-surface-1.hover\:bg-surface-2:hover {
   box-shadow:
-    0 2px 4px rgba(50, 50, 93, 0.06),
-    0 12px 28px -10px rgba(50, 50, 93, 0.12);
+    0 2px 4px rgba(46, 35, 28, 0.06),
+    0 12px 28px -10px rgba(46, 35, 28, 0.12);
   transform: translateY(-1px);
   transition: transform 150ms ease, box-shadow 150ms ease;
 }
 
 :root[data-theme="stripe"] .kicker {
-  box-shadow: 0 1px 2px rgba(50, 50, 93, 0.05);
+  box-shadow: 0 1px 2px rgba(46, 35, 28, 0.05);
 }
 :root[data-theme="stripe"] .btn-ghost {
-  box-shadow: 0 1px 2px rgba(50, 50, 93, 0.05);
+  box-shadow: 0 1px 2px rgba(46, 35, 28, 0.05);
 }
 :root[data-theme="stripe"] .btn-ghost:hover {
   background: var(--color-surface-2);
-  box-shadow: 0 4px 12px -4px rgba(50, 50, 93, 0.12);
+  box-shadow: 0 4px 12px -4px rgba(46, 35, 28, 0.12);
 }
 :root[data-theme="stripe"] .chip {
-  box-shadow: 0 1px 1px rgba(50, 50, 93, 0.03);
+  box-shadow: 0 1px 1px rgba(46, 35, 28, 0.03);
 }
 
 /* Hover bg on day-list rows: surface-2 (#F6F9FC) reads as a clean
