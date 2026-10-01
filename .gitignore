@@ -62,3 +62,5 @@ logs/
 講師/
 *回饋*.csv
 *表單回覆*.csv
+
+.claude/settings.local.json
