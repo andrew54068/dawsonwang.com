@@ -77,7 +77,7 @@ describe('speaking proof content', () => {
     }
   });
 
-  test('maps two curated optimized photos to each delivered lecture instead of mixing them in one gallery', async () => {
+  test('maps three to five unique optimized photos to each lecture, except the two-photo Tainan Hospital session', async () => {
     const speaking = await import('../src/data/speaking') as SpeakingModule;
     const sessions = speaking.LECTURE_SESSIONS;
 
@@ -99,13 +99,18 @@ describe('speaking proof content', () => {
     const ids = new Set(sessions.map(session => session.id));
     const imagePaths = new Set(sessions.flatMap(session => session.photos.map(photo => photo.src)));
     expect(ids.size).toBe(sessions.length);
-    expect(imagePaths.size).toBe(sessions.length * 2);
+    expect(imagePaths.size).toBe(sessions.reduce((total, session) => total + session.photos.length, 0));
 
     for (const session of sessions) {
       expect(session.id).toMatch(/^[a-z0-9-]+$/);
       expect(session.venue.trim().length).toBeGreaterThan(3);
       expect(session.title.trim().length).toBeGreaterThan(5);
-      expect(session.photos).toHaveLength(2);
+      if (session.id === 'tainan-hospital-0731') {
+        expect(session.photos).toHaveLength(2);
+      } else {
+        expect(session.photos.length).toBeGreaterThanOrEqual(3);
+        expect(session.photos.length).toBeLessThanOrEqual(5);
+      }
 
       for (const photo of session.photos) {
         expect(photo.src).toMatch(/^\/speaking\/.+\.(webp|avif)$/);

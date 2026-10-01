@@ -178,7 +178,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
               </header>
 
               <div class="editorial-lecture-photos">
-                {session.photos.map((photo, photoIndex) => (
+                {session.photos.slice(0, 2).map((photo, photoIndex) => (
                   <figure class={photoIndex === 0 ? 'editorial-photo editorial-photo-primary' : 'editorial-photo editorial-photo-secondary'}>
                     <img
                       src={photo.src}

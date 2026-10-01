@@ -4,6 +4,7 @@ import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 import { PROOF_PROJECTS } from '../src/data/proof-projects';
 import { SERVICES } from '../src/data/services';
 import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../src/data/profiles';
+import { LECTURE_SESSIONS } from '../src/data/speaking';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -491,7 +492,7 @@ if (!existsSync(outDir)) {
   assertIncludes(speaking, 'id="lecture-sessions"', '/speaking per-lecture photo records');
   if (speaking.includes('data-speaking-proof-carousel')) fail('/speaking still renders the mixed-event proof carousel');
   const lectureSessionCards = speaking.match(/data-lecture-session/g) ?? [];
-  if (lectureSessionCards.length !== 9) fail(`/speaking renders ${lectureSessionCards.length} dated lecture cards instead of 9`);
+  if (lectureSessionCards.length !== LECTURE_SESSIONS.length) fail(`/speaking renders ${lectureSessionCards.length} dated lecture cards instead of ${LECTURE_SESSIONS.length}`);
   assertIncludes(speaking, '/speaking/qimei-jiali-2026.webp', '/speaking 2026-09-17 佳里奇美 proof photo');
   assertIncludes(speaking, '/speaking/qimei-liuying-2026.webp', '/speaking 2026-09-21 柳營奇美 proof photo');
   assertIncludes(speaking, 'id="recent-hospital-survey"', '/speaking recent hospital survey proof');
