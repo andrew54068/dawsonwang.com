@@ -506,7 +506,9 @@ if (!existsSync(outDir)) {
   if (/trAIgon/i.test(speaking)) fail('/speaking mentions trAIgon in the hospital-and-school-only version');
   if (/\/speaking\/[^"]+\.jpg/.test(speaking)) fail('/speaking still references JPG public speaking images');
   const speakingWebpImages = Array.from(speaking.matchAll(/<img[^>]+src="(\/speaking\/[^"]+\.webp)"[^>]*>/g));
-  if (speakingWebpImages.length !== 18) fail(`/speaking renders ${speakingWebpImages.length} WebP lecture images instead of 18`);
+  const lecturePhotoFigures = speaking.match(/<figure class="editorial-photo(?: editorial-photo-(?:primary|secondary))?"[^>]*>/g) ?? [];
+  if (lecturePhotoFigures.length !== 18) fail(`/speaking renders ${lecturePhotoFigures.length} lecture photo figures instead of 18`);
+  assertIncludes(speaking, '<img src="/speaking/ccvs-teaching.webp"', '/speaking editorial hero photo');
   for (const match of speakingWebpImages) {
     const imageTag = match[0];
     const imageSrc = match[1] ?? 'unknown';

@@ -115,276 +115,286 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
   ogImageAlt={HERO_PHOTO_ALT}
   structuredData={[speakingJsonLd, speakingBreadcrumbJsonLd]}
 >
-  <article class="max-w-5xl mx-auto px-8 py-16">
-    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">SPEAKING · 講師邀約</div>
-    <h1
-      class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
-      style="font-size: clamp(2.5rem, 5vw, 4rem);"
-    >
-      聽完覺得有收穫不算。<br />要<span class="text-teal">帶著成品</span>離開教室。
-    </h1>
-    <p class="font-display text-muted text-lg leading-relaxed mt-4 max-w-2xl">
-      我教的不是「AI 有哪些工具」，是把 AI 接進你原本就在做的那條流程。
-      課程以實作為主：走完課程，學員的電腦裡真的多出一份可以編輯的成品，
-      而且自己做的東西真的掛得上網路、別人打得開。
-    </p>
+  <article class="speaking-editorial">
+    <div class="editorial-shell">
+      <header class="editorial-hero">
+        <div class="editorial-hero-copy">
+          <div class="editorial-kicker">SPEAKING · 講師邀約</div>
+          <h1>聽完覺得有收穫不算。<br />要<span>帶著成品</span>離開教室。</h1>
+          <p class="editorial-lede">
+            我教的不是「AI 有哪些工具」，是把 AI 接進你原本就在做的那條流程。
+            課程以實作為主：走完課程，學員的電腦裡真的多出一份可以編輯的成品，
+            而且自己做的東西真的掛得上網路、別人打得開。
+          </p>
+          <div class="editorial-actions">
+            <a href="/#inquire" class="editorial-button editorial-button-dark">討論企業需求 <span>↗</span></a>
+            <a href="#lecture-sessions" class="editorial-text-link">看實際場次 <span>↓</span></a>
+          </div>
+        </div>
+        <figure class="editorial-hero-media">
+          <img src={HERO_PHOTO} alt={HERO_PHOTO_ALT} width="1600" height="1200" />
+          <figcaption><span>01</span> 在座位旁一起把下一步做完</figcaption>
+        </figure>
+      </header>
 
-    <section id="recent-hospital-survey" class="mt-10 border border-rule rounded-xl overflow-hidden bg-surface-1" aria-labelledby="recent-hospital-survey-title">
-      <div class="px-5 py-4 border-b border-rule flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">2026/09 · 佳里＋柳營</div>
-          <h2 id="recent-hospital-survey-title" class="font-display text-ink text-lg font-semibold tracking-tight">兩場匿名課後問卷</h2>
+      <section id="recent-hospital-survey" class="editorial-proof" aria-labelledby="recent-hospital-survey-title">
+        <div class="editorial-proof-heading">
+          <div class="editorial-kicker">2026/09 · 佳里＋柳營</div>
+          <h2 id="recent-hospital-survey-title">兩場匿名課後問卷</h2>
+          <p>共 {RECENT_HOSPITAL_SURVEY.responses} 份回覆。只呈現整體結果，不引用未取得公開同意的個別留言。</p>
         </div>
-        <p class="font-display text-muted text-xs leading-relaxed max-w-sm m-0">
-          共 {RECENT_HOSPITAL_SURVEY.responses} 份回覆。只呈現整體結果，不引用未取得公開同意的個別留言。
-        </p>
-      </div>
-      <dl class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-rule">
-        <div class="bg-surface-1 px-5 py-4">
-          <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">平均評分</dt>
-          <dd class="font-mono text-ink text-2xl mt-1">{RECENT_HOSPITAL_SURVEY.averageScore}</dd>
-        </div>
-        <div class="bg-surface-1 px-5 py-4">
-          <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">完成六步實作</dt>
-          <dd class="font-mono text-teal text-2xl mt-1">{RECENT_HOSPITAL_SURVEY.completedAllSteps}</dd>
-        </div>
-        <div class="bg-surface-1 px-5 py-4">
-          <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">會／應該會用在工作</dt>
-          <dd class="font-mono text-ink text-2xl mt-1">{RECENT_HOSPITAL_SURVEY.likelyToUseAtWork}</dd>
-        </div>
+        <dl class="editorial-proof-stats">
+          <div><dt>平均評分</dt><dd>{RECENT_HOSPITAL_SURVEY.averageScore}</dd></div>
+          <div><dt>完成六步實作</dt><dd class="accent">{RECENT_HOSPITAL_SURVEY.completedAllSteps}</dd></div>
+          <div><dt>會／應該會用在工作</dt><dd>{RECENT_HOSPITAL_SURVEY.likelyToUseAtWork}</dd></div>
+        </dl>
+      </section>
+
+      <dl class="editorial-stats">
+        <div><dt>授課單位</dt><dd>{venueCount}</dd></div>
+        <div><dt>授課場次</dt><dd class="accent">{sessionCount}</dd></div>
+        <div><dt>累積人次</dt><dd>{attendeeTotal}</dd></div>
+        <div><dt>授課領域</dt><dd class="editorial-stat-text">醫療 · 教育</dd></div>
       </dl>
-    </section>
 
-    <dl class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
-      <div class="bg-surface-1 px-5 py-4">
-        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">授課單位</dt>
-        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">{venueCount}</dd>
-      </div>
-      <div class="bg-surface-1 px-5 py-4">
-        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">授課場次</dt>
-        <dd class="font-mono text-teal mt-1" style="font-size: 28px;">{sessionCount}</dd>
-      </div>
-      <div class="bg-surface-1 px-5 py-4">
-        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">累積人次</dt>
-        <dd class="font-mono text-ink mt-1" style="font-size: 28px;">{attendeeTotal}</dd>
-      </div>
-      <div class="bg-surface-1 px-5 py-4">
-        <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">授課領域</dt>
-        <dd class="font-display text-ink text-sm mt-2 leading-snug">醫療 · 教育</dd>
-      </div>
-    </dl>
+      <section id="lecture-sessions" class="editorial-section" aria-labelledby="lecture-sessions-title">
+        <div class="editorial-section-heading">
+          <div>
+            <div class="editorial-kicker">LECTURES · {LECTURE_SESSIONS.length}</div>
+            <h2 id="lecture-sessions-title">每一場，分開看現場</h2>
+          </div>
+          <p>每場只留兩張：一張交代授課狀態，一張保留學員參與的樣子。</p>
+        </div>
 
-    <section id="lecture-sessions" class="mt-16" aria-labelledby="lecture-sessions-title">
-      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">LECTURES · {LECTURE_SESSIONS.length}</div>
-      <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
-        <h2 id="lecture-sessions-title" class="font-display text-ink font-semibold tracking-tight text-2xl">每一場，分開看現場</h2>
-        <p class="font-display text-muted text-sm leading-relaxed max-w-md m-0">
-          每場只留兩張：一張交代授課狀態，一張保留學員參與的樣子。
-        </p>
-      </div>
-
-      <div class="flex flex-col gap-8">
-        {LECTURE_SESSIONS.map((session, index) => (
-          <article id={session.id} data-lecture-session class="lecture-session border border-rule rounded-xl overflow-hidden bg-surface-1 scroll-mt-20">
-            <header class="px-6 py-5 flex flex-wrap items-start justify-between gap-4">
-              <div class="min-w-0">
-                <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">
-                  {String(index + 1).padStart(2, '0')} · {session.date.replaceAll('-', '/')}
+        <div class="editorial-lectures">
+          {LECTURE_SESSIONS.map((session, index) => (
+            <article id={session.id} data-lecture-session data-editorial-lecture class="editorial-lecture scroll-mt-20">
+              <header class="editorial-lecture-header">
+                <div>
+                  <div class="editorial-index">{String(index + 1).padStart(2, '0')} · {session.date.replaceAll('-', '/')}</div>
+                  <h3>{session.venue}<span> · {session.title}</span></h3>
                 </div>
-                <h3 class="font-display text-ink text-xl font-semibold tracking-tight">
-                  {session.venue}<span class="text-muted font-normal"> · {session.title}</span>
-                </h3>
-              </div>
-              <p class="font-display text-muted text-sm leading-relaxed max-w-md m-0">{session.summary}</p>
-            </header>
+                <p>{session.summary}</p>
+              </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-rule border-y border-rule">
-              {session.photos.map(photo => (
-                <figure class="lecture-photo-frame bg-surface-2 m-0">
-                  <img
-                    src={photo.src}
-                    alt={photo.alt}
-                    width={photo.width}
-                    height={photo.height}
-                    loading="lazy"
-                    decoding="async"
-                    sizes="(min-width: 768px) 31rem, 100vw"
-                  />
-                </figure>
-              ))}
-            </div>
-
-            {session.decks.length > 0 && (
-              <div class="px-6 py-4 flex flex-wrap items-center gap-2">
-                <span class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mr-1">公開簡報</span>
-                {session.decks.map(deck => (
-                  <a href={deck.url} rel="noopener" class="deck-link inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-rule no-underline">
-                    <span class="font-display text-ink text-xs">{deck.title}</span>
-                    <span class="font-mono text-[10px] uppercase tracking-[.06em] text-faint">{deck.segment} ↗</span>
-                  </a>
+              <div class="editorial-lecture-photos">
+                {session.photos.map((photo, photoIndex) => (
+                  <figure class={photoIndex === 0 ? 'editorial-photo editorial-photo-primary' : 'editorial-photo editorial-photo-secondary'}>
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      width={photo.width}
+                      height={photo.height}
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(min-width: 900px) 40rem, 100vw"
+                    />
+                  </figure>
                 ))}
               </div>
-            )}
-          </article>
-        ))}
-      </div>
-    </section>
 
-    <section class="mt-16">
-      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">CURRICULUM</div>
-      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-6">課程內容</h2>
-
-      <div class="flex flex-col gap-5">
-        {resolved.map(({ engagement, dayRefs }) => (
-          <article id={engagement.slug} class="engagement-card bg-surface-1 border border-rule rounded-xl p-7 scroll-mt-20">
-            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <h3 class="font-display text-ink text-xl font-semibold tracking-tight">
-                {engagement.venue}
-                <span class="text-muted font-normal"> · {engagement.title}</span>
-              </h3>
-              <span class="font-mono text-[11px] text-faint">{engagement.when}</span>
-            </div>
-
-            <div class="flex flex-wrap gap-1.5 mt-3">
-              <span class="chip chip-teal">{engagement.format}</span>
-            </div>
-
-            <dl class="font-display text-sm text-muted leading-relaxed mt-5 space-y-4">
-              <div>
-                <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">受眾</dt>
-                <dd>{engagement.audience}</dd>
-              </div>
-              {engagement.sessions && (
-                <div>
-                  <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-1.5">已完成場次</dt>
-                  <dd class="flex flex-wrap gap-1.5">
-                    {engagement.sessions.map(session => <span class="chip">{session}</span>)}
-                  </dd>
-                </div>
-              )}
-              <div>
-                <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-1.5">課程路線</dt>
-                <dd>
-                  <ol class="list-none p-0 m-0 space-y-1.5">
-                    {engagement.outline.map((step, i) => (
-                      <li class="flex gap-2.5">
-                        <span class="font-mono text-[11px] text-teal shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
-                        <span>{step}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </dd>
-              </div>
-              <div>
-                <dt class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-0.5">帶走什麼</dt>
-                <dd class="text-ink">{engagement.takeaway}</dd>
-              </div>
-            </dl>
-
-            {engagement.decks.length > 0 && (
-              <div class="mt-6">
-                <div class="font-mono text-[11px] uppercase tracking-[.08em] text-faint mb-2">簡報（公開可看）</div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {engagement.decks.map(deck => (
-                    <a href={deck.url} rel="noopener"
-                       class="deck-link flex items-baseline justify-between gap-3 px-4 py-3 rounded-lg border border-rule no-underline">
-                      <span class="font-display text-ink text-sm leading-snug">{deck.title}</span>
-                      <span class="font-mono text-[10px] uppercase tracking-[.06em] text-faint shrink-0">{deck.segment} ↗</span>
+              {session.decks.length > 0 && (
+                <div class="editorial-lecture-links">
+                  <span>公開簡報</span>
+                  {session.decks.map(deck => (
+                    <a href={deck.url} rel="noopener" class="editorial-text-link">
+                      {deck.title} · {deck.segment} <span>↗</span>
                     </a>
                   ))}
                 </div>
-              </div>
-            )}
-
-            <div class="border-t border-rule pt-4 mt-6 flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span class="font-mono text-[11px] uppercase tracking-[.08em] text-faint">現場記錄</span>
-              {dayRefs.map(ref => ref.href
-                ? <a href={ref.href} class="font-mono text-[11px] text-muted hover:text-teal transition-colors duration-150 no-underline">Day {String(ref.dayNumber).padStart(3, '0')}</a>
-                : <span class="font-mono text-[11px] text-faint">Day {String(ref.dayNumber).padStart(3, '0')}</span>
               )}
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
+            </article>
+          ))}
+        </div>
+      </section>
 
-    <section class="mt-16">
-      <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">METHOD</div>
-      <h2 class="font-display text-ink font-semibold tracking-tight text-2xl mb-2">課怎麼設計的</h2>
-      <p class="font-display text-muted text-base leading-relaxed max-w-2xl mb-6">
-        中正高工那場的回饋比我預期的好，據說是因為教材設計跟其他研習不太一樣。
-        這套做法不是一次想出來的，是在醫院那幾場來回跑了幾趟、加上跟助教討論之後才長出來的。
-      </p>
+      <section class="editorial-section editorial-curriculum">
+        <div class="editorial-section-heading">
+          <div><div class="editorial-kicker">CURRICULUM</div><h2>課程內容</h2></div>
+          <p>先說清楚受眾與工作情境，再安排每一步實作。</p>
+        </div>
+        <div class="editorial-engagements">
+          {resolved.map(({ engagement, dayRefs }) => (
+            <article id={engagement.slug} class="editorial-engagement scroll-mt-20">
+              <header>
+                <div class="editorial-index">{engagement.when}</div>
+                <h3>{engagement.venue}<span> · {engagement.title}</span></h3>
+                <span class="editorial-format">{engagement.format}</span>
+              </header>
+              <dl>
+                <div><dt>受眾</dt><dd>{engagement.audience}</dd></div>
+                {engagement.sessions && <div><dt>已完成場次</dt><dd class="editorial-session-tags">{engagement.sessions.map(session => <span>{session}</span>)}</dd></div>}
+                <div><dt>課程路線</dt><dd><ol>{engagement.outline.map((step, i) => <li><span>{String(i + 1).padStart(2, '0')}</span>{step}</li>)}</ol></dd></div>
+                <div><dt>帶走什麼</dt><dd class="editorial-takeaway">{engagement.takeaway}</dd></div>
+              </dl>
+              {engagement.decks.length > 0 && <div class="editorial-decks"><span>簡報（公開可看）</span>{engagement.decks.map(deck => <a href={deck.url} rel="noopener" class="editorial-text-link">{deck.title} · {deck.segment} <span>↗</span></a>)}</div>}
+              <div class="editorial-days"><span>現場記錄</span>{dayRefs.map(ref => ref.href ? <a href={ref.href}>Day {String(ref.dayNumber).padStart(3, '0')}</a> : <span>Day {String(ref.dayNumber).padStart(3, '0')}</span>)}</div>
+            </article>
+          ))}
+        </div>
+      </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-px border border-rule rounded-xl overflow-hidden bg-rule">
-        {principles.map(p => (
-          <div class="bg-surface-1 p-6 flex flex-col">
-            <h3 class="font-display text-ink text-base font-semibold tracking-tight leading-snug">{p.title}</h3>
-            <p class="font-display text-muted text-sm leading-relaxed mt-2 flex-1">{p.body}</p>
-            <div class="mt-3">
-              {p.href
-                ? <a href={p.href} class="font-mono text-[11px] text-faint hover:text-teal transition-colors duration-150 no-underline">Day {String(p.day).padStart(3, '0')} →</a>
-                : <span class="font-mono text-[11px] text-faint">Day {String(p.day).padStart(3, '0')}</span>}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+      <section class="editorial-section editorial-method">
+        <div class="editorial-section-heading">
+          <div><div class="editorial-kicker">METHOD</div><h2>課怎麼設計的</h2></div>
+          <p>這套做法是在醫院幾場課之間來回修正，加上和助教討論後才長出來的。</p>
+        </div>
+        <div class="editorial-principles">
+          {principles.map((p, index) => (
+            <article class="editorial-principle">
+              <div class="editorial-principle-number">{String(index + 1).padStart(2, '0')}</div>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+              {p.href ? <a href={p.href} class="editorial-text-link">Day {String(p.day).padStart(3, '0')} <span>↗</span></a> : <span class="editorial-day-label">Day {String(p.day).padStart(3, '0')}</span>}
+            </article>
+          ))}
+        </div>
+      </section>
 
-    <aside class="mt-16 bg-surface-1 border border-rule rounded-xl p-7 relative overflow-hidden">
-      <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-px"
-            style="background: linear-gradient(90deg, var(--color-brick), var(--color-teal));"></span>
-      <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">講師邀約</div>
-      <h3 class="font-display text-ink text-xl font-semibold tracking-tight">一起設計一場真正用得上的 AI 實作課</h3>
-      <p class="font-display text-muted text-sm leading-relaxed mt-3 max-w-md">
-        企業內訓、教師研習、社群分享都可以。告訴我受眾是誰、想解決什麼，
-        我會依照程度與工作情境重新安排課程。1–2 個工作日內回信。
-      </p>
-      <div class="mt-5 flex flex-wrap gap-2">
-        <a href="/#inquire" class="btn-ochre">談談你的場次 →</a>
-        <a href="/projects" class="btn-ghost">看我做的工具 →</a>
-      </div>
-    </aside>
+      <aside class="editorial-cta">
+        <div><div class="editorial-kicker">講師邀約</div><h2>一起設計一場真正用得上的 AI 實作課</h2></div>
+        <div class="editorial-cta-copy"><p>企業內訓、教師研習、社群分享都可以。告訴我受眾是誰、想解決什麼，我會依照程度與工作情境重新安排課程。1–2 個工作日內回信。</p><div class="editorial-actions"><a href="/#inquire" class="editorial-button editorial-button-light">談談你的場次 <span>↗</span></a><a href="/projects" class="editorial-text-link">看我做的工具 <span>↗</span></a></div></div>
+      </aside>
+    </div>
   </article>
 </BaseLayout>
 
 <style>
-  .engagement-card {
-    transition: border-color 150ms ease;
+  :global(body:has(.speaking-editorial)) { background: #f5f0e7; }
+  :global(html:not([data-theme="stripe"]) body:has(.speaking-editorial)) { background: #15191b; }
+
+  .speaking-editorial {
+    --editorial-paper: #f5f0e7;
+    --editorial-surface: #fbf9f4;
+    --editorial-ink: #1b2930;
+    --editorial-muted: #657176;
+    --editorial-faint: #89928f;
+    --editorial-rule: #c9c8bf;
+    --editorial-accent: #789873;
+    --editorial-deep: #27383a;
+    color: var(--editorial-ink);
+    background: var(--editorial-paper);
+    font-family: "Noto Sans TC", system-ui, sans-serif;
   }
-  .engagement-card:hover {
-    border-color: color-mix(in oklab, var(--color-teal) 30%, var(--color-rule));
+  :global(html:not([data-theme="stripe"])) .speaking-editorial {
+    --editorial-paper: #15191b;
+    --editorial-surface: #1d2425;
+    --editorial-ink: #f3efe5;
+    --editorial-muted: #b5b7ad;
+    --editorial-faint: #8b948c;
+    --editorial-rule: #465052;
+    --editorial-accent: #9dbb8d;
+    --editorial-deep: #0e1416;
   }
-  .lecture-session {
-    transition: border-color 150ms ease;
+  .editorial-shell { max-width: 1160px; margin: 0 auto; padding: 4.5rem 2rem 6rem; }
+  .editorial-kicker, .editorial-index, .editorial-proof dt, .editorial-stats dt, .editorial-engagement dt, .editorial-lecture-links > span, .editorial-decks > span, .editorial-days > span, .editorial-format, .editorial-day-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .13em;
+    line-height: 1.4;
+    text-transform: uppercase;
   }
-  .lecture-session:hover {
-    border-color: color-mix(in oklab, var(--color-teal) 30%, var(--color-rule));
-  }
-  .lecture-photo-frame {
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-  }
-  .lecture-photo-frame img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 300ms ease;
-  }
-  .lecture-session:hover .lecture-photo-frame img {
-    transform: scale(1.0125);
-  }
-  .deck-link {
-    background: var(--color-paper);
-    transition: border-color 150ms ease, background 150ms ease;
-  }
-  .deck-link:hover {
-    border-color: color-mix(in oklab, var(--color-teal) 45%, var(--color-rule));
-    background: color-mix(in oklab, var(--color-teal) 7%, transparent);
+  .editorial-kicker { color: var(--editorial-accent); }
+  .editorial-hero { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: end; padding-bottom: 4rem; border-bottom: 1px solid var(--editorial-rule); }
+  .editorial-hero-copy { padding-bottom: .75rem; }
+  .editorial-hero h1, .editorial-section h2, .editorial-cta h2 { font-family: "Noto Serif TC", "Songti TC", Georgia, serif; font-weight: 600; letter-spacing: -.045em; }
+  .editorial-hero h1 { margin: 1rem 0 1.5rem; font-size: clamp(2.45rem, 5.2vw, 5.25rem); line-height: 1.08; text-wrap: balance; }
+  .editorial-hero h1 span { color: var(--editorial-accent); }
+  .editorial-lede { max-width: 34rem; margin: 0; color: var(--editorial-muted); font-size: 1.04rem; line-height: 1.9; }
+  .editorial-hero-media { margin: 0; }
+  .editorial-hero-media img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; filter: saturate(.82); }
+  .editorial-hero-media figcaption { display: flex; justify-content: space-between; gap: 1rem; padding-top: .7rem; color: var(--editorial-faint); font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+  .editorial-hero-media figcaption span, .editorial-index, .editorial-principle-number { color: var(--editorial-accent); }
+  .editorial-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem; margin-top: 2rem; }
+  .editorial-button { display: inline-flex; align-items: center; gap: .8rem; padding: .8rem 1.15rem; border: 1px solid transparent; font-size: .8rem; text-decoration: none; transition: transform 160ms ease, background 160ms ease, color 160ms ease; }
+  .editorial-button:hover { transform: translateY(-2px); }
+  .editorial-button-dark { background: var(--editorial-ink); color: var(--editorial-paper); }
+  .editorial-button-light { background: var(--editorial-paper); color: var(--editorial-ink); }
+  .editorial-button span, .editorial-text-link span { color: var(--editorial-accent); }
+  .editorial-text-link { color: var(--editorial-ink); text-decoration: none; border-bottom: 1px solid var(--editorial-rule); font-size: .78rem; line-height: 1.7; transition: color 160ms ease, border-color 160ms ease; }
+  .editorial-text-link:hover { color: var(--editorial-accent); border-color: var(--editorial-accent); }
+
+  .editorial-proof { display: grid; grid-template-columns: minmax(13rem, .85fr) minmax(0, 1.8fr); gap: 2rem; align-items: end; padding: 2.1rem 0; border-bottom: 1px solid var(--editorial-rule); }
+  .editorial-proof-heading h2 { margin: .45rem 0 .5rem; font-family: "Noto Serif TC", "Songti TC", Georgia, serif; font-size: 1.25rem; font-weight: 600; }
+  .editorial-proof-heading p, .editorial-section-heading p { max-width: 28rem; margin: 0; color: var(--editorial-muted); font-size: .78rem; line-height: 1.8; }
+  .editorial-proof-stats, .editorial-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-left: 1px solid var(--editorial-rule); }
+  .editorial-proof-stats > div, .editorial-stats > div { padding: .2rem 1.2rem; border-right: 1px solid var(--editorial-rule); }
+  .editorial-proof dd { margin: .35rem 0 0; font-family: var(--font-mono); font-size: clamp(1.6rem, 3vw, 2.35rem); letter-spacing: -.04em; }
+  .editorial-proof dd.accent, .editorial-stats dd.accent { color: var(--editorial-accent); }
+  .editorial-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 1.5rem; border-top: 1px solid var(--editorial-rule); border-left: 0; }
+  .editorial-stats > div { padding: 1.2rem; border-bottom: 1px solid var(--editorial-rule); }
+  .editorial-stats dd { margin: .45rem 0 0; font-family: var(--font-mono); font-size: 1.75rem; letter-spacing: -.05em; }
+  .editorial-stat-text { font-family: "Noto Sans TC", sans-serif !important; font-size: .9rem !important; letter-spacing: 0 !important; }
+
+  .editorial-section { margin-top: 7rem; }
+  .editorial-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.3rem; }
+  .editorial-section h2 { margin: .65rem 0 0; font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15; }
+  .editorial-lectures { border-top: 1px solid var(--editorial-rule); }
+  .editorial-lecture { padding: 2rem 0 2.5rem; border-bottom: 1px solid var(--editorial-rule); }
+  .editorial-lecture-header { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(14rem, .8fr); gap: 2rem; align-items: start; margin-bottom: 1.35rem; }
+  .editorial-lecture h3, .editorial-engagement h3, .editorial-principle h3 { margin: .5rem 0 0; font-family: "Noto Serif TC", "Songti TC", Georgia, serif; font-weight: 600; letter-spacing: -.025em; }
+  .editorial-lecture h3 { font-size: 1.25rem; line-height: 1.4; }
+  .editorial-lecture h3 span, .editorial-engagement h3 span { color: var(--editorial-muted); font-weight: 400; }
+  .editorial-lecture-header p { margin: 0; color: var(--editorial-muted); font-size: .78rem; line-height: 1.8; }
+  .editorial-lecture-photos { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 1px; background: var(--editorial-rule); }
+  .editorial-lecture:nth-child(even) .editorial-photo-primary { order: 2; }
+  .editorial-lecture:nth-child(even) .editorial-photo-secondary { order: 1; }
+  .editorial-photo { margin: 0; overflow: hidden; background: var(--editorial-surface); }
+  .editorial-photo img { display: block; width: 100%; height: 100%; min-height: 14rem; object-fit: cover; filter: saturate(.86); transition: transform 360ms ease, filter 360ms ease; }
+  .editorial-photo-primary img { aspect-ratio: 4 / 3; }
+  .editorial-photo-secondary img { aspect-ratio: 1 / 1; }
+  .editorial-lecture:hover .editorial-photo img { transform: scale(1.018); filter: saturate(1); }
+  .editorial-lecture-links, .editorial-decks, .editorial-days { display: flex; align-items: baseline; flex-wrap: wrap; gap: .75rem 1.2rem; margin-top: 1.2rem; }
+  .editorial-lecture-links > span, .editorial-decks > span, .editorial-days > span { color: var(--editorial-faint); }
+
+  .editorial-engagements { border-top: 1px solid var(--editorial-rule); }
+  .editorial-engagement { display: grid; grid-template-columns: minmax(13rem, .8fr) minmax(0, 1.2fr); gap: 2.5rem; padding: 2.2rem 0; border-bottom: 1px solid var(--editorial-rule); }
+  .editorial-engagement h3 { font-size: 1.35rem; line-height: 1.45; }
+  .editorial-format { display: inline-block; margin-top: 1.25rem; padding: .35rem .6rem; border: 1px solid var(--editorial-rule); color: var(--editorial-muted); }
+  .editorial-engagement dl { margin: 0; color: var(--editorial-muted); font-size: .82rem; line-height: 1.85; }
+  .editorial-engagement dl > div + div { margin-top: 1.1rem; }
+  .editorial-engagement dd { margin: .25rem 0 0; }
+  .editorial-engagement ol { display: grid; gap: .35rem; margin: 0; padding: 0; list-style: none; }
+  .editorial-engagement li { display: flex; gap: .7rem; }
+  .editorial-engagement li span { flex: 0 0 auto; color: var(--editorial-accent); font-family: var(--font-mono); font-size: 10px; }
+  .editorial-takeaway { color: var(--editorial-ink); }
+  .editorial-session-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .editorial-session-tags span { padding: .25rem .5rem; border: 1px solid var(--editorial-rule); color: var(--editorial-muted); font-size: .72rem; }
+  .editorial-days { grid-column: 2; margin-top: -.9rem; }
+  .editorial-days a, .editorial-days > span:not(:first-child), .editorial-day-label { color: var(--editorial-muted); font-family: var(--font-mono); font-size: 10px; text-decoration: none; }
+  .editorial-days a:hover { color: var(--editorial-accent); }
+
+  .editorial-principles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--editorial-rule); border-left: 1px solid var(--editorial-rule); }
+  .editorial-principle { min-height: 13rem; padding: 1.5rem; border-right: 1px solid var(--editorial-rule); border-bottom: 1px solid var(--editorial-rule); }
+  .editorial-principle-number { font-family: var(--font-mono); font-size: 11px; }
+  .editorial-principle h3 { font-size: 1.05rem; line-height: 1.5; }
+  .editorial-principle p { margin: .7rem 0 1.25rem; color: var(--editorial-muted); font-size: .8rem; line-height: 1.85; }
+  .editorial-day-label { color: var(--editorial-faint); }
+  .editorial-cta { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 3rem; margin-top: 7rem; padding: 3rem; background: var(--editorial-deep); color: #f3efe5; }
+  .editorial-cta .editorial-kicker { color: #a6c79a; }
+  .editorial-cta h2 { max-width: 30rem; margin: .7rem 0 0; font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.25; }
+  .editorial-cta-copy p { margin: 0; color: #c3c8bb; font-size: .82rem; line-height: 1.9; }
+  .editorial-cta .editorial-text-link { color: #f3efe5; border-color: #64736d; }
+
+  @media (max-width: 760px) {
+    .editorial-shell { padding: 3rem 1.25rem 4rem; }
+    .editorial-hero, .editorial-proof, .editorial-section-heading, .editorial-lecture-header, .editorial-engagement, .editorial-cta { grid-template-columns: 1fr; gap: 1.4rem; }
+    .editorial-hero { padding-bottom: 3rem; }
+    .editorial-hero-media { order: -1; }
+    .editorial-proof-stats { border-left: 0; border-top: 1px solid var(--editorial-rule); }
+    .editorial-proof-stats > div { padding: 1rem .8rem 0 0; border-right: 0; }
+    .editorial-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .editorial-stats > div:nth-child(odd) { border-right: 1px solid var(--editorial-rule); }
+    .editorial-section { margin-top: 5rem; }
+    .editorial-lecture-photos { grid-template-columns: 1fr 1fr; }
+    .editorial-photo img { min-height: 9rem; }
+    .editorial-engagement { padding: 1.7rem 0; }
+    .editorial-days { grid-column: 1; margin-top: 0; }
+    .editorial-principles { grid-template-columns: 1fr; }
+    .editorial-cta { margin-top: 5rem; padding: 2rem 1.35rem; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .engagement-card, .lecture-session, .lecture-photo-frame img, .deck-link { transition: none; }
-    .lecture-session:hover .lecture-photo-frame img { transform: none; }
+    .editorial-button, .editorial-text-link, .editorial-photo img { transition: none; }
+    .editorial-button:hover, .editorial-lecture:hover .editorial-photo img { transform: none; }
   }
 </style>

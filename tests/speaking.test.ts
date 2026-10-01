@@ -1,4 +1,4 @@
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 import { ENGAGEMENTS, TESTIMONIALS } from '../src/data/speaking';
@@ -35,6 +35,14 @@ const engagementSlugs = new Set(ENGAGEMENTS.map(engagement => engagement.slug));
 const privateContactPattern = /(?:[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|\+?\d[\d\s-]{7,}\d)/i;
 
 describe('speaking proof content', () => {
+  test('exposes the approved editorial style hooks on the speaking route', () => {
+    const pageSource = readFileSync(path.join(process.cwd(), 'src/pages/speaking.astro'), 'utf8');
+
+    expect(pageSource).toContain('speaking-editorial');
+    expect(pageSource).toContain('editorial-hero');
+    expect(pageSource).toContain('data-editorial-lecture');
+  });
+
   test('keeps engagement slugs unique for resolved testimonial and slide joins', () => {
     expect(engagementSlugs.size).toBe(ENGAGEMENTS.length);
   });
