@@ -64,8 +64,10 @@ async function embedQuery(query: string): Promise<Float32Array> {
     body: JSON.stringify({ query }),
   });
   if (!resp.ok) {
+    // The body can be an HTML error page; keep it in the console, not the UI.
     const err = await resp.text().catch(() => '');
-    throw new Error(`查詢向量化失敗 (${resp.status}) ${err}`.trim());
+    console.error('[semantic] /api/embed failed', resp.status, err.slice(0, 500));
+    throw new Error(`語意搜尋暫時無法使用（${resp.status}），請先改用「關鍵字」搜尋。`);
   }
   const data = (await resp.json()) as { vector?: unknown };
   if (!Array.isArray(data.vector)) throw new Error('Unexpected /api/embed response');
