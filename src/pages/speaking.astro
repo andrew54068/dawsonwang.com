@@ -169,7 +169,6 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
           <div class="sec-head center">
             <p class="eyebrow">課後回饋</p>
             <h2 id="recent-hospital-survey-title">課後匿名問卷結果</h2>
-            <p class="sec-sub">只呈現整體結果，不引用未取得公開同意的個別留言。</p>
           </div>
           <div id="recent-hospital-survey" class="survey sp-survey reveal" data-reveal>
             <dl class="survey-nums">
@@ -286,6 +285,27 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
     <HomeFooter />
   </div>
 </BaseLayout>
+
+<script>
+  // Scroll reveals: content is server-rendered and visible without JS; this only
+  // drives the entrance motion (same behaviour as the home page).
+  (() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const targets = document.querySelectorAll('[data-reveal]');
+    if (reduce || !('IntersectionObserver' in window)) {
+      targets.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      }
+    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
+    targets.forEach((el) => io.observe(el));
+  })();
+</script>
 
 <style>
   /* Speaking page reuses the home warm vocabulary (.home-warm in home-warm.css);
