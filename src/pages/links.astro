@@ -5,9 +5,10 @@ import { LINK_GROUPS } from '../data/link-hub';
 
 const description = 'Dawson Wang 的社群、作品集、文章與合作預約入口。';
 ---
-
 <BaseLayout title="Dawson Wang · Links" description={description} showNav={false} showFooter={false}>
   <div class="links-page">
+    <svg class="links-blob links-blob-a" viewBox="0 0 600 600" aria-hidden="true"><path fill="currentColor" d="M452 98c58 46 92 128 78 207-14 80-75 157-157 187-81 31-183 14-247-42C62 395 37 296 64 214 91 132 170 67 256 54c86-13 138-2 196 44Z"/></svg>
+    <svg class="links-blob links-blob-b" viewBox="0 0 600 600" aria-hidden="true"><path fill="currentColor" d="M300 60c84 6 170 48 200 126 30 77 4 190-64 250-68 61-178 70-260 34C94 434 40 352 46 270 52 188 118 108 186 80c34-14 70-22 114-20Z"/></svg>
     <div class="links-shell">
       <header class="links-header">
         <a class="home-link" href="/" aria-label="回到 Dawson Wang 首頁">
@@ -24,8 +25,8 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
               decoding="async"
             />
           </div>
-          <div>
-            <p class="identity-kicker">AI workflow / Taiwan</p>
+          <div class="identity-copy">
+            <p class="identity-kicker"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg>AI 導入顧問 · 台灣</p>
             <h1>Dawson Wang</h1>
             <p class="identity-lede">把 AI 工具搬進你的實際工作流。</p>
           </div>
@@ -33,11 +34,11 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
       </header>
 
       <section class="link-groups" aria-label="Dawson Wang links">
-        {LINK_GROUPS.map(group => (
+        {LINK_GROUPS.map((group, groupIndex) => (
           <section class="link-group" aria-labelledby={`group-${group.id}`}>
-            <h2 id={`group-${group.id}`}><span aria-hidden="true">//</span> {group.label}</h2>
+            <h2 id={`group-${group.id}`} class="eyebrow">{group.label}</h2>
             <div class="link-list">
-              {group.links.map(link => (
+              {group.links.map((link, linkIndex) => (
                 <a
                   class="link-card"
                   href={link.href}
@@ -45,6 +46,7 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
                   data-analytics-link
                   data-link-id={link.id}
                   data-link-placement="links_page"
+                  data-tint={(groupIndex + linkIndex) % 2 === 0 ? 'peach' : 'bubble'}
                   target={link.external ? '_blank' : undefined}
                   rel={link.external ? 'noopener noreferrer' : undefined}
                 >
@@ -55,7 +57,7 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
                     <span class="link-label">{link.label}</span>
                     <span class="link-description">{link.description}</span>
                   </span>
-                  <span class="link-arrow" aria-hidden="true">↗</span>
+                  <span class="link-arrow" aria-hidden="true">→</span>
                 </a>
               ))}
             </div>
@@ -64,7 +66,7 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
       </section>
 
       <footer class="links-footer">
-        <span>Built in Taipei · GMT+8</span>
+        <span>© Dawson Wang · 台北</span>
         <a href="/">回到主頁 <span aria-hidden="true">→</span></a>
       </footer>
     </div>
@@ -85,190 +87,168 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
 </script>
 
 <style>
+  /* Link-in-bio hub in the site-wide warm vocabulary (.home-warm tokens from
+     home-warm.css): cream page with soft blobs, a white photo frame, eyebrow
+     group labels and white rounded link cards with a doodle icon chip. */
   .links-page {
+    position: relative;
     min-height: 100svh;
+    overflow: clip;
     background:
-      radial-gradient(circle at 12% 8%, color-mix(in oklab, var(--color-brick) 18%, transparent), transparent 34rem),
-      radial-gradient(circle at 92% 82%, color-mix(in oklab, var(--color-teal) 12%, transparent), transparent 30rem),
-      var(--color-paper);
-    color: var(--color-ink);
+      radial-gradient(circle at 1px 1px, rgba(180, 80, 31, .16) 1.3px, transparent 1.8px) 0 0 / 26px 26px,
+      linear-gradient(180deg, var(--cream), var(--cream));
+    color: var(--ink);
   }
 
+  .links-blob {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .links-blob-a { width: min(560px, 120vw); top: -180px; right: -200px; color: var(--peach); }
+  .links-blob-b { width: min(440px, 95vw); bottom: -160px; left: -180px; color: var(--bubble); }
+
   .links-shell {
+    position: relative;
+    z-index: 1;
     width: min(calc(100% - 40px), 620px);
     margin-inline: auto;
-    padding: 24px 0 28px;
+    padding: 24px 0 36px;
   }
 
   .links-header {
     display: grid;
-    gap: 40px;
+    gap: 34px;
   }
 
-  .home-link,
-  .links-footer,
-  .links-footer a {
-    color: var(--color-faint);
-    font-family: var(--font-mono);
-    font-size: 11px;
+  .home-link {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--white);
+    border: 1.5px solid var(--rule);
+    color: var(--ink);
     font-weight: 500;
-    letter-spacing: .08em;
-    line-height: 1.4;
+    font-size: .98rem;
     text-decoration: none;
-    text-transform: uppercase;
+    transition: border-color .2s, background-color .2s;
   }
 
-  .home-link:hover,
-  .home-link:focus-visible,
-  .links-footer a:hover,
-  .links-footer a:focus-visible {
-    color: var(--color-teal);
-  }
+  .home-link:hover { border-color: var(--persimmon); }
 
   .identity {
     display: grid;
-    grid-template-columns: 92px 1fr;
+    grid-template-columns: 104px minmax(0, 1fr);
     align-items: center;
-    gap: 20px;
+    gap: 22px;
   }
 
   .portrait-frame {
-    position: relative;
-    width: 92px;
-    aspect-ratio: 4 / 5;
-  }
-
-  .portrait-frame::before {
-    position: absolute;
-    inset: -5px 5px 5px -5px;
-    background: linear-gradient(135deg, var(--color-brick), var(--color-teal));
-    content: '';
+    padding: 7px;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: var(--shadow);
+    rotate: -3deg;
   }
 
   .portrait-frame img {
-    position: relative;
-    display: block;
     width: 100%;
-    height: 100%;
-    border: 1px solid var(--color-rule);
+    aspect-ratio: 4 / 5;
     object-fit: cover;
-  }
-
-  .identity-kicker,
-  .link-group h2 {
-    color: var(--color-faint);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: .14em;
-    line-height: 1.4;
-    text-transform: uppercase;
+    object-position: 50% 18%;
+    border-radius: 17px;
   }
 
   .identity-kicker {
-    margin: 0 0 8px;
-  }
-
-  .identity h1 {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 6vw, 2.5rem);
-    font-weight: 600;
-    letter-spacing: -.04em;
-    line-height: 1;
-  }
-
-  .identity-lede {
-    margin: 10px 0 0;
-    color: var(--color-muted);
-    font-family: var(--font-display);
-    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px 4px 10px;
+    border-radius: 999px;
+    background: var(--bubble);
+    color: var(--leaf-text);
+    font-weight: 700;
+    font-size: .9rem;
     line-height: 1.5;
   }
 
+  .identity-kicker .icon { width: 1.1em; height: 1.1em; }
+
+  .identity h1 {
+    margin-top: 10px;
+    font: 700 clamp(2rem, 1.5rem + 2.2vw, 2.6rem)/1.2 var(--f-hand);
+    letter-spacing: .01em;
+  }
+
+  .identity-lede {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 1.04rem;
+    line-height: 1.65;
+  }
+
   .link-groups {
-    position: relative;
     display: grid;
     gap: 30px;
-    margin-top: 44px;
-    padding-left: 16px;
+    margin-top: 42px;
   }
 
-  .link-groups::before {
-    position: absolute;
-    top: 2px;
-    bottom: 2px;
-    left: 0;
-    width: 1px;
-    background: linear-gradient(var(--color-brick), var(--color-teal));
-    content: '';
-    opacity: .8;
-  }
-
-  .link-group {
-    position: relative;
-  }
-
-  .link-group::before {
-    position: absolute;
-    top: 2px;
-    left: -19px;
-    width: 7px;
-    height: 7px;
-    border: 1px solid var(--color-teal);
-    background: var(--color-paper);
-    content: '';
-    transform: translateX(-50%);
-  }
-
-  .link-group h2 {
-    margin: 0 0 10px;
-  }
-
-  .link-group h2 span {
-    color: var(--color-teal);
+  .link-group h2.eyebrow {
+    margin-bottom: 12px;
+    font-family: var(--f-body);
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   .link-list {
     display: grid;
-    gap: 8px;
+    gap: 12px;
   }
 
   .link-card {
     display: flex;
     min-height: 64px;
     align-items: center;
-    gap: 14px;
-    padding: 12px 14px;
-    border: 1px solid var(--color-rule);
-    background: color-mix(in oklab, var(--color-surface-1) 82%, transparent);
+    gap: 16px;
+    padding: 14px 18px 14px 14px;
+    border-radius: 22px;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
     color: inherit;
     text-decoration: none;
-    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    transition: transform .3s var(--spring), box-shadow .3s var(--ease);
   }
 
   .link-card:hover {
-    border-color: color-mix(in oklab, var(--accent, var(--color-teal)) 60%, var(--color-rule));
-    background: var(--color-surface-2);
-    transform: translateX(4px);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
   }
 
   .link-card:focus-visible {
-    outline: 2px solid var(--accent, var(--color-teal));
+    outline: 3px solid var(--leaf-text);
     outline-offset: 3px;
-    border-color: var(--accent, var(--color-teal));
   }
 
   .link-icon {
     display: grid;
     flex-shrink: 0;
     place-items: center;
-    width: 44px;
-    height: 44px;
-    border: 1px solid color-mix(in oklab, var(--accent) 32%, var(--color-rule));
-    background: color-mix(in oklab, var(--accent) 13%, var(--color-surface-1));
-    color: var(--accent);
-    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--peach);
+    color: var(--accent, var(--persimmon-ink));
+    rotate: -6deg;
+    transition: rotate .3s var(--spring);
+  }
+
+  .link-card[data-tint="bubble"] .link-icon {
+    background: var(--bubble);
+    rotate: 5deg;
   }
 
   .link-icon svg {
@@ -276,86 +256,96 @@ const description = 'Dawson Wang 的社群、作品集、文章與合作預約�
     height: 22px;
   }
 
-  .link-card:hover .link-icon {
-    border-color: color-mix(in oklab, var(--accent) 55%, var(--color-rule));
-    background: color-mix(in oklab, var(--accent) 22%, var(--color-surface-1));
-    transform: scale(1.04);
-  }
+  .link-card:hover .link-icon { rotate: 0deg; }
 
   .link-copy {
     display: grid;
     flex: 1;
     min-width: 0;
-    gap: 4px;
+    gap: 2px;
   }
 
   .link-label {
-    font-family: var(--font-display);
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.25;
-  }
-
-  .link-description {
-    color: var(--color-muted);
-    font-family: var(--font-display);
-    font-size: 12px;
-    font-weight: 400;
+    font-weight: 700;
+    font-size: 1.08rem;
     line-height: 1.4;
   }
 
-  .link-arrow {
-    color: var(--color-teal);
-    font-family: var(--font-mono);
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1;
+  .link-description {
+    color: var(--muted);
+    font-size: .95rem;
+    line-height: 1.55;
   }
+
+  .link-arrow {
+    flex: none;
+    color: var(--persimmon-text);
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform .3s var(--spring);
+  }
+
+  .link-card:hover .link-arrow { transform: translateX(4px); }
 
   .links-footer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 12px;
-    margin-top: 48px;
-    padding-top: 16px;
-    border-top: 1px solid var(--color-rule);
+    align-items: center;
+    gap: 8px 16px;
+    margin-top: 44px;
+    padding-top: 18px;
+    border-top: 1.5px dashed var(--rule);
+    color: var(--muted);
+    font-size: .95rem;
   }
 
+  .links-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    color: var(--persimmon-text);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    text-decoration-color: rgba(180, 80, 31, .35);
+  }
+
+  .links-footer a:hover { text-decoration-color: currentColor; }
+
+  /* Brand-coloured icons that read dark-on-dark get the warm ink instead. */
+  :global(html:not([data-theme="stripe"])) .link-icon { color: var(--ink); }
+  :global(html:not([data-theme="stripe"])) .portrait-frame { background: #f3ebe0; }
+
   @media (min-width: 640px) {
-    .links-shell {
-      padding-top: 36px;
-    }
+    .links-shell { padding-top: 36px; }
+    .links-header { gap: 44px; }
+    .identity { grid-template-columns: 124px minmax(0, 1fr); gap: 28px; }
+    .link-groups { margin-top: 52px; }
+  }
 
-    .links-header {
-      gap: 52px;
-    }
-
-    .identity {
-      grid-template-columns: 108px 1fr;
-      gap: 24px;
-    }
-
-    .portrait-frame {
-      width: 108px;
-    }
-
-    .link-groups {
-      margin-top: 56px;
-    }
+  @media (max-width: 380px) {
+    .identity { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; }
+    .link-card { gap: 12px; padding-right: 14px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .link-card,
-    .link-icon {
+    .link-icon,
+    .link-arrow {
       transition: none;
     }
 
-    .link-card:hover {
+    .link-card:hover,
+    .link-card:hover .link-arrow {
       transform: none;
     }
 
     .link-card:hover .link-icon {
-      transform: none;
+      rotate: -6deg;
     }
   }
 </style>

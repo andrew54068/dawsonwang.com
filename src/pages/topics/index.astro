@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopicCard from '../../components/TopicCard.astro';
+import Hl from '../../components/home/Hl.astro';
 import { topicsWithPosts, daysForTopic } from '../../lib/topics';
 import { SITE_URL, breadcrumbJsonLd } from '../../lib/seo';
 
@@ -58,14 +59,22 @@ const topicsIndexBreadcrumbJsonLd = breadcrumbJsonLd([
 ], topicsIndexUrl);
 ---
 <BaseLayout title={topicsIndexTitle} description={topicsIndexDescription} structuredData={[topicTaxonomyJsonLd, topicCollectionJsonLd, topicsIndexBreadcrumbJsonLd]}>
-  <article class="max-w-5xl mx-auto px-8 py-16">
-    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPICS · {topics.length} CATEGORIES</div>
-    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
-        style="font-size: clamp(2.5rem, 5vw, 4rem);">
-      依<span class="text-teal">主題</span>瀏覽。
-    </h1>
-    <div class="mt-10 border border-rule rounded-xl overflow-hidden bg-surface-1">
-      {topics.map(t => <TopicCard {...t} />)}
+  <section class="page-hero" aria-labelledby="topics-title">
+    <div class="wrap">
+      <p class="kicker"><svg class="icon" aria-hidden="true"><use href="#i-files"/></svg>主題 · {topics.length} 類</p>
+      <h1 id="topics-title">依<Hl>主題</Hl>瀏覽。</h1>
+      <p class="hero-sub">{days.length} 篇實作文章，依你想解決的事情分好類。從最貼近你現在卡住的那一類開始看。</p>
+      <p class="page-links">
+        <a class="text-link" href="/days">看所有文章 <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/search">搜尋文章 <span aria-hidden="true">→</span></a>
+      </p>
     </div>
-  </article>
+  </section>
+  <section class="sec-sm" aria-label="主題列表">
+    <div class="wrap">
+      <div class="card-grid three">
+        {topics.map(t => <TopicCard {...t} />)}
+      </div>
+    </div>
+  </section>
 </BaseLayout>

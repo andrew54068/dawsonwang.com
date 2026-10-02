@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hl from '../components/home/Hl.astro';
 import { getCollection } from 'astro:content';
 import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
 
@@ -31,55 +32,55 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
 ], searchUrl);
 ---
 <BaseLayout title={searchTitle} description={searchDescription} structuredData={[searchResultsPageJsonLd, searchBreadcrumbJsonLd]}>
-  <article class="max-w-5xl mx-auto px-8 py-16" data-pagefind-ignore="all">
-    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">SEARCH · {total} POSTS</div>
-    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
-        style="font-size: clamp(2.5rem, 5vw, 4rem);">
-      在<span class="text-teal">日誌</span>裡找東西。
-    </h1>
-
-    <form id="search-form" class="mt-10 max-w-2xl space-y-6" autocomplete="off">
-      <div>
-        <label for="q" class="mag-label block">查詢</label>
-        <input
-          id="q"
-          name="q"
-          type="search"
-          class="mag-input"
-          placeholder="輸入關鍵字或概念，例如：自動化、創業心法、prompt 設計…"
-          aria-describedby="search-mode-hint"
-          autofocus
-        />
+  <div data-pagefind-ignore="all">
+    <section class="page-hero" aria-labelledby="search-title">
+      <div class="wrap">
+        <p class="kicker"><svg class="icon" aria-hidden="true"><use href="#i-chat-q"/></svg>搜尋 · {total} 篇</p>
+        <h1 id="search-title">在<Hl>日誌</Hl>裡找東西。</h1>
+        <p class="hero-sub">用你自己的話描述想解決的事，或直接打關鍵字。</p>
       </div>
+    </section>
 
-      <fieldset class="flex flex-wrap items-baseline gap-3">
-        <legend class="mag-label mr-2">模式</legend>
-        <label class="radio-chip">
-          <input type="radio" name="mode" value="keyword" checked />
-          <span>關鍵字</span>
-        </label>
-        <label class="radio-chip">
-          <input type="radio" name="mode" value="semantic" />
-          <span>語意</span>
-        </label>
-        <span id="search-mode-hint" class="font-mono text-xs text-faint ml-auto">
-          關鍵字本地索引 · 語意走雲端嵌入（首查約 1 秒）
-        </span>
-      </fieldset>
-    </form>
+    <section class="sec-sm search-sec" aria-label="搜尋">
+      <div class="wrap search-wrap">
+        <form id="search-form" class="form-card search-card" autocomplete="off">
+          <div class="field">
+            <label for="q">想找什麼？</label>
+            <input
+              id="q"
+              name="q"
+              type="search"
+              placeholder="例如：自動化、創業心法、prompt 設計…"
+              aria-describedby="search-mode-hint"
+              autofocus
+            />
+          </div>
 
-    <div class="mt-6 flex flex-wrap items-center gap-3">
-      <div id="search-status" class="font-mono text-xs text-faint min-h-[1.5em]"></div>
-      <button
-        id="share-link"
-        type="button"
-        class="ml-auto font-mono text-xs text-faint hover:text-ink border border-rule rounded-full px-3 py-1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-        disabled
-      >複製搜尋連結</button>
-    </div>
+          <fieldset class="chips-field">
+            <legend>搜尋方式</legend>
+            <div class="chips">
+              <label class="chip">
+                <input type="radio" name="mode" value="keyword" checked />
+                <span>關鍵字</span>
+              </label>
+              <label class="chip">
+                <input type="radio" name="mode" value="semantic" />
+                <span>語意</span>
+              </label>
+            </div>
+            <p id="search-mode-hint" class="hint">關鍵字搜尋本站索引；語意搜尋會比對意思相近的文章（第一次約 1 秒）。</p>
+          </fieldset>
+        </form>
 
-    <section id="search-results" class="mt-2 max-w-3xl"></section>
-  </article>
+        <div class="search-bar">
+          <p id="search-status" class="search-status" aria-live="polite"></p>
+          <button id="share-link" type="button" class="btn btn-soft btn-sm" disabled>複製搜尋連結</button>
+        </div>
+
+        <section id="search-results" class="post-list" aria-label="搜尋結果"></section>
+      </div>
+    </section>
+  </div>
 
   <script>
     import { loadPagefind } from '../lib/keyword-search-client';
@@ -119,7 +120,7 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
     }
 
     function renderEmpty(msg = '尚無結果') {
-      resultsEl.innerHTML = `<p class="font-serif italic text-muted text-sm py-6">${escapeHtml(msg)}</p>`;
+      resultsEl.innerHTML = `<p class="post-empty">${escapeHtml(msg)}</p>`;
     }
 
     function renderResults(rows: Array<{ day: number; subtitle: string; excerpt?: string; meta?: string; href?: string; num?: string }>) {
@@ -127,14 +128,14 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
       const html = rows
         .map(r => {
           const excerpt = r.excerpt
-            ? `<span class="block font-serif text-sm text-muted leading-relaxed mt-1">${r.excerpt}</span>`
+            ? `<span class="post-excerpt">${r.excerpt}</span>`
             : '';
           const meta = r.meta
-            ? `<span class="toc-meta">${escapeHtml(r.meta)}</span>`
-            : `<span class="toc-meta"></span>`;
-          return `<a href="${escapeHtml(r.href ?? `/day/${r.day}`)}" class="toc-row group">
-            <span class="toc-num">${escapeHtml(r.num ?? String(r.day))}</span>
-            <span class="toc-title">${escapeHtml(r.subtitle || '')}${excerpt}</span>
+            ? `<span class="post-tags"><span class="tag tag-teal">${escapeHtml(r.meta)}</span></span>`
+            : '';
+          return `<a href="${escapeHtml(r.href ?? `/day/${r.day}`)}" class="post-row">
+            <span class="post-num">${escapeHtml(r.num ?? String(r.day).padStart(3, '0'))}</span>
+            <span class="post-title">${escapeHtml(r.subtitle || '')}${excerpt}</span>
             ${meta}
           </a>`;
         })
@@ -284,3 +285,13 @@ const searchBreadcrumbJsonLd = breadcrumbJsonLd([
     loadPagefind().catch(() => { /* graceful in dev */ });
   </script>
 </BaseLayout>
+
+<style>
+  .search-wrap { max-width: 860px; }
+  .search-card { gap: 22px; }
+  .search-card .chips-field legend { margin-bottom: 0; }
+  .search-card .hint { margin-top: 2px; }
+  .search-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 28px 0 16px; }
+  .search-status { min-height: 1.6em; color: var(--muted); font-size: 1rem; }
+  .search-bar .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+</style>

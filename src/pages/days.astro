@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
+import Hl from '../components/home/Hl.astro';
 import { topicsForDay } from '../lib/topics';
 import { isTopPerformer } from '../lib/metrics';
 import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
@@ -44,24 +45,29 @@ const daysBreadcrumbJsonLd = breadcrumbJsonLd([
 ], daysUrl);
 ---
 <BaseLayout title={daysTitle} description={daysDescription} structuredData={[daysCollectionJsonLd, daysBreadcrumbJsonLd]}>
-  <article class="max-w-5xl mx-auto px-8 py-16">
-    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-3">ALL POSTS · {firstDay}—{lastDay}</div>
-    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] font-semibold"
-        style="font-size: clamp(2.5rem, 5vw, 4rem);">
-      所有<span class="text-teal">文章</span>。
-    </h1>
-    <p class="font-display text-muted text-lg leading-relaxed mt-3 max-w-xl">
-      共 {days.length} 篇，依日期倒序。
-    </p>
-    <div class="mt-10 border-t border-rule">
-      {sorted.map(day => (
-        <PostCard
-          dayNumber={day.data.dayNumber}
-          subtitle={day.data.subtitle}
-          topicSlugs={topicsForDay(day.data.dayNumber)}
-          isTopPerformer={isTopPerformer(day.data.dayNumber)}
-        />
-      ))}
+  <section class="page-hero" aria-labelledby="days-title">
+    <div class="wrap">
+      <p class="kicker"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>實作文章 · Day {firstDay}–{lastDay}</p>
+      <h1 id="days-title">所有<Hl>文章</Hl>。</h1>
+      <p class="hero-sub">共 {days.length} 篇，依日期倒序。</p>
+      <p class="page-links">
+        <a class="text-link" href="/topics">依主題瀏覽 <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/search">搜尋文章 <span aria-hidden="true">→</span></a>
+      </p>
     </div>
-  </article>
+  </section>
+  <section class="sec-sm" aria-label="文章列表">
+    <div class="wrap">
+      <div class="post-list">
+        {sorted.map(day => (
+          <PostCard
+            dayNumber={day.data.dayNumber}
+            subtitle={day.data.subtitle}
+            topicSlugs={topicsForDay(day.data.dayNumber)}
+            isTopPerformer={isTopPerformer(day.data.dayNumber)}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
 </BaseLayout>
