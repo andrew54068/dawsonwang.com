@@ -46,6 +46,10 @@ body:has(.home-warm) {
     font: 400 1.15rem/1.85 var(--f-body);
     -webkit-font-smoothing: antialiased;
 }
+/* Element resets live in the base layer so Tailwind utilities and the
+   article prose styles still win over them — every page now renders inside
+   .home-warm (BaseLayout), not just the home page. */
+@layer base {
 .home-warm img { display: block; max-width: 100%; height: auto;
 }
 .home-warm a { color: inherit;
@@ -64,9 +68,10 @@ body:has(.home-warm) {
 }
 .home-warm li, .home-warm dt, .home-warm dd, .home-warm blockquote, .home-warm figcaption, .home-warm summary { text-wrap: pretty;
 }
-.home-warm .ph { display: inline-block;
-}
 .home-warm blockquote { margin: 0;
+}
+}
+.home-warm .ph { display: inline-block;
 }
 .home-warm ::selection { background: var(--peach-deep); color: var(--ink);
 }
@@ -919,3 +924,145 @@ html:not([data-theme="stripe"]) .home-warm .brand-mark { box-shadow: 0 0 0 3px v
    photos sit on a real border, with dark text handled per element. */
 html:not([data-theme="stripe"]) .home-warm .photo-frame,
 html:not([data-theme="stripe"]) .home-warm .polaroid { background: #f3ebe0; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Inner pages (site-wide). Hand-maintained. Every route renders inside
+   .home-warm via BaseLayout, so /projects, /days, /day/N, /topics, /search,
+   /business-registration, /links and the utility pages share the home page's
+   vocabulary: page hero + kicker, white rounded cards, soft pill tags, the
+   dashed-rule post list, warm article prose and the closing CTA band.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Current section in the nav. */
+.home-warm .nav-links a[aria-current="page"] { background: var(--peach); color: var(--persimmon-ink); }
+.home-warm .menu-panel a[aria-current="page"] { background: var(--peach); color: var(--persimmon-ink); }
+
+/* Page hero: the home hero's dotted wash + kicker + hand-lettered h1, without the photo. */
+.home-warm .page-hero { position: relative; padding: clamp(40px, 5vw, 76px) 0 clamp(32px, 4vw, 52px); overflow: clip; }
+.home-warm .page-hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(circle at 1px 1px, rgba(180, 80, 31, .2) 1.3px, transparent 1.8px);
+    background-size: 26px 26px;
+    -webkit-mask-image: radial-gradient(ellipse 55% 70% at 18% 40%, #000 10%, transparent 72%);
+    mask-image: radial-gradient(ellipse 55% 70% at 18% 40%, #000 10%, transparent 72%);
+}
+.home-warm .page-hero > .wrap { position: relative; }
+.home-warm .page-hero h1 { margin-top: 20px; max-width: 18em; font-size: clamp(2.3rem, 1.2rem + 3.2vw, 3.7rem); line-height: 1.3; letter-spacing: .02em; }
+.home-warm .page-hero .hero-sub { max-width: 34em; }
+.home-warm .page-hero .stickers { margin-top: clamp(36px, 4vw, 52px); }
+.home-warm .page-hero.center { text-align: center; }
+.home-warm .page-hero.center h1, .home-warm .page-hero.center .hero-sub { margin-inline: auto; }
+.home-warm .page-hero.center::before {
+    -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 10%, transparent 72%);
+    mask-image: radial-gradient(ellipse 60% 70% at 50% 40%, #000 10%, transparent 72%);
+}
+.home-warm .hero-ctas.center { justify-content: center; }
+.home-warm .page-links { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 0 26px; }
+.home-warm .page-hero.center .page-links { justify-content: center; }
+
+/* Don't stack the hero's bottom padding on a full section top padding. */
+.home-warm .page-hero + .sec { padding-top: clamp(40px, 5vw, 72px); }
+
+/* A tighter section rhythm for list/index pages. */
+.home-warm .sec-sm { padding: clamp(28px, 4vw, 56px) 0 clamp(72px, 8vw, 112px); }
+
+/* Cards: white, rounded, soft shadow — the home's case/survey surface. */
+.home-warm .card { padding: clamp(22px, 2.6vw, 32px); border-radius: 30px; background: var(--white); box-shadow: var(--shadow-sm); }
+.home-warm .card-dashed { background: var(--paper); border: 2px dashed var(--peach-deep); box-shadow: none; }
+.home-warm a.card { display: block; text-decoration: none; transition: transform .3s var(--spring), box-shadow .3s var(--ease); }
+.home-warm a.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.home-warm .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.home-warm .card-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.home-warm .card-label { font-weight: 700; font-size: .98rem; color: var(--leaf-text); }
+.home-warm .card h3 { font-size: clamp(1.3rem, 1.1rem + .5vw, 1.55rem); }
+.home-warm .card-sub { margin-top: 6px; font-weight: 500; color: var(--persimmon-text); font-size: 1.04rem; line-height: 1.6; }
+.home-warm .card-text { margin-top: 12px; color: var(--muted); font-size: 1.04rem; line-height: 1.8; }
+.home-warm .card-foot { margin-top: 18px; padding-top: 14px; border-top: 1.5px dashed var(--rule); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; }
+.home-warm .card-foot > span { color: var(--muted); font-size: .95rem; }
+.home-warm .card-foot .text-link { min-height: 40px; font-size: 1rem; }
+.home-warm .dl-stack { margin: 18px 0 0; display: grid; gap: 14px; }
+.home-warm .dl-stack dt { font-weight: 700; font-size: .98rem; color: var(--leaf-text); margin-bottom: 2px; }
+.home-warm .dl-stack dd { margin: 0; color: var(--muted); font-size: 1.04rem; line-height: 1.8; }
+
+/* Tags: soft pills in body type (replaces the old mono-uppercase .chip). */
+.home-warm .tag {
+    display: inline-flex; align-items: center; padding: 2px 12px; border-radius: 999px;
+    font: 500 .92rem/1.7 var(--f-body); white-space: nowrap; text-decoration: none;
+    background: var(--cream); border: 1.5px solid var(--rule); color: var(--ink);
+    transition: border-color .2s, background-color .2s;
+}
+.home-warm .tag-teal, .home-warm .tag-sage { background: var(--bubble); border-color: transparent; color: var(--leaf-text); }
+.home-warm .tag-brick, .home-warm .tag-ochre { background: var(--peach); border-color: transparent; color: var(--persimmon-ink); }
+.home-warm a.tag:hover { border-color: var(--persimmon); }
+.home-warm .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Smaller buttons for dense cards. */
+.home-warm .btn-sm { min-height: 44px; padding: 0 1.15em; font-size: .98rem; }
+
+/* Post list: /days, /topics/N and search results. */
+.home-warm .post-list { padding: 8px clamp(10px, 1.6vw, 20px); border-radius: 30px; background: var(--white); box-shadow: var(--shadow-sm); }
+.home-warm .post-row {
+    display: grid; grid-template-columns: 4.4rem minmax(0, 1fr) auto; align-items: center; gap: 6px 20px;
+    padding: 16px 12px; border-bottom: 1.5px dashed var(--rule); border-radius: 18px;
+    text-decoration: none; transition: background-color .2s;
+}
+.home-warm .post-row:last-child { border-bottom: 0; }
+.home-warm .post-row:hover { background: var(--cream); }
+.home-warm .post-num { font: 700 1.55rem/1 var(--f-hand); color: var(--persimmon-text); }
+.home-warm .post-title { font-weight: 500; font-size: 1.1rem; line-height: 1.6; color: var(--ink); transition: color .2s; }
+.home-warm .post-row:hover .post-title { color: var(--persimmon-ink); }
+.home-warm .post-excerpt { display: block; margin-top: 4px; font-weight: 400; font-size: .98rem; line-height: 1.7; color: var(--muted); }
+.home-warm .post-excerpt mark { background: var(--peach); color: inherit; border-radius: 4px; padding: 0 2px; }
+.home-warm .post-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.home-warm .post-tags .tag { font-size: .86rem; padding: 0 10px; }
+.home-warm .post-hot { margin-left: 8px; vertical-align: .15em; font-size: .8rem !important; padding: 0 8px !important; }
+.home-warm .post-empty { padding: 26px 12px; color: var(--muted); }
+
+/* Big stat number used beside articles and on topic cards. */
+.home-warm .big-num { font: 700 clamp(2.6rem, 2rem + 2vw, 3.4rem)/1 var(--f-hand); color: var(--persimmon-text); }
+
+/* Article prose (/day/N). Body in Noto Sans, headings hand-lettered. */
+.home-warm .w-prose { font-size: 1.1rem; line-height: 1.95; color: var(--ink); overflow-wrap: anywhere; }
+.home-warm .w-prose > * + * { margin-top: 1.15em; }
+.home-warm .w-prose h2 { margin-top: 2.1em; display: flex; align-items: center; gap: 12px; font-size: clamp(1.45rem, 1.2rem + .8vw, 1.8rem); }
+.home-warm .w-prose h2::before {
+    content: ""; flex: none; width: 26px; height: 11px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 12'%3E%3Cpath d='M2 7c4-6 7 4 11-1s7-5 10 0 4 2 5-1' fill='none' stroke='%23e2703a' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+.home-warm .w-prose h3 { margin-top: 1.8em; font-size: 1.32rem; }
+.home-warm .w-prose h4 { margin: 1.6em 0 0; font-size: 1.12rem; font-weight: 700; }
+.home-warm .w-prose a { color: var(--persimmon-text); font-weight: 500; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; text-decoration-color: rgba(180, 80, 31, .35); }
+.home-warm .w-prose a:hover { text-decoration-color: currentColor; }
+.home-warm .w-prose ul { padding-left: 1.3em; list-style: disc; }
+.home-warm .w-prose ol { padding-left: 1.5em; list-style: decimal; }
+.home-warm .w-prose li + li { margin-top: .45em; }
+.home-warm .w-prose li::marker { color: var(--persimmon); }
+.home-warm .w-prose li > ul, .home-warm .w-prose li > ol { margin-top: .45em; }
+.home-warm .w-prose strong { font-weight: 700; }
+.home-warm .w-prose code { font: .88em/1.5 "JetBrains Mono", ui-monospace, monospace; padding: .12em .45em; border-radius: 8px; background: var(--peach); color: var(--persimmon-ink); }
+.home-warm .w-prose pre { padding: 20px 22px; border-radius: 22px; background: #2e231c; color: #f4ece1; overflow-x: auto; font-size: .92rem; line-height: 1.75; }
+.home-warm .w-prose pre code { padding: 0; background: none; color: inherit; font-size: inherit; }
+.home-warm .w-prose blockquote { padding: 18px 24px; border-radius: 24px 24px 24px 8px; background: var(--bubble); }
+.home-warm .w-prose blockquote > * + * { margin-top: .8em; }
+.home-warm .w-prose img { margin-inline: auto; border-radius: 20px; box-shadow: var(--shadow-sm); }
+.home-warm .w-prose hr { border: 0; border-top: 1.5px dashed var(--rule); margin-block: 2.4em; }
+.home-warm .w-prose table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; font-size: .98rem; }
+.home-warm .w-prose th, .home-warm .w-prose td { padding: 10px 14px; border-bottom: 1.5px dashed var(--rule); text-align: left; vertical-align: top; }
+.home-warm .w-prose th { font-weight: 700; white-space: nowrap; }
+
+/* Closing CTA actions inside a .band section. */
+.home-warm .cta-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px 28px; margin-top: clamp(28px, 4vw, 40px); }
+
+@media (max-width: 960px) {
+  .home-warm .card-grid.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .home-warm .card-grid, .home-warm .card-grid.three { grid-template-columns: 1fr; }
+  .home-warm .post-row { grid-template-columns: 3.3rem minmax(0, 1fr); padding: 14px 8px; }
+  .home-warm .post-tags { grid-column: 2; justify-content: flex-start; }
+}
+@media (max-width: 640px) {
+  .home-warm .page-hero .hero-ctas .btn { width: 100%; }
+}
+
+html:not([data-theme="stripe"]) .home-warm .w-prose pre { background: #0f0b08; box-shadow: inset 0 0 0 1.5px var(--rule); }

@@ -37,8 +37,10 @@ const privateContactPattern = /(?:[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|\+?\d[\d
 describe('speaking proof content', () => {
   test('exposes the warm home-style hooks on the speaking route', () => {
     const pageSource = readFileSync(path.join(process.cwd(), 'src/pages/speaking.astro'), 'utf8');
+    const layoutSource = readFileSync(path.join(process.cwd(), 'src/layouts/BaseLayout.astro'), 'utf8');
 
-    expect(pageSource).toContain('home-warm');
+    // The warm shell (.home-warm) is site-wide now, supplied by BaseLayout.
+    expect(layoutSource).toContain('<div class="home-warm">');
     expect(pageSource).toContain('speaking-warm');
     expect(pageSource).toContain('data-lecture-session');
   });

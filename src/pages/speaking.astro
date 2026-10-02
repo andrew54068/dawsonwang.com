@@ -1,12 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HomeIcons from '../components/home/HomeIcons.astro';
-import HomeNav from '../components/home/HomeNav.astro';
-import HomeFooter from '../components/home/HomeFooter.astro';
 import { ENGAGEMENTS, LECTURE_SESSIONS, PRINCIPLES, RECENT_HOSPITAL_SURVEY, type Attendance, type Engagement } from '../data/speaking';
 import { SITE_URL, absoluteUrl, breadcrumbJsonLd } from '../lib/seo';
-import '../styles/home-warm.css';
 
 // Curated course photos are resized into public/speaking/. They live in public/
 // rather than being read from the 100days submodule or Drive at build time: both
@@ -117,16 +113,8 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
   ogImageHeight={1200}
   ogImageAlt={HERO_PHOTO_ALT}
   structuredData={[speakingJsonLd, speakingBreadcrumbJsonLd]}
-  showNav={false}
-  showFooter={false}
-  wrapMain={false}
 >
-  <script is:inline>document.documentElement.classList.add('js');</script>
-  <div class="home-warm speaking-warm">
-    <HomeIcons />
-    <a class="skip" href="#main">跳到主要內容</a>
-    <HomeNav />
-    <main id="main">
+  <div class="speaking-warm">
 
       <!-- ═══ Hero ═══ -->
       <section class="hero" aria-labelledby="sp-hero-title">
@@ -282,34 +270,12 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
         </div>
       </section>
 
-    </main>
-    <HomeFooter />
   </div>
 </BaseLayout>
 
-<script>
-  // Scroll reveals: content is server-rendered and visible without JS; this only
-  // drives the entrance motion (same behaviour as the home page).
-  (() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const targets = document.querySelectorAll('[data-reveal]');
-    if (reduce || !('IntersectionObserver' in window)) {
-      targets.forEach((el) => el.classList.add('is-in'));
-      return;
-    }
-    const io = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add('is-in');
-        io.unobserve(entry.target);
-      }
-    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
-    targets.forEach((el) => io.observe(el));
-  })();
-</script>
 
 <style>
-  /* Speaking page reuses the home warm vocabulary (.home-warm in home-warm.css);
+  /* Speaking page reuses the site-wide warm vocabulary (.home-warm in home-warm.css);
      these are the few page-specific pieces on top of it. */
   .speaking-warm .sp-hero-cap { position: relative; z-index: 4; margin-top: 1.9rem; text-align: center; font: 400 1.25rem/1.5 var(--f-note); color: var(--persimmon-text); }
 

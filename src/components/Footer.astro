@@ -1,23 +1,28 @@
 ---
+// Site-wide warm footer. Carries everything the nav leaves out (主題、搜尋、
+// 行號設立、社群入口) plus the privacy page Google's OAuth verification needs
+// linked from the home page. Hrefs stay literal: tests/production-flows.test.ts
+// reads them from source.
 const year = new Date().getFullYear();
 ---
-<footer class="border-t border-rule mt-24">
-  <div class="max-w-5xl mx-auto px-8 py-10 grid gap-6">
-    <div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-3">
-      <div class="font-display font-semibold text-base text-ink tracking-tight">Dawson Wang</div>
-      <div class="font-mono text-xs text-muted">我幫台灣團隊把 AI 工具落地</div>
-      <a href="/#inquire" class="text-teal text-xs tracking-[.04em] font-mono hover:text-ink transition-colors duration-150 no-underline">預約諮詢 →</a>
-    </div>
-    <ul class="flex gap-5 list-none p-0 m-0 text-xs font-mono text-muted">
-      <li><a class="hover:text-ink transition-colors duration-150 no-underline" href="/days">所有文章</a></li>
-      <li><a class="hover:text-ink transition-colors duration-150 no-underline" href="/topics">主題</a></li>
-      <li><a class="hover:text-ink transition-colors duration-150 no-underline" href="/proof">作品集</a></li>
-      <li><a class="hover:text-ink transition-colors duration-150 no-underline" href="/business-registration">行號設立</a></li>
-      <li><a class="hover:text-ink transition-colors duration-150 no-underline" href="/links?utm_source=site&utm_medium=footer&utm_campaign=navigation&utm_content=links-hub">社群與其他入口</a></li>
-      <li><a class="hover:text-ink transition-colors duration-150 no-underline" href="/search">搜尋</a></li>
-    </ul>
-    <div class="text-[10px] tracking-[.06em] uppercase text-faint font-mono border-t border-rule pt-4">
-      © {year} Dawson Wang · GMT+8
-    </div>
+<footer class="band footer">
+  <div class="wrap footer-in">
+    <a class="brand" href="/" aria-label="Dawson Wang，回到首頁">
+      <span class="brand-mark" aria-hidden="true">D</span>
+      <span class="brand-text"><strong>Dawson Wang</strong><small>AI 導入顧問</small></span>
+    </a>
+    <nav class="footer-links" aria-label="頁尾連結">
+      <a href="/#services">服務內容</a>
+      <a href="/speaking">企業內訓</a>
+      <a href="/projects">作品集</a>
+      <a href="/days">實作文章</a>
+      <a href="/topics">主題</a>
+      <a href="/search">搜尋</a>
+      <a href="/business-registration">行號設立</a>
+      <a href="/links?utm_source=site&utm_medium=footer&utm_campaign=navigation&utm_content=links-hub">社群與其他入口</a>
+      <a href="/privacy.html">隱私權政策</a>
+      <a href="/#inquire">預約諮詢</a>
+    </nav>
+    <p class="copy">© {year} Dawson Wang</p>
   </div>
 </footer>

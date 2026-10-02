@@ -1,8 +1,15 @@
-<details id="webmcp-results" class="max-w-5xl mx-auto px-8 py-6 scroll-mt-24 break-words" hidden data-pagefind-ignore>
-  <summary class="font-mono text-sm cursor-pointer">AI 助理搜尋結果</summary>
-  <p id="webmcp-query" class="mt-4 text-muted" role="status"></p>
-  <ul id="webmcp-hits" class="mt-4 space-y-4"></ul>
+<details id="webmcp-results" class="wrap card webmcp" hidden data-pagefind-ignore>
+  <summary>AI 助理搜尋結果</summary>
+  <p id="webmcp-query" class="webmcp-query" role="status"></p>
+  <ul id="webmcp-hits" class="webmcp-hits"></ul>
 </details>
+<style>
+  .webmcp { margin-block: 32px; scroll-margin-top: 96px; overflow-wrap: anywhere; }
+  .webmcp summary { cursor: pointer; font: 700 1.2rem/1.5 var(--f-hand); }
+  .webmcp-query { margin-top: 12px; color: var(--muted); }
+  .webmcp-hits { margin-top: 12px; display: grid; gap: 14px; }
+  .webmcp-hits :global(a) { color: var(--persimmon-text); font-weight: 700; text-decoration: underline; text-underline-offset: 5px; }
+</style>
 <script>
   import { loadPagefind } from '../lib/keyword-search-client';
   import { semanticSearch } from '../lib/semantic-search-client';
@@ -21,7 +28,6 @@
       const link = document.createElement('a');
       link.href = hit.url;
       link.textContent = hit.title;
-      link.className = 'text-teal underline';
       const excerpt = document.createElement('p');
       excerpt.textContent = hit.excerpt;
       item.append(link, excerpt);
