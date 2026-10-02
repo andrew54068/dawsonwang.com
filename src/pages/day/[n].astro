@@ -10,7 +10,6 @@ import ExternalLinks from '../../components/ExternalLinks.astro';
 import { isTopPerformer } from '../../lib/metrics';
 import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
 import { SITE_URL, cleanDescription, breadcrumbJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_WIDTH, DEFAULT_OG_IMAGE_HEIGHT } from '../../lib/seo';
-import Divider from '../../components/Divider.astro';
 
 export async function getStaticPaths() {
   const days = await getCollection('days');
@@ -134,79 +133,62 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: `Day ${day.data.dayNumber} ${day.data.subtitle ?? ''}`.trim(), url: `/day/${day.data.dayNumber}` },
 ], dayUrl);
 ---
-<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={primaryOgImage} ogImageWidth={primaryOgImageDimensions?.width} ogImageHeight={primaryOgImageDimensions?.height} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)} defaultTheme="linear">
-  <article class="max-w-5xl mx-auto px-8 py-14" data-pagefind-body data-pagefind-meta={`day:${day.data.dayNumber}`}>
-    <div class="grid grid-cols-1 md:grid-cols-[1fr_160px] gap-x-12 gap-y-6">
+<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={primaryOgImage} ogImageWidth={primaryOgImageDimensions?.width} ogImageHeight={primaryOgImageDimensions?.height} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)}>
+  <article class="day-article" data-pagefind-body data-pagefind-meta={`day:${day.data.dayNumber}`}>
+    <div class="wrap day-grid">
 
-      <div class="min-w-0 max-w-2xl">
-        <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">
-          DAY {String(day.data.dayNumber).padStart(3, '0')}{publishDate ? ` · ${publishDate.slice(0, 10)}` : ''}
-        </div>
-        <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold" style="font-size: clamp(2rem, 4.5vw, 3.25rem);">
-          {day.data.subtitle || `Day ${day.data.dayNumber}`}
-        </h1>
-
-        {topics.length > 0 && (
-          <div class="mt-5 flex flex-wrap gap-1.5">
-            {topics.map(t => (
-              <a href={`/topics/${t.slug}`} class={`chip chip-${t.variant} no-underline`}>{t.title}</a>
-            ))}
-          </div>
-        )}
-
-        <Divider class="my-8" />
+      <div class="day-main">
+        <header class="day-head">
+          <p class="kicker" data-pagefind-ignore><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Day {String(day.data.dayNumber).padStart(3, '0')}{publishDate ? ` · ${publishDate.slice(0, 10)}` : ''}</p>
+          <h1>{day.data.subtitle || `Day ${day.data.dayNumber}`}</h1>
+          {topics.length > 0 && (
+            <div class="tags day-tags" data-pagefind-ignore>
+              {topics.map(t => (
+                <a href={`/topics/${t.slug}`} class={`tag tag-${t.variant}`}>{t.title}</a>
+              ))}
+            </div>
+          )}
+        </header>
 
         {slides.length > 0 && <SlideCarousel slides={slides} />}
 
         {shareArtifact && slides.length === 0 && (
-          <figure class="my-10">
-            <div class="font-mono text-[11px] tracking-[.08em] uppercase text-teal mb-3">SHARE</div>
-            <div class="relative aspect-square overflow-hidden border border-rule rounded-lg bg-surface-1">
+          <figure class="media-frame">
+            <div class="media-inner">
               {shareArtifact.isVideo
-                ? <video src={shareArtifact.src} autoplay loop muted playsinline class="w-full h-full object-contain" />
-                : <img src={shareArtifact.src} alt={slideAltBase} class="w-full h-full object-contain" />
+                ? <video src={shareArtifact.src} autoplay loop muted playsinline />
+                : <img src={shareArtifact.src} alt={slideAltBase} />
               }
             </div>
           </figure>
         )}
 
-        <div class="prose prose-invert max-w-none
-                    prose-headings:font-display prose-headings:text-ink prose-headings:font-semibold prose-headings:tracking-tight
-                    prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:relative prose-h2:pl-3 prose-h2:before:content-[''] prose-h2:before:absolute prose-h2:before:left-0 prose-h2:before:top-1.5 prose-h2:before:bottom-1.5 prose-h2:before:w-[2px] prose-h2:before:bg-teal
-                    prose-p:font-display prose-p:text-ink prose-p:leading-[1.7] prose-p:text-[16px]
-                    prose-a:text-teal prose-a:no-underline prose-a:border-b prose-a:border-dotted prose-a:border-teal hover:prose-a:text-brick
-                    prose-strong:text-ink prose-strong:font-semibold
-                    prose-code:font-mono prose-code:text-ochre prose-code:bg-surface-1 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-[13px] prose-code:before:content-[''] prose-code:after:content-['']
-                    prose-pre:bg-surface-1 prose-pre:border prose-pre:border-rule prose-pre:rounded-lg
-                    prose-blockquote:font-display prose-blockquote:not-italic prose-blockquote:text-ink prose-blockquote:text-[18px] prose-blockquote:leading-snug prose-blockquote:border-t prose-blockquote:border-teal prose-blockquote:border-l-0 prose-blockquote:border-b prose-blockquote:border-b-rule prose-blockquote:pl-0 prose-blockquote:py-3"
-             set:html={bodyHtml} />
+        <div class="w-prose" set:html={bodyHtml} />
 
         {day.data.manifest && isTopPerformer(day.data.dayNumber) && (
           <MetricsBlock manifest={day.data.manifest} />
         )}
 
-        <aside class="mt-12 bg-surface-1 border border-rule rounded-xl p-7 relative overflow-hidden" data-pagefind-ignore>
-          <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-px"
-                style="background: linear-gradient(90deg, var(--color-brick), var(--color-teal));"></span>
-          <div class="font-mono text-[11px] uppercase tracking-[.08em] text-teal mb-1">作者</div>
-          <h3 class="font-display text-ink text-xl font-semibold tracking-tight mt-1">Dawson Wang</h3>
-          <p class="font-display text-muted text-sm leading-relaxed mt-3 max-w-prose">
-            我幫台灣團隊把 AI 工具落地到日常工作流。從 PoC 到上線、再到團隊接手。9 年新創軟體開發經驗、前 iOS@Taipei 社群主持人。
-          </p>
-          <a href="/#inquire" class="btn-ochre mt-4">預約諮詢 →</a>
+        <aside class="card author-card" data-pagefind-ignore>
+          <div class="me-card">
+            <img src="/dawson.webp" alt="" width="80" height="80" loading="lazy" decoding="async" />
+            <div><strong>Dawson Wang</strong><span>AI 導入顧問 · 這篇的作者</span></div>
+          </div>
+          <p class="author-text">我幫台灣團隊把 AI 工具落地到日常工作流。從 PoC 到上線、再到團隊接手。9 年新創軟體開發經驗、前 iOS@Taipei 社群主持人。</p>
+          <a href="/#inquire" class="btn btn-primary">預約諮詢 <span class="arr" aria-hidden="true">→</span></a>
         </aside>
 
         {archive.length > 0 && (
-          <section class="mt-12 pt-8 border-t border-rule" data-pagefind-ignore>
-            <div class="flex justify-between items-baseline mb-5">
-              <div class="font-mono text-xs text-teal uppercase tracking-[.08em]">延伸閱讀</div>
-              <a href="/days" class="font-mono text-xs text-faint hover:text-ink transition-colors duration-150 no-underline">看完整 {allDays.length} 篇 →</a>
+          <section class="day-related" aria-labelledby="related-title" data-pagefind-ignore>
+            <div class="related-head">
+              <h2 id="related-title" class="eyebrow">延伸閱讀</h2>
+              <a href="/days" class="text-link">看完整 {allDays.length} 篇 <span aria-hidden="true">→</span></a>
             </div>
-            <div class="grid md:grid-cols-3 gap-5">
+            <div class="card-grid three">
               {archive.map((d: any) => (
-                <a href={`/day/${d.data.dayNumber}`} class="block no-underline group bg-surface-1 border border-rule rounded-lg p-4 hover:border-teal/40 transition-colors duration-150">
-                  <span class="font-mono text-faint text-xs">DAY {String(d.data.dayNumber).padStart(3, '0')}</span>
-                  <h4 class="font-display text-sm text-ink mt-2 leading-snug font-medium group-hover:text-teal transition-colors duration-150">{d.data.subtitle}</h4>
+                <a href={`/day/${d.data.dayNumber}`} class="card related-card">
+                  <span class="card-label">Day {String(d.data.dayNumber).padStart(3, '0')}</span>
+                  <h3>{d.data.subtitle}</h3>
                 </a>
               ))}
             </div>
@@ -214,25 +196,49 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
         )}
       </div>
 
-      <aside class="md:sticky md:top-20 md:self-start order-first md:order-last md:pt-1">
-        <div class="flex md:block items-baseline gap-5 flex-wrap">
-          <div>
-            <span class="font-mono font-medium text-ink leading-none block" style="font-size: 44px;">{String(day.data.dayNumber).padStart(3, '0')}</span>
-            <span class="font-mono text-[10px] tracking-[.08em] uppercase text-faint mt-2 block">篇</span>
-          </div>
-          {isTopPerformer(day.data.dayNumber) && (
-            <div class="md:mt-5">
-              <span class="chip chip-ochre">熱門</span>
-            </div>
-          )}
-          {day.data.manifest && (
-            <div class="basis-full md:basis-auto md:mt-6 md:pt-5 md:border-t md:border-rule">
-              <ExternalLinks manifest={day.data.manifest} />
-            </div>
-          )}
+      <aside class="day-side" data-pagefind-ignore>
+        <div class="day-sticker" aria-hidden="true">
+          <span class="day-sticker-lbl">Day</span>
+          <span class="big-num">{String(day.data.dayNumber).padStart(3, '0')}</span>
+          {isTopPerformer(day.data.dayNumber) && <span class="tag tag-brick">熱門</span>}
         </div>
+        {day.data.manifest && <ExternalLinks manifest={day.data.manifest} />}
       </aside>
 
     </div>
   </article>
 </BaseLayout>
+
+<style>
+  .day-article { padding: clamp(36px, 5vw, 64px) 0 clamp(72px, 8vw, 112px); }
+  .day-grid { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 24px clamp(40px, 6vw, 88px); align-items: start; }
+  .day-main { min-width: 0; max-width: 46rem; }
+  .day-head { padding-bottom: 28px; margin-bottom: 32px; border-bottom: 1.5px dashed var(--rule); }
+  .day-head h1 { margin-top: 18px; font-size: clamp(2rem, 1.2rem + 2.6vw, 3.1rem); line-height: 1.3; }
+  .day-tags { margin-top: 18px; }
+
+  .media-frame { margin: 0 0 36px; padding: 12px; border-radius: 30px; background: var(--white); box-shadow: var(--shadow); }
+  .media-inner { aspect-ratio: 1 / 1; overflow: hidden; border-radius: 20px; background: var(--cream); }
+  .media-inner img, .media-inner video { width: 100%; height: 100%; object-fit: contain; }
+
+  .author-card { margin-top: 48px; }
+  .author-text { margin: 16px 0 20px; color: var(--muted); font-size: 1.04rem; line-height: 1.8; }
+  .author-card .me-card { margin-top: 0; }
+
+  .day-related { margin-top: 48px; }
+  .related-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; margin-bottom: 18px; }
+  .related-head .eyebrow { margin: 0; font-family: var(--f-body); }
+  .related-card h3 { margin-top: 8px; font-size: 1.15rem; line-height: 1.5; transition: color .2s; }
+  .related-card:hover h3 { color: var(--persimmon-ink); }
+
+  .day-side { position: sticky; top: 100px; display: grid; gap: 22px; }
+  .day-sticker { display: grid; justify-items: start; gap: 6px; padding: 20px 22px 22px; border-radius: 26px; background: var(--peach); box-shadow: 0 0 0 6px var(--peach), 0 16px 30px -16px rgba(46, 35, 28, .42); rotate: -2deg; }
+  .day-sticker-lbl { font-weight: 700; color: var(--ink); }
+
+  @media (max-width: 900px) {
+    .day-grid { grid-template-columns: 1fr; }
+    .day-main { max-width: none; }
+    .day-side { position: static; }
+    .day-sticker { display: none; }
+  }
+</style>

@@ -10,17 +10,15 @@ interface Props {
 const { dayNumber, subtitle, topicSlugs, isTopPerformer = false } = Astro.props;
 const topics = topicSlugs.map(s => ({ slug: s, title: topicBySlug(s)?.title ?? s, variant: chipVariantFor(s) }));
 ---
-<a href={`/day/${dayNumber}`} class="toc-row group">
-  <span class="toc-num">{String(dayNumber).padStart(3, '0')}</span>
-  <span class="toc-title">
+<a href={`/day/${dayNumber}`} class="post-row">
+  <span class="post-num">{String(dayNumber).padStart(3, '0')}</span>
+  <span class="post-title">
     {subtitle}
-    {isTopPerformer && <span class="ml-2 align-middle font-mono text-[10px] tracking-[.06em] uppercase text-ochre">熱門</span>}
+    {isTopPerformer && <span class="tag tag-brick post-hot">熱門</span>}
   </span>
-  <span class="toc-meta">
-    {topics.length > 0 && (
-      <span class="flex justify-end gap-1.5 flex-wrap">
-        {topics.map(t => <span class={`chip chip-${t.variant}`}>{t.title}</span>)}
-      </span>
-    )}
-  </span>
+  {topics.length > 0 && (
+    <span class="post-tags">
+      {topics.map(t => <span class={`tag tag-${t.variant}`}>{t.title}</span>)}
+    </span>
+  )}
 </a>

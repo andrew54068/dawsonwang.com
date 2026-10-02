@@ -8,18 +8,26 @@ if (manifest.facebook) links.push({ label: 'Facebook', href: manifest.facebook.p
 if (manifest.linkedin) links.push({ label: 'LinkedIn', href: manifest.linkedin.postUrl });
 ---
 {links.length > 0 && (
-  <div class="my-6">
-    <div class="font-mono text-[10px] tracking-[.08em] uppercase text-teal mb-3">前往原帖</div>
-    <ul class="space-y-1">
+  <div class="ext">
+    <p class="ext-title">前往原帖</p>
+    <ul class="ext-list">
       {links.map(l => (
         <li>
-          <a href={l.href} target="_blank" rel="noopener noreferrer"
-             class="flex justify-between items-baseline font-display text-ink no-underline border-b border-rule py-2 hover:text-teal transition-colors duration-150">
-            <span class="text-sm">{l.label}</span>
-            <span class="font-mono text-xs text-faint">→</span>
+          <a href={l.href} target="_blank" rel="noopener noreferrer">
+            <span>{l.label}</span>
+            <span aria-hidden="true">↗</span>
           </a>
         </li>
       ))}
     </ul>
   </div>
 )}
+<style>
+  .ext { padding: 18px 20px; border-radius: 24px; background: var(--white); box-shadow: var(--shadow-sm); }
+  .ext-title { font-weight: 700; color: var(--leaf-text); font-size: 1rem; }
+  .ext-list { margin-top: 6px; }
+  .ext-list li + li { border-top: 1.5px dashed var(--rule); }
+  .ext-list a { display: flex; align-items: center; justify-content: space-between; min-height: 46px; text-decoration: none; font-weight: 500; transition: color .2s; }
+  .ext-list a:hover { color: var(--persimmon-ink); }
+  .ext-list a span:last-child { color: var(--persimmon-text); font-weight: 700; }
+</style>

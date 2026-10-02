@@ -2,6 +2,7 @@
 import WebMcp from '../components/WebMcp.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import HomeIcons from '../components/home/HomeIcons.astro';
 import SiteAnalytics from '../components/SiteAnalytics.astro';
 import {
   DEFAULT_DESCRIPTION,
@@ -22,6 +23,7 @@ import {
 } from '../lib/seo';
 import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../data/profiles';
 import '../styles/global.css';
+import '../styles/home-warm.css';
 
 interface Props {
   title: string;
@@ -39,9 +41,6 @@ interface Props {
   noindex?: boolean;
   showNav?: boolean;
   showFooter?: boolean;
-  /** When false, the page supplies its own <main> (and may bring its own
-   *  header/footer). Used by the warm homepage so its landmarks nest correctly. */
-  wrapMain?: boolean;
   /** Palette this route ships in the server HTML when the visitor has no stored
    *  preference. Articles read better dark, marketing pages read better light. */
   defaultTheme?: 'stripe' | 'linear';
@@ -63,7 +62,6 @@ const {
   noindex = false,
   showNav = true,
   showFooter = true,
-  wrapMain = true,
   defaultTheme = 'stripe',
 } = Astro.props;
 const isLightDefault = defaultTheme === 'stripe';
@@ -139,6 +137,7 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=LXGW+WenKai+TC:wght@700&family=Iansui&display=swap" rel="stylesheet" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <script is:inline>
       // Apply the persisted theme before first paint to avoid a flash of the
       // wrong palette. Precedence: URL ?theme=... > localStorage > the route's
@@ -167,13 +166,37 @@ const personSameAsUrls = Array.from(new Set([...PERSON_SAME_AS_URLS, PERSON_X_UR
       <script type="application/ld+json" is:inline set:html={jsonLd(allStructuredData.length === 1 ? allStructuredData[0] : allStructuredData)} />
     )}
   </head>
-  <body class="bg-paper text-ink font-sans">
-    {showNav && <Nav />}
-    {wrapMain
-      ? <main data-pagefind-body={!noindex && !isArticle ? true : undefined}><slot /></main>
-      : <slot />}
-    {!noindex && <WebMcp />}
-    {showFooter && <Footer />}
+  <body>
+    <!-- Every route shares the warm 溫暖陪跑 shell: .home-warm scopes the home
+         page's palette, type and components (src/styles/home-warm.css). -->
+    <div class="home-warm">
+      <HomeIcons />
+      <a class="skip" href="#main">跳到主要內容</a>
+      {showNav && <Nav />}
+      <main id="main" data-pagefind-body={!noindex && !isArticle ? true : undefined}><slot /></main>
+      {!noindex && <WebMcp />}
+      {showFooter && <Footer />}
+    </div>
     <SiteAnalytics />
+    <script>
+      // Scroll reveals: content is server-rendered and visible without JS; this
+      // only drives the entrance motion of [data-reveal] blocks on any page.
+      (() => {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const targets = document.querySelectorAll('[data-reveal]');
+        if (reduce || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-in'));
+          return;
+        }
+        const io = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-in');
+            io.unobserve(entry.target);
+          }
+        }, { rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
+        targets.forEach((el) => io.observe(el));
+      })();
+    </script>
   </body>
 </html>

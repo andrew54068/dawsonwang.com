@@ -271,9 +271,9 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
   building: '進行中',
 };
 
-/** Tailwind classes per status chip. Keyed so the page can't invent a variant. */
+/** Warm tag classes per status. Keyed so the page can't invent a variant. */
 export const STATUS_CLASSES: Record<ProjectStatus, string> = {
-  'open-source': 'chip chip-teal',
-  shipped: 'chip chip-outline',
-  building: 'chip chip-ochre',
+  'open-source': 'tag tag-teal',
+  shipped: 'tag tag-outline',
+  building: 'tag tag-ochre',
 };

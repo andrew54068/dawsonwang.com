@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
-import { topicBySlug, daysForTopic, topicsWithPosts, topicsForDay, chipVariantFor } from '../../lib/topics';
+import { topicBySlug, daysForTopic, topicsWithPosts, topicsForDay } from '../../lib/topics';
 import { isTopPerformer } from '../../lib/metrics';
 import { SITE_URL, breadcrumbJsonLd } from '../../lib/seo';
 
@@ -22,7 +22,6 @@ const tagged = daysForTopic(slug as string, validDayNumbers);
 const filtered = days.filter(d => tagged.includes(d.data.dayNumber))
   .sort((a, b) => b.data.dayNumber - a.data.dayNumber);
 
-const variant = chipVariantFor(topic.slug);
 const topicUrl = `${SITE_URL}/topics/${topic.slug}`;
 const topicPageTitle = `${topic.title} AI 實作文章`;
 const topicPageDescription = `${topic.blurb} 收錄 ${filtered.length} 篇 Dawson Wang 的 AI 工具落地文章與案例。`;
@@ -62,27 +61,29 @@ const topicBreadcrumbJsonLd = breadcrumbJsonLd([
 ], topicUrl);
 ---
 <BaseLayout title={topicPageTitle} description={topicPageDescription} structuredData={[topicJsonLd, topicBreadcrumbJsonLd]}>
-  <article class="max-w-5xl mx-auto px-8 py-16">
-    <div class="font-mono text-xs text-teal uppercase tracking-[.08em] mb-4">TOPIC · {filtered.length} POSTS</div>
-    <div class="flex items-baseline gap-3 mb-3">
-      <span class={`chip chip-${variant}`}>{topic.slug}</span>
+  <section class="page-hero" aria-labelledby="topic-title">
+    <div class="wrap">
+      <p class="kicker"><svg class="icon" aria-hidden="true"><use href="#i-files"/></svg>主題 · {filtered.length} 篇</p>
+      <h1 id="topic-title">{topic.title}</h1>
+      <p class="hero-sub">{topic.blurb}</p>
+      <p class="page-links">
+        <a class="text-link" href="/topics"><span aria-hidden="true">←</span> 所有主題</a>
+        <a class="text-link" href="/days">看所有文章 <span aria-hidden="true">→</span></a>
+      </p>
     </div>
-    <h1 class="font-display text-ink leading-[1.02] tracking-[-0.03em] text-balance font-semibold"
-        style="font-size: clamp(2.5rem, 5vw, 4rem);">
-      {topic.title}
-    </h1>
-    <p class="font-display text-muted text-lg leading-relaxed mt-3 max-w-2xl">
-      {topic.blurb}
-    </p>
-    <div class="mt-10 border-t border-rule">
-      {filtered.map(day => (
-        <PostCard
-          dayNumber={day.data.dayNumber}
-          subtitle={day.data.subtitle}
-          topicSlugs={topicsForDay(day.data.dayNumber)}
-          isTopPerformer={isTopPerformer(day.data.dayNumber)}
-        />
-      ))}
+  </section>
+  <section class="sec-sm" aria-label={`${topic.title} 文章列表`}>
+    <div class="wrap">
+      <div class="post-list">
+        {filtered.map(day => (
+          <PostCard
+            dayNumber={day.data.dayNumber}
+            subtitle={day.data.subtitle}
+            topicSlugs={topicsForDay(day.data.dayNumber)}
+            isTopPerformer={isTopPerformer(day.data.dayNumber)}
+          />
+        ))}
+      </div>
     </div>
-  </article>
+  </section>
 </BaseLayout>

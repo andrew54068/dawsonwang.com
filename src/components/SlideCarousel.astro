@@ -3,26 +3,35 @@ interface Props { slides: { src: string; alt: string }[]; }
 const { slides } = Astro.props;
 ---
 {slides.length > 0 && (
-  <figure class="my-10" data-slide-carousel>
-    <div class="font-mono text-[11px] tracking-[.08em] uppercase text-teal mb-3">SLIDES · {slides.length}</div>
-    <div class="relative aspect-square overflow-hidden border border-rule rounded-lg bg-surface-1">
-      {slides.map((slide, i) => (
-        <img
-          src={slide.src}
-          alt={slide.alt}
-          class="absolute inset-0 w-full h-full object-contain transition-opacity duration-200"
-          style={`opacity: ${i === 0 ? 1 : 0}`}
-          data-slide-index={i}
-        />
-      ))}
+  <figure class="slides" data-slide-carousel>
+    <div class="slides-frame">
+      <div class="slides-inner">
+        {slides.map((slide, i) => (
+          <img
+            src={slide.src}
+            alt={slide.alt}
+            style={`opacity: ${i === 0 ? 1 : 0}`}
+            data-slide-index={i}
+          />
+        ))}
+      </div>
     </div>
-    <figcaption class="flex justify-between items-baseline mt-3 gap-4 font-mono text-xs">
-      <button type="button" data-slide-prev class="text-muted hover:text-ink transition-colors duration-150">← 上一張</button>
-      <span data-slide-counter class="text-teal">1 / {slides.length}</span>
-      <button type="button" data-slide-next class="text-muted hover:text-ink transition-colors duration-150">下一張 →</button>
+    <figcaption class="slides-nav" data-pagefind-ignore>
+      <button type="button" data-slide-prev class="btn btn-soft btn-sm"><span aria-hidden="true">←</span> 上一張</button>
+      <span data-slide-counter class="slides-count">1 / {slides.length}</span>
+      <button type="button" data-slide-next class="btn btn-soft btn-sm">下一張 <span aria-hidden="true">→</span></button>
     </figcaption>
   </figure>
 )}
+<style>
+  .slides { margin: 0 0 36px; }
+  .slides-frame { padding: 12px; border-radius: 30px; background: var(--white); box-shadow: var(--shadow); }
+  .slides-inner { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 20px; background: var(--cream); }
+  .slides-inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .2s; }
+  .slides-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; }
+  .slides-count { font: 700 1.2rem/1 var(--f-hand); color: var(--persimmon-text); }
+  @media (prefers-reduced-motion: reduce) { .slides-inner img { transition: none; } }
+</style>
 <script>
   document.querySelectorAll('[data-slide-carousel]').forEach((carousel) => {
     const slides = carousel.querySelectorAll<HTMLImageElement>('[data-slide-index]');

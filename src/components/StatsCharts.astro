@@ -52,52 +52,60 @@ const fbPeakIdx = facebookSeries.reduce(
 );
 const fbPeak = facebookSeries[fbPeakIdx] ?? null;
 ---
-<div class="stats-charts grid gap-8" data-variant={variant}>
-  <figure class="m-0">
-    <figcaption class="flex items-baseline justify-between mb-2 gap-3">
-      <span class="font-mono text-[11px] tracking-[.08em] uppercase text-teal">Threads · daily views</span>
-      <span class="font-mono text-xs text-faint">{threadsSeries.length} / {totalDays}</span>
+<div class="stats-charts" data-variant={variant}>
+  <figure>
+    <figcaption class="sc-head">
+      <span class="sc-title">Threads · 每天的觀看數</span>
+      <span class="sc-meta">{threadsSeries.length} / {totalDays} 篇有數據</span>
     </figcaption>
-    <svg viewBox={`0 0 ${SP_W} ${SP_H}`} class={`block w-full ${variant === 'expanded' ? 'h-[110px]' : 'h-[80px]'}`} preserveAspectRatio="none" aria-hidden="true">
-      <path d={sparkArea} fill="var(--color-teal)" fill-opacity="0.16" />
-      <path d={sparkPath} fill="none" stroke="var(--color-teal)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+    <svg viewBox={`0 0 ${SP_W} ${SP_H}`} class="sc-svg" preserveAspectRatio="none" aria-hidden="true">
+      <path d={sparkArea} fill="var(--leaf)" fill-opacity="0.16" />
+      <path d={sparkPath} fill="none" stroke="var(--leaf)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
       {threadsPeak && (
-        <circle cx={threadsPeakX} cy={threadsPeakY} r="3" fill="var(--color-brick)" />
+        <circle cx={threadsPeakX} cy={threadsPeakY} r="4" fill="var(--persimmon)" />
       )}
     </svg>
-    <div class="mt-2 flex items-baseline justify-between font-mono text-[11px] text-faint gap-3">
-      <span>累計 <span class="text-ink">{formatCount(totalThreadsViews)}</span> 觀看</span>
+    <div class="sc-foot">
+      <span>累計 <strong>{formatCount(totalThreadsViews)}</strong> 次觀看</span>
       {threadsPeak && (
-        <span class="text-brick">
-          peak day {threadsPeak.day} · {formatCount(threadsPeak.value)}
-        </span>
+        <span class="sc-peak">最高 Day {threadsPeak.day} · {formatCount(threadsPeak.value)}</span>
       )}
     </div>
   </figure>
 
-  <figure class="m-0">
-    <figcaption class="flex items-baseline justify-between mb-2 gap-3">
-      <span class="font-mono text-[11px] tracking-[.08em] uppercase text-teal">Facebook · daily reach</span>
-      <span class="font-mono text-xs text-faint">{facebookSeries.length}</span>
+  <figure>
+    <figcaption class="sc-head">
+      <span class="sc-title">Facebook · 每天的觸及數</span>
+      <span class="sc-meta">{facebookSeries.length} 篇有數據</span>
     </figcaption>
-    <svg viewBox={`0 0 ${BAR_W} ${BAR_H}`} class={`block w-full ${variant === 'expanded' ? 'h-[110px]' : 'h-[80px]'}`} preserveAspectRatio="none" aria-hidden="true">
+    <svg viewBox={`0 0 ${BAR_W} ${BAR_H}`} class="sc-svg" preserveAspectRatio="none" aria-hidden="true">
       {bars.map(b => (
-        <rect x={b.x} y={b.y} width={b.w} height={b.h} fill="var(--color-ochre)" />
+        <rect x={b.x} y={b.y} width={b.w} height={b.h} fill="var(--persimmon)" />
       ))}
     </svg>
-    <div class="mt-2 flex items-baseline justify-between font-mono text-[11px] text-faint gap-3">
-      <span>累計 <span class="text-ink">{formatCount(totalFacebookReach)}</span> 觸及</span>
+    <div class="sc-foot">
+      <span>累計 <strong>{formatCount(totalFacebookReach)}</strong> 次觸及</span>
       {fbPeak && (
-        <span class="text-ochre">
-          peak day {fbPeak.day} · {formatCount(fbPeak.value)}
-        </span>
+        <span class="sc-peak">最高 Day {fbPeak.day} · {formatCount(fbPeak.value)}</span>
       )}
     </div>
   </figure>
 
   {totalLinkedInImpressions > 0 && (
-    <div class="font-mono text-[11px] text-faint -mt-4">
-      LinkedIn 另曝光 <span class="text-ink">{formatCount(totalLinkedInImpressions)}</span> 次
-    </div>
+    <p class="sc-note">LinkedIn 另外曝光 <strong>{formatCount(totalLinkedInImpressions)}</strong> 次</p>
   )}
 </div>
+
+<style>
+  .stats-charts { display: grid; gap: 32px; }
+  .stats-charts figure { margin: 0; }
+  .sc-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-bottom: 10px; }
+  .sc-title { font: 700 1.2rem/1.4 var(--f-hand); color: var(--ink); }
+  .sc-meta { font-size: .95rem; color: var(--muted); }
+  .sc-svg { display: block; width: 100%; height: 80px; }
+  [data-variant="expanded"] .sc-svg { height: 120px; }
+  .sc-foot { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; font-size: 1rem; color: var(--muted); }
+  .sc-foot strong, .sc-note strong { font: 700 1.3rem/1 var(--f-hand); color: var(--ink); }
+  .sc-peak { color: var(--persimmon-text); font-weight: 700; }
+  .sc-note { margin-top: -12px; font-size: 1rem; color: var(--muted); }
+</style>

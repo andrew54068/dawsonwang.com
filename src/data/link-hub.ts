@@ -28,7 +28,7 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
         description: '直接寫信給我，聊聊你的需求',
         external: true,
         icon: 'mail',
-        accent: 'var(--color-teal)',
+        accent: 'var(--leaf-text)',
       },
       {
         id: 'line',
@@ -52,7 +52,7 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
         description: '每天拆解 AI 工具與實際工作流',
         external: true,
         icon: 'threads',
-        accent: 'var(--color-ink)',
+        accent: 'var(--ink)',
       },
       {
         id: 'facebook',
@@ -79,13 +79,13 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
     label: '探索',
     links: [
       {
-        id: 'proof',
+        id: 'projects',
         label: '作品集',
-        href: '/proof',
+        href: '/projects',
         description: '看已經做出來的工具、流程與案例',
         external: false,
         icon: 'briefcase',
-        accent: 'var(--color-brick)',
+        accent: 'var(--persimmon-text)',
       },
       {
         id: 'days',
@@ -94,7 +94,7 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
         description: '連續公開記錄 AI 落地的每一天',
         external: false,
         icon: 'newspaper',
-        accent: 'var(--color-teal)',
+        accent: 'var(--leaf-text)',
       },
     ],
   },
@@ -109,7 +109,7 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
         description: '先聊 30 分鐘，釐清你現在卡在哪裡',
         external: true,
         icon: 'calendar',
-        accent: 'var(--color-ochre)',
+        accent: 'var(--persimmon-ink)',
       },
       {
         id: 'partnership',
@@ -118,7 +118,7 @@ export const LINK_GROUPS: readonly LinkHubGroup[] = [
         description: '談演講、培訓、顧問或 AI 工具落地',
         external: true,
         icon: 'handshake',
-        accent: 'var(--color-brick)',
+        accent: 'var(--persimmon-text)',
       },
     ],
   },

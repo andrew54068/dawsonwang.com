@@ -4,12 +4,23 @@ interface Props { slug: string; title: string; blurb: string; count: number; }
 const { slug, title, blurb, count } = Astro.props;
 const variant = chipVariantFor(slug);
 ---
-<a href={`/topics/${slug}`}
-   class="grid grid-cols-[80px_1fr_60px] gap-5 px-5 py-4 border-b border-rule last:border-b-0 hover:bg-surface-1 transition-colors duration-150 no-underline items-center group">
-  <span class={`chip chip-${variant}`}>{slug}</span>
-  <span class="block">
-    <span class="font-display text-ink text-[15px] font-medium group-hover:text-teal transition-colors duration-150">{title}</span>
-    <span class="block font-display text-muted text-sm mt-1 leading-relaxed">{blurb}</span>
-  </span>
-  <span class="font-mono text-xs text-faint text-right">{count} 篇</span>
+<a href={`/topics/${slug}`} class={`card topic-card topic-${variant}`}>
+  <span class="topic-count"><strong>{count}</strong> 篇</span>
+  <h2>{title}</h2>
+  <p>{blurb}</p>
+  <span class="topic-go" aria-hidden="true">→</span>
 </a>
+
+<style>
+  .topic-card { position: relative; display: flex; flex-direction: column; min-height: 100%; }
+  .topic-count { align-self: flex-start; padding: 2px 12px; border-radius: 999px; background: var(--cream); font-size: .95rem; color: var(--muted); }
+  .topic-teal .topic-count, .topic-sage .topic-count { background: var(--bubble); color: var(--leaf-text); }
+  .topic-brick .topic-count, .topic-ochre .topic-count { background: var(--peach); color: var(--persimmon-ink); }
+  .topic-count strong { font: 700 1.15rem/1 var(--f-hand); }
+  .topic-card h2 { margin-top: 14px; font-size: 1.4rem; transition: color .2s; }
+  .topic-card p { margin-top: 8px; padding-right: 1.5em; color: var(--muted); font-size: 1.02rem; line-height: 1.75; }
+  .topic-go { position: absolute; right: 24px; bottom: 20px; font-weight: 700; color: var(--persimmon-text); transition: transform .3s var(--spring); }
+  .topic-card:hover h2 { color: var(--persimmon-ink); }
+  .topic-card:hover .topic-go { transform: translateX(4px); }
+  @media (prefers-reduced-motion: reduce) { .topic-go { transition: none; } }
+</style>

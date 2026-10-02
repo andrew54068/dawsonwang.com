@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { TOPICS, DAY_TOPICS } from '../src/data/topics';
-import { PROOF_PROJECTS } from '../src/data/proof-projects';
+import { PROJECTS } from '../src/data/projects';
 import { SERVICES } from '../src/data/services';
 import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../src/data/profiles';
 import { LECTURE_SESSIONS } from '../src/data/speaking';
@@ -721,7 +721,7 @@ if (!existsSync(outDir)) {
   assertIncludes(sitemap, `<loc>${siteUrl}/search</loc>`, 'sitemap');
   if (latestPublishedAt) {
     assertSitemapEntry(sitemap, '/', '1.0', 'weekly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/proof', '0.9', 'weekly', latestPublishedAt);
+    assertSitemapEntry(sitemap, '/projects', '0.9', 'weekly', latestPublishedAt);
     assertSitemapEntry(sitemap, '/business-registration', '0.7', 'yearly', latestPublishedAt);
     assertSitemapEntry(sitemap, '/days', '0.9', 'daily', latestPublishedAt);
     assertSitemapEntry(sitemap, '/topics', '0.7', 'weekly', latestPublishedAt);
@@ -751,7 +751,7 @@ if (!existsSync(outDir)) {
 
   const llms = readGenerated('llms.txt');
   assertIncludes(llms, '# Dawson Wang', 'llms.txt');
-  for (const llmsCorePath of ['/', '/proof', '/business-registration', '/days', '/topics', '/search']) {
+  for (const llmsCorePath of ['/', '/projects', '/business-registration', '/days', '/topics', '/search']) {
     const expectedUrl = llmsCorePath === '/' ? `${siteUrl}/` : `${siteUrl}${llmsCorePath}`;
     assertIncludes(llms, expectedUrl, `llms.txt core page ${llmsCorePath}`);
   }
@@ -764,39 +764,34 @@ if (!existsSync(outDir)) {
     if (llms.includes(`${siteUrl}/topics/${topic.slug}`)) fail(`llms.txt leaks zero-post topic /topics/${topic.slug}`);
   }
 
-  // /proof portfolio page — CollectionPage + BreadcrumbList JSON-LD with #website graph link
-  const proof = readGenerated('proof/index.html');
-  assertTitleStack(proof, 'AI 工具落地案例與作品集 | Dawson Wang', '/proof');
-  assertIncludes(proof, `<link rel="canonical" href="${siteUrl}/proof"`, '/proof canonical');
-  assertCanonicalOgUrlParity(proof, '/proof');
-  assertLocaleStack(proof, '/proof');
-  assertNonArticleSharedLayoutContract(proof, '/proof', '/proof');
-  assertDescriptionStack(proof, '/proof');
-  assertDefaultSocialCardStack(proof, '/proof');
-  assertMatch(proof, /<meta name="description" content="\d+ 天 AI 工具落地公開記錄：實作專案、工作流、開源工具、諮詢案例與可驗收成果，幫你快速判斷 Dawson Wang 是否適合導入你的團隊。"\s*\/?\s*>/, '/proof meta description');
-  assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*<\/script>/s, '/proof CollectionPage JSON-LD');
-  assertMatch(proof, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/proof BreadcrumbList JSON-LD');
-  assertJsonLdInLanguage(proof, 'CollectionPage', '/proof');
-  const proofJsonLd = extractJsonLdScript(proof, '/proof');
-  assertRootEntityGraph(proofJsonLd, '/proof');
-  assertIncludes(proofJsonLd, `"isPartOf":{"@id":"${siteUrl}/#website"}`, '/proof JSON-LD isPartOf #website graph link');
-  // BreadcrumbList @id + CollectionPage → BreadcrumbList graph link (issue #68).
-  assertIncludes(proofJsonLd, `"@id":"${siteUrl}/proof#breadcrumb"`, '/proof BreadcrumbList @id');
-  assertMatch(proofJsonLd, new RegExp(`"@type":"CollectionPage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/proof#breadcrumb"\\}`), '/proof CollectionPage breadcrumb → #breadcrumb graph link');
-  // mainEntity ItemList of shipped projects — single source of truth in src/data/proof-projects.ts
-  assertMatch(proofJsonLd, /"@type":"CollectionPage"[\s\S]*?"mainEntity":\{[^}]*"@type":"ItemList"/, '/proof CollectionPage→ItemList mainEntity link');
-  assertMatch(proofJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${PROOF_PROJECTS.length}\\b`), '/proof ItemList numberOfItems matches PROOF_PROJECTS.length');
-  // Count CreativeWork occurrences in the structuredData script (each PROOF_PROJECTS item emits exactly one
-  // CreativeWork; the rendered proof cards duplicate the same names in visible copy, so count/assert inside
-  // the extracted JSON-LD blob rather than the full HTML document.
-  const proofCreativeWorkCount = countMatches(proofJsonLd, /"@type":"CreativeWork"/g);
-  if (proofCreativeWorkCount !== PROOF_PROJECTS.length) {
-    fail(`/proof CreativeWork count ${proofCreativeWorkCount} !== PROOF_PROJECTS.length ${PROOF_PROJECTS.length}`);
+  // /projects portfolio — absorbed the retired /proof page (its public-record charts moved here).
+  const projectsPage = readGenerated('projects/index.html');
+  assertTitleStack(projectsPage, '側專案作品｜Dawson Wang 做過的工具 | Dawson Wang', '/projects');
+  assertIncludes(projectsPage, `<link rel="canonical" href="${siteUrl}/projects"`, '/projects canonical');
+  assertCanonicalOgUrlParity(projectsPage, '/projects');
+  assertLocaleStack(projectsPage, '/projects');
+  assertNonArticleSharedLayoutContract(projectsPage, '/projects', '/projects');
+  assertDescriptionStack(projectsPage, '/projects');
+  assertJsonLdInLanguage(projectsPage, 'CollectionPage', '/projects');
+  const projectsJsonLd = extractJsonLdScript(projectsPage, '/projects');
+  assertRootEntityGraph(projectsJsonLd, '/projects');
+  assertIncludes(projectsJsonLd, `"@id":"${siteUrl}/projects#breadcrumb"`, '/projects BreadcrumbList @id');
+  assertMatch(projectsJsonLd, new RegExp(`"mainEntity":\\{[^}]*"numberOfItems":${PROJECTS.length}\\b`), '/projects ItemList numberOfItems matches PROJECTS.length');
+  for (const project of PROJECTS) {
+    assertIncludes(projectsJsonLd, escapeJsonString(project.name), `/projects ItemList contains project name ${project.name}`);
   }
-  // Spot-check that each PROOF_PROJECTS entry's name appears inside the JSON-LD (escaped form).
-  for (const project of PROOF_PROJECTS) {
-    const escaped = escapeJsonString(project.name);
-    assertIncludes(proofJsonLd, escaped, `/proof ItemList contains project name ${project.name}`);
+  assertIncludes(projectsPage, 'class="stats-charts"', '/projects public-record charts (moved from /proof)');
+
+  // /proof is retired: a 301 to /projects (astro.config.mjs redirects), never an indexable page.
+  if (sitemap.includes(`<loc>${siteUrl}/proof</loc>`)) fail('sitemap.xml still lists retired /proof');
+  if (llms.includes(`${siteUrl}/proof`)) fail('llms.txt still lists retired /proof');
+  const vercelConfigPath = path.join(process.cwd(), '.vercel/output/config.json');
+  if (existsSync(vercelConfigPath)) {
+    const routes: Array<{ src?: string; status?: number; headers?: Record<string, string> }> =
+      JSON.parse(readFileSync(vercelConfigPath, 'utf8')).routes ?? [];
+    const proofRedirect = routes.some(r => r.src === '^/proof$' && r.status === 301 && r.headers?.Location === '/projects');
+    if (!proofRedirect) fail('.vercel/output/config.json is missing the 301 /proof → /projects redirect');
+    else note('/proof 301 → /projects redirect present in Vercel routes');
   }
 
   // /business-registration public guide — sanitized Article + BreadcrumbList JSON-LD.

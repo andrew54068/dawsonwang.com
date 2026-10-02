@@ -26,4 +26,10 @@ export default defineConfig({
     },
   },
   publicDir: 'public',
+  // /proof was an older portfolio page that duplicated /projects (a stale
+  // subset of the same projects plus the home page's consultations). Its one
+  // unique piece — the public-record charts — now lives on /projects.
+  redirects: {
+    '/proof': { status: 301, destination: '/projects' },
+  },
 });
