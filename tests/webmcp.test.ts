@@ -3,10 +3,10 @@ import { publicPageUrl, registerWebMcp, type WebMcpTool } from '../src/lib/webmc
 
 const origin = 'https://www.dawsonwang.com';
 describe('WebMCP public content', () => {
-  test.each(['/day/270', '/projects', '/topics/automation', '/', '/speaking', '/links', '/proof'])('allows public page %s', path => {
+  test.each(['/day/270', '/projects', '/topics/automation', '/', '/speaking', '/links'])('allows public page %s', path => {
     expect(publicPageUrl(path, origin).pathname).toBe(path);
   });
-  test.each(['https://evil.test/day/1', '//evil.test/projects', '/api/inquiry', '/inquiry-received', '/day/1?secret=x', '/unknown', '/day/../api/embed'])('rejects non-public URL %s', path => {
+  test.each(['https://evil.test/day/1', '//evil.test/projects', '/api/inquiry', '/inquiry-received', '/day/1?secret=x', '/unknown', '/proof', '/day/../api/embed'])('rejects non-public URL %s', path => {
     expect(() => publicPageUrl(path, origin)).toThrow();
   });
   test('unsupported browsers do not register or execute anything', async () => {

@@ -18,7 +18,7 @@ interface Dependencies {
 export function publicPageUrl(path: string, origin: string): URL {
   const url = new URL(path, origin);
   if (url.origin !== origin || url.username || url.password || url.search ||
-      !/^\/(?:day\/[1-9]\d*|topics(?:\/[a-z0-9-]+)?|projects|proof|speaking|links|days|business-registration)?\/?$/.test(url.pathname)) {
+      !/^\/(?:day\/[1-9]\d*|topics(?:\/[a-z0-9-]+)?|projects|speaking|links|days|business-registration)?\/?$/.test(url.pathname)) {
     throw new Error('僅能讀取本站公開內容頁面。');
   }
   url.hash = '';
@@ -56,7 +56,7 @@ export async function registerWebMcp(context: ModelContext | undefined, deps: De
   }
   await context.registerTool({
     name: 'read_page',
-    description: '讀取本站公開頁面的正文及連結。path 可用搜尋結果的網址，或 /（服務）、/projects、/proof、/speaking、/topics、/links、/days、/day/編號、/business-registration。',
+    description: '讀取本站公開頁面的正文及連結。path 可用搜尋結果的網址，或 /（服務）、/projects、/speaking、/topics、/links、/days、/day/編號、/business-registration。',
     inputSchema: { type: 'object', additionalProperties: false, properties: { path: { type: 'string', maxLength: 2000 } }, required: ['path'] },
     annotations: { readOnlyHint: true, untrustedContentHint: true },
     execute: async ({ path }) => {

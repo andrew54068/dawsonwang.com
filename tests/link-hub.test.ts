@@ -15,7 +15,7 @@ describe('links page content', () => {
       'https://www.threads.com/@dawson54068',
       'https://www.facebook.com/andrew.wang.716',
       'https://www.instagram.com/dawson54068',
-      '/proof',
+      '/projects',
       '/days',
       'https://calendar.app.google/FBHsAyW6zJ529aAb6',
       'https://calendar.app.google/xLSLkAUNnc2MVSsd9',
@@ -27,7 +27,7 @@ describe('links page content', () => {
       LINK_GROUPS.flatMap(group => group.links).map(link => [link.id, link]),
     );
 
-    expect(links.proof).toMatchObject({ href: '/proof', external: false });
+    expect(links.projects).toMatchObject({ href: '/projects', external: false });
     expect(links.days).toMatchObject({ href: '/days', external: false });
   });
 
