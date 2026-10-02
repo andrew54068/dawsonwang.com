@@ -499,7 +499,7 @@ if (!existsSync(outDir)) {
   assertIncludes(speaking, '4.82 / 5', '/speaking recent hospital survey average score');
   assertIncludes(speaking, '29 / 33', '/speaking recent hospital survey hands-on completion');
   assertIncludes(speaking, '31 / 33', '/speaking recent hospital survey work intent');
-  assertIncludes(speaking, '>9</dd>', '/speaking verified session count');
+  assertIncludes(speaking, '>8</dd>', '/speaking verified session count');
   assertIncludes(speaking, '>250+</dd>', '/speaking conservative attendee total');
   for (const session of ['06/27 奇美醫院總院', '07/04 奇美醫院總院', '07/16 柳營奇美醫院', '07/31 部立臺南醫院', '09/07 臺南新樓醫院', '09/17 佳里奇美醫院', '09/21 柳營奇美醫院']) {
     assertIncludes(speaking, session, `/speaking hospital session ${session}`);

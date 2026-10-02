@@ -49,8 +49,9 @@ const principles = PRINCIPLES.map(p => ({ ...p, href: dayHref(p.day, `principle 
 // Six physical teaching sites: 中正高工、奇美總院、柳營奇美、部立臺南、
 // 臺南新樓、佳里奇美. A grouped engagement is not the same thing as a site.
 const venueCount = 6;
-// Seven hospital dates plus the two-day 中正高工 workshop.
-const sessionCount = 9;
+// Seven hospital sessions (醫療院所系列課程) plus the 中正高工 workshop —
+// one engagement even though it ran over two days.
+const sessionCount = 8;
 // A conservative lower bound across the delivered sessions — response records
 // rather than sign-in sheets, so publish a floor rather than false precision.
 const attendeeTotal = '250+';
@@ -184,9 +185,9 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
       <section class="sec" id="lecture-sessions" aria-labelledby="lecture-sessions-title">
         <div class="wrap">
           <div class="sec-head">
-            <p class="eyebrow">實際場次 · {LECTURE_SESSIONS.length}</p>
+            <p class="eyebrow">現場記錄 · {LECTURE_SESSIONS.length}</p>
             <h2 id="lecture-sessions-title">每一場，<br>分開看現場。</h2>
-            <p class="sec-sub">每場留下現場的樣子：一張交代授課狀態，一張保留學員參與的畫面。</p>
+            <p class="sec-sub">每場留下現場的樣子：一張交代授課狀態，一張保留學員參與的畫面。中正高工是同一場兩天的研習。</p>
           </div>
           <div class="sp-lectures">
             {LECTURE_SESSIONS.map((session, index) => (

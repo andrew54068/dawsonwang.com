@@ -85,29 +85,6 @@ export const ENGAGEMENTS: Engagement[] = [
     featured: true,
   },
   {
-    slug: 'chimei',
-    venue: '奇美醫院',
-    title: 'AI 簡報工作流',
-    when: '2026 年',
-    // Month precision: Day 170 is the prep write-up, published 2026-06-20. The
-    // exact session day isn't written down anywhere.
-    start: '2026-06',
-    format: '院內內訓 · 概念講解加實作',
-    attendance: 'offline',
-    audience: '從醫師到行政，三十幾人同場',
-    outline: [
-      '同一份內容為什麼你做了三次——真正省時的不是「生」第一份，是「重製」',
-      '用 AI 做簡報的三個層次',
-      '拿這次備課本身當示範，看真實的來回而不是做好的成品',
-    ],
-    takeaway: '換對象的第二份、第三份簡報，幾乎一句話就改完。',
-    decks: [
-      { url: 'https://slide.dawsonwang.com/s/tainan-hospital', title: 'AI 簡報工作流', segment: '完整簡報' },
-    ],
-    days: [170],
-    featured: true,
-  },
-  {
     slug: 'moh-hospital-series',
     venue: '醫療院所系列課程',
     title: '衛福部支持的 AI 應用課程',
@@ -127,7 +104,7 @@ export const ENGAGEMENTS: Engagement[] = [
       '一次產三種語氣，由人選擇，不只說「自然一點」',
       '帶著自己的模板，做出真的能繼續修改的簡報',
     ],
-    takeaway: '9 月兩場共收到 33 份匿名課後回饋：29 人完成六個實作步驟，31 人表示會或應該會把方法用在工作上。',
+    takeaway: '課後匿名回饋裡，多數學員當場完成六個實作步驟，也表示會把方法用在工作上。',
     sessions: [
       '06/27 奇美醫院總院',
       '07/04 奇美醫院總院',

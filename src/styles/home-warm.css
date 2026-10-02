@@ -498,7 +498,7 @@ body:has(.home-warm) {
 }
 .home-warm .survey-nums dd small { margin-left: 4px; font: 500 1rem/1 var(--f-body); color: var(--muted);
 }
-.home-warm .survey-nums dt { margin-top: 6px; font-size: 1rem; line-height: 1.5;
+.home-warm .survey-nums dt { margin-top: 8px; font-size: 1.05rem; line-height: 1.5; font-weight: 600; color: var(--ink);
 }
 .home-warm .chat { margin-top: 28px; display: grid; gap: 18px;
 }
