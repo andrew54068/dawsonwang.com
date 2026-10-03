@@ -20,39 +20,13 @@ const totalDays = days.length;
       </ul>
     </div>
 
-    <figure class="hero-photo load-photo">
-      <svg class="blob blob-a" viewBox="0 0 600 600" aria-hidden="true"><path fill="currentColor" d="M452 98c58 46 92 128 78 207-14 80-75 157-157 187-81 31-183 14-247-42C62 395 37 296 64 214 91 132 170 67 256 54c86-13 138-2 196 44Z"/></svg>
-      <svg class="blob blob-b" viewBox="0 0 600 600" aria-hidden="true"><path fill="currentColor" d="M300 60c84 6 170 48 200 126 30 77 4 190-64 250-68 61-178 70-260 34C94 434 40 352 46 270 52 188 118 108 186 80c34-14 70-22 114-20Z"/></svg>
-      <svg class="doodle-spark draw" viewBox="0 0 60 60" aria-hidden="true"><path stroke="currentColor" stroke-width="4" d="M30 6v14M10 16l9 9M50 16l-9 9"/></svg>
+    <figure class="hero-photo hero-portrait load-photo">
       <div class="photo-frame">
         <div class="photo-inner">
-          <img src="/speaking/ccvs-2026-helping.webp" width="1600" height="1200" fetchpriority="high" decoding="async"
-               alt="Dawson Wang 站在中正高工電腦教室一位老師的座位旁，協助她完成 AI 實作">
-          <!-- Annotation in the photo's own 1600×1200 space, so the loop stays on Dawson at any size. -->
-          <svg class="annot" viewBox="0 0 1600 1200" aria-hidden="true" focusable="false">
-            <defs>
-              <filter id="note-shadow" x="-10%" y="-30%" width="120%" height="180%">
-                <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#2e231c" flood-opacity=".18"/>
-              </filter>
-            </defs>
-            <path class="draw draw-in halo" pathLength="1" d="M761 119C771 114 802 85 824 85C846 84 872 103 894 118C916 133 942 150 958 177C974 204 983 244 992 279C1000 314 1008 351 1008 387C1008 422 1003 463 991 490C979 517 956 533 936 548C916 563 894 578 871 577C849 576 825 557 802 541C780 524 755 506 739 479C723 451 713 411 705 375C697 339 689 299 691 263C692 227 701 189 714 160C727 131 746 104 767 89C788 74 828 72 840 69"/>
-            <path class="draw draw-in loop" pathLength="1" d="M761 119C771 114 802 85 824 85C846 84 872 103 894 118C916 133 942 150 958 177C974 204 983 244 992 279C1000 314 1008 351 1008 387C1008 422 1003 463 991 490C979 517 956 533 936 548C916 563 894 578 871 577C849 576 825 557 802 541C780 524 755 506 739 479C723 451 713 411 705 375C697 339 689 299 691 263C692 227 701 189 714 160C727 131 746 104 767 89C788 74 828 72 840 69"/>
-            <g class="note-d">
-              <g filter="url(#note-shadow)" transform="rotate(-4 1228 -95)">
-                <rect class="note-paper" x="856" y="-170" width="744" height="150" rx="20"/>
-                <text class="note-text" x="1228" y="-62" text-anchor="middle">我會走到你座位旁</text>
-                <rect class="note-tape" x="1168" y="-190" width="120" height="40" rx="5" transform="rotate(-7 1228 -170)"/>
-              </g>
-              <path class="draw draw-in arrow" pathLength="1" d="M1062 -6C1078 70 1060 160 1016 214M1055 198L1016 214L1024 173"/>
-            </g>
-          </svg>
+          <img src="/dawson-portrait.webp" width="1024" height="1536" fetchpriority="high" decoding="async"
+               alt="Dawson Wang 身穿棕色西裝、微笑看向鏡頭的個人肖像">
         </div>
       </div>
-      <svg class="doodle-squiggle draw" viewBox="0 0 110 30" aria-hidden="true"><path stroke="currentColor" stroke-width="4" d="M4 20c9-14 15 9 24-4s15 9 24-4 15 9 24-4 14 8 30-2"/></svg>
-      <figcaption class="hero-cap">
-        <svg class="draw" viewBox="0 0 40 44" aria-hidden="true"><path stroke="currentColor" stroke-width="2.6" d="M30 41C29 28 25 16 18 5M11 12L18 4.5 24.5 11"/></svg>
-        <span>我會走到<br>你座位旁</span>
-      </figcaption>
     </figure>
   </div>
 
@@ -65,3 +39,8 @@ const totalDays = days.length;
     </ul>
   </div>
 </section>
+
+<style>
+  .hero-photo.hero-portrait { width: 100%; max-width: 440px; padding-top: 0; margin-inline: auto; }
+  .hero-portrait .photo-inner img { aspect-ratio: 4 / 5; object-position: center 35%; }
+</style>
