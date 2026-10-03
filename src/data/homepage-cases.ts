@@ -1,113 +1,165 @@
-// Hand-picked consulting case studies for the homepage RecentConsultations
-// section. Each entry pulls its subtitle live from the day's source.md via
-// `getCollection('days')` at build time, so the only thing maintained here is
-// the customer framing — the underlying post can be reworded without touching
-// this file.
-//
-// Ordering = display order. Aim for 3 cards covering 3 distinct verticals so
-// a visitor scanning the strip self-identifies in at least one of them.
-
-export interface ConsultingCase {
-  /** Day number that holds the full write-up. */
+// Curated 100 Days case shares. These describe what Dawson built, repaired,
+// or tested; they are not claims of customer delivery or guaranteed results.
+export interface CaseStudy {
+  slug: string;
   dayNumber: number;
-  /** Short uppercase tag rendered as the card's kicker (e.g. 醫療). */
-  vertical: string;
-  /** Sprite icon id for the tag (see HomeIcons.astro). */
-  icon: string;
-  /** Crafted one-line headline for the card. */
-  headline: string;
-  /** One-line "who" — the customer archetype, not their name. */
-  who: string;
-  /** One-line "pain" — the situation they were stuck in (本來). */
-  pain: string;
-  /** One-line "outcome" — what we shipped / unblocked (後來). */
-  outcome: string;
-}
-
-export const RECENT_CONSULTATIONS: ConsultingCase[] = [
-  {
-    dayNumber: 96,
-    vertical: '醫療',
-    icon: 'i-pulse',
-    headline: '把厚厚的 SOP，變成看診時查得到的決策樹',
-    who: '診所主治醫師',
-    pain: '每位病人只有 2–3 分鐘，療程選項卻很複雜；國際 SOP 每 3 個月更新一次，看完一版又出兩版。',
-    outcome: '把 PDF 版的 SOP 拆成可以直接查詢的決策樹，看診時能當場帶病人看懂有哪些選項。',
-  },
-  {
-    dayNumber: 99,
-    vertical: '行銷 / KOL 經紀',
-    icon: 'i-mega',
-    headline: '一個案子橫跨 5 個工具，重新設計整條流程',
-    who: '科技大廠的 KOL 合作社群經理',
-    pain: '預算在試算表、跟代理商用 LINE 溝通，再加上 Email、檔案來回傳、社群平台發文——一個案子橫跨 5 個以上的工具。',
-    outcome: '找出「會用 AI」跟「用得好」之間的落差，重新設計整條工作流程。',
-  },
-  {
-    dayNumber: 98,
-    vertical: '用 LINE 管工作的老闆',
-    icon: 'i-phone',
-    headline: '讓 AI 直接讀 LINE 對話，不用再自己慢慢翻',
-    who: '把工作群開在 LINE 的老闆、PM',
-    pain: '對話散在各個群組和私訊，每次要回顧某一段，都得自己慢慢往上翻。',
-    outcome: '讓 AI 直接讀取電腦裡的 LINE 對話幫你整理——不用申請 API，也不用開發者帳號。',
-  },
-];
-
-// "Personal tools I use every day" — these are demos of capability, not
-// consulting deliverables. Each card has an external CTA (the live tool /
-// page) on top of the standard "see the full write-up" link.
-
-export interface PersonalTool {
-  dayNumber: number;
-  /** Short uppercase tag rendered as the card's kicker (e.g. 知識管理). */
+  relatedDays?: number[];
   category: string;
-  /** Sprite icon id for the doodle (see HomeIcons.astro). */
   icon: string;
-  /** Big, headline-sized one-liner — the "what". */
   headline: string;
-  /** Punchy stat line, mono font (e.g. `103 → 1`). */
-  numberHook: string;
-  /** One-line "pain" — why the tool exists. */
+  audience: string;
   pain: string;
-  /** One-line "outcome" — what visitors get if they try it. */
   outcome: string;
-  /** Live demo / external URL. Leave undefined to omit the demo button. */
+  note?: string;
   demoHref?: string;
-  /** Label on the demo button. */
   demoLabel?: string;
+  featured: boolean;
 }
 
-export const PERSONAL_TOOLS: PersonalTool[] = [
+export const CASE_STUDIES: CaseStudy[] = [
   {
-    dayNumber: 71,
-    category: '知識管理',
-    icon: 'i-book',
-    headline: '把 103 個 Arc 分頁變成 Obsidian 結構化筆記',
-    numberHook: '103 → 1',
-    pain: '永遠看不完的「等等再看」分頁——資訊湧入的速度永遠比消化還快。',
-    outcome: 'Claude Code 一次轉成可搜尋知識庫，未來想用時找得回來。',
+    slug: 'mac-card-reader',
+    dayNumber: 183,
+    relatedDays: [184],
+    category: '日常疑難排解',
+    icon: 'i-id',
+    headline: '舊讀卡機在新 Mac 上不能用，我請 AI 幫忙修',
+    audience: 'M 系列 Mac 使用者',
+    pain: 'EZ100PU 插上去卻讀不到卡，自然人憑證簽章也跟著卡住。',
+    outcome: '修正驅動與衝突，HiPKI 九項自我檢測通過，再把解法打包開源，讓遇到同樣問題的人也能用。',
+    demoHref: 'https://github.com/andrew54068/ez100pu-apple-silicon',
+    demoLabel: '看開源解法',
+    featured: true,
   },
   {
-    dayNumber: 134,
-    category: '學習工具',
+    slug: 'ipas-quiz',
+    dayNumber: 162,
+    relatedDays: [134],
+    category: '學習與考試',
     icon: 'i-quiz',
-    headline: '把 iPAS 195 題變成可以練習的網頁',
-    numberHook: '195 題 / 3 科 / 2 週',
-    pain: '準備 iPAS AI 應用規劃師中級沒有像樣的線上題庫。',
-    outcome: '2 週上線一個證照題庫站，每題附解析，自己 ship 自己用。',
-    demoHref: 'https://ipas-quiz-eight.vercel.app/',
-    demoLabel: '試用題庫 →',
+    headline: '把考古題做成刷題網站，自己用它考過 iPAS',
+    audience: '準備 AI 證照的人',
+    pain: '沒時間把整本指引讀完，想從考題往回補知識，卻缺少順手的練習工具。',
+    outcome: '做成免登入的題庫網站，附解析與作答紀錄。我自己拿來備考，中級兩科都通過。',
+    note: '這是我的備考經驗；短期準備的前提是已有相關基礎。',
+    demoHref: 'https://ipas.dawsonwang.com/',
+    demoLabel: '試用刷題站',
+    featured: true,
   },
   {
-    dayNumber: 139,
-    category: '網站功能',
-    icon: 'i-chat-q',
-    headline: '幫網站加上語意搜尋——零月費、不用資料庫',
-    numberHook: '3 步 / $0 / 0 DB',
-    pain: '朋友問：「你之前那篇講 Raycast 本地模型的，是哪一天？」我也答不出來。',
-    outcome: '3 步上線關鍵字 + 語意雙模式搜尋，整本站變成可問答的知識庫。',
-    demoHref: '/search',
-    demoLabel: '試用本站搜尋 →',
+    slug: 'subsidy-finder',
+    dayNumber: 225,
+    category: '資訊查詢',
+    icon: 'i-files',
+    headline: '政府補助不用翻遍網站，先填一次條件看看',
+    audience: '小公司、行號與創業者',
+    pain: '資格散在不同部會網站，翻完還不確定自己符不符合。',
+    outcome: '做成資格初篩網站，把結果分成可申請、待確認與不符合，每一項都列出理由。',
+    note: '資料與條件會更新，實際申請仍要核對主管機關公告。',
+    demoHref: 'https://www.government-subsidy.tw/',
+    demoLabel: '試用補助查詢',
+    featured: true,
+  },
+  {
+    slug: 'line-project-context',
+    dayNumber: 175,
+    relatedDays: [98, 172],
+    category: '工作對話整理',
+    icon: 'i-chat',
+    headline: '客戶需求散在 LINE 裡，讓 AI 幫我找回來',
+    audience: '用 LINE 管工作的老闆、PM、接案者',
+    pain: '需求與修改散在群組和私訊，做到一半又得往上翻，容易漏掉一句關鍵的話。',
+    outcome: '做了讀取自己 LINE 對話的工具，把原始紀錄接進專案，讓 AI 整理需求、核對前後修改。',
+    note: '目前是 macOS 個人工具；讀取自己的紀錄，送訊息預設只留草稿。',
+    demoHref: 'https://github.com/andrew54068/line-cua-mcp',
+    demoLabel: '看自製工具',
+    featured: true,
+  },
+  {
+    slug: 'headshot-vote',
+    dayNumber: 255,
+    relatedDays: [271],
+    category: '生活小工具',
+    icon: 'i-id',
+    headline: '選不出照片？做個投票網站讓朋友幫忙挑',
+    audience: '需要選照片、設計稿或封面的人',
+    pain: '五張形象照看久了都差不多，私訊收回的意見又散在各個對話裡。',
+    outcome: '做成照片票選頁，讓朋友按用途選、逐張留言；後來再投修圖版本，還做了結果公布動畫。',
+    demoHref: 'https://ai-headshot-vote.andrew0424718012-8f5.workers.dev/v2',
+    demoLabel: '看修圖版本票選',
+    featured: true,
+  },
+  {
+    slug: 'invoice-assistant',
+    dayNumber: 257,
+    relatedDays: [256],
+    category: '行政工作自動化',
+    icon: 'i-files',
+    headline: '第一次開發票，AI 帶我做一次，再把流程記住',
+    audience: '接案者、剛開公司或行號的老闆',
+    pain: '沒有會計背景，平台用語看不懂，選單和前置設定也不知道從哪裡開始。',
+    outcome: '先請 AI 帶操作，再把流程記成可重用的技能。下一次由 AI 填表，登入與最後開立交回我確認。',
+    featured: true,
+  },
+  {
+    slug: 'personal-knowledge',
+    dayNumber: 105,
+    relatedDays: [71, 180],
+    category: '個人知識管理',
+    icon: 'i-book',
+    headline: '筆記存完就忘？讓 AI 回答前先找回我的經驗',
+    audience: '筆記很多，卻常找不回資料的人',
+    pain: '資料留在分頁與筆記中，每次問 AI 還是得重新交代背景。',
+    outcome: '把分頁與筆記整理進知識庫，讓 AI 回答前先找相關經驗，對話結束後再按守門規則整理新筆記。',
+    featured: false,
+  },
+  {
+    slug: 'speech-to-text',
+    dayNumber: 269,
+    relatedDays: [159, 230, 275],
+    category: '錄音與逐字稿',
+    icon: 'i-phone',
+    headline: '同一段錄音，六個 AI 聽出不同答案',
+    audience: '常開會、上課、訪談或錄音的人',
+    pain: '逐字稿會錯字、漏字，甚至自己補出沒說過的話，換個模型真的比較好嗎？',
+    outcome: '拿同一段音訊實測六個模型，對照速度、中英夾雜與雜音時的表現，找出各自的取捨。',
+    note: '這是工具實測，沒有哪個模型能免去人工核對。',
+    featured: false,
+  },
+  {
+    slug: 'event-calendar',
+    dayNumber: 194,
+    category: '日程整理',
+    icon: 'i-quiz',
+    headline: '活動只在一張截圖上？一鍵整理進行事曆',
+    audience: '常從各種地方收到活動邀請的人',
+    pain: 'LINE、海報、網頁都有活動，每次都要重抄時間地點，還怕漏記或撞期。',
+    outcome: '做了截圖轉活動的小工具：抽出名稱、時間、地點，查撞期，等我確認後才寫進 Google 日曆。',
+    note: '目前是我自己使用的 Raycast 擴充，尚未上架商店。',
+    featured: false,
+  },
+  {
+    slug: 'interactive-quote',
+    dayNumber: 254,
+    category: '業務溝通',
+    icon: 'i-files',
+    headline: '報價單不只是一個總價，讓客戶自己勾選',
+    audience: '接案者、顧問、業務與採購決策者',
+    pain: '只收到一個總價，客戶看不懂範圍，也不知道可以先做一部分。',
+    outcome: '把報價做成可勾選的選單，總價即時更新，工期排成時間軸，把討論變成「第一階段先做哪些」。',
+    featured: false,
+  },
+  {
+    slug: 'recording-to-knowledge',
+    dayNumber: 273,
+    relatedDays: [270, 275],
+    category: '會議到後續行動',
+    icon: 'i-book',
+    headline: '錄音筆插上電腦，會議就進了我的知識庫',
+    audience: '顧問、PM、業務與常開會的人',
+    pain: '錄完音還要搬檔、轉錄、整理，下次開會前又得找一次舊資料。',
+    outcome: '把 HiDock P1 接上自己的轉錄流程，自動整理講者、重點與待辦，寫進知識庫；要分享給客戶的內容由我勾選。',
+    note: '錄音與辨識在自己的 Mac 上；整理摘要會把逐字稿送給 Claude 或 Codex。',
+    featured: false,
   },
 ];
