@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dawson Wang — 風格 C：老字號活版</title>
+<meta name="description" content="把雜事交給 AI，把時間留給客戶。中小企業 AI 導入顧問・企業內訓講師 Dawson Wang。">
+<meta name="theme-color" content="#f2e8d5">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cactus+Classical+Serif&family=Noto+Serif+TC:wght@400;500;700;900&display=swap">
+<style>
+/* ===== Tokens: two-colour letterpress (朱紅 + 墨黑) on 米色 paper ===== */
+:root {
+  --paper: #f2e8d5;
+  --paper-dark: #e7dbc3;
+  --paper-light: #f9f3e7;
+  --ink: #1c1915;
+  --ink-soft: #4a4139;
+  --verm: #c43a24;        /* large type + decoration only (4.3:1 on paper) */
+  --verm-text: #a82e1b;   /* small vermilion text, button fills (5.6:1) */
+  --verm-deep: #9a2817;   /* small vermilion text on wood (5.1:1) */
+  --verm-faded: #e8c4b4;
+  --verm-on-ink: #ee8a74; /* vermilion text on the ink footer (7:1) */
+  --wood: #e5d0a6;
+  --display: "Cactus Classical Serif", "Noto Serif TC", "Songti TC", serif;
+  --serif: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --wrap: 1200px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* ===== Base ===== */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 100px; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(17.5px, 16.4px + .28vw, 19px);
+  line-height: 1.9;
+  letter-spacing: .02em;
+  line-break: strict;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+/* Paper grain over everything, like ink sitting in fibres. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: .5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .7 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+h1, h2, h3, p, figure, blockquote, dl, dd { margin: 0; }
+p, li, dt, dd { text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+::selection { background: var(--verm-faded); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--verm-text); outline-offset: 3px; }
+.wrap { width: min(calc(100% - 2 * var(--gutter)), var(--wrap)); margin-inline: auto; }
+.tcy { text-combine-upright: all; }
+.nobr { white-space: nowrap; }
+.skip {
+  position: absolute; left: 12px; top: -80px; z-index: 100;
+  background: var(--ink); color: var(--paper); padding: 10px 18px; font-weight: 700; text-decoration: none;
+}
+.skip:focus { top: 12px; }
+
+/* Thick-thin newspaper rule */
+.dbl { height: 8px; border-top: 4px solid var(--ink); border-bottom: 1px solid var(--ink); }
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .45em;
+  min-height: 48px; padding: 0 22px;
+  font-family: var(--serif); font-weight: 700; font-size: 18px; letter-spacing: .06em; line-height: 1.3;
+  text-decoration: none; border: 2px solid var(--ink); cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, color .15s ease;
+}
+.btn-red { background: var(--verm-text); color: var(--paper); box-shadow: 4px 4px 0 var(--ink); }
+.btn-red:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); background: var(--ink); }
+.btn-line { background: var(--paper-light); color: var(--ink); box-shadow: 4px 4px 0 var(--verm); }
+.btn-line:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--verm); }
+.btn-lg { min-height: 58px; padding: 0 22px; font-size: 19px; letter-spacing: .04em; }
+.text-link {
+  display: inline-flex; align-items: center; min-height: 48px;
+  color: var(--verm-text); font-weight: 700; text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 8px) / 100% 2px no-repeat;
+}
+.text-link:hover { color: var(--ink); }
+
+/* ===== Masthead ===== */
+.masthead { position: sticky; top: 0; z-index: 40; background: var(--paper); }
+.mast-inner { display: flex; align-items: center; gap: 16px; min-height: 76px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
+.brand-name { font-weight: 900; font-size: 22px; letter-spacing: .01em; white-space: nowrap; }
+.brand-tag {
+  font-size: 15px; font-weight: 700; color: var(--verm-text); white-space: nowrap;
+  border: 2px solid var(--verm-text); padding: 0 8px; line-height: 1.7; letter-spacing: .08em;
+}
+.nav ul { display: flex; }
+.nav a {
+  display: inline-flex; align-items: center; min-height: 48px; padding: 0 12px;
+  text-decoration: none; font-weight: 500; font-size: 17px; white-space: nowrap;
+  background: linear-gradient(var(--verm), var(--verm)) 50% calc(100% - 9px) / 0 2px no-repeat;
+  transition: background-size .2s var(--ease);
+}
+.nav a:hover { background-size: calc(100% - 24px) 2px; }
+.nav-cta { white-space: nowrap; }
+.menu { display: none; position: relative; }
+.menu summary {
+  list-style: none; display: grid; place-items: center; min-height: 48px; min-width: 56px; padding: 0 12px;
+  border: 2px solid var(--ink); font-weight: 700; font-size: 17px; cursor: pointer; user-select: none;
+}
+.menu summary::-webkit-details-marker { display: none; }
+.menu[open] summary { background: var(--ink); color: var(--paper); }
+.menu ul {
+  position: absolute; right: 0; top: calc(100% + 12px); z-index: 50; width: min(78vw, 300px);
+  background: var(--paper-light); border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); padding: 6px 14px;
+}
+.menu li + li { border-top: 1px dotted var(--ink); }
+.menu a { display: flex; align-items: center; min-height: 52px; text-decoration: none; font-weight: 700; }
+
+/* ===== Hero ===== */
+.hero { padding: clamp(28px, 3.6vw, 52px) 0 clamp(64px, 7vw, 100px); }
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr) auto;
+  grid-template-areas:
+    "kicker print title"
+    "copy   print title";
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(32px, 4.4vw, 64px);
+  row-gap: 28px;
+}
+.hero-title {
+  grid-area: title; justify-self: end; position: relative;
+  writing-mode: vertical-rl;
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(56px, 5vw, 72px); line-height: 1.24; letter-spacing: .07em;
+  color: var(--ink);
+}
+.ht { display: block; }
+/* Cactus has no vertical punctuation forms; Noto Serif TC does. */
+.hero-title .vp { display: none; }
+/* Two plates, slightly out of register: vermilion printed first, ink on top. */
+.ht-red { position: absolute; inset: 0; color: var(--verm); transform: translate(4px, 3px); }
+.ht-ink { position: relative; -webkit-text-stroke: .6px var(--ink); }
+.kicker {
+  grid-area: kicker; justify-self: start; align-self: start;
+  font-size: 16px; font-weight: 700; color: var(--verm-text); letter-spacing: .12em; line-height: 1.6;
+  border: 2px solid var(--verm-text); padding: 6px 14px;
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4px var(--verm-text);
+  margin: 4px;
+}
+.hero-copy { grid-area: copy; display: flex; flex-direction: column; justify-content: space-between; gap: 36px; }
+.hero-lede { font-size: clamp(21px, 1.5vw + 4px, 25px); font-weight: 500; line-height: 1.8; max-width: 19.5em; text-wrap: pretty; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 18px 20px; }
+.trust { border-top: 3px double var(--ink); padding-top: 14px; }
+.trust li { position: relative; padding: 7px 0 7px 1.5em; font-size: 18px; line-height: 1.6; }
+.trust li + li { border-top: 1px dotted rgba(28, 25, 21, .55); }
+.trust li::before { content: "◆"; position: absolute; left: 0; top: 7px; color: var(--verm); font-size: .9em; }
+.trust small { display: block; font-size: 16px; color: var(--ink-soft); }
+
+.hero-print { grid-area: print; align-self: center; }
+.print-wrap { position: relative; isolation: isolate; }
+/* Solid vermilion block, offset like a second plate that missed */
+.print-wrap::before {
+  content: ""; position: absolute; inset: 16px -16px -16px 16px; z-index: -1; background: var(--verm);
+}
+.print {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: var(--paper-light); border: 2px solid var(--ink);
+}
+.print img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) contrast(1.32) brightness(1.07);
+  mix-blend-mode: multiply;
+}
+/* Halftone screen */
+.print::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image: radial-gradient(rgba(28, 25, 21, .5) 24%, transparent 36%);
+  background-size: 4px 4px; mix-blend-mode: multiply; opacity: .5;
+}
+/* Vermilion plate: pulls the shadows toward 朱紅 */
+.print.duo::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: var(--verm); mix-blend-mode: screen; opacity: .4;
+}
+.hero-print .print { aspect-ratio: 4 / 5; }
+.hero-print .print img { object-position: 46% 50%; }
+.hero-print figcaption { margin-top: 30px; font-size: 15px; color: var(--ink-soft); line-height: 1.6; }
+.seal {
+  position: absolute; z-index: 6; width: 150px; height: 150px; left: -62px; bottom: 24px;
+  transform: rotate(-8deg); opacity: .96;
+}
+
+/* Stats — a boxed data table */
+.stats {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(48px, 6vw, 76px);
+  background: var(--paper-light);
+  border: 3px solid var(--ink);
+  box-shadow: 0 0 0 4px var(--paper), 0 0 0 5px var(--ink);
+}
+.stats > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; padding: 20px 24px 18px; }
+.stats > div + div { border-left: 1px solid var(--ink); }
+.stats dd { font-weight: 900; color: var(--verm); line-height: 1; white-space: nowrap; }
+.stats dd b { font-size: clamp(42px, 4.2vw, 60px); font-weight: 900; letter-spacing: -.01em; }
+.stats dd span { font-size: 20px; color: var(--ink); margin-left: 6px; font-weight: 700; }
+.stats dt { font-size: 16px; color: var(--ink-soft); margin-top: 10px; line-height: 1.6; }
+
+/* ===== Section scaffolding ===== */
+.section { padding: clamp(72px, 8.5vw, 124px) 0; position: relative; }
+.band-dark { background: var(--paper-dark); }
+.band-dark::before, .band-dark::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 8px;
+  border-top: 1px solid var(--ink); border-bottom: 4px solid var(--ink);
+}
+.band-dark::before { top: 0; }
+.band-dark::after { bottom: 0; transform: scaleY(-1); }
+.sec-head {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 28px; align-items: start;
+  margin-bottom: clamp(40px, 4.6vw, 64px);
+}
+.tab {
+  writing-mode: vertical-rl;
+  background: var(--verm-text); color: var(--paper);
+  font-weight: 700; font-size: 17px; line-height: 1; letter-spacing: .32em;
+  padding: 16px 11px 10px;
+}
+.sec-head h2 {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(32px, 4.1vw, 56px); line-height: 1.32; letter-spacing: .03em;
+  -webkit-text-stroke: .35px var(--ink); text-wrap: balance;
+}
+.sec-lede { margin-top: 18px; max-width: 36em; color: var(--ink-soft); text-wrap: pretty; }
+.sec-hint { margin-top: 12px; font-size: 16px; color: var(--verm-text); font-weight: 700; letter-spacing: .08em; }
+
+/* ===== Venues ===== */
+.venues { padding: 8px 0 0; }
+.venues-box {
+  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  border-top: 4px solid var(--ink); border-bottom: 4px solid var(--ink);
+}
+.venues-label {
+  writing-mode: vertical-rl;
+  background: var(--ink); color: var(--paper);
+  font-size: 18px; font-weight: 700; letter-spacing: .26em; line-height: 1;
+  padding: 22px 14px 16px; margin: 8px 0;
+}
+.venues-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 8px 0; }
+.venues-list li {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: var(--display); font-size: clamp(19px, 1.9vw, 27px); line-height: 1.35; letter-spacing: .06em;
+  padding: 18px 16px; border-left: 1px solid var(--ink);
+}
+.venues-list li:nth-child(-n + 3) { border-bottom: 1px dotted var(--ink); }
+
+/* ===== Pains ===== */
+.pains-grid { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); column-gap: clamp(32px, 5vw, 80px); }
+.pains-grid .sec-head { margin-bottom: 0; }
+.pain-list { border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
+.pain-list li + li { border-top: 1px dashed rgba(28, 25, 21, .7); }
+.pain-list label { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 18px; align-items: start; padding: 20px 4px; cursor: pointer; font-size: clamp(18px, 1.3vw + 2px, 20px); font-weight: 500; line-height: 1.75; }
+.pain-list input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.pain-list .sq {
+  position: relative; width: 30px; height: 30px; margin-top: 3px;
+  border: 3px solid var(--verm); background: var(--paper-light);
+}
+.pain-list .sq::after {
+  content: ""; position: absolute; left: 7px; top: -9px; width: 13px; height: 26px;
+  border: solid var(--verm-text); border-width: 0 5px 5px 0; transform: rotate(40deg) scale(.4);
+  opacity: 0; transition: opacity .15s ease, transform .25s cubic-bezier(.3, 1.6, .5, 1);
+}
+.pain-list input:checked + .sq::after { opacity: 1; transform: rotate(40deg) scale(1); }
+.pain-list label:has(input:focus-visible) { outline: 3px solid var(--verm-text); outline-offset: 2px; }
+.pains-close {
+  grid-column: 1 / -1; margin-top: clamp(40px, 5vw, 64px);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px;
+  border: 3px solid var(--ink); background: var(--paper-light); padding: 22px 28px;
+  box-shadow: 6px 6px 0 var(--ink);
+  font-size: clamp(18px, 1.2vw + 3px, 21px); line-height: 1.75;
+}
+.pains-close strong { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 3vw, 40px); color: var(--verm); letter-spacing: .06em; -webkit-text-stroke: .4px var(--verm); white-space: nowrap; }
+
+/* ===== Cases: three boxed notices ===== */
+.notices { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+.notice {
+  display: flex; flex-direction: column; margin: 6px;
+  background: var(--paper-light); border: 3px solid var(--ink);
+  box-shadow: 0 0 0 5px var(--paper), 0 0 0 6px var(--ink);
+  padding: 22px 26px 18px;
+}
+.notice-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 3px double var(--ink); padding-bottom: 12px; margin-bottom: 18px; }
+.notice-no { font-weight: 900; font-size: 60px; line-height: 1; color: var(--verm); }
+.notice-tag { font-size: 16px; font-weight: 700; border: 2px solid var(--ink); padding: 2px 12px; letter-spacing: .08em; text-align: right; }
+.notice h3 { font-family: var(--display); font-weight: 400; font-size: clamp(22px, 1.7vw, 24px); line-height: 1.5; letter-spacing: .02em; margin-bottom: 16px; -webkit-text-stroke: .3px var(--ink); text-wrap: balance; }
+.notice-body > div { padding: 14px 0 12px; border-top: 1px dotted var(--ink); }
+.notice-body dt {
+  display: inline-block; font-size: 15px; font-weight: 700; letter-spacing: .14em; line-height: 1.6;
+  background: var(--ink); color: var(--paper); padding: 1px 10px 1px 12px; margin-bottom: 6px;
+}
+.notice-body dd { font-size: 18px; line-height: 1.8; }
+.notice .text-link { margin-top: auto; align-self: flex-start; }
+
+/* ===== Services: wooden price plaques ===== */
+.plaques { display: grid; grid-template-columns: 1.12fr 1fr 1fr; gap: 34px; align-items: stretch; }
+.plaque {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  border: 3px solid var(--ink); border-radius: 6px 6px 3px 3px;
+  padding: 50px 0 26px 26px;
+  box-shadow: 7px 7px 0 rgba(28, 25, 21, .88);
+  background-color: var(--wood);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(110, 74, 34, .09) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(90deg, rgba(110, 74, 34, .07) 0 2px, transparent 2px 23px),
+    linear-gradient(90deg, rgba(255, 255, 255, .2), rgba(0, 0, 0, .04) 38%, rgba(255, 255, 255, .12) 68%, rgba(0, 0, 0, .07));
+}
+/* Nail heads */
+.plaque::before, .plaque::after {
+  content: ""; position: absolute; top: 16px; width: 13px; height: 13px; border-radius: 50%;
+  background: radial-gradient(circle at 38% 36%, #8a7a66, var(--ink) 68%);
+}
+.plaque::before { left: 16px; }
+.plaque::after { right: 16px; }
+.plaque-main { border-color: var(--verm-text); box-shadow: 7px 7px 0 var(--verm-text); }
+.plaque-title {
+  grid-column: 2; grid-row: 1;
+  writing-mode: vertical-rl;
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(30px, 2.6vw, 38px); line-height: 1; letter-spacing: .14em;
+  padding: 0 14px 0 14px; margin-left: 14px;
+  border-left: 2px solid var(--ink);
+  -webkit-text-stroke: .5px var(--ink);
+}
+.plaque-main .plaque-title { color: var(--verm-text); -webkit-text-stroke-color: var(--verm-text); border-left-color: var(--verm-text); }
+.plaque-body { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; }
+.plaque-one { font-weight: 700; font-size: 20px; line-height: 1.6; margin-bottom: 14px; }
+.plaque ul { margin-bottom: 22px; }
+.plaque li { position: relative; padding: 9px 0 9px 1.35em; border-top: 1px dotted rgba(28, 25, 21, .6); font-size: 18px; line-height: 1.7; }
+.plaque li::before { content: "◆"; position: absolute; left: 0; top: 10px; color: var(--verm-deep); font-size: .8em; }
+.plaque li small { display: block; font-size: 16px; color: var(--ink-soft); line-height: 1.6; }
+.plaque-price { margin-top: auto; display: flex; align-items: baseline; gap: 12px; border-top: 3px double var(--ink); padding-top: 12px; }
+.plaque-price span { font-size: 17px; font-weight: 700; }
+.plaque-price b { font-size: 36px; font-weight: 900; color: var(--verm); letter-spacing: .14em; line-height: 1.2; }
+.plaque-note { font-size: 15px; color: var(--ink-soft); margin: 2px 0 16px; }
+.plaque .btn { align-self: flex-start; }
+.seal-sq { position: absolute; z-index: 3; width: 84px; height: 84px; top: -30px; left: -24px; transform: rotate(-9deg); }
+
+/* ===== Training ===== */
+.train-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(40px, 5vw, 72px); align-items: start; }
+.prints { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); padding-bottom: 12px; }
+.taped { position: relative; margin: 0; }
+.taped .print-wrap::before { display: none; }
+.taped .print { aspect-ratio: 4 / 3; box-shadow: 5px 6px 0 rgba(28, 25, 21, .22); }
+.taped figcaption { margin-top: 12px; font-size: 15px; color: var(--ink-soft); line-height: 1.5; }
+.t1 { grid-column: 1 / 10; grid-row: 1; transform: rotate(-1.4deg); z-index: 1; }
+.t2 { grid-column: 5 / 13; grid-row: 2; margin-top: -64px; transform: rotate(1.8deg); z-index: 2; }
+.tape {
+  position: absolute; z-index: 5; width: 104px; height: 30px;
+  background: rgba(196, 58, 36, .8); mix-blend-mode: multiply;
+  clip-path: polygon(3% 8%, 97% 0, 100% 48%, 97% 100%, 2% 92%, 0 50%);
+}
+.tape.tl { top: -12px; left: -30px; transform: rotate(-36deg); }
+.tape.br { bottom: -10px; right: -30px; transform: rotate(-36deg); }
+.tape.tr { top: -10px; right: -26px; transform: rotate(38deg); }
+
+.gazette { background: var(--paper-light); border-top: 7px solid var(--ink); border-bottom: 3px solid var(--ink); padding: 14px 26px 20px; box-shadow: 6px 6px 0 rgba(28, 25, 21, .2); }
+.gazette-mast { font-family: var(--display); font-size: clamp(30px, 2.6vw, 36px); text-align: center; letter-spacing: .4em; text-indent: .4em; line-height: 1.4; border-bottom: 1px solid var(--ink); padding-bottom: 8px; -webkit-text-stroke: .4px var(--ink); }
+.gazette-src { font-size: 15px; text-align: center; color: var(--ink-soft); border-bottom: 3px double var(--ink); padding: 8px 0 10px; line-height: 1.6; }
+.gazette-lead { text-align: center; padding: 16px 0 10px; }
+.gazette-lead span { display: block; font-weight: 700; font-size: 20px; }
+.gazette-lead b { font-size: clamp(88px, 8.6vw, 124px); font-weight: 900; color: var(--verm); line-height: 1; letter-spacing: -.02em; }
+.gazette-lead i { font-style: normal; font-size: 28px; font-weight: 900; margin-left: 4px; }
+.gazette-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-top: 1px solid var(--ink); padding: 10px 0; }
+.gazette-rows dt { font-weight: 700; font-size: 18px; line-height: 1.5; }
+.gazette-rows dd { font-weight: 900; font-size: 34px; color: var(--verm); white-space: nowrap; line-height: 1.2; }
+.gazette-scale { border-top: 3px double var(--ink); padding-top: 12px; font-size: 16px; font-weight: 700; text-align: center; line-height: 1.6; }
+
+.clips { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: clamp(56px, 6vw, 84px); }
+.clip-wrap { filter: drop-shadow(3px 5px 0 rgba(28, 25, 21, .2)); }
+.clip-wrap:nth-child(1) { transform: rotate(-1.3deg); }
+.clip-wrap:nth-child(2) { transform: rotate(.9deg) translateY(14px); }
+.clip-wrap:nth-child(3) { transform: rotate(-.6deg); }
+.clip {
+  background: var(--paper-light); padding: 32px 28px 30px;
+  clip-path: polygon(0 2.2%, 5% .4%, 11% 1.9%, 17% .2%, 24% 1.6%, 31% .3%, 38% 2%, 45% .5%, 52% 1.7%, 59% .1%, 66% 1.8%, 73% .4%, 80% 2.1%, 87% .3%, 93% 1.6%, 100% .6%, 100% 98.2%, 95% 99.8%, 89% 98.1%, 82% 99.7%, 75% 98.4%, 68% 99.9%, 61% 98.2%, 54% 99.6%, 47% 98%, 40% 99.8%, 33% 98.3%, 26% 99.7%, 19% 98.1%, 12% 99.9%, 6% 98.4%, 0 99.6%);
+}
+.clip-kicker { display: inline-block; font-size: 15px; font-weight: 700; letter-spacing: .14em; border-bottom: 2px solid var(--verm); padding-bottom: 2px; margin-bottom: 14px; }
+.clip p { font-size: 20px; font-weight: 500; line-height: 1.8; }
+.clip p::before { content: "「"; color: var(--verm); font-weight: 900; }
+.clip p::after { content: "」"; color: var(--verm); font-weight: 900; }
+.clip footer { margin-top: 14px; font-size: 16px; color: var(--ink-soft); line-height: 1.6; }
+.train-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 32px; margin-top: clamp(48px, 5vw, 72px); }
+
+/* ===== Process ===== */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); counter-reset: none; }
+.steps li { padding: 26px 26px 30px; }
+.steps li + li { border-left: 2px dotted var(--ink); }
+.step-no { display: block; font-weight: 900; font-size: clamp(72px, 7vw, 100px); line-height: 1; color: var(--verm); margin-bottom: 14px; }
+.steps h3 { font-size: 21px; font-weight: 900; line-height: 1.5; margin-bottom: 8px; }
+.steps p { font-size: 18px; line-height: 1.8; color: var(--ink-soft); }
+.promises { display: flex; flex-wrap: wrap; gap: 12px 36px; margin-top: 28px; }
+.promises li { position: relative; padding-left: 1.6em; font-weight: 700; font-size: 18px; line-height: 1.7; }
+.promises li::before { content: "◎"; position: absolute; left: 0; color: var(--verm-text); }
+
+/* ===== Tools: classified ads ===== */
+.ads { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+.ad { background: var(--paper-light); border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: -8px; padding: 0 0 18px; display: flex; flex-direction: column; }
+.ad h3 { background: var(--ink); color: var(--paper); font-size: 19px; font-weight: 900; line-height: 1.5; padding: 14px 22px; margin: 7px 7px 0; }
+.ad p { padding: 14px 22px 0; font-size: 18px; line-height: 1.8; }
+.ad .ad-ref { margin-top: auto; padding-top: 12px; font-size: 15px; font-weight: 700; color: var(--verm-text); letter-spacing: .06em; }
+.tools-more { margin-top: 28px; }
+
+/* ===== FAQ ===== */
+.faq-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; border-top: 3px solid var(--ink); }
+.qa { padding: 24px 0 26px; border-bottom: 1px dotted var(--ink); }
+.qa h3, .qa p { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 14px; align-items: start; }
+.qa h3 { font-size: 20px; font-weight: 900; line-height: 1.6; margin-bottom: 10px; }
+.qa p { font-size: 18px; line-height: 1.85; }
+.mark { display: grid; place-items: center; width: 34px; height: 34px; font-size: 17px; font-weight: 900; line-height: 1; margin-top: 1px; }
+.mark-q { background: var(--verm-text); color: var(--paper); }
+.mark-a { border: 2px solid var(--ink); }
+
+/* ===== Inquiry: an application slip ===== */
+.inq-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 5vw, 80px); align-items: start; }
+.inq-intro { position: sticky; top: 110px; }
+.inq-intro .sec-head { margin-bottom: 32px; }
+.inq-intro .sec-head h2 { font-size: clamp(32px, 3.4vw, 48px); }
+.inq-proof { border-top: 3px double var(--ink); padding-top: 16px; font-size: 18px; line-height: 1.8; }
+.inq-proof b { font-family: var(--display); font-weight: 400; font-size: 24px; letter-spacing: .06em; }
+.slip { position: relative; background: var(--paper-light); border: 2px solid var(--ink); border-top: 0; box-shadow: 8px 8px 0 var(--ink); }
+.slip-perf {
+  position: relative; height: 34px; border-top: 2px solid var(--ink);
+  background: radial-gradient(circle at 11px 0, var(--paper-dark) 6px, transparent 6.5px) 0 0 / 22px 12px repeat-x;
+}
+.slip-perf::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; border-bottom: 2px dashed var(--ink); }
+.slip-perf span { position: absolute; left: 22px; bottom: -15px; z-index: 1; background: var(--paper-light); padding: 0 6px; font-size: 22px; line-height: 1.2; }
+.slip-body { padding: 26px clamp(20px, 3vw, 40px) 34px; }
+.slip-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 4px double var(--ink); padding-bottom: 10px; margin-bottom: 10px; }
+.slip-head h3 { font-family: var(--display); font-weight: 400; font-size: clamp(28px, 2.6vw, 36px); letter-spacing: .3em; -webkit-text-stroke: .4px var(--ink); }
+.slip-head p { font-size: 15px; font-weight: 700; color: var(--verm-text); }
+.field { display: grid; grid-template-columns: 7.2em minmax(0, 1fr); align-items: baseline; gap: 12px; padding: 12px 0 4px; }
+.field label, .chips legend { font-weight: 700; font-size: 18px; line-height: 1.6; }
+.field input, .field textarea {
+  width: 100%; min-height: 48px; padding: 6px 4px;
+  font: inherit; font-size: 19px; color: var(--ink);
+  background: transparent; border: 0; border-bottom: 2px dotted var(--ink); border-radius: 0;
+}
+.field input:focus, .field textarea:focus { outline: none; border-bottom: 2px solid var(--verm-text); background: rgba(232, 196, 180, .32); }
+.field-area { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+.field textarea {
+  resize: vertical; min-height: calc(40px * 4 + 4px); padding: 0 4px; border-bottom: 0;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 39px, rgba(28, 25, 21, .55) 39px 40px);
+  background-attachment: local; line-height: 40px;
+}
+.field ::placeholder { color: #6b6158; opacity: 1; }
+.hint { font-size: 15px; color: var(--ink-soft); text-align: right; }
+.chips { border: 0; margin: 26px 0 0; padding: 0; min-width: 0; }
+.chips legend { padding: 0; margin-bottom: 2px; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 0 22px; margin-left: -4px; }
+.chip { position: relative; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 4px; cursor: pointer; font-size: 18px; line-height: 1.4; }
+.chip input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.chip .sq { position: relative; flex: none; width: 24px; height: 24px; border: 2.5px solid var(--ink); background: var(--paper-light); }
+.chip input:checked + .sq { background: var(--verm-text); border-color: var(--verm-text); }
+.chip input:checked + .sq::after {
+  content: ""; position: absolute; left: 6px; top: 1px; width: 7px; height: 13px;
+  border: solid var(--paper); border-width: 0 3px 3px 0; transform: rotate(45deg);
+}
+.chip:has(input:focus-visible) { outline: 3px solid var(--verm-text); outline-offset: 2px; }
+.slip-submit { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.slip-submit .btn { min-height: 60px; padding: 0 44px; font-size: 21px; letter-spacing: .3em; }
+.form-note { border: 2px solid var(--verm-text); color: var(--verm-text); background: var(--paper); font-weight: 700; font-size: 17px; line-height: 1.6; padding: 10px 16px; }
+.form-note[hidden] { display: none; }
+
+/* ===== Footer ===== */
+.foot { background: var(--ink); color: var(--paper); padding: 64px 0 152px; position: relative; }
+.foot::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 8px; background: var(--verm); }
+.foot-inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 28px 56px; align-items: end; }
+.foot-name { font-family: var(--display); font-size: clamp(30px, 3vw, 40px); line-height: 1.2; letter-spacing: .04em; }
+.foot-role { color: var(--verm-on-ink); font-weight: 700; font-size: 17px; letter-spacing: .14em; margin-top: 6px; }
+.foot nav ul { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 6px; }
+.foot nav a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 10px; text-decoration: none; font-size: 17px; }
+.foot nav a:hover { color: var(--verm-on-ink); }
+.foot-copy { grid-column: 1 / -1; border-top: 1px solid rgba(242, 232, 213, .3); padding-top: 18px; font-size: 15px; color: #d9cfbd; }
+
+/* ===== Motion ===== */
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes press-down {
+  from { clip-path: inset(-.3em -.3em 100% -.3em); filter: blur(3px); }
+  to { clip-path: inset(-.3em); filter: none; }
+}
+@keyframes thunk {
+  0% { opacity: 0; transform: rotate(-17deg) scale(1.5); }
+  55% { opacity: .96; transform: rotate(-7deg) scale(.94); }
+  76% { transform: rotate(-8.6deg) scale(1.03); }
+  100% { opacity: .96; transform: rotate(-8deg) scale(1); }
+}
+@keyframes print-in { from { opacity: 0; transform: translate(-12px, 12px); } }
+html.js .masthead { animation: fade .6s ease both; }
+html.js .ht-red { animation: press-down 1s var(--ease) .15s both; }
+html.js .ht-ink { animation: press-down 1.05s var(--ease) .42s both; }
+html.js .kicker { animation: rise .7s var(--ease) .5s both; }
+html.js .hero-lede { animation: rise .7s var(--ease) .62s both; }
+html.js .hero-actions { animation: rise .7s var(--ease) .74s both; }
+html.js .trust { animation: rise .7s var(--ease) .86s both; }
+html.js .hero-print .print-wrap { animation: print-in .9s var(--ease) .3s both; }
+html.js .hero-print figcaption { animation: fade .8s ease 1s both; }
+html.js .seal { animation: thunk .6s cubic-bezier(.3, .6, .35, 1) 1.3s both; }
+html.js .stats { animation: rise .8s var(--ease) 1.05s both; }
+
+/* Scroll reveals (only hidden when JS is running) */
+.reveal { transition: opacity .7s ease, transform .7s var(--ease); transition-delay: calc(var(--d, 0) * 110ms); }
+html.js .reveal:not(.is-in) { opacity: 0; transform: translateY(22px); }
+.ink-in { transition: clip-path 1.15s cubic-bezier(.65, 0, .25, 1), filter 1.15s ease; }
+html.js .ink-in:not(.is-in) { clip-path: inset(-.3em 100% -.3em -.3em); filter: blur(2.5px); }
+.ink-in.is-in { clip-path: inset(-.3em); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html.js .reveal:not(.is-in), html.js .ink-in:not(.is-in) { opacity: 1; transform: none; clip-path: none; filter: none; }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px) {
+  .nav a { padding: 0 9px; font-size: 16px; }
+}
+@media (max-width: 1023px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "kicker title"
+      "copy   title"
+      "print  print";
+    row-gap: 32px;
+  }
+  .hero-print { justify-self: center; width: min(100%, 620px); margin-top: 24px; }
+  .hero-print .print { aspect-ratio: 4 / 3; }
+  .seal { width: 112px; height: 112px; left: -18px; bottom: -40px; }
+  .plaques { grid-template-columns: minmax(0, 1fr); max-width: 620px; gap: 52px; }
+  .train-grid { grid-template-columns: minmax(0, 1fr); }
+  .gazette { max-width: 620px; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps li:nth-child(3) { border-left: 0; }
+  .steps li:nth-child(n + 3) { border-top: 2px dotted var(--ink); }
+  .inq-grid { grid-template-columns: minmax(0, 1fr); }
+  .inq-intro { position: static; }
+  .br-wide { display: none; }
+  .pains-grid { grid-template-columns: minmax(0, 1fr); }
+  .pains-grid .sec-head { margin-bottom: 36px; }
+}
+@media (max-width: 899px) {
+  .nav { display: none; }
+  .menu { display: block; }
+  .venues-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .venues-list li:nth-child(-n + 3) { border-bottom: 0; }
+  .venues-list li:nth-child(-n + 4) { border-bottom: 1px dotted var(--ink); }
+  .faq-list { grid-template-columns: minmax(0, 1fr); }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats > div:nth-child(3) { border-left: 0; }
+  .stats > div:nth-child(n + 3) { border-top: 1px solid var(--ink); }
+  .foot-inner { grid-template-columns: minmax(0, 1fr); }
+  .foot nav ul { justify-content: flex-start; margin-left: -10px; }
+}
+@media (max-width: 699px) {
+  .mast-inner { min-height: 66px; gap: 8px; }
+  .brand-tag { display: none; }
+  .brand-name { font-size: 18px; }
+  .nav-cta { min-height: 48px; padding: 0 12px; font-size: 16px; letter-spacing: .02em; box-shadow: 3px 3px 0 var(--ink); }
+  .menu summary { padding: 0 10px; min-width: 0; white-space: nowrap; font-size: 16px; }
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "kicker" "title" "copy" "print";
+    row-gap: 22px;
+  }
+  .hero-title {
+    writing-mode: horizontal-tb; justify-self: start;
+    font-size: clamp(34px, 9.6vw, 52px); line-height: 1.32; letter-spacing: .04em;
+  }
+  .hero-title .tcy { margin: 0 .16em; }
+  .hero-title .vp { display: inline; }
+  .ht-red { transform: translate(2px, 2px); }
+  @keyframes press-right {
+    from { clip-path: inset(-.3em 100% -.3em -.3em); filter: blur(3px); }
+    to { clip-path: inset(-.3em); filter: none; }
+  }
+  html.js .ht-red { animation-name: press-right; }
+  html.js .ht-ink { animation-name: press-right; }
+  .kicker { font-size: 15px; letter-spacing: .06em; padding: 5px 10px; }
+  .hero-copy { gap: 28px; }
+  .hero-actions .btn { width: 100%; }
+  .seal { width: 92px; height: 92px; left: -8px; bottom: -34px; }
+  .print-wrap::before { inset: 10px -10px -10px 10px; }
+  .stats > div { padding: 16px 14px 14px; }
+  .stats dd span { font-size: 17px; }
+  .stats dt { font-size: 15px; }
+  .sec-head { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .tab { writing-mode: horizontal-tb; justify-self: start; padding: 7px 12px 6px; letter-spacing: .2em; font-size: 16px; }
+  .venues-box { grid-template-columns: minmax(0, 1fr); }
+  .venues-label { writing-mode: horizontal-tb; justify-self: start; margin: 12px 0 0; padding: 8px 12px; letter-spacing: .14em; font-size: 16px; }
+  .venues-list li { font-size: 18px; padding: 14px 8px; letter-spacing: .02em; }
+  .venues-list li:nth-child(odd) { border-left: 0; }
+  .pain-list label { grid-template-columns: 30px minmax(0, 1fr); gap: 14px; }
+  .pain-list .sq { width: 28px; height: 28px; }
+  .pains-close { padding: 18px 20px; }
+  .notice { padding: 18px 20px 14px; }
+  .plaque { padding: 46px 0 22px 18px; }
+  .plaque-title { padding: 0 12px; margin-left: 12px; }
+  .seal-sq { left: -6px; top: -24px; width: 66px; height: 66px; }
+  .t1 { grid-column: 1 / 12; }
+  .t2 { grid-column: 2 / 13; margin-top: 18px; }
+  .gazette { padding: 12px 18px 18px; }
+  .gazette-rows > div { gap: 10px; }
+  .gazette-rows dt { font-size: 17px; }
+  .gazette-rows dd { font-size: 28px; }
+  .tape { width: 80px; height: 24px; }
+  .tape.tl { left: -8px; }
+  .tape.br, .tape.tr { right: -8px; }
+  .clip-wrap:nth-child(2) { transform: rotate(.8deg); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .steps li { display: grid; grid-template-columns: 76px minmax(0, 1fr); column-gap: 14px; padding: 22px 4px; }
+  .steps li + li { border-left: 0; border-top: 2px dotted var(--ink); }
+  .step-no { grid-row: 1 / span 2; font-size: 64px; margin: 0; }
+  .field { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .slip-head h3 { letter-spacing: .14em; }
+  .slip-submit .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<!-- Seal filters: uneven edges + worn ink specks -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="seal-rough" x="-12%" y="-12%" width="124%" height="124%">
+      <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="11" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="4" xChannelSelector="R" yChannelSelector="G" result="moved"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="4" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -7 4.75" result="holes"/>
+      <feComposite in="moved" in2="holes" operator="in"/>
+    </filter>
+    <filter id="seal-rough-sm" x="-12%" y="-12%" width="124%" height="124%">
+      <feTurbulence type="fractalNoise" baseFrequency=".08" numOctaves="2" seed="5" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="2" xChannelSelector="R" yChannelSelector="G" result="moved"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="9" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -7 4.8" result="holes"/>
+      <feComposite in="moved" in2="holes" operator="in"/>
+    </filter>
+  </defs>
+</svg>
+
+<header class="masthead">
+  <div class="wrap mast-inner">
+    <a class="brand" href="#top" aria-label="Dawson Wang，AI 導入顧問，回到頁首">
+      <span class="brand-name">Dawson Wang</span>
+      <span class="brand-tag">AI 導入顧問</span>
+    </a>
+    <nav class="nav" aria-label="主要選單">
+      <ul>
+        <li><a href="#services">服務內容</a></li>
+        <li><a href="#cases">客戶案例</a></li>
+        <li><a href="#training">企業內訓</a></li>
+        <li><a href="#process">合作流程</a></li>
+        <li><a href="https://dawsonwang.com/days">實作文章</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-red nav-cta" href="#inquire">預約諮詢 <span aria-hidden="true">→</span></a>
+    <details class="menu">
+      <summary>選單</summary>
+      <ul>
+        <li><a href="#services">服務內容</a></li>
+        <li><a href="#cases">客戶案例</a></li>
+        <li><a href="#training">企業內訓</a></li>
+        <li><a href="#process">合作流程</a></li>
+        <li><a href="https://dawsonwang.com/days">實作文章</a></li>
+      </ul>
+    </details>
+  </div>
+  <div class="dbl"></div>
+</header>
+
+<main id="main">
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <h1 class="hero-title" id="hero-title">
+      <span class="ht ht-ink">把雜事交給<span class="tcy">AI</span><span class="vp">，</span><br>把時間留給客戶<span class="vp">。</span></span>
+      <span class="ht ht-red" aria-hidden="true">把雜事交給<span class="tcy">AI</span><span class="vp">，</span><br>把時間留給客戶<span class="vp">。</span></span>
+    </h1>
+
+    <p class="kicker">中小企業 AI 導入顧問 · 企業內訓講師</p>
+
+    <div class="hero-copy">
+      <div>
+        <p class="hero-lede">每天在 LINE、Excel、Email 之間重複做的事，我幫你找出哪些能交給 AI，再陪團隊一路用到上手。</p>
+        <div class="hero-actions" style="margin-top: 32px;">
+          <a class="btn btn-red btn-lg" href="#inquire">預約 30 分鐘諮詢 <span aria-hidden="true">→</span></a>
+          <a class="btn btn-line btn-lg" href="#cases">先看客戶案例 <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <ul class="trust">
+        <li>9 年新創軟體開發經驗</li>
+        <li>iPAS AI 應用規劃師（中級）<small>經濟部產業發展署發證</small></li>
+        <li>已協助旅遊業把 AI 接進日常業務</li>
+      </ul>
+    </div>
+
+    <figure class="hero-print">
+      <div class="print-wrap">
+        <div class="print duo">
+          <img src="assets/speaking/ccvs-2026-helping.webp" width="1600" height="1200" fetchpriority="high"
+               alt="Dawson Wang 站在中正高工電腦教室一位老師的座位旁，協助她完成 AI 實作">
+        </div>
+        <svg class="seal" viewBox="0 0 200 200" role="img" aria-label="印章：實作為主">
+          <g filter="url(#seal-rough)">
+            <circle cx="100" cy="100" r="90" fill="#c43a24"/>
+            <circle cx="100" cy="100" r="79" fill="none" stroke="#f2e8d5" stroke-width="3.5"/>
+            <g fill="#f2e8d5" font-family="'Noto Serif TC', serif" font-weight="900" font-size="42" text-anchor="middle" dominant-baseline="central">
+              <text x="127" y="73">實</text>
+              <text x="127" y="127">作</text>
+              <text x="73" y="73">為</text>
+              <text x="73" y="127">主</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <figcaption>中正高工教師研習・實作時間逐桌確認進度</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <dl class="stats">
+      <div><dt>每天公開一篇 <span class="nobr">AI 實作</span></dt><dd><b>267</b><span>天</span></dd></div>
+      <div><dt>醫院與學校內訓</dt><dd><b>9</b><span>場</span></dd></div>
+      <div><dt>累積學員</dt><dd><b>250+</b><span>人次</span></dd></div>
+      <div><dt>近兩場課後匿名問卷平均（33 份）</dt><dd><b>4.82</b><span>/ 5</span></dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ===== Venues ===== -->
+<section class="venues" aria-labelledby="venues-title">
+  <div class="wrap venues-box">
+    <h2 class="venues-label" id="venues-title">曾受邀授課的單位</h2>
+    <ul class="venues-list">
+      <li>奇美醫院總院</li>
+      <li>柳營奇美醫院</li>
+      <li>佳里奇美醫院</li>
+      <li>部立臺南醫院</li>
+      <li>臺南新樓醫院</li>
+      <li>高雄市立中正高工</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== Pains ===== -->
+<section class="section band-dark pains" aria-labelledby="pains-title" style="margin-top: clamp(72px, 8vw, 112px);">
+  <div class="wrap pains-grid">
+    <div class="sec-head">
+      <p class="tab">常見狀況</p>
+      <div>
+        <h2 class="ink-in" id="pains-title">這些狀況，<br>您是否也有？</h2>
+        <p class="sec-hint">有遇到的，打個勾。</p>
+      </div>
+    </div>
+    <ul class="pain-list">
+      <li class="reveal" style="--d:0"><label><input type="checkbox"><span class="sq" aria-hidden="true"></span><span>客戶需求、改來改去的細節，全散在 LINE 群組裡，要回頭找得<span class="nobr">翻半天。</span></span></label></li>
+      <li class="reveal" style="--d:1"><label><input type="checkbox"><span class="sq" aria-hidden="true"></span><span>同一個案子分散在 Excel、LINE、Email、雲端檔案，<span class="nobr">資料一直複製貼上。</span></span></label></li>
+      <li class="reveal" style="--d:2"><label><input type="checkbox"><span class="sq" aria-hidden="true"></span><span>SOP、規範一改版就是一大疊，員工看不完，要用的時候<span class="nobr">又找不到。</span></span></label></li>
+      <li class="reveal" style="--d:3"><label><input type="checkbox"><span class="sq" aria-hidden="true"></span><span>公司買了 AI 帳號，大家卻只拿來<span class="nobr">翻譯、改錯字。</span></span></label></li>
+    </ul>
+    <p class="pains-close reveal"><strong>不用砍掉重練。</strong><span>把 AI 接進你原本就在做的流程，從最花時間的那件雜事開始。</span></p>
+  </div>
+</section>
+
+<!-- ===== Cases ===== -->
+<section class="section cases" id="cases" aria-labelledby="cases-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="tab">客戶案例</p>
+      <h2 class="ink-in" id="cases-title">他們本來卡在哪裡，<br>後來怎麼動起來。</h2>
+    </div>
+    <div class="notices">
+      <article class="notice reveal" style="--d:0">
+        <header class="notice-head"><span class="notice-no" aria-hidden="true">壹</span><span class="notice-tag">醫療</span></header>
+        <h3>把厚厚的 SOP，<br>變成看診時查得到的決策樹</h3>
+        <dl class="notice-body">
+          <div><dt>誰</dt><dd>診所主治醫師</dd></div>
+          <div><dt>卡關</dt><dd>每位病人只有 2–3 分鐘，療程選項卻很複雜；國際 SOP 每 3 個月更新一次，看完一版又出兩版。</dd></div>
+          <div><dt>做法</dt><dd>把 PDF 版的 SOP 拆成可以直接查詢的決策樹，看診時能當場帶病人看懂有哪些選項。</dd></div>
+        </dl>
+        <a class="text-link" href="https://dawsonwang.com/day/96">看完整案例 <span aria-hidden="true">&nbsp;→</span></a>
+      </article>
+      <article class="notice reveal" style="--d:1">
+        <header class="notice-head"><span class="notice-no" aria-hidden="true">貳</span><span class="notice-tag">行銷 / KOL 經紀</span></header>
+        <h3>一個案子橫跨 5 個工具，<br>重新設計整條流程</h3>
+        <dl class="notice-body">
+          <div><dt>誰</dt><dd>科技大廠的 KOL 合作社群經理</dd></div>
+          <div><dt>卡關</dt><dd>預算在試算表、跟代理商用 LINE 溝通，再加上 Email、檔案來回傳、社群平台發文——一個案子橫跨 5 個以上的工具。</dd></div>
+          <div><dt>做法</dt><dd>找出「會用 AI」跟「用得好」之間的落差，重新設計整條工作流程。</dd></div>
+        </dl>
+        <a class="text-link" href="https://dawsonwang.com/day/99">看完整案例 <span aria-hidden="true">&nbsp;→</span></a>
+      </article>
+      <article class="notice reveal" style="--d:2">
+        <header class="notice-head"><span class="notice-no" aria-hidden="true">參</span><span class="notice-tag">用 LINE 管工作的老闆</span></header>
+        <h3>讓 AI 直接讀 LINE 對話，<br>不用再自己慢慢翻</h3>
+        <dl class="notice-body">
+          <div><dt>誰</dt><dd>把工作群開在 LINE 的老闆、PM</dd></div>
+          <div><dt>卡關</dt><dd>對話散在各個群組和私訊，每次要回顧某一段，都得自己慢慢往上翻。</dd></div>
+          <div><dt>做法</dt><dd>讓 AI 直接讀取電腦裡的 LINE 對話幫你整理——不用申請 API，也不用開發者帳號。</dd></div>
+        </dl>
+        <a class="text-link" href="https://dawsonwang.com/day/98">看完整案例 <span aria-hidden="true">&nbsp;→</span></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="dbl"></div></div>
+
+<!-- ===== Services ===== -->
+<section class="section services" id="services" aria-labelledby="services-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="tab">服務內容</p>
+      <div>
+        <h2 class="ink-in" id="services-title">三種合作方式，<br>看你想走多深。</h2>
+        <p class="sec-lede">每個方案的成果都交到你們手上，沒有黑盒子，看得到、驗收得了。</p>
+      </div>
+    </div>
+    <div class="plaques">
+      <article class="plaque plaque-main reveal" style="--d:0">
+        <h3 class="plaque-title"><span class="tcy">AI</span>導入落地</h3>
+        <div class="plaque-body">
+          <p class="plaque-one">從試做、上線，<br>到交接給你的團隊。</p>
+          <ul>
+            <li>把散在 LINE、Email、Excel 的流程串起來</li>
+            <li>把 PDF、SOP、手冊變成查得到答案的資料</li>
+            <li>幫團隊設定好專屬的 AI 工具和自動化流程</li>
+          </ul>
+          <p class="plaque-price"><span>價格</span><b>面議</b></p>
+          <p class="plaque-note">預約討論後報價</p>
+          <a class="btn btn-red" href="#inquire">聊聊合作 <span aria-hidden="true">→</span></a>
+        </div>
+        <svg class="seal-sq" viewBox="0 0 100 100" role="img" aria-label="主推方案">
+          <g filter="url(#seal-rough-sm)">
+            <rect x="5" y="5" width="90" height="90" rx="9" fill="#c43a24"/>
+            <rect x="12" y="12" width="76" height="76" rx="5" fill="none" stroke="#f2e8d5" stroke-width="2.5"/>
+            <g fill="#f2e8d5" font-family="'Noto Serif TC', serif" font-weight="900" font-size="31" text-anchor="middle" dominant-baseline="central">
+              <text x="50" y="33">主</text>
+              <text x="50" y="67">推</text>
+            </g>
+          </g>
+        </svg>
+      </article>
+      <article class="plaque reveal" style="--d:1">
+        <h3 class="plaque-title">團隊培訓</h3>
+        <div class="plaque-body">
+          <p class="plaque-one">幫團隊養成<br>持續使用 AI 的習慣。</p>
+          <ul>
+            <li>團隊工作坊<small>半天／一天</small></li>
+            <li>1 對 1 教練<small>從個人工具出發</small></li>
+            <li>長期顧問陪跑<small>每週同步</small></li>
+          </ul>
+          <p class="plaque-price"><span>價格</span><b>面議</b></p>
+          <p class="plaque-note">預約討論後報價</p>
+          <a class="btn btn-line" href="#inquire">了解培訓 <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+      <article class="plaque reveal" style="--d:2">
+        <h3 class="plaque-title">演講／顧問諮詢</h3>
+        <div class="plaque-body">
+          <p class="plaque-one">受邀演講、企業內訓、<br>單次諮詢。</p>
+          <ul>
+            <li>企業內訓<small>AI 工作流現況／導入路線圖</small></li>
+            <li>線上活動／Podcast 受訪</li>
+            <li>1 小時單次諮詢</li>
+          </ul>
+          <p class="plaque-price"><span>價格</span><b>面議</b></p>
+          <p class="plaque-note">預約討論後報價</p>
+          <a class="btn btn-line" href="#inquire">邀請演講 <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Training ===== -->
+<section class="section band-dark training" id="training" aria-labelledby="training-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="tab">企業內訓</p>
+      <div>
+        <h2 class="ink-in" id="training-title">聽完覺得有收穫不算，<br>要帶著成品離開教室。</h2>
+        <p class="sec-lede">課程以實作為主。實作時間我會走到每個人座位旁，一個一個確認進度——很多卡點，只有看到操作畫面才說得清楚。</p>
+      </div>
+    </div>
+
+    <div class="train-grid">
+      <div class="prints">
+        <figure class="taped t1 reveal" style="--d:0">
+          <div class="print-wrap">
+            <div class="print">
+              <img src="assets/speaking/qimei-main-0627-02.webp" width="1477" height="1108" loading="lazy"
+                   alt="奇美醫院總院講堂內，Dawson Wang 面對多排醫事人員講解 AI 工具演進">
+            </div>
+            <span class="tape tl" aria-hidden="true"></span>
+            <span class="tape br" aria-hidden="true"></span>
+          </div>
+          <figcaption>奇美醫院總院・講堂授課</figcaption>
+        </figure>
+        <figure class="taped t2 reveal" style="--d:1">
+          <div class="print-wrap">
+            <div class="print">
+              <img src="assets/speaking/sinlau-0907-02.webp" width="1600" height="1200" loading="lazy"
+                   alt="臺南新樓醫院教室內，多位醫事人員在筆電前舉手回應現場調查">
+            </div>
+            <span class="tape tr" aria-hidden="true"></span>
+          </div>
+          <figcaption>臺南新樓醫院・現場舉手調查</figcaption>
+        </figure>
+      </div>
+
+      <article class="gazette reveal" style="--d:1" aria-labelledby="gazette-title">
+        <h3 class="gazette-mast" id="gazette-title">課後問卷</h3>
+        <p class="gazette-src">2026 年 9 月・佳里奇美、柳營奇美<br>兩場匿名課後問卷，共 33 份</p>
+        <p class="gazette-lead"><span>平均評分</span><b>4.82</b><i>/ 5</i></p>
+        <dl class="gazette-rows">
+          <div><dt>完成六步實作</dt><dd>29 / 33</dd></div>
+          <div><dt>會或應該會用在工作上</dt><dd>31 / 33</dd></div>
+        </dl>
+        <p class="gazette-scale"><span class="nobr">9 場授課</span>・<span class="nobr">6 個單位</span>・<span class="nobr">250+ 人次</span>・<span class="nobr">醫療與教育</span></p>
+      </article>
+    </div>
+
+    <div class="clips">
+      <div class="clip-wrap reveal" style="--d:0">
+        <blockquote class="clip">
+          <span class="clip-kicker">學員回饋</span>
+          <p>感謝講師細心的指導 我聽得懂 也做得出來 超讚的</p>
+          <footer>—— 專業群科教師 · 中正高工</footer>
+        </blockquote>
+      </div>
+      <div class="clip-wrap reveal" style="--d:1">
+        <blockquote class="clip">
+          <span class="clip-kicker">學員回饋</span>
+          <p>教學準備充足，能從學生的角度思考其需求，讚！</p>
+          <footer>—— 語文／社會科教師 · 中正高工</footer>
+        </blockquote>
+      </div>
+      <div class="clip-wrap reveal" style="--d:2">
+        <blockquote class="clip">
+          <span class="clip-kicker">學員回饋</span>
+          <p>對ai的認識有更系統化的理解，除了教導大家做出成品，還具體説明是如何做出來，這部份講解的很清楚。</p>
+          <footer>—— 數學／自然科教師 · 中正高工</footer>
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="train-actions">
+      <a class="btn btn-red btn-lg" href="#inquire">邀請到公司內訓 <span aria-hidden="true">→</span></a>
+      <a class="text-link" href="https://dawsonwang.com/speaking">看所有授課場次 <span aria-hidden="true">&nbsp;→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Process ===== -->
+<section class="section process" id="process" aria-labelledby="process-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="tab">合作流程</p>
+      <h2 class="ink-in" id="process-title">合作怎麼開始？</h2>
+    </div>
+    <ol class="steps">
+      <li class="reveal" style="--d:0"><span class="step-no" aria-hidden="true">一</span><h3>填表</h3><p>告訴我你想用 AI 解決什麼。</p></li>
+      <li class="reveal" style="--d:1"><span class="step-no" aria-hidden="true">二</span><h3>1–2 個工作日內回覆</h3><p>合適會附上預約連結，不合適也會直接說。</p></li>
+      <li class="reveal" style="--d:2"><span class="step-no" aria-hidden="true">三</span><h3>30 分鐘聊聊</h3><p>了解你的團隊，和最花時間的那件事。</p></li>
+      <li class="reveal" style="--d:3"><span class="step-no" aria-hidden="true">四</span><h3>第二輪對話後報價</h3><p>先把範圍談清楚，再談價格。</p></li>
+    </ol>
+    <ul class="promises">
+      <li>沒有電子報，不會自動把你加進群組</li>
+      <li>所有對話內容保密</li>
+      <li>報價在第二輪對話後才給</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== Tools ===== -->
+<section class="section band-dark tools" aria-labelledby="tools-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="tab">親手實作</p>
+      <div>
+        <h2 class="ink-in" id="tools-title">不只教別人，<br>我自己每天也在用。</h2>
+        <p class="sec-lede">連續 267 天，每天公開一篇 AI 實作：做法、踩到的雷、結果，全部攤開。</p>
+      </div>
+    </div>
+    <div class="ads">
+      <article class="ad reveal" style="--d:0">
+        <h3>讓 M 系列 Mac 讀得到<span class="nobr">自然人憑證</span></h3>
+        <p>廠商沒出 Apple 晶片的驅動，報稅、健保查詢全卡住。修掉 3 個錯誤，一行指令裝好。</p>
+        <p class="ad-ref">Day 183–184</p>
+      </article>
+      <article class="ad reveal" style="--d:1">
+        <h3>iPAS 證照題庫網站</h3>
+        <p>195 題、每題都有解析。2 週做好上線，我自己用它考過了。</p>
+        <p class="ad-ref">Day 134、162</p>
+      </article>
+      <article class="ad reveal" style="--d:2">
+        <h3>讓 AI 讀 LINE，不搶你的滑鼠</h3>
+        <p>讓 AI 讀寫電腦上的 LINE，全程不搶你的滑鼠和鍵盤；送訊息預設只留草稿。</p>
+        <p class="ad-ref">Day 98、172、175</p>
+      </article>
+    </div>
+    <div class="tools-more"><a class="text-link" href="https://dawsonwang.com/days">看全部 267 篇實作 <span aria-hidden="true">&nbsp;→</span></a></div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="tab">問與答</p>
+      <h2 class="ink-in" id="faq-title">常見問題</h2>
+    </div>
+    <div class="faq-list">
+      <div class="qa reveal" style="--d:0">
+        <h3><span class="mark mark-q" aria-hidden="true">問</span><span>我們公司沒有工程師，也能導入嗎？</span></h3>
+        <p><span class="mark mark-a" aria-hidden="true">答</span><span>可以。醫院課程的學員多數不是工程背景；中正高工的課也不預設任何一門專業知識。重點是從你們每天在做的事開始。</span></p>
+      </div>
+      <div class="qa reveal" style="--d:1">
+        <h3><span class="mark mark-q" aria-hidden="true">問</span><span>要換掉現在用的系統嗎？</span></h3>
+        <p><span class="mark mark-a" aria-hidden="true">答</span><span>不用砍掉重練。我做的是把 AI 接進你原本就在做的那條流程。</span></p>
+      </div>
+      <div class="qa reveal" style="--d:0">
+        <h3><span class="mark mark-q" aria-hidden="true">問</span><span>費用怎麼算？</span></h3>
+        <p><span class="mark mark-a" aria-hidden="true">答</span><span>看範圍而定。第一次先了解狀況，第二輪對話後才報價；表單上的預算量級只是幫我抓方向。</span></p>
+      </div>
+      <div class="qa reveal" style="--d:1">
+        <h3><span class="mark mark-q" aria-hidden="true">問</span><span>公司資料交給 AI 安全嗎？</span></h3>
+        <p><span class="mark mark-a" aria-hidden="true">答</span><span>所有諮詢對話都會保密。課程裡也會教資安意識——工具教了，煞車要在同一堂課教完。</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Inquiry ===== -->
+<section class="section band-dark inquire" id="inquire" aria-labelledby="inquire-title">
+  <div class="wrap inq-grid">
+    <div class="inq-intro">
+      <div class="sec-head">
+        <p class="tab">預約諮詢</p>
+        <div>
+          <h2 class="ink-in" id="inquire-title">告訴我，<br>你想用 AI<br class="br-wide">解決什麼。</h2>
+          <p class="sec-lede">填表後 1–2 個工作日內回覆。合適會附上預約連結；不合適會直接說。</p>
+        </div>
+      </div>
+      <p class="inq-proof">最近諮詢的客戶來自：<br><b>旅遊・醫療・KOL 經紀・自媒體</b></p>
+    </div>
+
+    <form class="slip reveal" id="inq-form" action="#" method="post">
+      <div class="slip-perf" aria-hidden="true"><span>✂</span></div>
+      <div class="slip-body">
+        <div class="slip-head"><h3>諮詢申請單</h3><p>＊皆為必填</p></div>
+
+        <div class="field">
+          <label for="f-name">姓名</label>
+          <input id="f-name" name="name" type="text" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" required autocomplete="email" inputmode="email">
+        </div>
+        <div class="field">
+          <label for="f-company">公司 / 組織</label>
+          <input id="f-company" name="company" type="text" required maxlength="150" autocomplete="organization">
+        </div>
+        <div class="field field-area">
+          <label for="f-goal">想用 AI 做什麼？</label>
+          <textarea id="f-goal" name="goal" required maxlength="300" rows="4" placeholder="例如：每天要從 LINE 群組整理客戶需求，很花時間⋯" aria-describedby="goal-hint"></textarea>
+          <p class="hint" id="goal-hint">最多 300 字・已寫 <span id="goal-count">0</span> 字</p>
+        </div>
+
+        <fieldset class="chips">
+          <legend>團隊規模</legend>
+          <div class="chip-row">
+            <label class="chip"><input type="radio" name="team_size" value="1-5" required><span class="sq" aria-hidden="true"></span><span>1–5</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="6-30"><span class="sq" aria-hidden="true"></span><span>6–30</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="31-100"><span class="sq" aria-hidden="true"></span><span>31–100</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="100+"><span class="sq" aria-hidden="true"></span><span>100+</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="chips">
+          <legend>預算量級（新台幣）</legend>
+          <div class="chip-row">
+            <label class="chip"><input type="radio" name="budget" value="lt100k" required><span class="sq" aria-hidden="true"></span><span>10 萬以下</span></label>
+            <label class="chip"><input type="radio" name="budget" value="100k-300k"><span class="sq" aria-hidden="true"></span><span>10–30 萬</span></label>
+            <label class="chip"><input type="radio" name="budget" value="300k-800k"><span class="sq" aria-hidden="true"></span><span>30–80 萬</span></label>
+            <label class="chip"><input type="radio" name="budget" value="gt800k"><span class="sq" aria-hidden="true"></span><span>80 萬以上</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="chips">
+          <legend>時程</legend>
+          <div class="chip-row">
+            <label class="chip"><input type="radio" name="timeline" value="this_month" required><span class="sq" aria-hidden="true"></span><span>本月內</span></label>
+            <label class="chip"><input type="radio" name="timeline" value="this_quarter"><span class="sq" aria-hidden="true"></span><span>本季</span></label>
+            <label class="chip"><input type="radio" name="timeline" value="exploring"><span class="sq" aria-hidden="true"></span><span>只是先了解</span></label>
+          </div>
+        </fieldset>
+
+        <div class="slip-submit">
+          <button class="btn btn-red" type="submit">送出 <span aria-hidden="true">→</span></button>
+          <p class="form-note" id="form-note" role="status" tabindex="-1" hidden>這是設計預覽，表單不會真的送出。</p>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div>
+      <p class="foot-name">Dawson Wang</p>
+      <p class="foot-role">AI 導入顧問</p>
+    </div>
+    <nav aria-label="頁尾選單">
+      <ul>
+        <li><a href="#services">服務內容</a></li>
+        <li><a href="#cases">客戶案例</a></li>
+        <li><a href="#training">企業內訓</a></li>
+        <li><a href="https://dawsonwang.com/days">實作文章</a></li>
+        <li><a href="https://dawsonwang.com/privacy.html">隱私權政策</a></li>
+      </ul>
+    </nav>
+    <p class="foot-copy">© 2026 Dawson Wang</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.reveal, .ink-in');
+  function showAll() { items.forEach(function (el) { el.classList.add('is-in'); }); }
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    showAll();
+  } else {
+    try {
+      // A fully clip-pathed heading never reports as intersecting, so ink-in
+      // headings are triggered by their (unclipped) parent instead.
+      var targetOf = new Map();
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          (targetOf.get(entry.target) || [entry.target]).forEach(function (el) { el.classList.add('is-in'); });
+          io.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+      items.forEach(function (el) {
+        var watch = el.classList.contains('ink-in') ? el.parentElement : el;
+        if (!targetOf.has(watch)) targetOf.set(watch, []);
+        targetOf.get(watch).push(el);
+        io.observe(watch);
+      });
+    } catch (err) {
+      showAll();
+    }
+  }
+
+  // Close the mobile menu once a destination is chosen.
+  var menu = document.querySelector('.menu');
+  if (menu) {
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) menu.removeAttribute('open');
+    });
+  }
+
+  var goal = document.getElementById('f-goal');
+  var count = document.getElementById('goal-count');
+  if (goal && count) {
+    goal.addEventListener('input', function () { count.textContent = goal.value.length; });
+  }
+
+  // Design preview: nothing is sent anywhere.
+  var form = document.getElementById('inq-form');
+  var note = document.getElementById('form-note');
+  if (form && note) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      note.hidden = false;
+      note.focus();
+    });
+  }
+})();
+</script>
+<script src="_switcher.js" defer></script>
+</body>
+</html>

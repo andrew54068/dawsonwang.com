@@ -1,0 +1,1449 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f1f1ec">
+<title>Dawson Wang — 風格 D：務實清單</title>
+<meta name="description" content="把雜事交給 AI，把時間留給客戶。Dawson Wang，中小企業 AI 導入顧問、企業內訓講師。">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+TC:wght@500;700;900&display=swap">
+<style>
+:root {
+  --paper: #f1f1ec;
+  --grid: #e2e2da;
+  --card: #fbfbf8;
+  --line: #cfcfc6;
+  --ink: #121212;
+  --ink-2: #2a2d31;
+  --steel: #4f555c;
+  --orange: #ff5b14;        /* large / decorative only on light grounds */
+  --orange-text: #c2410c;   /* text-safe on paper and white */
+  --yellow: #ffd400;
+  --yellow-soft: #fff3b3;
+  --panel: #121212;
+  --panel-line: #3b3b3b;
+  --panel-text: #f4f4f0;
+  --panel-muted: #b9b9b1;
+  --sans: "Noto Sans TC", "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+  --num: "Barlow Condensed", "Noto Sans TC", sans-serif;
+  --mono: "IBM Plex Mono", "Noto Sans TC", ui-monospace, monospace;
+  --wrap: 1240px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --nav-h: 72px;
+  --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%23ffd400' stroke-width='3.6' stroke-linecap='square'/%3E%3C/svg%3E");
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+h1, h2, h3, p, blockquote, figure { margin: 0; }
+mark { background: none; color: inherit; }
+button { font: inherit; }
+::selection { background: var(--yellow); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 12px; top: -80px; z-index: 100; background: var(--ink); color: #fff; padding: 12px 16px; font-weight: 700; text-decoration: none; }
+.skip:focus { top: 12px; }
+.mono { font-family: var(--mono); font-weight: 500; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  min-height: 58px; padding: 0 26px;
+  font: 700 18px/1.25 var(--sans);
+  text-decoration: none; text-align: center;
+  border: 2px solid var(--ink); border-radius: 2px;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, color .15s ease;
+}
+.arr { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: square; }
+.arr-down { transform: rotate(90deg); }
+.btn-primary { background: var(--ink); color: #fff; box-shadow: 5px 5px 0 var(--orange); }
+.btn-primary .arr { color: var(--orange); }
+.btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--orange); }
+.btn-primary:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--orange); }
+.btn-ghost { background: var(--card); color: var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: #fff; }
+.btn-yellow { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
+.btn-yellow:hover { background: #fff; border-color: #fff; }
+.btn-sm { min-height: 48px; padding: 0 18px; font-size: 16px; gap: 8px; white-space: nowrap; box-shadow: 3px 3px 0 var(--orange); }
+.btn-sm .arr { width: 18px; height: 18px; }
+.btn-sm:hover { box-shadow: 5px 5px 0 var(--orange); }
+
+/* ---------- nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(241, 241, 236, .94);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--ink);
+}
+.nav-inner { height: var(--nav-h); display: flex; align-items: center; gap: 20px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
+.brand-mark {
+  position: relative; width: 42px; height: 42px; flex: none;
+  display: grid; place-items: center;
+  background: var(--ink); color: #fff;
+  font: 700 21px/1 var(--num); letter-spacing: .02em;
+}
+.brand-mark::after { content: ""; position: absolute; right: -4px; bottom: -4px; width: 12px; height: 12px; background: var(--orange); }
+.brand-text { display: flex; flex-direction: column; line-height: 1.25; white-space: nowrap; }
+.brand-text strong { font-weight: 900; font-size: 18px; letter-spacing: .01em; }
+.brand-text span { font-size: 14px; color: var(--steel); font-weight: 700; }
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-links a {
+  font-weight: 700; font-size: 16px; text-decoration: none;
+  padding: 10px 12px; min-height: 48px; display: inline-flex; align-items: center;
+  background-image: linear-gradient(var(--orange), var(--orange));
+  background-size: 0 3px; background-position: 12px calc(100% - 6px); background-repeat: no-repeat;
+  transition: background-size .2s ease;
+}
+.nav-links a:hover { background-size: calc(100% - 24px) 3px; }
+.nav-toggle {
+  display: none; width: 48px; height: 48px; flex: none;
+  place-items: center; background: var(--card); border: 2px solid var(--ink); cursor: pointer; padding: 0;
+}
+.nav-toggle svg { width: 24px; height: 24px; fill: none; stroke: var(--ink); stroke-width: 2.6; }
+.nav-drawer { border-top: 2px solid var(--ink); background: var(--paper); }
+.nav-drawer nav { display: grid; padding-block: 6px 14px; }
+.nav-drawer a { display: flex; align-items: center; min-height: 56px; font-weight: 700; font-size: 18px; text-decoration: none; border-bottom: 1px solid var(--line); }
+
+/* ---------- section scaffolding ---------- */
+.sec { padding-block: clamp(72px, 9vw, 120px) 0; scroll-margin-top: calc(var(--nav-h) + 6px); }
+.sec-meta {
+  display: flex; align-items: center; gap: 14px;
+  border-top: 2px solid var(--ink); padding-top: 14px; margin-bottom: 22px;
+}
+.sec-no { font: 700 22px/1 var(--num); background: var(--ink); color: #fff; padding: 7px 10px 6px; letter-spacing: .03em; }
+.sec-name { font-weight: 900; font-size: 17px; }
+.sec-ref { margin-left: auto; font-size: 14px; color: var(--steel); }
+.sec-title { font-weight: 900; font-size: clamp(2rem, 1.15rem + 2.7vw, 3.3rem); line-height: 1.24; letter-spacing: -.01em; }
+.sec-lede { margin-top: 16px; font-size: 19px; color: var(--ink-2); max-width: 36em; text-wrap: pretty; }
+.sec-head { margin-bottom: clamp(32px, 4vw, 52px); }
+
+/* ---------- hero ---------- */
+.hero { padding-top: clamp(36px, 5.5vw, 68px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr); gap: clamp(32px, 4vw, 56px); align-items: start; }
+.kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 17px; line-height: 1.4;
+  padding: 7px 14px 7px 10px; border: 2px solid var(--ink); background: var(--card);
+}
+.kicker .sq { width: 12px; height: 12px; background: var(--orange); flex: none; }
+.hero-title { margin-top: 24px; font-weight: 900; font-size: clamp(2.3rem, 1rem + 4.2vw, 4.5rem); line-height: 1.17; letter-spacing: -.015em; }
+.hero-title .line { display: block; }
+.marker {
+  background-image: linear-gradient(transparent 56%, var(--yellow) 56%, var(--yellow) 93%, transparent 93%);
+  background-repeat: no-repeat; background-size: 100% 100%;
+  padding: 0 .04em;
+}
+.hero-sub { margin-top: 22px; font-size: clamp(18px, 1rem + .3vw, 20px); color: var(--ink-2); max-width: 31em; text-wrap: pretty; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 30px; }
+.idcard {
+  position: relative; margin-top: 38px; max-width: 36rem;
+  display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 18px;
+  padding: 20px 18px 16px; border: 2px solid var(--ink); background: var(--card);
+}
+.idcard::before {
+  content: "顧問資料"; position: absolute; top: -14px; left: 14px;
+  background: var(--ink); color: #fff; font-size: 14px; font-weight: 700; line-height: 26px; padding: 0 10px;
+}
+.idcard img { width: 86px; height: 108px; object-fit: cover; border: 2px solid var(--ink); filter: grayscale(1) contrast(1.06); }
+.idcard-name { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; font-size: 18px; line-height: 1.4; }
+.idcard-name strong { font-weight: 900; }
+.idcard-name span { font-size: 15px; color: var(--steel); font-weight: 700; }
+.checks { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; }
+.checks li { position: relative; padding-left: 28px; font-size: 17px; line-height: 1.65; }
+.checks li::before {
+  content: ""; position: absolute; left: 0; top: .34em; width: 18px; height: 18px;
+  background: var(--ink) var(--check) center / 13px no-repeat;
+}
+
+/* calculator */
+.calc {
+  position: relative; background: var(--panel); color: var(--panel-text);
+  border: 2px solid var(--ink); padding: 26px 28px 24px;
+  box-shadow: 10px 10px 0 var(--orange);
+}
+.calc-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--panel-line); }
+.calc-head h2 { font-weight: 900; font-size: 24px; line-height: 1.3; }
+.calc-tag { font: 500 14px var(--mono); color: var(--ink); background: var(--yellow); padding: 2px 8px; }
+.calc-intro { margin-top: 14px; font-size: 16px; line-height: 1.75; color: var(--panel-muted); text-wrap: pretty; }
+.range { margin-top: 18px; }
+.range-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; }
+.range-top label { font-weight: 700; font-size: 17px; line-height: 1.5; }
+.range-top output { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+.range-top output b { font: 700 40px/1 var(--num); color: #fff; font-variant-numeric: tabular-nums; }
+.range-top output small { font-size: 16px; font-weight: 700; color: var(--panel-muted); }
+.range input[type="range"] {
+  --p: .5;
+  -webkit-appearance: none; appearance: none;
+  display: block; width: 100%; height: 48px; margin: 2px 0 0; padding: 0;
+  background: transparent; cursor: pointer;
+}
+.range input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px; border: 0;
+  background: linear-gradient(90deg, var(--orange) 0 calc(15px + var(--p) * (100% - 30px)), #3d3d3d 0);
+}
+.range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 30px; height: 30px; margin-top: -10px; border-radius: 0;
+  background: var(--yellow); border: 3px solid var(--ink); box-shadow: 0 0 0 2px #fff;
+}
+.range input[type="range"]::-moz-range-track { height: 10px; background: #3d3d3d; border: 0; }
+.range input[type="range"]::-moz-range-progress { height: 10px; background: var(--orange); }
+.range input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 0; background: var(--yellow); border: 3px solid var(--ink); box-shadow: 0 0 0 2px #fff; }
+.range input[type="range"]:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+.range-scale { display: flex; justify-content: space-between; font: 500 14px var(--mono); color: var(--panel-muted); margin-top: -4px; }
+.calc-result { margin-top: 20px; padding-top: 18px; border-top: 2px dashed var(--panel-line); }
+.res-label { font-weight: 700; font-size: 17px; }
+.res-main { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin-top: 2px; }
+.res-num { font: 700 clamp(72px, 7.2vw, 104px)/.92 var(--num); color: var(--orange); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.res-unit { font: 500 16px var(--mono); color: var(--panel-muted); }
+.res-sub { margin-top: 6px; font-weight: 700; font-size: 20px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.res-num2 { font: 700 46px/1 var(--num); color: var(--yellow); font-variant-numeric: tabular-nums; }
+.formula { margin-top: 12px; font: 500 14px/1.75 var(--mono); color: var(--panel-muted); }
+.calc-note {
+  margin-top: 16px; padding: 12px 14px;
+  border: 1px solid var(--panel-line); border-left: 5px solid var(--yellow);
+  font-size: 16px; line-height: 1.75; color: #ececE6; text-wrap: pretty;
+}
+.calc-cta {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px; margin-top: 10px;
+  color: #fff; font-weight: 700; font-size: 17px;
+  text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: 2px; text-underline-offset: 7px;
+}
+.calc-cta .arr { color: var(--orange); width: 20px; height: 20px; }
+.calc-cta:hover { color: var(--yellow); }
+
+/* stats */
+.stats { margin: clamp(44px, 5vw, 64px) 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 2px solid var(--ink); background: var(--card); }
+.stat { display: flex; flex-direction: column; gap: 6px; padding: 22px 24px 20px; border-left: 2px solid var(--ink); }
+.stat:first-child { border-left: 0; }
+.stat dd { order: -1; margin: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; }
+.stat .num {
+  font: 700 clamp(54px, 4.8vw, 74px)/1 var(--num); font-variant-numeric: tabular-nums;
+  background-image: linear-gradient(transparent 50%, var(--yellow) 50%, var(--yellow) 90%, transparent 90%);
+  background-repeat: no-repeat; padding: 0 .06em;
+}
+.stat .unit { font-weight: 900; font-size: 20px; }
+.stat dt { font-size: 16px; line-height: 1.6; color: var(--steel); font-weight: 700; text-wrap: balance; }
+
+/* ---------- venue ticker ---------- */
+.venues { margin-top: clamp(56px, 7vw, 88px); background: var(--ink); color: #fff; overflow: hidden; }
+.venues-inner { display: flex; align-items: stretch; }
+.venues-label {
+  flex: none; display: flex; align-items: center; gap: 10px;
+  background: var(--yellow); color: var(--ink);
+  font-weight: 900; font-size: 17px; padding: 16px 22px;
+}
+.venues-label::after { content: ""; width: 0; height: 0; border-block: 9px solid transparent; border-left: 11px solid var(--ink); }
+.ticker { flex: 1; min-width: 0; display: flex; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 36px, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(90deg, transparent, #000 36px, #000 calc(100% - 36px), transparent); }
+.ticker-track { flex: none; display: flex; align-items: center; margin: 0; padding: 0; list-style: none; animation: ticker 40s linear infinite; }
+.ticker-track li { display: flex; align-items: center; white-space: nowrap; font-weight: 700; font-size: 19px; padding-block: 16px; }
+.ticker-track li::after { content: ""; width: 10px; height: 10px; background: var(--orange); margin-inline: 28px; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+@keyframes ticker { to { transform: translateX(-100%); } }
+
+/* ---------- pains checklist ---------- */
+.pains-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 40px); align-items: start; }
+.checklist { margin: 0; padding: 0; border: 0; min-width: 0; display: grid; gap: 14px; }
+.check-row {
+  position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 18px; align-items: start;
+  padding: 20px 24px 20px 20px; background: var(--card); border: 2px solid var(--ink);
+  cursor: pointer; transition: background-color .2s ease, transform .15s ease, box-shadow .15s ease;
+}
+.check-row:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+.check-row input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.check-row .box { width: 38px; height: 38px; display: grid; place-items: center; border: 3px solid var(--ink); background: #fff; transition: background-color .2s ease; }
+.check-row .box svg { width: 26px; height: 26px; fill: none; stroke: var(--ink); stroke-width: 3.6; stroke-linecap: square; stroke-dasharray: 28; stroke-dashoffset: 28; transition: stroke-dashoffset .3s cubic-bezier(.6, .1, .3, 1); }
+.check-row input:checked ~ .box { background: var(--yellow); }
+.check-row input:checked ~ .box svg { stroke-dashoffset: 0; }
+.check-row input:focus-visible ~ .box { outline: 3px solid var(--orange); outline-offset: 3px; }
+.check-row.is-checked { background: var(--yellow-soft); }
+.check-no { display: block; font: 500 14px var(--mono); color: var(--steel); line-height: 1.4; }
+.check-text { display: block; margin-top: 2px; font-weight: 700; font-size: 19px; line-height: 1.72; text-wrap: pretty; }
+.tally {
+  position: sticky; top: calc(var(--nav-h) + 24px);
+  background: var(--panel); color: var(--panel-text);
+  border: 2px solid var(--ink); padding: 26px 26px 24px;
+  box-shadow: 9px 9px 0 var(--yellow);
+}
+.tally-label { font-weight: 700; font-size: 17px; color: var(--panel-muted); }
+.tally-num { display: flex; align-items: baseline; gap: 6px; margin-top: 2px; }
+.tally-n { display: inline-block; font: 700 112px/.88 var(--num); color: var(--yellow); font-variant-numeric: tabular-nums; transform-origin: 50% 80%; }
+.tally-n.bump { animation: bump .32s cubic-bezier(.2, .7, .2, 1); }
+@keyframes bump { from { transform: scale(1.22); } }
+.tally-of { font-weight: 900; font-size: 26px; }
+.tally-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 18px; }
+.tally-bar i { height: 14px; border: 2px solid #fff; transition: background-color .25s ease, border-color .25s ease; }
+.tally-bar i.on { background: var(--orange); border-color: var(--orange); }
+.tally-close { margin-top: 22px; font-size: 18px; line-height: 1.8; text-wrap: pretty; }
+.tally-close strong { color: var(--yellow); font-weight: 900; }
+.tally .btn { margin-top: 22px; width: 100%; box-shadow: none; }
+
+/* ---------- cases / work orders ---------- */
+.orders { display: grid; gap: 30px; }
+.order { background: var(--card); border: 2px solid var(--ink); }
+.hazard { height: 14px; border-bottom: 2px solid var(--ink); background: repeating-linear-gradient(-45deg, var(--yellow) 0 12px, var(--ink) 12px 24px); }
+.order-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 16px 26px 0; }
+.order-id { font: 500 15px var(--mono); padding: 3px 8px; border: 2px solid var(--ink); }
+.order-tag { background: var(--ink); color: #fff; font-weight: 700; font-size: 15px; padding: 4px 10px; line-height: 1.5; }
+.order-who { font-weight: 700; font-size: 16px; color: var(--steel); }
+.order-link {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 48px;
+  font-weight: 700; font-size: 16px;
+  text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: 2px; text-underline-offset: 6px;
+}
+.order-link .arr { width: 18px; height: 18px; color: var(--orange-text); }
+.order-link:hover { color: var(--orange-text); }
+.order-title { padding: 8px 26px 0; font-weight: 900; font-size: clamp(1.45rem, 1rem + 1.25vw, 2rem); line-height: 1.38; }
+.order-body { display: grid; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr); margin-top: 22px; border-top: 2px solid var(--ink); }
+.order-col { padding: 22px 26px 26px; }
+.order-col.is-after { background: var(--yellow-soft); }
+.order-label { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 17px; margin-bottom: 8px; }
+.order-label .ico { width: 28px; height: 28px; display: grid; place-items: center; border: 2px solid var(--ink); }
+.order-label .ico svg { width: 16px; height: 16px; fill: none; stroke-width: 3.4; stroke-linecap: square; }
+.is-before .ico svg { stroke: var(--orange-text); }
+.is-after .ico { background: var(--ink); }
+.is-after .ico svg { stroke: var(--yellow); }
+.order-col p:not(.order-label) { font-size: 18px; line-height: 1.82; max-width: 30em; text-wrap: pretty; }
+.order-arrow { display: grid; place-items: center; background: var(--ink); }
+.order-link-m { display: none; }
+.order-arrow .arr { width: 34px; height: 34px; color: var(--orange); stroke-width: 3; }
+
+/* ---------- services spec table ---------- */
+.spec {
+  display: grid; grid-template-columns: 8.5rem repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(5, auto);
+  border: 2px solid var(--ink); background: var(--card);
+}
+.spec-labels, .spec-plan { grid-row: span 5; display: grid; grid-template-rows: subgrid; }
+.spec-labels { background: var(--ink); color: #fff; }
+.spec-plan { border-left: 2px solid var(--ink); }
+.sc { padding: 20px 22px; border-top: 1px solid var(--line); min-width: 0; }
+.sc:first-child { border-top: 0; }
+.spec-labels .sc { border-top-color: #3b3b3b; font-weight: 900; font-size: 17px; }
+.sc-head { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding-block: 24px 22px; }
+.plan-no { font-weight: 700; font-size: 15px; color: var(--steel); line-height: 1.4; }
+.spec-plan h3 { font-weight: 900; font-size: 26px; line-height: 1.3; }
+.plan-flag { background: var(--orange); color: var(--ink); font-weight: 900; font-size: 15px; line-height: 1.6; padding: 1px 10px; }
+.spec-plan.is-primary { background: #fff9d9; box-shadow: inset 0 7px 0 var(--orange); }
+.spec-plan p { font-size: 18px; line-height: 1.75; text-wrap: pretty; }
+.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ticks li { position: relative; padding-left: 30px; font-size: 18px; line-height: 1.68; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: .32em; width: 19px; height: 19px; background: var(--ink) var(--check) center / 14px no-repeat; }
+.price { font-weight: 900; }
+.sc-cta { display: flex; align-items: flex-end; padding-bottom: 24px; }
+.sc-cta .btn { width: 100%; }
+.ml { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- training ---------- */
+.train-side { display: grid; gap: 30px; }
+.train-scale { margin: 0; display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--ink); background: var(--card); }
+.train-scale > div { display: flex; flex-direction: column; gap: 2px; padding: 14px 18px 12px; }
+.train-scale > div:nth-child(even) { border-left: 2px solid var(--ink); }
+.train-scale > div:nth-child(n + 3) { border-top: 2px solid var(--ink); }
+.train-scale dt { font-weight: 700; font-size: 15px; color: var(--steel); }
+.train-scale dd { order: -1; margin: 0; display: flex; align-items: baseline; gap: 4px; font-weight: 900; font-size: 18px; }
+.train-scale dd b { font: 700 46px/1 var(--num); }
+.train-scale dd.txt { font-size: 22px; line-height: 46px; }
+.nw { white-space: nowrap; }
+.train-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(28px, 3.4vw, 44px); align-items: start; }
+.drawing-frame { position: relative; padding: 10px; border: 2px solid var(--ink); background: var(--card); }
+.drawing-frame::before, .drawing-frame::after { content: ""; position: absolute; width: 24px; height: 24px; border: 3px solid var(--orange); }
+.drawing-frame::before { top: -9px; left: -9px; border-right: 0; border-bottom: 0; }
+.drawing-frame::after { right: -9px; bottom: -9px; border-left: 0; border-top: 0; }
+.drawing-img { position: relative; }
+.drawing-img img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.pin {
+  position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--orange); color: var(--ink); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--ink);
+  font: 700 24px/38px var(--num); text-align: center;
+}
+.pin::after { content: ""; position: absolute; inset: -10px; border-radius: 50%; border: 2px solid var(--orange); animation: ping 2.6s ease-out infinite; animation-delay: var(--delay, 0s); }
+@keyframes ping { 0% { transform: scale(.72); opacity: 1; } 80%, 100% { transform: scale(1.3); opacity: 0; } }
+.callouts { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 2px solid var(--ink); background: var(--card); }
+.callouts li { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; font-weight: 700; font-size: 17px; line-height: 1.6; border-left: 2px solid var(--ink); }
+.callouts li:first-child { border-left: 0; }
+.callouts b { flex: none; width: 30px; height: 30px; margin-top: 1px; border-radius: 50%; background: var(--orange); border: 2px solid var(--ink); font: 700 18px/26px var(--num); text-align: center; }
+.drawing-cap { margin-top: 10px; font: 500 14px/1.6 var(--mono); color: var(--steel); }
+.survey { background: var(--panel); color: var(--panel-text); border: 2px solid var(--ink); padding: 26px; box-shadow: 9px 9px 0 var(--orange); }
+.survey-title { font-weight: 900; font-size: 22px; line-height: 1.4; }
+.survey-src { margin-top: 6px; font-size: 15px; line-height: 1.7; color: var(--panel-muted); }
+.score { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--panel-line); }
+.score-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.score-num { font: 700 92px/.9 var(--num); color: var(--yellow); font-variant-numeric: tabular-nums; }
+.score-of { font: 700 32px/1 var(--num); color: var(--panel-muted); }
+.score-label { font-weight: 700; font-size: 17px; margin-left: auto; }
+.meter {
+  position: relative; height: 18px; margin-top: 10px; border: 2px solid #fff;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), rgba(255, 255, 255, .28) calc(10% - 1px) 10%);
+}
+.meter i { position: absolute; inset: 0 auto 0 0; width: calc(var(--v) * 100%); background: var(--orange); transition: width 1.3s cubic-bezier(.2, .7, .2, 1) .25s; }
+.bar-row { margin-top: 20px; }
+.bar-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-weight: 700; font-size: 17px; line-height: 1.5; }
+.bar-top b { font: 700 32px/1 var(--num); color: #fff; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.slips { list-style: none; margin: clamp(36px, 4.5vw, 56px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.slip { display: flex; flex-direction: column; padding: 22px 24px; background: var(--card); border: 2px solid var(--ink); border-top-style: dashed; }
+.slip-head { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid var(--line); font: 500 14px var(--mono); color: var(--steel); }
+.slip blockquote { flex: 1; font-weight: 700; font-size: 19px; line-height: 1.75; }
+.slip-by { margin-top: 16px; font-size: 16px; color: var(--steel); font-weight: 700; }
+.train-ctas { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
+
+/* ---------- process gantt ---------- */
+.gantt { border: 2px solid var(--ink); background: var(--card); }
+.gantt-axis { display: grid; grid-template-columns: 12rem minmax(0, 1fr); background: var(--ink); color: #fff; font-weight: 700; font-size: 15px; }
+.gantt-axis > span { padding: 10px 20px; }
+.gantt-axis > span + span { display: flex; justify-content: space-between; border-left: 2px solid #3b3b3b; }
+.g-rows { list-style: none; margin: 0; padding: 0; }
+.g-row { display: grid; grid-template-columns: 12rem minmax(0, 1fr); border-top: 1px solid var(--line); }
+.g-row:first-child { border-top: 0; }
+.g-label { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-right: 2px solid var(--ink); }
+.g-no { font: 700 32px/1 var(--num); color: var(--orange-text); }
+.g-label strong { font-weight: 900; font-size: 21px; }
+.g-track { padding: 18px 20px 20px; background-image: repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), var(--grid) calc(10% - 1px) 10%); }
+.g-bar {
+  margin-left: calc(var(--s) * 1%); width: calc((var(--e) - var(--s)) * 1%); min-width: max-content;
+  padding: 8px 14px; background: var(--yellow); border: 2px solid var(--ink);
+  font-weight: 900; font-size: 17px; line-height: 1.5; white-space: nowrap;
+  transform-origin: left center;
+  transition: transform .7s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--i) * 150ms + 150ms);
+}
+.g-row.is-last .g-bar { background: var(--ink); color: #fff; }
+.g-desc { margin-top: 10px; margin-left: min(calc(var(--s) * 1%), calc(100% - 22em)); font-size: 17px; line-height: 1.75; color: var(--ink-2); max-width: 26em; }
+.promises { list-style: none; margin: 22px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 2px solid var(--ink); background: var(--card); }
+.promises li { position: relative; padding: 18px 20px 18px 56px; font-weight: 700; font-size: 17px; line-height: 1.6; border-left: 2px solid var(--ink); }
+.promises li:first-child { border-left: 0; }
+.promises li::before { content: ""; position: absolute; left: 20px; top: 20px; width: 22px; height: 22px; background: var(--ink) var(--check) center / 16px no-repeat; }
+
+/* ---------- tools ---------- */
+.tool-table { border: 2px solid var(--ink); background: var(--card); }
+.tt-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr) 11rem; border-top: 1px solid var(--line); }
+.tt-row > * { padding: 20px 22px; }
+.tt-row > * + * { border-left: 1px solid var(--line); }
+.tt-head { background: var(--ink); color: #fff; border-top: 0; font-weight: 900; font-size: 16px; }
+.tt-head > * { padding-block: 11px; }
+.tt-head > * + * { border-left-color: #3b3b3b; }
+.tt-row h3 { font-weight: 900; font-size: 20px; line-height: 1.5; }
+.tt-row p { font-size: 17px; line-height: 1.8; text-wrap: pretty; }
+.tt-ref { display: flex; flex-direction: column; gap: 0; }
+.tt-ref a { font: 500 15px/1.6 var(--mono); text-decoration: underline; text-decoration-color: var(--orange); text-underline-offset: 4px; min-height: 44px; display: inline-flex; align-items: center; }
+.tools-foot { margin-top: 24px; }
+
+/* ---------- faq ---------- */
+.faq-list { border: 2px solid var(--ink); background: var(--card); }
+.faq-item + .faq-item { border-top: 1px solid var(--line); }
+.faq-item summary {
+  list-style: none; cursor: pointer;
+  display: grid; grid-template-columns: 40px minmax(0, 1fr) 30px; gap: 16px; align-items: center;
+  min-height: 72px; padding: 16px 22px; font-weight: 900; font-size: 19px; line-height: 1.55;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { background: var(--yellow-soft); }
+.q { width: 38px; height: 38px; display: grid; place-items: center; background: var(--ink); color: var(--yellow); font: 700 21px/1 var(--num); }
+.plus { position: relative; width: 26px; height: 26px; border: 2px solid var(--ink); }
+.plus::before, .plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2.5px; background: var(--ink); transform: translate(-50%, -50%); transition: transform .2s ease; }
+.plus::after { transform: translate(-50%, -50%) rotate(90deg); }
+.faq-item[open] .plus::after { transform: translate(-50%, -50%) rotate(0deg); }
+.faq-a { padding: 0 22px 22px 78px; font-size: 18px; line-height: 1.85; max-width: 46em; color: var(--ink-2); text-wrap: pretty; }
+
+/* ---------- inquiry form ---------- */
+.inq-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.25fr); gap: clamp(28px, 4vw, 56px); align-items: start; }
+.inq-info { position: sticky; top: calc(var(--nav-h) + 28px); }
+.inq-lede { font-size: 19px; line-height: 1.85; text-wrap: pretty; }
+.inq-proof { margin-top: 26px; padding: 16px 18px; border: 2px solid var(--ink); background: var(--yellow); font-size: 17px; line-height: 1.7; }
+.inq-proof b { display: block; font-weight: 900; font-size: 19px; }
+.inq-steps { list-style: none; margin: 26px 0 0; padding: 0; border-top: 2px solid var(--ink); }
+.inq-steps li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 8px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 17px; line-height: 1.6; }
+.inq-steps b { font: 700 24px/1 var(--num); color: var(--orange-text); }
+.form {
+  display: grid; gap: 22px;
+  padding: clamp(20px, 3vw, 32px); background: var(--card); border: 2px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
+}
+.form-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
+.form-head strong { font-weight: 900; font-size: 20px; }
+.form-head span { font: 500 14px var(--mono); color: var(--steel); }
+.f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.f { display: grid; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.f-label { display: flex; align-items: baseline; gap: 8px; padding: 0; font-weight: 900; font-size: 17px; line-height: 1.5; }
+.f-label em { font-style: normal; font-weight: 700; font-size: 14px; color: var(--orange-text); }
+.f input[type="text"], .f input[type="email"], .f textarea {
+  width: 100%; min-height: 56px; padding: 12px 14px;
+  font: 500 18px/1.6 var(--sans); color: var(--ink);
+  background: #fff; border: 2px solid var(--ink); border-radius: 0;
+  -webkit-appearance: none; appearance: none;
+}
+.f textarea { min-height: 156px; resize: vertical; }
+.f input::placeholder, .f textarea::placeholder { color: #6b7076; }
+.f input:focus, .f textarea:focus { outline: none; box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink); }
+.f.is-invalid input, .f.is-invalid textarea { border-color: var(--orange-text); box-shadow: 0 0 0 3px rgba(255, 91, 20, .35); }
+.f.is-invalid .f-label em { background: var(--orange); color: var(--ink); padding: 0 6px; }
+.f-count { justify-self: end; font: 500 14px var(--mono); color: var(--steel); }
+.prefill-note { padding: 10px 14px; border-left: 5px solid var(--orange); background: var(--yellow-soft); font-weight: 700; font-size: 16px; line-height: 1.6; }
+.prefill-note[hidden] { display: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { position: relative; display: inline-flex; }
+.chip input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.chip span {
+  display: inline-flex; align-items: center; min-height: 52px; padding: 0 20px;
+  border: 2px solid var(--ink); background: #fff; font-weight: 700; font-size: 18px; line-height: 1.3;
+  transition: background-color .15s ease, color .15s ease;
+}
+.chip:hover span { background: var(--yellow-soft); }
+.chip input:checked + span { background: var(--ink); color: #fff; box-shadow: inset 0 -6px 0 var(--orange); }
+.chip input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 3px; }
+.form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding-top: 4px; }
+.btn-submit { min-width: 210px; min-height: 62px; font-size: 20px; }
+.form-msg { flex: 1 1 100%; padding: 12px 16px; border: 2px solid var(--ink); background: var(--yellow); font-weight: 700; font-size: 17px; line-height: 1.7; }
+.form-msg[hidden] { display: none; }
+
+/* ---------- footer ---------- */
+.foot { margin-top: clamp(80px, 10vw, 128px); background: var(--ink); color: #fff; padding: 56px 0 148px; }
+.foot-grid { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 24px 48px; align-items: center; }
+.foot .brand { margin: 0; }
+.foot .brand-mark { background: #fff; color: var(--ink); }
+.foot .brand-text span { color: var(--panel-muted); }
+.foot-links { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.foot-links a { display: inline-flex; align-items: center; min-height: 48px; font-weight: 700; font-size: 16px; text-decoration: none; }
+.foot-links a:hover { color: var(--yellow); }
+.foot-copy { font-size: 15px; color: var(--panel-muted); }
+.titleblock { margin-top: 36px; display: flex; flex-wrap: wrap; border: 1px solid #4a4a4a; font: 500 14px/1.5 var(--mono); color: var(--panel-muted); }
+.titleblock span { padding: 8px 14px; border-right: 1px solid #4a4a4a; }
+.titleblock span:last-child { border-right: 0; margin-left: auto; color: var(--yellow); }
+
+/* ---------- motion (JS-only hiding) ---------- */
+html.js .anim { animation: rise .72s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--d, 0) * 90ms + 80ms); }
+html.js .anim-panel { animation: panel-in .85s cubic-bezier(.2, .7, .2, 1) .32s both; }
+html.js .hero .marker { background-size: 0% 100%; animation: sweep .7s cubic-bezier(.6, .1, .2, 1) .95s forwards; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes panel-in { from { opacity: 0; transform: translateX(26px); } }
+@keyframes sweep { to { background-size: 100% 100%; } }
+html.js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
+html.js .reveal.is-in { opacity: 1; transform: none; }
+html.js .survey:not(.is-in) .meter i { width: 0; }
+html.js .gantt:not(.is-in) .g-bar { transform: scaleX(0); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1099px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: grid; }
+  .nav-inner { gap: 12px; }
+}
+@media (max-width: 1023px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .calc { max-width: 640px; }
+  .pains-grid, .train-grid, .inq-grid { grid-template-columns: minmax(0, 1fr); }
+  .tally, .inq-info { position: static; }
+  .br-d { display: none; }
+  .slips { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 899px) {
+  .spec { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; border: 0; background: none; }
+  .spec-labels { display: none; }
+  .spec-plan { grid-row: auto; display: block; border: 2px solid var(--ink); background: var(--card); }
+  .spec-plan .sc:first-child { border-top: 0; }
+  .ml { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; display: block; margin-bottom: 6px; font-weight: 700; font-size: 14px; color: var(--steel); }
+  .sc-cta { padding-top: 20px; }
+  .tt-head { display: none; }
+  .tt-row { grid-template-columns: minmax(0, 1fr); border-top: 0; }
+  .tt-row + .tt-row { border-top: 2px solid var(--ink); }
+  .tt-row > * { padding: 0 20px; }
+  .tt-row > *:first-child { padding-top: 20px; }
+  .tt-row > *:last-child { padding-bottom: 20px; }
+  .tt-row > * + * { border-left: 0; margin-top: 8px; }
+  .tt-ref { flex-direction: row; flex-wrap: wrap; gap: 4px 16px; }
+}
+@media (max-width: 759px) {
+  body { font-size: 17px; }
+  .nav-inner { gap: 10px; }
+  .brand { gap: 10px; }
+  .brand-mark { width: 36px; height: 36px; font-size: 18px; }
+  .brand-text strong { font-size: 16px; }
+  .nav-cta { padding: 0 12px; font-size: 15px; }
+  .sec-lede { font-size: 18px; }
+  .sec-ref { display: none; }
+  .hero-ctas .btn { flex: 1 1 100%; }
+  .idcard { grid-template-columns: 72px minmax(0, 1fr); gap: 14px; padding: 20px 14px 14px; }
+  .idcard img { width: 72px; height: 90px; }
+  .checks li { font-size: 16px; }
+  .calc { padding: 22px 18px 20px; box-shadow: 6px 6px 0 var(--orange); }
+  .range-top { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat { padding: 18px 16px; }
+  .stat .num { font-size: 46px; }
+  .stat .unit { font-size: 17px; }
+  .stat dt { font-size: 15px; }
+  .stat:nth-child(3) { border-left: 0; }
+  .stat:nth-child(n + 3) { border-top: 2px solid var(--ink); }
+  .venues-inner { flex-direction: column; }
+  .venues-label { padding: 12px var(--gutter); }
+  .check-row { grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding: 18px 16px; }
+  .check-row .box { width: 34px; height: 34px; }
+  .check-text { font-size: 18px; }
+  .tally { box-shadow: 6px 6px 0 var(--yellow); padding: 22px 20px; }
+  .tally-n { font-size: 96px; }
+  .order-head { padding: 14px 18px 0; }
+  .order-head .order-link { display: none; }
+  .order-link-m { display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 0 18px; border-top: 2px solid var(--ink); font-weight: 900; font-size: 17px; text-decoration: none; }
+  .order-link-m .arr { color: var(--orange-text); }
+  .order-title { padding: 6px 18px 0; }
+  .order-body { grid-template-columns: minmax(0, 1fr); }
+  .order-col { padding: 18px 18px 22px; }
+  .order-arrow { height: 40px; }
+  .order-arrow .arr { transform: rotate(90deg); width: 26px; height: 26px; }
+  .callouts { grid-template-columns: minmax(0, 1fr); }
+  .callouts li { border-left: 0; border-top: 2px solid var(--ink); }
+  .callouts li:first-child { border-top: 0; }
+  .pin { width: 36px; height: 36px; font-size: 20px; line-height: 30px; }
+  .survey { padding: 22px 18px; box-shadow: 6px 6px 0 var(--orange); }
+  .score-num { font-size: 80px; }
+  .score-label { margin-left: 0; flex-basis: 100%; }
+  .train-ctas .btn { flex: 1 1 100%; }
+  .gantt-axis { display: none; }
+  .g-row { grid-template-columns: minmax(0, 1fr); }
+  .g-label { border-right: 0; padding: 16px 16px 0; }
+  .g-track { padding: 10px 16px 18px; background-image: none; }
+  .g-bar { display: inline-block; width: auto; margin-left: 0; }
+  .g-desc { margin-left: 0; }
+  .promises { grid-template-columns: minmax(0, 1fr); }
+  .promises li { border-left: 0; border-top: 2px solid var(--ink); }
+  .promises li:first-child { border-top: 0; }
+  .faq-item summary { grid-template-columns: 34px minmax(0, 1fr) 26px; gap: 12px; padding: 14px 16px; font-size: 18px; }
+  .q { width: 34px; height: 34px; }
+  .faq-a { padding: 0 16px 20px 62px; font-size: 17px; }
+  .f-row { grid-template-columns: minmax(0, 1fr); }
+  .form { box-shadow: 6px 6px 0 var(--ink); }
+  .chip span { padding: 0 16px; }
+  .btn-submit { width: 100%; }
+  .foot-grid { grid-template-columns: minmax(0, 1fr); }
+  .titleblock span:last-child { margin-left: 0; }
+}
+@media (min-width: 760px) {
+  .br-m { display: none; }
+}
+@media (max-width: 380px) {
+  .brand-text span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  html.js .anim, html.js .anim-panel { animation: none; }
+  html.js .hero .marker { animation: none; background-size: 100% 100%; }
+  html.js .reveal { opacity: 1; transform: none; transition: none; }
+  html.js .survey:not(.is-in) .meter i { width: calc(var(--v) * 100%); }
+  html.js .gantt:not(.is-in) .g-bar { transform: none; }
+  .meter i, .g-bar, .check-row, .check-row .box svg, .btn { transition: none; }
+  .ticker { display: block; -webkit-mask-image: none; mask-image: none; }
+  .ticker-track { animation: none; flex-wrap: wrap; padding: 8px 20px; }
+  .ticker-track li { padding-block: 6px; font-size: 17px; }
+  .ticker-track li::after { margin-inline: 14px; }
+  .ticker-track[aria-hidden="true"] { display: none; }
+  .pin::after, .tally-n.bump { animation: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="nav" id="top">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="Dawson Wang，回到頁首">
+      <span class="brand-mark" aria-hidden="true">DW</span>
+      <span class="brand-text"><strong>Dawson Wang</strong><span>AI 導入顧問</span></span>
+    </a>
+    <nav class="nav-links" aria-label="主要選單">
+      <a href="#services">服務內容</a>
+      <a href="#cases">客戶案例</a>
+      <a href="#training">企業內訓</a>
+      <a href="#process">合作流程</a>
+      <a href="https://dawsonwang.com/days">實作文章</a>
+    </nav>
+    <a class="btn btn-primary btn-sm nav-cta" href="#inquire">預約諮詢<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="nav-drawer" aria-expanded="false" aria-label="開啟選單">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+  <div class="nav-drawer" id="nav-drawer" hidden>
+    <nav class="wrap" aria-label="手機選單">
+      <a href="#services">服務內容</a>
+      <a href="#cases">客戶案例</a>
+      <a href="#training">企業內訓</a>
+      <a href="#process">合作流程</a>
+      <a href="https://dawsonwang.com/days">實作文章</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="kicker anim" style="--d:0"><span class="sq" aria-hidden="true"></span>中小企業 AI 導入顧問 · 企業內訓講師</p>
+        <h1 class="hero-title" id="hero-title">
+          <span class="line anim" style="--d:1">把雜事交給 AI，</span>
+          <span class="line anim" style="--d:2">把<mark class="marker">時間</mark>留給客戶。</span>
+        </h1>
+        <p class="hero-sub anim" style="--d:3">每天在 LINE、Excel、Email<br class="br-m"> 之間重複做的事，<br>我幫你找出哪些能交給 AI，<br class="br-m">再陪團隊一路用到上手。</p>
+        <div class="hero-ctas anim" style="--d:4">
+          <a class="btn btn-primary" href="#inquire">預約 30 分鐘諮詢<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-ghost" href="#cases">先看客戶案例<svg class="arr arr-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="idcard anim" style="--d:5">
+          <img src="assets/dawson.webp" width="640" height="800" alt="Dawson Wang 正式形象照（黑西裝外套、白 T）">
+          <div>
+            <p class="idcard-name"><strong>Dawson Wang</strong><span>AI 導入顧問</span></p>
+            <ul class="checks">
+              <li>9 年新創軟體開發經驗</li>
+              <li>iPAS AI 應用規劃師（中級）· 經濟部產業發展署發證</li>
+              <li>已協助旅遊業把 AI 接進日常業務</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <aside class="calc anim-panel" aria-labelledby="calc-title">
+        <div class="calc-head">
+          <h2 id="calc-title">時間成本試算</h2>
+          <span class="calc-tag" aria-hidden="true">CALC-01</span>
+        </div>
+        <p class="calc-intro">拉動滑桿，<br class="br-m">看團隊每月有多少時間花在重複雜事上。</p>
+        <div class="range">
+          <div class="range-top">
+            <label for="calc-people">員工人數</label>
+            <output id="out-people" for="calc-people"><b>10</b><small>人</small></output>
+          </div>
+          <input type="range" id="calc-people" min="1" max="100" step="1" value="10" style="--p:.0909">
+          <div class="range-scale" aria-hidden="true"><span>1</span><span>100</span></div>
+        </div>
+        <div class="range">
+          <div class="range-top">
+            <label for="calc-hours">每人每天花在重複雜事的時間</label>
+            <output id="out-hours" for="calc-hours"><b>1.5</b><small>小時</small></output>
+          </div>
+          <input type="range" id="calc-hours" min="0.5" max="4" step="0.5" value="1.5" style="--p:.2857">
+          <div class="range-scale" aria-hidden="true"><span>0.5</span><span>4</span></div>
+        </div>
+        <div class="calc-result">
+          <p class="res-label">團隊每月花在重複雜事上</p>
+          <p class="res-main"><span class="res-num" id="res-monthly">330</span><span class="res-unit">小時／月</span></p>
+          <p class="res-sub">≈ <span class="res-num2" id="res-fte">1.9</span> 位全職人力</p>
+          <p class="formula" id="formula">10 人 × 1.5 小時 × 22 工作天 = 330 小時<br>330 ÷ 176（22 天 × 8 小時）≈ 1.9 人</p>
+          <p class="sr-only" id="calc-live" aria-live="polite"></p>
+        </div>
+        <p class="calc-note">這只是用你填的數字乘出來的，<br class="br-m">不是承諾。先看清楚時間花在哪，<br class="br-m">才知道哪裡值得交給 AI。</p>
+        <a class="calc-cta" id="calc-cta" href="#inquire">帶這個數字來諮詢<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+      </aside>
+    </div>
+
+    <div class="wrap">
+      <dl class="stats reveal" data-countup>
+        <div class="stat"><dt>每天公開一篇 AI 實作</dt><dd><span class="num" data-count="267">267</span><span class="unit">天</span></dd></div>
+        <div class="stat"><dt>醫院與學校內訓</dt><dd><span class="num" data-count="9">9</span><span class="unit">場</span></dd></div>
+        <div class="stat"><dt>累積學員</dt><dd><span class="num" data-count="250" data-suffix="+">250+</span><span class="unit">人次</span></dd></div>
+        <div class="stat"><dt>近兩場課後匿名問卷平均（33 份）</dt><dd><span class="num" data-count="4.82" data-decimals="2">4.82</span><span class="unit">/ 5</span></dd></div>
+      </dl>
+    </div>
+
+    <div class="venues" role="region" aria-label="曾受邀授課的單位">
+      <div class="venues-inner">
+        <p class="venues-label">曾受邀授課的單位</p>
+        <div class="ticker">
+          <ul class="ticker-track">
+            <li>奇美醫院總院</li><li>柳營奇美醫院</li><li>佳里奇美醫院</li><li>部立臺南醫院</li><li>臺南新樓醫院</li><li>高雄市立中正高工</li>
+          </ul>
+          <ul class="ticker-track" aria-hidden="true">
+            <li>奇美醫院總院</li><li>柳營奇美醫院</li><li>佳里奇美醫院</li><li>部立臺南醫院</li><li>臺南新樓醫院</li><li>高雄市立中正高工</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 01 PAINS ============ -->
+  <section class="sec" id="pains" aria-labelledby="pains-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta"><span class="sec-no">01</span><span class="sec-name">痛點檢查</span><span class="sec-ref mono">SEC 01 / 08</span></div>
+        <h2 class="sec-title" id="pains-title">這些狀況，<br>你公司是不是也有？</h2>
+        <p class="sec-lede">有的就勾起來。<br class="br-m">按下面的按鈕，會直接帶進諮詢表單。</p>
+      </header>
+      <div class="pains-grid">
+        <fieldset class="checklist">
+          <legend class="sr-only">勾選你公司有的狀況</legend>
+          <label class="check-row reveal">
+            <input type="checkbox" name="pain" value="客戶需求、改來改去的細節，全散在 LINE 群組裡，要回頭找得翻半天。">
+            <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+            <span><span class="check-no">A-01</span><span class="check-text">客戶需求、改來改去的細節，<br>全散在 LINE 群組裡，<br class="br-m">要回頭找得翻半天。</span></span>
+          </label>
+          <label class="check-row reveal">
+            <input type="checkbox" name="pain" value="同一個案子分散在 Excel、LINE、Email、雲端檔案，資料一直複製貼上。">
+            <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+            <span><span class="check-no">A-02</span><span class="check-text">同一個案子分散在 Excel、LINE、Email、雲端檔案，<br>資料一直複製貼上。</span></span>
+          </label>
+          <label class="check-row reveal">
+            <input type="checkbox" name="pain" value="SOP、規範一改版就是一大疊，員工看不完，要用的時候又找不到。">
+            <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+            <span><span class="check-no">A-03</span><span class="check-text">SOP、規範一改版就是一大疊，<br>員工看不完，<br class="br-m">要用的時候又找不到。</span></span>
+          </label>
+          <label class="check-row reveal">
+            <input type="checkbox" name="pain" value="公司買了 AI 帳號，大家卻只拿來翻譯、改錯字。">
+            <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+            <span><span class="check-no">A-04</span><span class="check-text">公司買了 AI 帳號，<br>大家卻只拿來翻譯、改錯字。</span></span>
+          </label>
+        </fieldset>
+        <aside class="tally reveal" aria-label="勾選統計">
+          <p class="tally-label">你勾了</p>
+          <p class="tally-num"><span class="tally-n" id="tally-n">0</span><span class="tally-of">／4 項</span></p>
+          <div class="tally-bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <p class="sr-only" id="tally-live" aria-live="polite"></p>
+          <p class="tally-close"><strong>不用砍掉重練。</strong><br>把 AI 接進你原本就在做的流程，<br>從最花時間的那件雜事開始。</p>
+          <a class="btn btn-yellow" id="pain-cta" href="#inquire">把勾選的狀況帶來諮詢<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 CASES ============ -->
+  <section class="sec" id="cases" aria-labelledby="cases-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta"><span class="sec-no">02</span><span class="sec-name">客戶案例</span><span class="sec-ref mono">SEC 02 / 08</span></div>
+        <h2 class="sec-title" id="cases-title">他們本來卡在哪裡，<br>後來怎麼動起來。</h2>
+      </header>
+      <div class="orders">
+        <article class="order reveal">
+          <div class="hazard" aria-hidden="true"></div>
+          <div class="order-head">
+            <span class="order-id">CASE-096</span>
+            <span class="order-tag">醫療</span>
+            <span class="order-who">診所主治醫師</span>
+            <a class="order-link" href="https://dawsonwang.com/day/96">看完整案例<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <h3 class="order-title">把厚厚的 SOP，<br>變成看診時查得到的決策樹</h3>
+          <div class="order-body">
+            <div class="order-col is-before">
+              <p class="order-label"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span>卡關</p>
+              <p>每位病人只有 2–3 分鐘，療程選項卻很複雜；國際 SOP 每 3 個月更新一次，看完一版又出兩版。</p>
+            </div>
+            <div class="order-arrow" aria-hidden="true"><svg class="arr" viewBox="0 0 24 24"><path d="M3 12h16M13 6l6 6-6 6"/></svg></div>
+            <div class="order-col is-after">
+              <p class="order-label"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>做法</p>
+              <p>把 PDF 版的 SOP 拆成可以直接查詢的決策樹，看診時能當場帶病人看懂有哪些選項。</p>
+            </div>
+          </div>
+          <a class="order-link-m" href="https://dawsonwang.com/day/96">看完整案例<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+        </article>
+
+        <article class="order reveal">
+          <div class="hazard" aria-hidden="true"></div>
+          <div class="order-head">
+            <span class="order-id">CASE-099</span>
+            <span class="order-tag">行銷 / KOL 經紀</span>
+            <span class="order-who">科技大廠的 KOL 合作社群經理</span>
+            <a class="order-link" href="https://dawsonwang.com/day/99">看完整案例<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <h3 class="order-title">一個案子橫跨 5 個工具，<br>重新設計整條流程</h3>
+          <div class="order-body">
+            <div class="order-col is-before">
+              <p class="order-label"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span>卡關</p>
+              <p>預算在試算表、跟代理商用 LINE 溝通，再加上 Email、檔案來回傳、社群平台發文——一個案子橫跨 5 個以上的工具。</p>
+            </div>
+            <div class="order-arrow" aria-hidden="true"><svg class="arr" viewBox="0 0 24 24"><path d="M3 12h16M13 6l6 6-6 6"/></svg></div>
+            <div class="order-col is-after">
+              <p class="order-label"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>做法</p>
+              <p>找出「會用 AI」跟「用得好」之間的落差，重新設計整條工作流程。</p>
+            </div>
+          </div>
+          <a class="order-link-m" href="https://dawsonwang.com/day/99">看完整案例<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+        </article>
+
+        <article class="order reveal">
+          <div class="hazard" aria-hidden="true"></div>
+          <div class="order-head">
+            <span class="order-id">CASE-098</span>
+            <span class="order-tag">用 LINE 管工作的老闆</span>
+            <span class="order-who">把工作群開在 LINE 的老闆、PM</span>
+            <a class="order-link" href="https://dawsonwang.com/day/98">看完整案例<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <h3 class="order-title">讓 AI 直接讀 LINE 對話，<br>不用再自己慢慢翻</h3>
+          <div class="order-body">
+            <div class="order-col is-before">
+              <p class="order-label"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span>卡關</p>
+              <p>對話散在各個群組和私訊，每次要回顧某一段，都得自己慢慢往上翻。</p>
+            </div>
+            <div class="order-arrow" aria-hidden="true"><svg class="arr" viewBox="0 0 24 24"><path d="M3 12h16M13 6l6 6-6 6"/></svg></div>
+            <div class="order-col is-after">
+              <p class="order-label"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>做法</p>
+              <p>讓 AI 直接讀取電腦裡的 LINE 對話幫你整理——不用申請 API，也不用開發者帳號。</p>
+            </div>
+          </div>
+          <a class="order-link-m" href="https://dawsonwang.com/day/98">看完整案例<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 SERVICES ============ -->
+  <section class="sec" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta"><span class="sec-no">03</span><span class="sec-name">服務內容</span><span class="sec-ref mono">SEC 03 / 08</span></div>
+        <h2 class="sec-title" id="services-title">三種合作方式，<br>看你想走多深。</h2>
+        <p class="sec-lede">每個方案的成果都交到你們手上，<br class="br-m">沒有黑盒子，看得到、驗收得了。</p>
+      </header>
+      <div class="spec reveal">
+        <div class="spec-labels" aria-hidden="true">
+          <div class="sc sc-head">方案</div>
+          <div class="sc">一句話</div>
+          <div class="sc">包含</div>
+          <div class="sc">價格</div>
+          <div class="sc"></div>
+        </div>
+        <article class="spec-plan is-primary" aria-labelledby="plan-1">
+          <header class="sc sc-head"><span class="plan-no">方案 1</span><h3 id="plan-1">AI 導入落地</h3><span class="plan-flag">主推</span></header>
+          <div class="sc"><span class="ml">一句話</span><p>從試做、上線，到交接給你的團隊。</p></div>
+          <div class="sc"><span class="ml">包含</span>
+            <ul class="ticks">
+              <li>把散在 LINE、Email、Excel 的流程串起來</li>
+              <li>把 PDF、SOP、手冊變成查得到答案的資料</li>
+              <li>幫團隊設定好專屬的 AI 工具和自動化流程</li>
+            </ul>
+          </div>
+          <div class="sc"><span class="ml">價格</span><p class="price">預約討論後報價</p></div>
+          <div class="sc sc-cta"><a class="btn btn-primary" href="#inquire">聊聊合作<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a></div>
+        </article>
+        <article class="spec-plan" aria-labelledby="plan-2">
+          <header class="sc sc-head"><span class="plan-no">方案 2</span><h3 id="plan-2">團隊培訓</h3></header>
+          <div class="sc"><span class="ml">一句話</span><p>幫團隊養成持續使用 AI 的習慣。</p></div>
+          <div class="sc"><span class="ml">包含</span>
+            <ul class="ticks">
+              <li>團隊工作坊（半天／一天）</li>
+              <li>1 對 1 教練（從個人工具出發）</li>
+              <li>長期顧問陪跑（每週同步）</li>
+            </ul>
+          </div>
+          <div class="sc"><span class="ml">價格</span><p class="price">預約討論後報價</p></div>
+          <div class="sc sc-cta"><a class="btn btn-ghost" href="#inquire">了解培訓<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a></div>
+        </article>
+        <article class="spec-plan" aria-labelledby="plan-3">
+          <header class="sc sc-head"><span class="plan-no">方案 3</span><h3 id="plan-3">演講／顧問諮詢</h3></header>
+          <div class="sc"><span class="ml">一句話</span><p>受邀演講、企業內訓、單次諮詢。</p></div>
+          <div class="sc"><span class="ml">包含</span>
+            <ul class="ticks">
+              <li>企業內訓（AI 工作流現況／導入路線圖）</li>
+              <li>線上活動／Podcast 受訪</li>
+              <li>1 小時單次諮詢</li>
+            </ul>
+          </div>
+          <div class="sc"><span class="ml">價格</span><p class="price">預約討論後報價</p></div>
+          <div class="sc sc-cta"><a class="btn btn-ghost" href="#inquire">邀請演講<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 TRAINING ============ -->
+  <section class="sec" id="training" aria-labelledby="training-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta"><span class="sec-no">04</span><span class="sec-name">企業內訓</span><span class="sec-ref mono">SEC 04 / 08</span></div>
+        <h2 class="sec-title" id="training-title">聽完覺得有收穫不算，<br>要帶著成品離開教室。</h2>
+        <p class="sec-lede">課程以實作為主。實作時間我會走到每個人座位旁，一個一個確認進度——<br class="br-d">很多卡點，只有看到操作畫面才說得清楚。</p>
+      </header>
+      <div class="train-grid">
+        <figure class="drawing reveal">
+          <div class="drawing-frame">
+            <div class="drawing-img">
+              <img src="assets/speaking/ccvs-2026-helping.webp" width="1600" height="1200" decoding="async" alt="Dawson Wang 站在中正高工電腦教室一位老師的座位旁，協助她完成 AI 實作">
+              <span class="pin" style="--x:59%; --y:27%" aria-hidden="true">1</span>
+              <span class="pin" style="--x:39%; --y:50%; --delay:.5s" aria-hidden="true">2</span>
+              <span class="pin" style="--x:56%; --y:69%; --delay:1s" aria-hidden="true">3</span>
+            </div>
+          </div>
+          <figcaption>
+            <ol class="callouts">
+              <li><b aria-hidden="true">1</b>走到每個人座位旁</li>
+              <li><b aria-hidden="true">2</b>一個一個確認進度</li>
+              <li><b aria-hidden="true">3</b><span>看到操作畫面，<br>卡點才說得清楚</span></li>
+            </ol>
+            <p class="drawing-cap">圖 01 · 高雄市立中正高工 · 教師 AI 應用研習</p>
+          </figcaption>
+        </figure>
+        <div class="train-side">
+        <div class="survey reveal">
+          <p class="survey-title">課後匿名問卷</p>
+          <p class="survey-src">2026 年 9 月，佳里奇美、柳營奇美<br>兩場匿名課後問卷，<span class="nw">共 33 份</span></p>
+          <div class="score">
+            <div class="score-row"><span class="score-num">4.82</span><span class="score-of">/ 5</span><span class="score-label">平均評分</span></div>
+            <div class="meter" style="--v:.964" aria-hidden="true"><i></i></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-top"><span>完成六步實作</span><b>29 / 33</b></div>
+            <div class="meter" style="--v:.8788" aria-hidden="true"><i></i></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-top"><span>會或應該會用在工作上</span><b>31 / 33</b></div>
+            <div class="meter" style="--v:.9394" aria-hidden="true"><i></i></div>
+          </div>
+        </div>
+        <dl class="train-scale reveal">
+          <div><dt>授課場次</dt><dd><b>9</b>場</dd></div>
+          <div><dt>授課單位</dt><dd><b>6</b>個</dd></div>
+          <div><dt>累積人次</dt><dd><b>250+</b></dd></div>
+          <div><dt>授課領域</dt><dd class="txt">醫療與教育</dd></div>
+        </dl>
+        </div>
+      </div>
+      <ul class="slips" aria-label="學員回饋">
+        <li class="slip reveal">
+          <p class="slip-head"><span>回饋單 01</span><span>中正高工</span></p>
+          <blockquote>「感謝講師細心的指導 我聽得懂 也做得出來 超讚的」</blockquote>
+          <p class="slip-by">專業群科教師 · 中正高工</p>
+        </li>
+        <li class="slip reveal">
+          <p class="slip-head"><span>回饋單 02</span><span>中正高工</span></p>
+          <blockquote>「教學準備充足，能從學生的角度思考其需求，讚！」</blockquote>
+          <p class="slip-by">語文／社會科教師 · 中正高工</p>
+        </li>
+        <li class="slip reveal">
+          <p class="slip-head"><span>回饋單 03</span><span>中正高工</span></p>
+          <blockquote>「對ai的認識有更系統化的理解，除了教導大家做出成品，還具體説明是如何做出來，這部份講解的很清楚。」</blockquote>
+          <p class="slip-by">數學／自然科教師 · 中正高工</p>
+        </li>
+      </ul>
+      <div class="train-ctas reveal">
+        <a class="btn btn-primary" href="#inquire">邀請到公司內訓<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="https://dawsonwang.com/speaking">看所有授課場次<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 PROCESS ============ -->
+  <section class="sec" id="process" aria-labelledby="process-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta"><span class="sec-no">05</span><span class="sec-name">合作流程</span><span class="sec-ref mono">SEC 05 / 08</span></div>
+        <h2 class="sec-title" id="process-title">合作怎麼開始？</h2>
+      </header>
+      <div class="gantt reveal">
+        <div class="gantt-axis" aria-hidden="true"><span>步驟</span><span><span>依序進行</span><span>→</span></span></div>
+        <ol class="g-rows">
+          <li class="g-row" style="--s:0; --e:18; --i:0">
+            <div class="g-label"><span class="g-no">01</span><strong>填表</strong></div>
+            <div class="g-track"><div class="g-bar">你來填寫</div><p class="g-desc">告訴我你想用 AI 解決什麼。</p></div>
+          </li>
+          <li class="g-row" style="--s:16; --e:48; --i:1">
+            <div class="g-label"><span class="g-no">02</span><strong>回覆</strong></div>
+            <div class="g-track"><div class="g-bar">1–2 個工作日內</div><p class="g-desc">合適會附上預約連結，<br class="br-m">不合適也會直接說。</p></div>
+          </li>
+          <li class="g-row" style="--s:46; --e:66; --i:2">
+            <div class="g-label"><span class="g-no">03</span><strong>聊聊</strong></div>
+            <div class="g-track"><div class="g-bar">30 分鐘</div><p class="g-desc">了解你的團隊，和最花時間的那件事。</p></div>
+          </li>
+          <li class="g-row is-last" style="--s:64; --e:100; --i:3">
+            <div class="g-label"><span class="g-no">04</span><strong>報價</strong></div>
+            <div class="g-track"><div class="g-bar">第二輪對話後</div><p class="g-desc">先把範圍談清楚，再談價格。</p></div>
+          </li>
+        </ol>
+      </div>
+      <ul class="promises reveal" aria-label="我們的承諾">
+        <li>沒有電子報，<br class="br-m">不會自動把你加進群組</li>
+        <li>所有對話內容保密</li>
+        <li>報價在第二輪對話後才給</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 06 TOOLS ============ -->
+  <section class="sec" id="tools" aria-labelledby="tools-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta"><span class="sec-no">06</span><span class="sec-name">自己也在用</span><span class="sec-ref mono">SEC 06 / 08</span></div>
+        <h2 class="sec-title" id="tools-title">不只教別人，<br>我自己每天也在用。</h2>
+        <p class="sec-lede">連續 267 天，每天公開一篇 AI 實作：<br class="br-m">做法、踩到的雷、結果，全部攤開。</p>
+      </header>
+      <div class="tool-table reveal">
+        <div class="tt-row tt-head" aria-hidden="true"><span>工具</span><span>解決什麼</span><span>實作紀錄</span></div>
+        <article class="tt-row">
+          <h3>讓 M 系列 Mac 讀得到自然人憑證</h3>
+          <p>廠商沒出 Apple 晶片的驅動，報稅、健保查詢全卡住。修掉 3 個錯誤，一行指令裝好。</p>
+          <p class="tt-ref"><a href="https://dawsonwang.com/day/183">Day 183</a><a href="https://dawsonwang.com/day/184">Day 184</a></p>
+        </article>
+        <article class="tt-row">
+          <h3>iPAS 證照題庫網站</h3>
+          <p>195 題、每題都有解析。2 週做好上線，我自己用它考過了。</p>
+          <p class="tt-ref"><a href="https://dawsonwang.com/day/134">Day 134</a><a href="https://dawsonwang.com/day/162">Day 162</a></p>
+        </article>
+        <article class="tt-row">
+          <h3>讓 AI 讀 LINE，不搶你的滑鼠</h3>
+          <p>讓 AI 讀寫電腦上的 LINE，全程不搶你的滑鼠和鍵盤；送訊息預設只留草稿。</p>
+          <p class="tt-ref"><a href="https://dawsonwang.com/day/98">Day 98</a><a href="https://dawsonwang.com/day/172">Day 172</a><a href="https://dawsonwang.com/day/175">Day 175</a></p>
+        </article>
+      </div>
+      <div class="tools-foot reveal">
+        <a class="btn btn-ghost" href="https://dawsonwang.com/days">看全部 267 篇實作<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 FAQ ============ -->
+  <section class="sec" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta"><span class="sec-no">07</span><span class="sec-name">常見問題</span><span class="sec-ref mono">SEC 07 / 08</span></div>
+        <h2 class="sec-title" id="faq-title">導入之前，先問清楚。</h2>
+      </header>
+      <div class="faq-list reveal">
+        <details class="faq-item" open>
+          <summary><span class="q" aria-hidden="true">Q</span><span>我們公司沒有工程師，也能導入嗎？</span><span class="plus" aria-hidden="true"></span></summary>
+          <p class="faq-a">可以。醫院課程的學員多數不是工程背景；中正高工的課也不預設任何一門專業知識。重點是從你們每天在做的事開始。</p>
+        </details>
+        <details class="faq-item">
+          <summary><span class="q" aria-hidden="true">Q</span><span>要換掉現在用的系統嗎？</span><span class="plus" aria-hidden="true"></span></summary>
+          <p class="faq-a">不用砍掉重練。我做的是把 AI 接進你原本就在做的那條流程。</p>
+        </details>
+        <details class="faq-item">
+          <summary><span class="q" aria-hidden="true">Q</span><span>費用怎麼算？</span><span class="plus" aria-hidden="true"></span></summary>
+          <p class="faq-a">看範圍而定。第一次先了解狀況，第二輪對話後才報價；表單上的預算量級只是幫我抓方向。</p>
+        </details>
+        <details class="faq-item">
+          <summary><span class="q" aria-hidden="true">Q</span><span>公司資料交給 AI 安全嗎？</span><span class="plus" aria-hidden="true"></span></summary>
+          <p class="faq-a">所有諮詢對話都會保密。課程裡也會教資安意識——工具教了，煞車要在同一堂課教完。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 08 INQUIRE ============ -->
+  <section class="sec" id="inquire" aria-labelledby="inquire-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta"><span class="sec-no">08</span><span class="sec-name">聯絡表單</span><span class="sec-ref mono">SEC 08 / 08</span></div>
+        <h2 class="sec-title" id="inquire-title">告訴我，<br>你想用 AI 解決什麼。</h2>
+      </header>
+      <div class="inq-grid">
+        <div class="inq-info reveal">
+          <p class="inq-lede">填表後 1–2 個工作日內回覆。<br>合適會附上預約連結；不合適會直接說。</p>
+          <p class="inq-proof">最近諮詢的客戶來自：<b>旅遊 · 醫療 · KOL 經紀 · 自媒體</b></p>
+          <ol class="inq-steps" aria-label="送出之後">
+            <li><b>01</b><span>填表，告訴我你想解決什麼</span></li>
+            <li><b>02</b><span>1–2 個工作日內回覆</span></li>
+            <li><b>03</b><span>30 分鐘聊聊</span></li>
+            <li><b>04</b><span>第二輪對話後報價</span></li>
+          </ol>
+        </div>
+        <form class="form reveal" id="inq-form" action="#" method="post" novalidate>
+          <div class="form-head"><strong>預約諮詢</strong><span aria-hidden="true">FORM-01</span></div>
+          <div class="f-row">
+            <div class="f">
+              <label class="f-label" for="f-name">姓名 <em>必填</em></label>
+              <input type="text" id="f-name" name="name" required autocomplete="name">
+            </div>
+            <div class="f">
+              <label class="f-label" for="f-email">Email <em>必填</em></label>
+              <input type="email" id="f-email" name="email" required autocomplete="email" inputmode="email">
+            </div>
+          </div>
+          <div class="f">
+            <label class="f-label" for="f-company">公司 / 組織 <em>必填</em></label>
+            <input type="text" id="f-company" name="company" required maxlength="150" autocomplete="organization">
+          </div>
+          <div class="f">
+            <label class="f-label" for="f-goal">想用 AI 做什麼？ <em>必填</em></label>
+            <p class="prefill-note" id="prefill-note" role="status" hidden></p>
+            <textarea id="f-goal" name="goal" required maxlength="300" rows="5" placeholder="例如：每天要從 LINE 群組整理客戶需求，很花時間⋯"></textarea>
+            <span class="f-count"><span id="goal-count">0</span> / 300 字</span>
+          </div>
+          <fieldset class="f">
+            <legend class="f-label">團隊規模</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="team_size" value="1-5"><span>1–5</span></label>
+              <label class="chip"><input type="radio" name="team_size" value="6-30"><span>6–30</span></label>
+              <label class="chip"><input type="radio" name="team_size" value="31-100"><span>31–100</span></label>
+              <label class="chip"><input type="radio" name="team_size" value="100+"><span>100+</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="f">
+            <legend class="f-label">預算量級（新台幣）</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="budget" value="lt100k"><span>10 萬以下</span></label>
+              <label class="chip"><input type="radio" name="budget" value="100k-300k"><span>10–30 萬</span></label>
+              <label class="chip"><input type="radio" name="budget" value="300k-800k"><span>30–80 萬</span></label>
+              <label class="chip"><input type="radio" name="budget" value="gt800k"><span>80 萬以上</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="f">
+            <legend class="f-label">時程</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="timeline" value="this_month"><span>本月內</span></label>
+              <label class="chip"><input type="radio" name="timeline" value="this_quarter"><span>本季</span></label>
+              <label class="chip"><input type="radio" name="timeline" value="exploring"><span>只是先了解</span></label>
+            </div>
+          </fieldset>
+          <div class="form-foot">
+            <button type="submit" class="btn btn-primary btn-submit">送出<svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></button>
+            <p class="form-msg" id="form-msg" role="status" hidden></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="brand" href="#top" aria-label="Dawson Wang，回到頁首">
+        <span class="brand-mark" aria-hidden="true">DW</span>
+        <span class="brand-text"><strong>Dawson Wang</strong><span>AI 導入顧問</span></span>
+      </a>
+      <nav class="foot-links" aria-label="頁尾選單">
+        <a href="#services">服務內容</a>
+        <a href="#cases">客戶案例</a>
+        <a href="#training">企業內訓</a>
+        <a href="https://dawsonwang.com/days">實作文章</a>
+        <a href="https://dawsonwang.com/privacy.html">隱私權政策</a>
+      </nav>
+      <p class="foot-copy">© 2026 Dawson Wang</p>
+    </div>
+    <p class="titleblock" aria-hidden="true"><span>圖名　首頁</span><span>版本　2026.10</span><span>風格　D 務實清單</span><span>張數　1 / 1</span><span>DW-HOME</span></p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ease = t => 1 - Math.pow(1 - t, 3);
+  const fmtInt = v => Math.round(v).toLocaleString('en-US');
+  const fmtH = v => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+
+  // Number tween. The HTML always carries the real final value, so with no JS
+  // (or reduced motion) the page simply shows the true numbers.
+  function tween(el, to, { from = 0, dur = 900, decimals = 0, suffix = '', format } = {}) {
+    const fmt = v => (format ? format(v) : v.toFixed(decimals)) + suffix;
+    const land = () => { cancelAnimationFrame(el._raf); el.textContent = fmt(to); el._val = to; };
+    cancelAnimationFrame(el._raf);
+    clearTimeout(el._land);
+    if (reduce || dur <= 0) { land(); return; }
+    const t0 = performance.now();
+    const step = now => {
+      // rAF timestamps can predate t0; clamp so the first frame never overshoots below `from`.
+      const p = Math.min(1, Math.max(0, (now - t0) / dur));
+      const v = from + (to - from) * ease(p);
+      el.textContent = fmt(p === 1 ? to : v);
+      el._val = v;
+      if (p < 1) el._raf = requestAnimationFrame(step);
+    };
+    el._raf = requestAnimationFrame(step);
+    // Throttled tabs can skip frames; guarantee the true final value lands.
+    el._land = setTimeout(land, dur + 80);
+  }
+
+  /* ---- scroll reveals + stat count-ups ---- */
+  function countUp(root) {
+    $$('[data-count]', root).forEach(el => {
+      tween(el, parseFloat(el.dataset.count), {
+        dur: 1300,
+        decimals: parseInt(el.dataset.decimals || '0', 10),
+        suffix: el.dataset.suffix || '',
+      });
+    });
+  }
+  const reveals = $$('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        el.classList.add('is-in');
+        io.unobserve(el);
+        if (el.hasAttribute('data-countup')) countUp(el);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add('is-in'));
+  }
+
+  /* ---- mobile nav ---- */
+  const toggle = $('#nav-toggle');
+  const drawer = $('#nav-drawer');
+  const setNav = open => {
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    drawer.hidden = !open;
+  };
+  toggle.addEventListener('click', () => setNav(drawer.hidden));
+  drawer.addEventListener('click', e => { if (e.target.closest('a')) setNav(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) { setNav(false); toggle.focus(); } });
+
+  /* ---- time-cost calculator ---- */
+  const people = $('#calc-people');
+  const hours = $('#calc-hours');
+  const outPeople = $('#out-people b');
+  const outHours = $('#out-hours b');
+  const resMonthly = $('#res-monthly');
+  const resFte = $('#res-fte');
+  const formula = $('#formula');
+  const calcLive = $('#calc-live');
+  let calc = { p: 10, h: 1.5, monthly: 330, fte: 330 / 176 };
+  let liveTimer;
+
+  function updateCalc(dur) {
+    const p = Number(people.value);
+    const h = Number(hours.value);
+    const monthly = p * h * 22;
+    const fte = monthly / 176;
+    calc = { p, h, monthly, fte };
+    [people, hours].forEach(r => {
+      const min = Number(r.min), max = Number(r.max);
+      r.style.setProperty('--p', ((Number(r.value) - min) / (max - min)).toFixed(4));
+    });
+    outPeople.textContent = p;
+    outHours.textContent = fmtH(h);
+    tween(resMonthly, monthly, { from: resMonthly._val ?? monthly, dur, format: fmtInt });
+    tween(resFte, fte, { from: resFte._val ?? fte, dur, decimals: 1 });
+    formula.innerHTML = `${p} 人 × ${fmtH(h)} 小時 × 22 工作天 = ${fmtInt(monthly)} 小時<br>${fmtInt(monthly)} ÷ 176（22 天 × 8 小時）≈ ${fte.toFixed(1)} 人`;
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(() => {
+      calcLive.textContent = `每月約 ${fmtInt(monthly)} 小時，約 ${fte.toFixed(1)} 位全職人力。`;
+    }, 600);
+  }
+  // Count the result up from zero the first time the panel is actually on screen
+  // (on phones it sits below the fold). Any slider input skips the intro.
+  let calcIntroDone = reduce;
+  const introCalc = () => { if (!calcIntroDone) { calcIntroDone = true; updateCalc(1200); } };
+  const onInput = () => { calcIntroDone = true; updateCalc(320); };
+  people.addEventListener('input', onInput);
+  hours.addEventListener('input', onInput);
+  if (reduce) {
+    updateCalc(0);
+  } else {
+    resMonthly.textContent = '0';
+    resFte.textContent = '0.0';
+    resMonthly._val = 0;
+    resFte._val = 0;
+    if ('IntersectionObserver' in window) {
+      const cio = new IntersectionObserver(entries => {
+        if (!entries.some(e => e.isIntersecting)) return;
+        cio.disconnect();
+        setTimeout(introCalc, 550);
+      }, { threshold: 0.35 });
+      cio.observe($('.calc'));
+    } else {
+      setTimeout(introCalc, 650);
+    }
+  }
+
+  /* ---- pain checklist ---- */
+  const boxes = $$('input[name="pain"]');
+  const tallyN = $('#tally-n');
+  const tallyLive = $('#tally-live');
+  const segs = $$('.tally-bar i');
+  function tally() {
+    const n = boxes.filter(b => b.checked).length;
+    tallyN.textContent = n;
+    if (!reduce) { tallyN.classList.remove('bump'); void tallyN.offsetWidth; tallyN.classList.add('bump'); }
+    segs.forEach((s, i) => s.classList.toggle('on', i < n));
+    tallyLive.textContent = `你勾了 ${n}／4 項`;
+  }
+  boxes.forEach(b => b.addEventListener('change', () => {
+    b.closest('.check-row').classList.toggle('is-checked', b.checked);
+    tally();
+  }));
+
+  /* ---- prefill the inquiry textarea (never clobber what the visitor typed) ---- */
+  const goal = $('#f-goal');
+  const note = $('#prefill-note');
+  const goalCount = $('#goal-count');
+  let lastPrefill = null;
+  let calcIncluded = false;
+  const updateCount = () => { goalCount.textContent = goal.value.length; };
+  goal.addEventListener('input', updateCount);
+
+  function compose() {
+    const picked = boxes.filter(b => b.checked).map(b => b.value);
+    const lines = [];
+    if (picked.length) {
+      lines.push('我們公司有這些狀況：');
+      picked.forEach(t => lines.push('・' + t));
+    }
+    if (calcIncluded) {
+      lines.push(`時間成本試算：${calc.p} 人 × ${fmtH(calc.h)} 小時 × 22 天 ≈ 每月 ${fmtInt(calc.monthly)} 小時`);
+    }
+    return { text: lines.join('\n').slice(0, 300), picked: picked.length };
+  }
+  function showNote(text) { note.textContent = text; note.hidden = false; }
+  function prefill() {
+    const { text, picked } = compose();
+    const untouched = goal.value.trim() === '' || goal.value === lastPrefill;
+    if (!text) {
+      showNote('還沒勾選任何狀況。直接寫下你想解決的事也可以。');
+    } else if (untouched) {
+      goal.value = text;
+      lastPrefill = text;
+      updateCount();
+      const parts = [];
+      if (picked) parts.push(`你勾選的 ${picked} 項狀況`);
+      if (calcIncluded) parts.push('試算結果');
+      showNote(`已帶入${parts.join('和')}，可以直接修改。`);
+    } else {
+      showNote('你已經寫了內容，所以沒有覆蓋。勾選的狀況可以自己補進去。');
+    }
+  }
+  function goToForm() {
+    const target = $('#inquire');
+    const y = target.getBoundingClientRect().top + window.scrollY - 70;
+    window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => goal.focus({ preventScroll: true }), reduce ? 0 : 700);
+  }
+  $('#pain-cta').addEventListener('click', e => { e.preventDefault(); prefill(); goToForm(); });
+  $('#calc-cta').addEventListener('click', e => { e.preventDefault(); calcIncluded = true; prefill(); goToForm(); });
+
+  /* ---- design-preview submit ---- */
+  const form = $('#inq-form');
+  const msg = $('#form-msg');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    $$('.f.is-invalid', form).forEach(f => f.classList.remove('is-invalid'));
+    const missing = $$('[required]', form).filter(f => !f.value.trim() || !f.checkValidity());
+    missing.forEach(f => f.closest('.f').classList.add('is-invalid'));
+    msg.innerHTML = missing.length
+      ? `還有 ${missing.length} 個必填欄位沒填好（已用橘框標出）。<br>這是設計預覽，表單不會真的送出。`
+      : '這是設計預覽，表單不會真的送出。';
+    msg.hidden = false;
+  });
+  form.addEventListener('input', e => {
+    const f = e.target.closest('.f');
+    if (f) f.classList.remove('is-invalid');
+  });
+})();
+</script>
+<script src="_switcher.js" defer></script>
+</body>
+</html>

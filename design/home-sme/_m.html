@@ -1,0 +1,13 @@
+<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mobile frame</title>
+<style>html,body{margin:0;background:#555}iframe{display:block;width:390px;border:0;background:#fff}</style>
+</head><body>
+<iframe id="f"></iframe>
+<script>
+  const q = new URLSearchParams(location.search);
+  const f = document.getElementById('f');
+  f.src = (q.get('u') || 'a-editorial.html') + '?clean=1';
+  f.style.height = (q.get('h') || '12000') + 'px';
+</script>
+</body></html>

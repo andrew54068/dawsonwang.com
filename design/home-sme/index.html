@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首頁 5 種風格 · 選一個</title>
+<style>
+  /* Deliberately neutral: the picker shouldn't bias the choice between styles. */
+  :root {
+    --bg: #121212; --card: #1b1b1b; --line: rgba(255,255,255,.09);
+    --ink: #f3f1ec; --muted: #b3aea6; --faint: #8a857d; --gold: #f5c542;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 400 17px/1.7 -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .page { max-width: 1320px; margin: 0 auto; padding: 48px 24px 140px; }
+  header { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: end; margin-bottom: 40px; }
+  h1 { margin: 0 0 12px; font-size: clamp(30px, 4vw, 46px); line-height: 1.2; letter-spacing: -.02em; font-weight: 700; }
+  .lede { margin: 0; color: var(--muted); max-width: 34em; }
+  .how { margin: 0; padding: 18px 20px; list-style: none; border: 1px solid var(--line); border-radius: 16px; background: var(--card); counter-reset: s; }
+  .how li { counter-increment: s; display: flex; gap: 12px; padding: 6px 0; }
+  .how li::before { content: counter(s); flex: none; width: 26px; height: 26px; margin-top: 2px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: #111; font-weight: 800; font-size: 14px; }
+  kbd { padding: 1px 7px; border-radius: 6px; background: #2c2c2c; border: 1px solid #3a3a3a; font: inherit; font-size: 14px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 22px; }
+  .card { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 20px; background: var(--card); overflow: hidden; text-decoration: none; transition: transform .2s ease, border-color .2s ease; }
+  .card:hover { transform: translateY(-3px); border-color: rgba(245,197,66,.55); }
+  .card:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #0c0c0c; border-bottom: 1px solid var(--line); }
+  .thumb iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; transform: scale(var(--s, .27)); pointer-events: none; }
+  .body { display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 22px; flex: 1; }
+  .title { display: flex; align-items: baseline; gap: 12px; }
+  .letter { font-size: 34px; font-weight: 800; line-height: 1; color: var(--gold); }
+  .name { font-size: 22px; font-weight: 700; }
+  .desc { margin: 0; color: var(--muted); }
+  .fit { margin: 0; font-size: 15px; color: var(--ink); }
+  .fit b { color: var(--gold); font-weight: 600; }
+  .meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); }
+  .sw { display: flex; gap: 6px; }
+  .sw i { width: 22px; height: 22px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+  .open { font-weight: 700; color: var(--gold); white-space: nowrap; }
+
+  .shared { margin-top: 22px; max-width: 640px; }
+  .common { display: flex; flex-direction: column; justify-content: center; padding: 28px; }
+  .common h2 { font-size: 20px; margin-bottom: 12px; }
+  .common li { padding: 5px 0; }
+  .box { padding: 20px 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+  .box h2 { margin: 0 0 8px; font-size: 18px; }
+  .box ul { margin: 0; padding-left: 1.1em; color: var(--muted); }
+  .box li { padding: 2px 0; }
+  .picks { list-style: none; padding: 0 !important; }
+  .picks li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+  .picks small { display: block; color: var(--faint); font-size: 14px; }
+  @media (max-width: 860px) { header { grid-template-columns: 1fr; gap: 24px; } }
+  @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } .page { padding: 32px 16px 140px; } }
+</style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <div>
+      <h1>首頁 5 種風格，選一個</h1>
+      <p class="lede">同一份文案、5 種視覺。目標讀者：35–55 歲的中小企業老闆。點卡片看完整頁面。</p>
+    </div>
+    <ol class="how">
+      <li>點一張卡，看完整首頁（手機寬度也能看）。</li>
+      <li>頁面底部的切換列可換風格，或按 <kbd>←</kbd> <kbd>→</kbd>。</li>
+      <li>喜歡就按「★ 選這個」寫一句想保留／想改的地方，或直接回 Claude。</li>
+    </ol>
+  </header>
+
+  <section class="grid" aria-label="5 種風格">
+    <a class="card" href="a-editorial.html">
+      <div class="thumb"><iframe src="a-editorial.html?clean=1" title="風格 A 縮圖" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+      <div class="body">
+        <div class="title"><span class="letter">A</span><span class="name">商業雜誌</span></div>
+        <p class="desc">像天下、商周的封面故事：米色紙、深墨綠字、襯線大標、大幅授課照片。跟剛改好的「講師」頁同一套，全站可以統一。</p>
+        <p class="fit"><b>適合</b>：想給人「高級、可信」第一印象。</p>
+        <div class="meta"><span class="sw"><i style="background:#f5f0e7"></i><i style="background:#1b2930"></i><i style="background:#789873"></i><i style="background:#27383a"></i></span><span class="open">看完整頁 →</span></div>
+      </div>
+    </a>
+    <a class="card" href="b-firm.html">
+      <div class="thumb"><iframe src="b-firm.html?clean=1" title="風格 B 縮圖" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+      <div class="body">
+        <div class="title"><span class="letter">B</span><span class="name">專業事務所</span></div>
+        <p class="desc">像會計師事務所、私人銀行：深藍配金、顧問名片卡、金色編號的合作時間軸。老闆最熟悉的「專業」語言。</p>
+        <p class="fit"><b>適合</b>：保守、看重資歷和流程的老闆。</p>
+        <div class="meta"><span class="sw"><i style="background:#0e2340"></i><i style="background:#b88a3e"></i><i style="background:#f5f3ee"></i><i style="background:#ffffff"></i></span><span class="open">看完整頁 →</span></div>
+      </div>
+    </a>
+    <a class="card" href="c-letterpress.html">
+      <div class="thumb"><iframe src="c-letterpress.html?clean=1" title="風格 C 縮圖" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+      <div class="body">
+        <div class="title"><span class="letter">C</span><span class="name">老字號活版</span></div>
+        <p class="desc">台灣活版印刷傳單：朱紅配墨黑、直書大標、「實作為主」印章、木牌價目表寫「面議」。最有記憶點、最在地。</p>
+        <p class="fit"><b>適合</b>：想被記住、喜歡台灣在地感。</p>
+        <div class="meta"><span class="sw"><i style="background:#f2e8d5"></i><i style="background:#1c1915"></i><i style="background:#c43a24"></i><i style="background:#e8c4b4"></i></span><span class="open">看完整頁 →</span></div>
+      </div>
+    </a>
+    <a class="card" href="d-utility.html">
+      <div class="thumb"><iframe src="d-utility.html?clean=1" title="風格 D 縮圖" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+      <div class="body">
+        <div class="title"><span class="letter">D</span><span class="name">務實清單</span></div>
+        <p class="desc">給算投資報酬的老闆：方格紙、安全橘、大數字。可以勾選痛點、試算團隊每月花在雜事上的時數。互動最多。</p>
+        <p class="fit"><b>適合</b>：數字導向、想先知道值不值得。</p>
+        <div class="meta"><span class="sw"><i style="background:#f1f1ec"></i><i style="background:#121212"></i><i style="background:#ff5b14"></i><i style="background:#ffd400"></i></span><span class="open">看完整頁 →</span></div>
+      </div>
+    </a>
+    <a class="card" href="e-warm.html">
+      <div class="thumb"><iframe src="e-warm.html?clean=1" title="風格 E 縮圖" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+      <div class="body">
+        <div class="title"><span class="letter">E</span><span class="name">溫暖陪跑</span></div>
+        <p class="desc">親切有人味：奶油色配柿子橘、文楷手寫感標題、照片上的手繪圈註、對話泡泡式的學員回饋。最不嚇人。</p>
+        <p class="fit"><b>適合</b>：覺得 AI 很難、怕員工學不會的老闆。</p>
+        <div class="meta"><span class="sw"><i style="background:#fbf5ec"></i><i style="background:#2e231c"></i><i style="background:#e2703a"></i><i style="background:#3d7a57"></i></span><span class="open">看完整頁 →</span></div>
+      </div>
+    </a>
+    <div class="box common">
+      <h2>5 個風格共同的改動</h2>
+      <ul>
+        <li>文案改成老闆聽得懂的話：不提 MCP、repo，改講 LINE、Excel、SOP。</li>
+        <li>字放大：內文 18px 起，按鈕 48px 高。</li>
+        <li>首頁新增：醫院／學校授課實績、課後問卷數字、合作流程。</li>
+        <li>所有數字和案例都來自現有網站資料，沒有新增。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="shared">
+    <div class="box">
+      <h2>你送出的選擇</h2>
+      <ul class="picks" id="picks"><li><small>還沒有。在任一風格頁按「★ 選這個」。</small></li></ul>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Scale each 1440×900 live preview down to its card's width.
+  const fit = () => document.querySelectorAll('.thumb').forEach((t) => t.style.setProperty('--s', t.clientWidth / 1440));
+  fit();
+  new ResizeObserver(fit).observe(document.querySelector('.grid'));
+
+  fetch('picks.jsonl', { cache: 'no-store' })
+    .then((r) => (r.ok ? r.text() : ''))
+    .then((text) => {
+      const rows = text.trim().split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      if (!rows.length) return;
+      const list = document.getElementById('picks');
+      list.replaceChildren(...rows.reverse().map((p) => {
+        const li = document.createElement('li');
+        li.textContent = `${p.style}${p.note ? '：' + p.note : ''}`;
+        const small = document.createElement('small');
+        small.textContent = p.ts;
+        li.append(small);
+        return li;
+      }));
+    })
+    .catch(() => {});
+</script>
+<script src="_switcher.js" defer></script>
+</body>
+</html>

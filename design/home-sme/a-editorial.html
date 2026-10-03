@@ -1,0 +1,1696 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dawson Wang — 風格 A：商業雜誌</title>
+<meta name="description" content="把雜事交給 AI，把時間留給客戶。Dawson Wang 為中小企業找出能交給 AI 的工作，再陪團隊一路用到上手。">
+<meta name="theme-color" content="#f5f0e7">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     風格 A · 商業雜誌
+     A premium business-magazine cover story. Palette is lifted from
+     the /speaking editorial page so the whole site can share it.
+     ============================================================ */
+  :root {
+    --paper: #f5f0e7;
+    --surface: #fbf9f4;
+    --ink: #1b2930;
+    --muted: #57636a;       /* 5.4:1 on paper */
+    --rule: #c9c8bf;        /* hairlines (decorative) */
+    --line: #6f7a7d;        /* form underline + chip outline, 4.2:1 on surface */
+    --sage: #789873;        /* decoration only */
+    --sage-large: #5f7d5a;  /* numerals ≥ 24px, 4:1 */
+    --sage-text: #4e6a4a;   /* any text, 5.3:1 */
+    --sage-wash: #e9eee3;
+    --deep: #27383a;
+    --deep-ink: #f3efe5;
+    --deep-muted: #c3c8bb;  /* 7:1 on deep */
+    --deep-sage: #a6c79a;   /* 6.5:1 on deep */
+    --deep-rule: #4a5b5d;
+
+    --serif: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+    --sans: "Noto Sans TC", "PingFang TC", "Heiti TC", system-ui, sans-serif;
+    --latin: "Newsreader", "Noto Serif TC", Georgia, serif;
+
+    --wrap: 1280px;
+    --gutter: clamp(20px, 4vw, 48px);
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background-color: var(--paper);
+    /* faint paper grain */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .1  0 0 0 0 .13  0 0 0 0 .12  0 0 0 .055 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    font-family: var(--sans);
+    font-size: clamp(1.09375rem, 1.02rem + .3vw, 1.1875rem);
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+    font-kerning: normal;
+  }
+  img { max-width: 100%; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--sage-text);
+    outline-offset: 3px;
+  }
+  ::selection { background: #dbe4d3; color: var(--ink); }
+  p { text-wrap: pretty; }
+  h1, h2, h3 { text-wrap: balance; }
+
+  .wrap {
+    max-width: var(--wrap);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  /* Phrase-level wrapping for headlines and big statements: lines may only
+     break between phrases, never inside a word like 決策樹. Each phrase is
+     kept short enough to fit a 350px column. */
+  .ph { display: inline-block; text-indent: 0; }
+  .nw { white-space: nowrap; }
+
+  /* ---------- buttons & links ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 54px;
+    padding: 0 26px;
+    border: 1.5px solid var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 180ms var(--ease), background-color 180ms ease, color 180ms ease;
+  }
+  .btn .arrow { transition: transform 180ms var(--ease); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:hover .arrow { transform: translateX(4px); }
+  .btn-dark { background: var(--ink); color: var(--paper); }
+  .btn-dark:hover { background: #24363e; }
+  .btn-dark .arrow { color: var(--deep-sage); }
+  .btn-light { background: var(--deep-ink); color: var(--ink); border-color: var(--deep-ink); }
+
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    /* one continuous rule under label + arrow, sitting just below the text */
+    background: linear-gradient(var(--line), var(--line)) 0 calc(100% - 9px) / 100% 1px no-repeat;
+    transition: color 160ms ease, background-size 160ms ease;
+  }
+  .text-link:hover {
+    color: var(--sage-text);
+    background-image: linear-gradient(var(--sage-text), var(--sage-text));
+  }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(245, 240, 231, .93);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height: 74px;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand-name {
+    white-space: nowrap;
+    font-family: var(--latin);
+    font-size: 27px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    line-height: 1;
+  }
+  .brand-role {
+    font-size: 15px;
+    letter-spacing: .12em;
+    color: var(--muted);
+  }
+  .nav-links {
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 14px;
+    font-size: 16px;
+    letter-spacing: .04em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+  .nav-links a:hover { color: var(--sage-text); }
+  .nav-actions { display: flex; align-items: center; gap: 10px; }
+  .nav .btn { min-height: 48px; padding: 0 20px; font-size: 16px; }
+  .menu-btn {
+    display: none;
+    flex-shrink: 0;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0 12px;
+    border: 1.5px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font: 500 16px/1 var(--sans);
+    cursor: pointer;
+  }
+  .menu-panel {
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .menu-panel ul { list-style: none; margin: 0; padding: 8px 0 16px; }
+  .menu-panel a {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    font-size: 18px;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 50px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .mh-left { display: flex; align-items: baseline; gap: 16px; }
+  .mh-left b {
+    font-family: var(--serif);
+    font-weight: 700;
+    letter-spacing: .24em;
+    color: var(--ink);
+  }
+  .mh-right { letter-spacing: .08em; }
+  .double-rule {
+    height: 6px;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(32px, 5vw, 76px);
+    align-items: start;
+    padding-block: clamp(40px, 5vw, 68px) clamp(48px, 5.5vw, 80px);
+  }
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 26px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    color: var(--sage-text);
+  }
+  .kicker::before {
+    content: "";
+    width: 40px;
+    height: 1px;
+    background: currentColor;
+  }
+  .hero h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 5.4vw, 5rem);
+    line-height: 1.2;
+    letter-spacing: -.035em;
+  }
+  .hero h1 .accent { color: var(--sage-text); }
+  .pd { margin-left: -.18em; }
+  .lede {
+    max-width: 30em;
+    margin: 30px 0 0;
+    font-size: clamp(1.125rem, 1.04rem + .38vw, 1.3125rem);
+    line-height: 1.9;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 30px;
+    margin-top: 36px;
+  }
+  .byline {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+    max-width: 36em;
+    margin-top: 46px;
+    padding-top: 26px;
+    border-top: 1px solid var(--rule);
+  }
+  .byline img {
+    display: block;
+    width: 76px;
+    height: 95px;
+    object-fit: cover;
+    object-position: 50% 20%;
+    filter: saturate(.9);
+  }
+  .byline-name {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .byline-name b {
+    font-family: var(--latin);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0;
+  }
+  .creds {
+    display: grid;
+    gap: 6px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 16.5px;
+    line-height: 1.65;
+  }
+  .creds li { position: relative; padding-left: 20px; }
+  .creds li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .82em;
+    width: 9px;
+    height: 1px;
+    background: var(--sage-text);
+  }
+  .hero-photo { margin: 0; }
+  .hero-photo .frame {
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: var(--surface);
+  }
+  .hero-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 47% 50%;
+    filter: saturate(.86) contrast(1.02);
+    transform: scale(1.04);
+    transition: transform 1.6s var(--ease);
+  }
+  .hero-photo figcaption {
+    display: grid;
+    gap: 2px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .hero-photo figcaption b {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ---------- stats table ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  .stats li {
+    padding: 28px 28px 30px;
+    border-left: 1px solid var(--rule);
+  }
+  .stats li:first-child { padding-left: 0; border-left: 0; }
+  .stat-num {
+    font-family: var(--latin);
+    font-size: clamp(3rem, 2rem + 3vw, 4.6rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -.02em;
+    font-variant-numeric: lining-nums proportional-nums;
+  }
+  .stat-unit {
+    margin-left: 6px;
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .stat-label {
+    display: block;
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ---------- venues ---------- */
+  .venues {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 32px;
+    padding: 26px 0 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .venues-label {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    color: var(--sage-text);
+  }
+  .venues ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 500;
+  }
+  .venues li:not(:last-child)::after {
+    content: "·";
+    margin: 0 16px;
+    color: var(--sage);
+  }
+
+  /* ---------- sections ---------- */
+  .section { padding-top: clamp(76px, 8vw, 116px); }
+  .sec-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 0 0 24px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    color: var(--sage-text);
+  }
+  .sec-label .no {
+    font-family: var(--latin);
+    font-size: 19px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+  .sec-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .sec-head h2 {
+    max-width: 18em;
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(1.95rem, 1.2rem + 2.6vw, 3.3rem);
+    line-height: 1.32;
+    letter-spacing: -.03em;
+  }
+  .sec-sub {
+    max-width: 34em;
+    margin: 22px 0 0;
+    font-size: clamp(1.0625rem, 1rem + .3vw, 1.1875rem);
+    color: var(--muted);
+  }
+
+  /* ---------- pains ---------- */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 52px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--ink);
+  }
+  .pain-grid li {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 14px;
+    padding: 34px 40px 38px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pain-grid li:nth-child(even) {
+    padding-left: 40px;
+    padding-right: 0;
+    border-left: 1px solid var(--rule);
+  }
+  .pain-no {
+    font-family: var(--latin);
+    font-size: 68px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: .9;
+    color: var(--sage-large);
+  }
+  .pain-grid p {
+    max-width: 19em;
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(1.25rem, 1.08rem + .55vw, 1.5rem);
+    font-weight: 500;
+    line-height: 1.75;
+  }
+  .pain-close {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: 8px 28px;
+    margin: 44px 0 0;
+  }
+  .pain-close strong {
+    font-family: var(--serif);
+    font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    line-height: 1.3;
+  }
+  .pain-close span {
+    max-width: 30em;
+    font-size: clamp(1.0625rem, 1rem + .3vw, 1.25rem);
+  }
+
+  /* ---------- cases: three feature articles ---------- */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 56px;
+    border-top: 1px solid var(--ink);
+  }
+  .feature {
+    display: flex;
+    flex-direction: column;
+    padding: 34px 34px 10px;
+    border-left: 1px solid var(--rule);
+  }
+  .feature:first-child { padding-left: 0; border-left: 0; }
+  .feature:last-child { padding-right: 0; }
+  .feature-kicker {
+    margin: 0 0 16px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    color: var(--sage-text);
+  }
+  .feature-kicker .n {
+    font-family: var(--latin);
+    font-size: 18px;
+    font-style: italic;
+    letter-spacing: 0;
+    margin-right: 6px;
+  }
+  .feature h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 1.15rem + .7vw, 1.75rem);
+    line-height: 1.45;
+    letter-spacing: -.02em;
+  }
+  .feature-who {
+    margin: 16px 0 0;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 16px;
+    color: var(--muted);
+  }
+  .feature h4 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0 8px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .2em;
+  }
+  .feature h4::before {
+    content: "";
+    width: 16px;
+    height: 1px;
+    background: var(--ink);
+  }
+  .feature p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.9;
+  }
+  .dropcap {
+    float: left;
+    margin: 5px 10px 0 0;
+    font-family: var(--serif);
+    font-size: 3.35em;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--sage-text);
+  }
+  .feature .text-link { align-self: flex-start; margin-top: auto; padding-top: 18px; }
+
+  /* ---------- services: table of contents ---------- */
+  .toc {
+    margin: 56px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--ink);
+  }
+  .toc-row {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1.05fr) minmax(0, 1.25fr) 200px;
+    gap: 36px;
+    align-items: start;
+    padding: 42px 0 44px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .toc-row.is-primary {
+    position: relative;
+    margin-inline: -28px;
+    padding-inline: 28px;
+    background: var(--surface);
+    box-shadow: inset 0 3px 0 var(--sage);
+  }
+  .toc-no {
+    font-family: var(--latin);
+    font-size: 76px;
+    font-weight: 300;
+    line-height: .85;
+    letter-spacing: -.02em;
+    color: var(--sage-large);
+    font-variant-numeric: lining-nums;
+  }
+  .toc-title h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 1.3rem + .8vw, 2rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -.02em;
+  }
+  .tag {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 1px 10px 2px;
+    border: 1px solid var(--sage-text);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    line-height: 1.7;
+    color: var(--sage-text);
+    vertical-align: .35em;
+  }
+  .toc-title p {
+    margin: 12px 0 0;
+    font-size: 18px;
+    color: var(--muted);
+  }
+  .toc-items {
+    display: grid;
+    gap: 10px;
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+  .toc-items li { position: relative; padding-left: 24px; }
+  .toc-items li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .85em;
+    width: 11px;
+    height: 1px;
+    background: var(--sage-text);
+  }
+  .toc-cta { display: grid; justify-items: start; gap: 2px; }
+  .toc-cta .price {
+    margin: 4px 0 0;
+    font-size: 16px;
+    color: var(--muted);
+  }
+
+  /* ---------- training ---------- */
+  .train-photo { margin: 56px 0 0; }
+  .train-photo .frame { overflow: hidden; aspect-ratio: 2 / 1; background: var(--surface); }
+  .train-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 62%;
+    filter: saturate(.86) contrast(1.02);
+  }
+  .train-photo figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 24px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .train-photo figcaption b { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); }
+  .scale-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 1.05rem + .5vw, 1.45rem);
+    font-weight: 600;
+  }
+  /* separator trails each item, so a wrapped line never starts with a dot */
+  .scale-line li:not(:last-child)::after { content: "·"; margin: 0 18px; color: var(--sage); }
+  .survey {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr));
+    margin: 28px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  .survey > div { padding: 26px 26px 28px; border-left: 1px solid var(--rule); }
+  .survey > div:first-child { padding-left: 0; border-left: 0; }
+  .survey-src h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .survey-src p { margin: 8px 0 0; font-size: 16px; line-height: 1.7; color: var(--muted); }
+  .survey dt { font-size: 16px; color: var(--muted); }
+  .survey dd {
+    margin: 10px 0 0;
+    font-family: var(--latin);
+    font-size: clamp(2.4rem, 1.8rem + 1.8vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -.02em;
+    font-variant-numeric: oldstyle-nums;
+  }
+  .survey dd small {
+    font-size: .5em;
+    color: var(--muted);
+    letter-spacing: 0;
+  }
+  .survey dd.accent { color: var(--sage-text); }
+
+  .quotes {
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+    gap: clamp(36px, 5vw, 80px);
+    margin-top: clamp(56px, 6vw, 80px);
+    padding-top: 52px;
+    border-top: 1px solid var(--ink);
+  }
+  .pull { margin: 0; }
+  .pull p {
+    margin: 0;
+    padding-left: 1em;
+    text-indent: -1em;
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 1.15rem + 2.35vw, 2.55rem);
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: -.01em;
+  }
+  .pull .mark { color: var(--sage-large); }
+  .pull footer, .side-quote footer {
+    margin-top: 22px;
+    font-size: 16px;
+    color: var(--muted);
+  }
+  .pull footer { padding-left: 1.9em; }
+  .side-quotes { display: grid; gap: 30px; align-content: start; }
+  .side-quote { margin: 0; padding-top: 26px; border-top: 1px solid var(--rule); }
+  .side-quote:first-child { padding-top: 0; border-top: 0; }
+  .side-quote p {
+    margin: 0;
+    padding-left: 1em;
+    text-indent: -1em;
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.75;
+  }
+  .side-quote footer { margin-top: 12px; padding-left: 1em; }
+  .train-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 30px;
+    margin-top: 52px;
+  }
+
+  /* ---------- process ---------- */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 56px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--ink);
+  }
+  .steps li {
+    padding: 30px 30px 34px;
+    border-left: 1px solid var(--rule);
+  }
+  .steps li:first-child { padding-left: 0; border-left: 0; }
+  .steps li:last-child { padding-right: 0; }
+  .step-no {
+    display: block;
+    font-family: var(--latin);
+    font-size: 64px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--sage-large);
+    font-variant-numeric: lining-nums;
+  }
+  .steps h3 {
+    margin: 18px 0 8px;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .steps p { margin: 0; font-size: 18px; line-height: 1.8; }
+  .promises {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 40px;
+    margin: 36px 0 0;
+    padding: 24px 0 0;
+    list-style: none;
+    border-top: 1px solid var(--rule);
+    font-size: 17px;
+  }
+  .promises li { display: flex; align-items: center; gap: 12px; }
+  .promises li::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: var(--sage-text);
+    transform: rotate(45deg);
+  }
+
+  /* ---------- further reading ---------- */
+  .further {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+  .further .sec-head h2 { font-size: clamp(1.8rem, 1.2rem + 1.9vw, 2.7rem); }
+  .further .text-link { margin-top: 18px; }
+  .further-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--ink);
+  }
+  .further-list li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 24px;
+    padding: 26px 0 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .further-list h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .day-ref {
+    font-family: var(--latin);
+    font-size: 18px;
+    font-style: italic;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .further-list p { grid-column: 1 / -1; margin: 0; max-width: 34em; font-size: 18px; }
+
+  /* ---------- Q&A ---------- */
+  .qa {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(36px, 5vw, 72px);
+    margin-top: 52px;
+    border-top: 1px solid var(--ink);
+  }
+  .qa-item { padding: 30px 0 32px; border-bottom: 1px solid var(--rule); }
+  .qa-item h3, .qa-item p {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    margin: 0;
+  }
+  .qa-item h3 {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+  .qa-item p { margin-top: 12px; font-size: 18px; line-height: 1.85; }
+  .qa-mark { font-family: var(--serif); font-weight: 700; color: var(--sage-text); }
+  .qa-item p .qa-mark { color: var(--muted); }
+
+  /* ---------- inquiry ---------- */
+  .inquire {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+  .inquire-copy { position: sticky; top: 112px; }
+  .inquire-copy .sec-sub { color: var(--ink); }
+  .inquire-promises {
+    display: grid;
+    gap: 12px;
+    margin: 34px 0 0;
+    padding: 26px 0 0;
+    list-style: none;
+    border-top: 1px solid var(--rule);
+    font-size: 17px;
+  }
+  .inquire-promises li { display: flex; align-items: baseline; gap: 14px; }
+  .inquire-promises li::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    background: var(--sage-text);
+    transform: rotate(45deg) translateY(-3px);
+  }
+  .from-line {
+    margin: 30px 0 0;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--rule);
+    font-size: 16px;
+    color: var(--muted);
+  }
+  .from-line b { color: var(--ink); font-weight: 500; }
+  .form {
+    padding: clamp(26px, 4vw, 48px);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+  }
+  .form-title {
+    margin: 0 0 28px;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .field { display: grid; gap: 4px; margin: 0 0 28px; }
+  .field label, .fieldset legend {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .req { margin-left: 6px; font-size: 15px; font-weight: 400; color: var(--muted); }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 10px 0 12px;
+    border: 0;
+    border-bottom: 1.5px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink);
+    font: 400 18px/1.7 var(--sans);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field input::placeholder, .field textarea::placeholder { color: #687276; }
+  .field input:focus, .field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--ink);
+    box-shadow: 0 1.5px 0 var(--ink);
+  }
+  .counter { justify-self: end; font-size: 14px; color: var(--muted); }
+  .fieldset { margin: 0 0 28px; padding: 0; border: 0; min-width: 0; }
+  .fieldset legend { padding: 0; margin-bottom: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { position: relative; }
+  .chip input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 20px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    font-size: 17px;
+    color: var(--ink);
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .chip:hover span { border-color: var(--ink); }
+  .chip input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .chip input:focus-visible + span { outline: 2px solid var(--sage-text); outline-offset: 3px; }
+  .form .btn { margin-top: 8px; }
+  .form-status {
+    margin: 22px 0 0;
+    padding: 14px 18px;
+    border-left: 3px solid var(--sage-text);
+    background: var(--sage-wash);
+    font-size: 17px;
+  }
+  .form-status[hidden] { display: none; }
+
+  /* ---------- footer ---------- */
+  .footer {
+    margin-top: clamp(96px, 10vw, 148px);
+    padding: clamp(64px, 7vw, 96px) 0 140px;
+    background: var(--deep);
+    color: var(--deep-ink);
+  }
+  .footer-sign {
+    max-width: 15em;
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 1.1rem + 2.6vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -.03em;
+  }
+  .footer-sign span { color: var(--deep-sage); }
+  .footer .btn-light { margin-top: 34px; }
+  .footer-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px 32px;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--deep-rule);
+    font-size: 16px;
+    color: var(--deep-muted);
+  }
+  .footer-brand b { font-family: var(--latin); font-size: 21px; font-weight: 600; color: var(--deep-ink); margin-right: 10px; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 0 4px; margin: 0 0 0 -10px; padding: 0; list-style: none; }
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 10px;
+    color: var(--deep-ink);
+    text-decoration: none;
+  }
+  .footer-links a:hover { color: var(--deep-sage); }
+  .footer a:focus-visible { outline-color: var(--deep-sage); }
+
+  /* ---------- motion ---------- */
+  html.js .ld {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: ld .95s var(--ease) forwards;
+    animation-delay: calc(var(--i, 0) * 90ms + 100ms);
+  }
+  @keyframes ld { to { opacity: 1; transform: none; } }
+  html.js .hero-photo .frame {
+    clip-path: inset(0 0 100% 0);
+    animation: wipe 1.35s cubic-bezier(.7, 0, .2, 1) .3s forwards;
+  }
+  html.js .hero-photo img { transform: scale(1.12); animation: settle 2s var(--ease) .3s forwards; }
+  @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
+  @keyframes settle { to { transform: scale(1.02); } }
+  html.js .rv {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .85s ease, transform .85s var(--ease);
+    transition-delay: calc(var(--i, 0) * 80ms);
+  }
+  html.js .rv.in { opacity: 1; transform: none; }
+  html.js .rv-img .frame {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.25s cubic-bezier(.7, 0, .2, 1);
+  }
+  html.js .rv-img.in .frame { clip-path: inset(0 0 0 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    html.js .ld, html.js .rv { opacity: 1; transform: none; animation: none; transition: none; }
+    html.js .hero-photo .frame, html.js .rv-img .frame { clip-path: none; animation: none; transition: none; }
+    html.js .hero-photo img { transform: none; animation: none; }
+    .btn, .btn .arrow { transition: none; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1100px) {
+    .nav-links a { padding: 0 10px; }
+    .toc-row { grid-template-columns: 88px minmax(0, 1fr) minmax(0, 1fr); }
+    .toc-cta { grid-column: 2 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 0 24px; }
+    .toc-no { font-size: 64px; }
+  }
+  @media (max-width: 980px) {
+    .nav-links, .brand-role { display: none; }
+    .menu-btn { display: inline-flex; }
+    .inquire-copy { position: static; }
+    .hero { grid-template-columns: minmax(0, 1fr); }
+    .hero-photo .frame { aspect-ratio: 4 / 3; }
+    .hero-photo img { object-position: 50% 45%; }
+    .features { grid-template-columns: minmax(0, 1fr); border-top: 0; }
+    .feature, .feature:first-child, .feature:last-child {
+      padding: 32px 0 30px;
+      border-left: 0;
+      border-top: 1px solid var(--ink);
+    }
+    .feature .text-link { margin-top: 10px; }
+    .survey { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .survey-src { grid-column: 1 / -1; padding: 24px 0 !important; border-bottom: 1px solid var(--rule); }
+    .survey > div:nth-child(2) { padding-left: 0; border-left: 0; }
+    .quotes { grid-template-columns: minmax(0, 1fr); }
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .steps li:nth-child(3) { padding-left: 0; border-left: 0; }
+    .steps li:nth-child(2) { padding-right: 0; }
+    .steps li:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .further { grid-template-columns: minmax(0, 1fr); }
+    .inquire { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stats li { padding: 22px 0 24px 20px; }
+    .stats li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .stats li:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .stat-unit { font-size: 18px; }
+    .stat-label { font-size: 15px; }
+    .pain-grid { grid-template-columns: minmax(0, 1fr); }
+    .pain-grid li, .pain-grid li:nth-child(even) {
+      grid-template-columns: 56px minmax(0, 1fr);
+      padding: 26px 0 28px;
+      border-left: 0;
+    }
+    .pain-no { font-size: 54px; }
+    .pain-close { grid-template-columns: minmax(0, 1fr); }
+    .toc-row, .toc-row.is-primary {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      padding: 32px 0 34px;
+    }
+    .toc-row.is-primary { margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+    .toc-no { font-size: 56px; }
+    .toc-cta { grid-column: auto; }
+    .survey { grid-template-columns: minmax(0, 1fr); }
+    .survey > div, .survey > div:nth-child(2) {
+      padding: 18px 0;
+      border-left: 0;
+      border-top: 1px solid var(--rule);
+    }
+    .survey > .survey-src { border-top: 0; }
+    .survey dl { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+    .survey dd { margin: 0; font-size: 2.3rem; }
+    .steps { grid-template-columns: minmax(0, 1fr); }
+    .steps li, .steps li:nth-child(n) {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr);
+      column-gap: 8px;
+      padding: 24px 0 26px;
+      border-left: 0;
+      border-top: 1px solid var(--rule);
+    }
+    .steps li:first-child { border-top: 0; }
+    .step-no { grid-row: span 2; font-size: 48px; }
+    .steps h3 { margin: 2px 0 6px; }
+    .qa { grid-template-columns: minmax(0, 1fr); }
+    .qa-item h3, .qa-item p { grid-template-columns: 36px minmax(0, 1fr); }
+    .masthead .mh-sub { display: none; }
+    .byline { grid-template-columns: 56px minmax(0, 1fr); gap: 16px; }
+    .byline img { width: 56px; height: 70px; }
+    .creds { font-size: 16px; }
+    .venues ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; font-size: 18px; }
+    .venues li:not(:last-child)::after { content: none; }
+    .further-list li { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .further-list .day-ref { order: -1; font-size: 16px; }
+    .scale-line li:not(:last-child)::after { margin: 0 12px; }
+    .d-br { display: none; }
+    .kicker { gap: 10px; letter-spacing: .08em; }
+    .kicker::before { width: 22px; }
+    .actions .btn, .train-actions .btn, .form .btn { width: 100%; }
+    .pull footer { padding-left: 1em; }
+  }
+  @media (max-width: 420px) {
+    .brand-name { font-size: 22px; }
+    .nav .btn { gap: 8px; padding: 0 14px; font-size: 15px; letter-spacing: .02em; }
+    .nav-inner { gap: 12px; }
+    .nav-actions { gap: 8px; }
+    .chip span { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="Dawson Wang，回到頁首">
+      <span class="brand-name">Dawson Wang</span>
+      <span class="brand-role">AI 導入顧問</span>
+    </a>
+    <nav aria-label="主要導覽">
+      <ul class="nav-links">
+        <li><a href="#services">服務內容</a></li>
+        <li><a href="#cases">客戶案例</a></li>
+        <li><a href="#training">企業內訓</a></li>
+        <li><a href="#process">合作流程</a></li>
+        <li><a href="https://dawsonwang.com/days">實作文章</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-dark" href="#inquire">預約諮詢 <span class="arrow" aria-hidden="true">→</span></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu-panel">選單</button>
+    </div>
+  </div>
+  <div class="menu-panel" id="menu-panel" hidden>
+    <ul class="wrap">
+      <li><a href="#services">服務內容</a></li>
+      <li><a href="#cases">客戶案例</a></li>
+      <li><a href="#training">企業內訓</a></li>
+      <li><a href="#process">合作流程</a></li>
+      <li><a href="https://dawsonwang.com/days">實作文章</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap masthead">
+    <div class="masthead-inner ld" style="--i:0">
+      <p class="mh-left" style="margin:0"><b>封面故事</b><span class="mh-sub">中小企業的 AI 導入</span></p>
+      <p class="mh-right" style="margin:0">2026 年 10 月</p>
+    </div>
+    <div class="double-rule"></div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section class="wrap hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="kicker ld" style="--i:1"><span class="ph">中小企業 AI 導入顧問 ·</span> <span class="ph">企業內訓講師</span></p>
+      <h1 id="hero-title" class="ld" style="--i:2">把雜事交給 AI，<br>把時間留給<span class="accent">客戶</span><span class="pd">。</span></h1>
+      <p class="lede ld" style="--i:3">每天在 LINE、Excel、Email 之間重複做的事，<br class="d-br">我幫你找出哪些能交給 AI，再陪團隊一路用到上手。</p>
+      <div class="actions ld" style="--i:4">
+        <a class="btn btn-dark" href="#inquire">預約 30 分鐘諮詢 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="text-link" href="#cases">先看客戶案例 <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="byline ld" style="--i:5">
+        <img src="assets/dawson.webp" width="640" height="800" alt="Dawson Wang 正式形象照">
+        <div>
+          <p class="byline-name">文／<b>Dawson Wang</b>　AI 導入顧問</p>
+          <ul class="creds">
+            <li>9 年新創軟體開發經驗</li>
+            <li>iPAS AI 應用規劃師（中級）· 經濟部產業發展署發證</li>
+            <li>已協助旅遊業把 AI 接進日常業務</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <figure class="hero-photo">
+      <div class="frame">
+        <img src="assets/speaking/ccvs-2026-helping.webp" width="1600" height="1200"
+             alt="Dawson Wang 站在中正高工電腦教室一位老師的座位旁，協助她完成 AI 實作" fetchpriority="high">
+      </div>
+      <figcaption class="ld" style="--i:6">
+        <b>在座位旁，一起把下一步做完。</b>
+        <span>高雄市立中正高工 · 教師 AI 應用研習，2026 年 8 月</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- stats -->
+  <div class="wrap">
+    <ul class="stats" aria-label="數字">
+      <li class="rv" style="--i:0"><span class="stat-num">267</span><span class="stat-unit">天</span><span class="stat-label">每天公開一篇 AI 實作</span></li>
+      <li class="rv" style="--i:1"><span class="stat-num">9</span><span class="stat-unit">場</span><span class="stat-label">醫院與學校內訓</span></li>
+      <li class="rv" style="--i:2"><span class="stat-num">250+</span><span class="stat-unit">人次</span><span class="stat-label">累積學員</span></li>
+      <li class="rv" style="--i:3"><span class="stat-num">4.82</span><span class="stat-unit">/ 5</span><span class="stat-label"><span class="ph">近兩場課後匿名問卷</span><span class="ph">平均（33 份）</span></span></li>
+    </ul>
+
+    <!-- venues -->
+    <div class="venues rv">
+      <p class="venues-label">曾受邀授課的單位</p>
+      <ul>
+        <li>奇美醫院總院</li>
+        <li>柳營奇美醫院</li>
+        <li>佳里奇美醫院</li>
+        <li>部立臺南醫院</li>
+        <li>臺南新樓醫院</li>
+        <li>高雄市立中正高工</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 01 PAINS ============ -->
+  <section class="wrap section" aria-labelledby="pains-title">
+    <header class="sec-head rv">
+      <p class="sec-label">痛點<span class="no">No. 01</span></p>
+      <h2 id="pains-title"><span class="ph">這些狀況，</span><span class="ph">你公司是不是也有？</span></h2>
+    </header>
+    <ol class="pain-grid">
+      <li class="rv" style="--i:0"><span class="pain-no" aria-hidden="true">1</span><p><span class="ph">客戶需求、改來改去的細節，</span><span class="ph">全散在 LINE 群組裡，</span><span class="ph">要回頭找得翻半天。</span></p></li>
+      <li class="rv" style="--i:1"><span class="pain-no" aria-hidden="true">2</span><p><span class="ph">同一個案子分散在</span> <span class="ph">Excel、LINE、Email、</span><span class="ph">雲端檔案，</span><span class="ph">資料一直複製貼上。</span></p></li>
+      <li class="rv" style="--i:0"><span class="pain-no" aria-hidden="true">3</span><p><span class="ph">SOP、規範一改版就是一大疊，</span><span class="ph">員工看不完，</span><span class="ph">要用的時候又找不到。</span></p></li>
+      <li class="rv" style="--i:1"><span class="pain-no" aria-hidden="true">4</span><p><span class="ph">公司買了 AI 帳號，</span><span class="ph">大家卻只拿來翻譯、改錯字。</span></p></li>
+    </ol>
+    <p class="pain-close rv"><strong>不用砍掉重練。</strong><span>把 AI 接進你原本就在做的流程，從最花時間的那件雜事開始。</span></p>
+  </section>
+
+  <!-- ============ 02 CASES ============ -->
+  <section class="wrap section" id="cases" aria-labelledby="cases-title">
+    <header class="sec-head rv">
+      <p class="sec-label">客戶案例<span class="no">No. 02</span></p>
+      <h2 id="cases-title">他們本來卡在哪裡，<br>後來怎麼動起來。</h2>
+    </header>
+    <div class="features">
+      <article class="feature rv" style="--i:0">
+        <p class="feature-kicker"><span class="n">1</span>醫療</p>
+        <h3><span class="ph">把厚厚的 SOP，</span><span class="ph">變成看診時查得到的決策樹</span></h3>
+        <p class="feature-who">客戶｜診所主治醫師</p>
+        <h4>卡關</h4>
+        <p><span class="dropcap" aria-hidden="true">每</span><span class="sr-only">每</span>位病人只有 2–3 分鐘，療程選項卻很複雜；國際 SOP 每 3 個月更新一次，看完一版又出兩版。</p>
+        <h4>做法</h4>
+        <p>把 PDF 版的 SOP 拆成可以直接查詢的決策樹，看診時能當場帶病人看懂有哪些選項。</p>
+        <a class="text-link" href="https://dawsonwang.com/day/96">看完整案例 <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="feature rv" style="--i:1">
+        <p class="feature-kicker"><span class="n">2</span>行銷 / KOL 經紀</p>
+        <h3><span class="ph">一個案子橫跨 5 個工具，</span><span class="ph">重新設計整條流程</span></h3>
+        <p class="feature-who">客戶｜科技大廠的 KOL 合作社群經理</p>
+        <h4>卡關</h4>
+        <p><span class="dropcap" aria-hidden="true">預</span><span class="sr-only">預</span>算在試算表、跟代理商用 LINE 溝通，再加上 Email、檔案來回傳、社群平台發文——一個案子橫跨 5 個以上的工具。</p>
+        <h4>做法</h4>
+        <p>找出「會用 AI」跟「用得好」之間的落差，重新設計整條工作流程。</p>
+        <a class="text-link" href="https://dawsonwang.com/day/99">看完整案例 <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="feature rv" style="--i:2">
+        <p class="feature-kicker"><span class="n">3</span>用 LINE 管工作的老闆</p>
+        <h3><span class="ph">讓 AI 直接讀 LINE 對話，</span><span class="ph">不用再自己慢慢翻</span></h3>
+        <p class="feature-who">客戶｜把工作群開在 LINE 的老闆、PM</p>
+        <h4>卡關</h4>
+        <p><span class="dropcap" aria-hidden="true">對</span><span class="sr-only">對</span>話散在各個群組和私訊，每次要回顧某一段，都得自己慢慢往上翻。</p>
+        <h4>做法</h4>
+        <p>讓 AI 直接讀取電腦裡的 LINE 對話幫你整理——不用申請 API，也不用開發者帳號。</p>
+        <a class="text-link" href="https://dawsonwang.com/day/98">看完整案例 <span aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 03 SERVICES ============ -->
+  <section class="wrap section" id="services" aria-labelledby="services-title">
+    <header class="sec-head rv">
+      <p class="sec-label">服務內容<span class="no">No. 03</span></p>
+      <h2 id="services-title"><span class="ph">三種合作方式，</span><span class="ph">看你想走多深。</span></h2>
+      <p class="sec-sub">每個方案的成果都交到你們手上，沒有黑盒子，看得到、驗收得了。</p>
+    </header>
+    <ol class="toc">
+      <li class="toc-row is-primary rv">
+        <span class="toc-no" aria-hidden="true">01</span>
+        <div class="toc-title">
+          <h3>AI 導入落地<span class="tag">主推</span></h3>
+          <p>從試做、上線，到交接給你的團隊。</p>
+        </div>
+        <ul class="toc-items">
+          <li><span class="ph">把散在 LINE、Email、Excel 的</span><span class="ph">流程串起來</span></li>
+          <li><span class="ph">把 PDF、SOP、手冊</span><span class="ph">變成查得到答案的資料</span></li>
+          <li><span class="ph">幫團隊設定好專屬的</span> <span class="ph">AI 工具和自動化流程</span></li>
+        </ul>
+        <div class="toc-cta">
+          <p class="price">預約討論後報價</p>
+          <a class="text-link" href="#inquire">聊聊合作 <span aria-hidden="true">→</span></a>
+        </div>
+      </li>
+      <li class="toc-row rv">
+        <span class="toc-no" aria-hidden="true">02</span>
+        <div class="toc-title">
+          <h3>團隊培訓</h3>
+          <p>幫團隊養成持續使用 AI 的習慣。</p>
+        </div>
+        <ul class="toc-items">
+          <li>團隊工作坊（半天／一天）</li>
+          <li>1 對 1 教練（從個人工具出發）</li>
+          <li>長期顧問陪跑（每週同步）</li>
+        </ul>
+        <div class="toc-cta">
+          <p class="price">預約討論後報價</p>
+          <a class="text-link" href="#inquire">了解培訓 <span aria-hidden="true">→</span></a>
+        </div>
+      </li>
+      <li class="toc-row rv">
+        <span class="toc-no" aria-hidden="true">03</span>
+        <div class="toc-title">
+          <h3>演講／顧問諮詢</h3>
+          <p>受邀演講、企業內訓、單次諮詢。</p>
+        </div>
+        <ul class="toc-items">
+          <li><span class="ph">企業內訓</span><span class="ph">（AI 工作流現況／導入路線圖）</span></li>
+          <li>線上活動／Podcast 受訪</li>
+          <li>1 小時單次諮詢</li>
+        </ul>
+        <div class="toc-cta">
+          <p class="price">預約討論後報價</p>
+          <a class="text-link" href="#inquire">邀請演講 <span aria-hidden="true">→</span></a>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 04 TRAINING ============ -->
+  <section class="wrap section" id="training" aria-labelledby="training-title">
+    <header class="sec-head rv">
+      <p class="sec-label">企業內訓<span class="no">No. 04</span></p>
+      <h2 id="training-title">聽完覺得有收穫不算，<br>要帶著成品離開教室。</h2>
+      <p class="sec-sub">課程以實作為主。實作時間我會走到每個人座位旁，一個一個確認進度——很多卡點，只有看到操作畫面才說得清楚。</p>
+    </header>
+
+    <figure class="train-photo rv-img">
+      <div class="frame">
+        <img src="assets/speaking/qimei-main-0627-02.webp" width="1477" height="1108" loading="lazy"
+             alt="奇美醫院總院講堂內，Dawson Wang 面對多排醫事人員講解 AI 工具演進">
+      </div>
+      <figcaption>
+        <b>奇美醫院總院，2026 年 6 月</b>
+        <span>從 AI 工具的演進講到實際工作流，並在現場逐一協助操作。</span>
+      </figcaption>
+    </figure>
+
+    <ul class="scale-line rv" aria-label="授課規模">
+      <li>9 場授課</li><li>6 個單位</li><li>250+ 人次</li><li>醫療與教育</li>
+    </ul>
+
+    <div class="survey rv">
+      <div class="survey-src">
+        <h3>匿名課後問卷</h3>
+        <p><span class="ph">2026 年 9 月，</span><span class="ph">佳里奇美、柳營奇美兩場，</span><span class="ph">共 33 份。</span></p>
+      </div>
+      <div><dl style="margin:0"><dt>平均評分</dt><dd>4.82 <small>/ 5</small></dd></dl></div>
+      <div><dl style="margin:0"><dt>完成六步實作</dt><dd class="accent">29 <small>/ 33</small></dd></dl></div>
+      <div><dl style="margin:0"><dt>會或應該會用在工作上</dt><dd>31 <small>/ 33</small></dd></dl></div>
+    </div>
+
+    <div class="quotes">
+      <blockquote class="pull rv">
+        <p><span class="ph"><span class="mark">「</span>感謝講師細心的指導</span> <span class="ph">我聽得懂</span> <span class="ph">也做得出來</span> <span class="ph">超讚的<span class="mark">」</span></span></p>
+        <footer>— 專業群科教師 · 中正高工</footer>
+      </blockquote>
+      <div class="side-quotes">
+        <blockquote class="side-quote rv" style="--i:1">
+          <p>「教學準備充足，能從學生的角度思考其需求，讚！」</p>
+          <footer>— 語文／社會科教師 · 中正高工</footer>
+        </blockquote>
+        <blockquote class="side-quote rv" style="--i:2">
+          <p>「對ai的認識有更系統化的理解，除了教導大家做出成品，還具體説明是如何做出來，這部份講解的很清楚。」</p>
+          <footer>— 數學／自然科教師 · 中正高工</footer>
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="train-actions rv">
+      <a class="btn btn-dark" href="#inquire">邀請到公司內訓 <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="text-link" href="https://dawsonwang.com/speaking">看所有授課場次 <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <!-- ============ 05 PROCESS ============ -->
+  <section class="wrap section" id="process" aria-labelledby="process-title">
+    <header class="sec-head rv">
+      <p class="sec-label">合作流程<span class="no">No. 05</span></p>
+      <h2 id="process-title">合作怎麼開始？</h2>
+    </header>
+    <ol class="steps">
+      <li class="rv" style="--i:0"><span class="step-no" aria-hidden="true">1</span><h3>填表</h3><p>告訴我你想用 AI 解決什麼。</p></li>
+      <li class="rv" style="--i:1"><span class="step-no" aria-hidden="true">2</span><h3>1–2 個工作日內回覆</h3><p>合適會附上預約連結，不合適也會直接說。</p></li>
+      <li class="rv" style="--i:2"><span class="step-no" aria-hidden="true">3</span><h3>30 分鐘聊聊</h3><p>了解你的團隊，和最花時間的那件事。</p></li>
+      <li class="rv" style="--i:3"><span class="step-no" aria-hidden="true">4</span><h3>第二輪對話後報價</h3><p>先把範圍談清楚，再談價格。</p></li>
+    </ol>
+    <ul class="promises rv">
+      <li>沒有電子報，不會自動把你加進群組</li>
+      <li>所有對話內容保密</li>
+      <li>報價在第二輪對話後才給</li>
+    </ul>
+  </section>
+
+  <!-- ============ 06 FURTHER READING ============ -->
+  <section class="wrap section further" aria-labelledby="further-title">
+    <header class="sec-head rv">
+      <p class="sec-label">延伸閱讀<span class="no">No. 06</span></p>
+      <h2 id="further-title">不只教別人，<br>我自己每天也在用。</h2>
+      <p class="sec-sub">連續 267 天，每天公開一篇 AI 實作：做法、踩到的雷、結果，全部攤開。</p>
+      <a class="text-link" href="https://dawsonwang.com/days">看全部 267 篇實作 <span aria-hidden="true">→</span></a>
+    </header>
+    <ol class="further-list">
+      <li class="rv" style="--i:0">
+        <h3><span class="ph">讓 M 系列 Mac</span> <span class="ph">讀得到自然人憑證</span></h3>
+        <span class="day-ref">Day 183–184</span>
+        <p>廠商沒出 Apple 晶片的驅動，報稅、健保查詢全卡住。修掉 3 個錯誤，一行指令裝好。</p>
+      </li>
+      <li class="rv" style="--i:1">
+        <h3>iPAS 證照題庫網站</h3>
+        <span class="day-ref">Day 134、162</span>
+        <p>195 題、每題都有解析。2 週做好上線，我自己用它考過了。</p>
+      </li>
+      <li class="rv" style="--i:2">
+        <h3><span class="ph">讓 AI 讀 LINE，</span><span class="ph">不搶你的滑鼠</span></h3>
+        <span class="day-ref">Day 98、172、175</span>
+        <p>讓 AI 讀寫電腦上的 LINE，全程不搶你的滑鼠和鍵盤；送訊息預設只留草稿。</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 07 Q&A ============ -->
+  <section class="wrap section" aria-labelledby="qa-title">
+    <header class="sec-head rv">
+      <p class="sec-label">問與答<span class="no">No. 07</span></p>
+      <h2 id="qa-title">老闆們最常問的四件事</h2>
+    </header>
+    <div class="qa">
+      <div class="qa-item rv" style="--i:0">
+        <h3><span class="qa-mark">問</span><span><span class="ph">我們公司沒有工程師，</span><span class="ph">也能導入嗎？</span></span></h3>
+        <p><span class="qa-mark">答</span><span>可以。醫院課程的學員多數不是工程背景；中正高工的課也不預設任何一門專業知識。重點是從你們每天在做的事開始。</span></p>
+      </div>
+      <div class="qa-item rv" style="--i:1">
+        <h3><span class="qa-mark">問</span><span><span class="ph">要換掉</span><span class="ph">現在用的系統嗎？</span></span></h3>
+        <p><span class="qa-mark">答</span><span>不用砍掉重練。我做的是把 AI 接進你原本就在做的那條流程。</span></p>
+      </div>
+      <div class="qa-item rv" style="--i:0">
+        <h3><span class="qa-mark">問</span><span>費用怎麼算？</span></h3>
+        <p><span class="qa-mark">答</span><span>看範圍而定。第一次先了解狀況，第二輪對話後才報價；表單上的預算量級只是幫我抓方向。</span></p>
+      </div>
+      <div class="qa-item rv" style="--i:1">
+        <h3><span class="qa-mark">問</span><span><span class="ph">公司資料交給 AI</span> <span class="ph">安全嗎？</span></span></h3>
+        <p><span class="qa-mark">答</span><span>所有諮詢對話都會保密。課程裡也會教資安意識——工具教了，煞車要在同一堂課教完。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 08 INQUIRY ============ -->
+  <section class="wrap section" id="inquire" aria-labelledby="inquire-title">
+    <div class="inquire">
+      <div class="inquire-copy sec-head rv">
+        <p class="sec-label">預約諮詢<span class="no">No. 08</span></p>
+        <h2 id="inquire-title">告訴我，<br>你想用 AI 解決什麼。</h2>
+        <p class="sec-sub">填表後 1–2 個工作日內回覆。合適會附上預約連結；不合適會直接說。</p>
+        <ul class="inquire-promises">
+          <li>沒有電子報，不會自動把你加進群組</li>
+          <li>所有對話內容保密</li>
+          <li>報價在第二輪對話後才給</li>
+        </ul>
+        <p class="from-line">最近諮詢的客戶來自：<b><span class="nw">旅遊 ·</span> <span class="nw">醫療 ·</span> <span class="nw">KOL 經紀 ·</span> <span class="nw">自媒體</span></b></p>
+      </div>
+
+      <form class="form rv" id="inquiry-form" style="--i:1" action="#" method="post">
+        <p class="form-title">諮詢表單</p>
+        <div class="field">
+          <label for="f-name">姓名<span class="req">必填</span></label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-email">Email<span class="req">必填</span></label>
+          <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+        </div>
+        <div class="field">
+          <label for="f-company">公司 / 組織<span class="req">必填</span></label>
+          <input id="f-company" name="company" type="text" autocomplete="organization" maxlength="150" required>
+        </div>
+        <div class="field">
+          <label for="f-goal">想用 AI 做什麼？<span class="req">必填，最多 300 字</span></label>
+          <textarea id="f-goal" name="goal" rows="4" maxlength="300" required
+                    placeholder="例如：每天要從 LINE 群組整理客戶需求，很花時間⋯"></textarea>
+          <span class="counter" aria-live="polite"><span id="goal-count">0</span> / 300</span>
+        </div>
+        <fieldset class="fieldset">
+          <legend>團隊規模</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="team_size" value="1-5" required><span>1–5</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="6-30"><span>6–30</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="31-100"><span>31–100</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="100+"><span>100+</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend>預算量級（新台幣）</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="budget" value="lt100k" required><span>10 萬以下</span></label>
+            <label class="chip"><input type="radio" name="budget" value="100k-300k"><span>10–30 萬</span></label>
+            <label class="chip"><input type="radio" name="budget" value="300k-800k"><span>30–80 萬</span></label>
+            <label class="chip"><input type="radio" name="budget" value="gt800k"><span>80 萬以上</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend>時程</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="timeline" value="this_month" required><span>本月內</span></label>
+            <label class="chip"><input type="radio" name="timeline" value="this_quarter"><span>本季</span></label>
+            <label class="chip"><input type="radio" name="timeline" value="exploring"><span>只是先了解</span></label>
+          </div>
+        </fieldset>
+        <button class="btn btn-dark" type="submit">送出 <span class="arrow" aria-hidden="true">→</span></button>
+        <p class="form-status" id="form-status" role="status" tabindex="-1" hidden>這是設計預覽，表單不會真的送出。</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p class="footer-sign">把雜事交給 AI，<br>把時間留給<span>客戶</span><span class="pd">。</span></p>
+    <a class="btn btn-light" href="#inquire">預約 30 分鐘諮詢 <span class="arrow" aria-hidden="true">→</span></a>
+    <div class="footer-bar">
+      <p class="footer-brand" style="margin:0"><b>Dawson Wang</b>AI 導入顧問</p>
+      <ul class="footer-links">
+        <li><a href="#services">服務內容</a></li>
+        <li><a href="#cases">客戶案例</a></li>
+        <li><a href="#training">企業內訓</a></li>
+        <li><a href="https://dawsonwang.com/days">實作文章</a></li>
+        <li><a href="https://dawsonwang.com/privacy.html">隱私權政策</a></li>
+      </ul>
+      <p style="margin:0">© 2026 Dawson Wang</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // Scroll reveals. Everything is visible without JS; the hidden state only
+  // exists under html.js, and reduced-motion users get it all at once.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const targets = document.querySelectorAll('.rv, .rv-img');
+  if (reduce || !('IntersectionObserver' in window)) {
+    targets.forEach((el) => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+    targets.forEach((el) => io.observe(el));
+  }
+
+  // Mobile menu.
+  const menuBtn = document.querySelector('.menu-btn');
+  const panel = document.getElementById('menu-panel');
+  const setMenu = (open) => {
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.textContent = open ? '關閉' : '選單';
+    panel.hidden = !open;
+  };
+  menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+  panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) { setMenu(false); menuBtn.focus(); }
+  });
+  window.matchMedia('(min-width: 981px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+
+  // Form: live character count, and a preview-only submit.
+  const form = document.getElementById('inquiry-form');
+  const goal = document.getElementById('f-goal');
+  const count = document.getElementById('goal-count');
+  const status = document.getElementById('form-status');
+  goal.addEventListener('input', () => { count.textContent = String(goal.value.length); });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    status.hidden = false;
+    status.focus();
+  });
+})();
+</script>
+<script src="_switcher.js" defer></script>
+</body>
+</html>

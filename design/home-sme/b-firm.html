@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dawson Wang — 風格 B：專業事務所</title>
+<meta name="description" content="Dawson Wang，中小企業 AI 導入顧問與企業內訓講師。每天在 LINE、Excel、Email 之間重複做的事，幫你找出哪些能交給 AI，再陪團隊一路用到上手。">
+<meta name="theme-color" content="#0e2340">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+  /* ── Tokens ─────────────────────────────────────────────────────────── */
+  :root {
+    --navy: #0e2340;
+    --navy-deep: #0a1a31;
+    --navy-raise: #17325c;
+    --ink: #14243b;
+    --body: #33445a;
+    --muted: #5a6a7e;
+    --paper: #ffffff;
+    --off: #f5f3ee;
+    --gold: #b88a3e;        /* decor, and text on navy (5.0:1) */
+    --gold-text: #8a6420;   /* small text on light (5.4:1) */
+    --gold-num: #946c2c;    /* numerals on light (4.7:1) */
+    --rule: #dde2e8;
+    --rule-strong: #b3bdca;
+    --nv-body: #c9d3e0;     /* body on navy (10:1) */
+    --nv-muted: #9fb0c6;    /* secondary on navy (7:1) */
+    --nv-line: rgba(255, 255, 255, .14);
+    --sans: "Noto Sans TC", "PingFang TC", "Heiti TC", sans-serif;
+    --caslon: "Libre Caslon Text", Baskerville, "Times New Roman", serif;
+    --wrap: 1200px;
+    --pad: clamp(20px, 4vw, 40px);
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+
+  /* ── Base ───────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 96px; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--body);
+    font-family: var(--sans);
+    font-size: 18px;
+    line-height: 1.8;
+    line-break: strict;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { margin: 0; color: var(--ink); font-weight: 700; line-height: 1.35; text-wrap: balance; }
+  p { margin: 0; text-wrap: pretty; }
+  ul, ol { margin: 0; padding: 0; }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+  small { font-size: inherit; }
+  .nw { display: inline-block; max-width: 100%; }
+  .wrap { max-width: calc(var(--wrap) + var(--pad) * 2); margin: 0 auto; padding-inline: var(--pad); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .skip { position: absolute; left: 16px; top: -80px; z-index: 100; padding: 12px 18px; background: var(--gold); color: var(--navy); font-weight: 700; text-decoration: none; }
+  .skip:focus { top: 12px; }
+  .ck { flex: none; color: var(--gold); }
+
+  /* ── Buttons & links ────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+    min-height: 56px; padding: 0 30px;
+    border: 1px solid transparent; border-radius: 2px;
+    font: 700 18px/1.2 var(--sans); letter-spacing: .06em;
+    text-decoration: none; cursor: pointer;
+    transition: background-color .2s, color .2s, border-color .2s, transform .25s var(--ease), box-shadow .25s;
+  }
+  .btn .arr { display: inline-block; transition: transform .25s var(--ease); }
+  .btn:hover .arr { transform: translateX(4px); }
+  .btn:hover .arr-down { transform: translateY(3px); }
+  .btn-gold { background: var(--gold); color: var(--navy); box-shadow: 0 14px 30px -16px rgba(184, 138, 62, .9); }
+  .btn-gold:hover { background: #c89b4e; transform: translateY(-1px); }
+  .btn-line-light { border-color: rgba(255, 255, 255, .5); color: #fff; }
+  .btn-line-light:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-navy { background: var(--navy); color: #fff; }
+  .btn-navy:hover { background: var(--navy-raise); transform: translateY(-1px); }
+  .btn-line { border-color: var(--navy); color: var(--navy); }
+  .btn-line:hover { background: var(--navy); color: #fff; }
+  .btn-sm { min-height: 48px; padding: 0 22px; font-size: 16px; }
+  .link-arrow {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 48px;
+    color: var(--gold-text); font-size: 17px; font-weight: 700; letter-spacing: .04em;
+    text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 7px;
+    text-decoration-color: rgba(138, 100, 32, .35);
+    transition: text-decoration-color .2s;
+  }
+  .link-arrow:hover { text-decoration-color: currentColor; }
+
+  /* ── Navigation ─────────────────────────────────────────────────────── */
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(14, 35, 64, .97); border-bottom: 1px solid rgba(184, 138, 62, .4); }
+  .nav-inner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 80px; }
+  .brand { display: flex; align-items: center; gap: 16px; min-height: 48px; color: #fff; text-decoration: none; }
+  .brand-name { font-family: var(--caslon); font-size: 22px; font-weight: 700; letter-spacing: .01em; white-space: nowrap; }
+  .brand-sep { width: 1px; height: 22px; background: var(--gold); }
+  .brand-sub { font-size: 15px; letter-spacing: .12em; color: var(--nv-body); white-space: nowrap; }
+  .nav-links { display: flex; align-items: center; gap: 2px; }
+  .nav-links a:not(.btn) {
+    display: inline-flex; align-items: center; min-height: 48px; padding: 0 14px;
+    color: var(--nv-body); font-size: 16px; letter-spacing: .06em; text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-links a:not(.btn):hover { color: var(--gold); }
+  .nav-links .btn { margin-left: 14px; }
+  .nav-toggle { display: none; flex: none; white-space: nowrap; }
+
+  /* ── Hero ───────────────────────────────────────────────────────────── */
+  .hero { position: relative; isolation: isolate; overflow: clip; padding: clamp(56px, 5vw, 76px) 0 184px; background: var(--navy); color: var(--nv-body); }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(60% 70% at 90% 0%, rgba(184, 138, 62, .17), transparent 62%),
+      radial-gradient(50% 60% at 0% 100%, rgba(26, 56, 102, .9), transparent 70%),
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, .028) 0 1px, transparent 1px 10px);
+  }
+  .hero-frame {
+    position: absolute; z-index: -1; left: 50%; top: 24px; bottom: 132px;
+    width: min(calc(100% - 28px), calc(var(--wrap) + 136px));
+    transform: translateX(-50%);
+    border: 1px solid rgba(184, 138, 62, .55);
+    pointer-events: none;
+  }
+  .hero-frame::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(184, 138, 62, .24); }
+  .hero-frame i { position: absolute; width: 9px; height: 9px; background: var(--navy); border: 1px solid var(--gold); transform: rotate(45deg); }
+  .hero-frame i:nth-child(1) { top: -5px; left: -5px; }
+  .hero-frame i:nth-child(2) { top: -5px; right: -5px; }
+  .hero-frame i:nth-child(3) { bottom: -5px; left: -5px; }
+  .hero-frame i:nth-child(4) { bottom: -5px; right: -5px; }
+
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(0, .86fr); gap: clamp(40px, 5vw, 80px); align-items: center; }
+  .kicker { display: flex; align-items: center; gap: 14px; color: var(--gold); font-size: 16px; font-weight: 500; letter-spacing: .14em; line-height: 1.6; }
+  .kicker::before { content: ""; flex: none; width: 36px; height: 1px; background: var(--gold); }
+  .hero h1 { margin-top: 26px; color: #fff; font-size: clamp(2.3rem, 1.1rem + 4.1vw, 4.25rem); font-weight: 900; line-height: 1.3; letter-spacing: .03em; }
+  .hero h1 .line { display: block; }
+  .hero h1 .u {
+    background-image: linear-gradient(var(--gold), var(--gold));
+    background-repeat: no-repeat; background-size: 100% .09em; background-position: 0 94%;
+    padding-bottom: .04em;
+  }
+  .hero-sub { margin-top: 28px; max-width: 31em; font-size: clamp(18px, 1rem + .35vw, 20px); line-height: 1.9; color: var(--nv-body); }
+  .hero-ctas { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .hero-note { margin-top: 18px; display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--nv-muted); }
+  .hero-note::before { content: ""; width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
+
+  /* Advisor card — the 顧問名片 */
+  .advisor {
+    position: relative; justify-self: end; width: 100%; max-width: 468px;
+    padding: 28px 32px 32px;
+    background: #fff; color: var(--body);
+    border-top: 3px solid var(--gold);
+    box-shadow: 0 44px 90px -34px rgba(0, 0, 0, .6);
+  }
+  .advisor-label { display: flex; align-items: center; gap: 14px; color: var(--gold-text); font-size: 14px; font-weight: 700; letter-spacing: .24em; }
+  .advisor-label::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  .advisor-top { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 22px; align-items: center; margin-top: 20px; }
+  .portrait { position: relative; margin: 0; padding: 6px; background: #fff; border: 1px solid var(--gold); }
+  .portrait::after { content: ""; position: absolute; inset: 2px; border: 1px solid rgba(184, 138, 62, .3); pointer-events: none; }
+  .portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .advisor-name { font-family: var(--caslon); font-size: 27px; font-weight: 700; line-height: 1.2; color: var(--ink); }
+  .advisor-title { margin-top: 8px; color: var(--gold-text); font-size: 17px; font-weight: 700; letter-spacing: .1em; }
+  .advisor-meta { margin-top: 10px; color: var(--muted); font-size: 15px; line-height: 1.7; }
+  .creds { list-style: none; display: grid; gap: 14px; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--rule); }
+  .creds li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .creds .ck { margin-top: 3px; }
+  .creds strong { display: block; color: var(--ink); font-size: 17px; font-weight: 500; line-height: 1.6; }
+  .creds small { display: block; color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+  /* Stats band, overlapping the hero's lower edge */
+  .stats-wrap { position: relative; z-index: 3; margin-top: -112px; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin: 0; background: var(--rule); border: 1px solid var(--rule); box-shadow: 0 34px 70px -40px rgba(14, 35, 64, .6); }
+  .stat { display: flex; flex-direction: column; padding: 30px 30px 28px; background: #fff; }
+  .stat dd { order: -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin: 0; }
+  .num { font-family: var(--caslon); font-size: clamp(2.75rem, 2rem + 1.9vw, 3.75rem); font-weight: 400; line-height: 1; letter-spacing: -.01em; color: var(--gold-num); font-variant-numeric: lining-nums; }
+  .unit { color: var(--ink); font-size: 18px; font-weight: 700; }
+  .unit-lat { font-family: var(--caslon); font-size: 26px; color: var(--gold-num); }
+  .stat dt { margin-top: 14px; color: var(--body); font-size: 16px; line-height: 1.65; }
+  .stat dt small { display: block; color: var(--muted); font-size: 14px; }
+
+  /* ── Venues ─────────────────────────────────────────────────────────── */
+  .venues { padding: 64px 0 76px; }
+  .venues-title { display: flex; align-items: center; justify-content: center; gap: 18px; color: var(--gold-text); font-size: 15px; font-weight: 700; letter-spacing: .24em; text-align: center; }
+  .venues-title::before, .venues-title::after { content: ""; flex: none; width: 56px; height: 1px; background: var(--gold); }
+  .venues-list { list-style: none; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; margin-top: 26px; background: var(--rule); border-block: 1px solid var(--rule); }
+  .venues-list li { display: flex; align-items: center; justify-content: center; min-height: 80px; padding: 12px 8px; background: #fff; color: var(--ink); font-size: 18px; font-weight: 500; line-height: 1.5; text-align: center; }
+
+  /* ── Section scaffolding ────────────────────────────────────────────── */
+  .sec { padding: clamp(84px, 9vw, 128px) 0; }
+  .sec-off { background: var(--off); }
+  .sec-head { max-width: 780px; }
+  .eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; color: var(--gold-text); font-size: 15px; font-weight: 700; letter-spacing: .2em; }
+  .eyebrow::after { content: ""; flex: none; width: 44px; height: 1px; background: var(--gold); }
+  .eyebrow-num { font-family: var(--caslon); font-size: 21px; font-style: italic; font-weight: 400; letter-spacing: 0; }
+  .sec-head h2, .inquire h2 { font-size: clamp(1.9rem, 1.25rem + 2.1vw, 2.8rem); font-weight: 900; line-height: 1.34; letter-spacing: .02em; }
+  .sec-head h2::after, .inquire h2::after { content: ""; display: block; width: 76px; height: 3px; margin-top: 24px; background: var(--gold); transform-origin: left center; }
+  .sec-sub { margin-top: 22px; max-width: 33em; font-size: 19px; line-height: 1.85; }
+
+  /* ── Pain points ────────────────────────────────────────────────────── */
+  .pain-grid { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 56px; }
+  .pain {
+    display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 8px 24px; align-items: start;
+    padding: 34px 34px 36px; background: #fff; border-top: 2px solid var(--gold);
+    box-shadow: 0 1px 0 var(--rule), 0 20px 44px -34px rgba(14, 35, 64, .4);
+  }
+  .pain-icon { grid-row: 1 / span 2; display: grid; place-items: center; width: 58px; height: 58px; color: var(--navy); border: 1px solid var(--rule); }
+  .pain-no { font-family: var(--caslon); font-size: 18px; font-style: italic; color: var(--gold-text); line-height: 1.4; }
+  .pain p { color: var(--ink); font-size: 19px; font-weight: 500; line-height: 1.8; }
+  .pain-close {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 36px;
+    margin-top: 32px; padding: 30px 36px; background: var(--navy); color: var(--nv-body);
+  }
+  .pain-close p { max-width: 34em; font-size: 19px; line-height: 1.8; }
+  .pain-close strong { display: block; margin-bottom: 4px; color: #fff; font-size: 21px; font-weight: 900; letter-spacing: .04em; }
+  .pain-close .btn { flex: none; }
+
+  /* ── Cases ──────────────────────────────────────────────────────────── */
+  .cases { display: grid; gap: 28px; margin-top: 56px; }
+  .case {
+    display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.45fr); gap: 28px 56px;
+    padding: 44px 48px; background: #fff;
+    border: 1px solid var(--rule); border-left: 4px solid var(--navy);
+    box-shadow: 0 26px 54px -44px rgba(14, 35, 64, .55);
+  }
+  .case-label { color: var(--muted); font-size: 14px; font-weight: 700; letter-spacing: .24em; }
+  .case-no { margin-top: 10px; color: var(--gold-text); font-family: var(--caslon); font-size: 20px; font-style: italic; line-height: 1; }
+  .case-no b { margin-left: 8px; color: var(--gold-num); font-size: 52px; font-style: normal; font-weight: 400; }
+  .case h3 { margin-top: 22px; font-size: clamp(1.35rem, 1.1rem + .6vw, 1.6rem); line-height: 1.5; letter-spacing: .02em; }
+  .case .link-arrow { margin-top: 16px; }
+  .case-rows { margin: 0; border-top: 1px solid var(--ink); }
+  .case-rows > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+  .case-rows dt { color: var(--gold-text); font-size: 15px; font-weight: 700; letter-spacing: .16em; line-height: 1.95; }
+  .case-rows dd { margin: 0; color: var(--body); font-size: 18px; line-height: 1.8; }
+  .case-rows .is-key dd { color: var(--ink); font-weight: 500; }
+
+  /* ── Services ───────────────────────────────────────────────────────── */
+  .tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; margin-top: 72px; }
+  .tier { position: relative; display: flex; flex-direction: column; padding: 40px 34px 34px; background: #fff; border: 1px solid var(--rule); }
+  .tier-primary { background: var(--navy); border-color: var(--navy); color: var(--nv-body); transform: translateY(-16px); box-shadow: 0 44px 80px -44px rgba(14, 35, 64, .9); }
+  .tier-tag { position: absolute; top: -1px; right: 28px; padding: 9px 16px 10px; background: var(--gold); color: var(--navy); font-size: 14px; font-weight: 700; letter-spacing: .18em; line-height: 1.4; }
+  .tier-no { color: var(--gold-text); font-family: var(--caslon); font-size: 18px; font-style: italic; line-height: 1; }
+  .tier-no b { margin-left: 6px; font-size: 40px; font-style: normal; font-weight: 400; }
+  .tier-primary .tier-no { color: var(--gold); }
+  .tier h3 { margin-top: 18px; font-size: 26px; font-weight: 900; letter-spacing: .04em; }
+  .tier-primary h3 { color: #fff; }
+  .tier-lede { margin-top: 10px; min-height: 3.6em; color: var(--body); font-size: 18px; }
+  .tier-primary .tier-lede { color: var(--nv-body); }
+  .tier-list { list-style: none; flex: 1; display: grid; gap: 14px; align-content: start; margin-top: 22px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .tier-list li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; color: var(--ink); font-size: 18px; line-height: 1.7; }
+  .tier-list .ck { margin-top: 4px; }
+  .tier-primary .tier-list, .tier-primary .tier-foot { border-color: var(--nv-line); }
+  .tier-primary .tier-list li { color: #fff; }
+  .tier-foot { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .tier-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; color: var(--ink); font-size: 18px; font-weight: 700; }
+  .tier-price span { color: var(--gold-text); font-size: 14px; letter-spacing: .2em; }
+  .tier-primary .tier-price { color: #fff; }
+  .tier-primary .tier-price span { color: var(--gold); }
+  .tier-foot .btn { width: 100%; margin-top: 20px; }
+
+  /* ── Training ───────────────────────────────────────────────────────── */
+  .train-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; margin-top: 60px; }
+  .photo { position: relative; isolation: isolate; margin: 0; }
+  .photo-frame { position: relative; }
+  .photo-frame::before { content: ""; position: absolute; inset: 14px -14px -14px 14px; z-index: -1; border: 1px solid var(--gold); }
+  .photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .photo figcaption { display: flex; align-items: center; gap: 12px; margin-top: 30px; color: var(--muted); font-size: 15px; }
+  .photo figcaption::before { content: ""; flex: none; width: 24px; height: 1px; background: var(--gold); }
+  .train-scale { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 0; margin-top: 52px; padding: 22px 0; border-block: 1px solid var(--rule); color: var(--ink); font-size: 19px; font-weight: 700; letter-spacing: .06em; text-align: center; }
+  .train-scale span + span::before { content: ""; display: inline-block; position: relative; top: -3px; width: 6px; height: 6px; margin: 0 22px; background: var(--gold); transform: rotate(45deg); }
+
+  .survey { position: relative; margin-top: 52px; padding: 44px 48px 48px; background: var(--navy); color: var(--nv-body); }
+  .survey::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(184, 138, 62, .28); pointer-events: none; }
+  .survey-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding-bottom: 22px; border-bottom: 1px solid var(--nv-line); }
+  .survey-head h3 { color: #fff; font-size: 22px; }
+  .survey-meta { color: var(--nv-muted); font-size: 16px; }
+  .survey-meta span + span::before { content: "·"; margin: 0 .6em; color: var(--gold); }
+  .survey-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 48px; margin: 32px 0 0; }
+  .sv { display: flex; flex-direction: column; }
+  .sv dd { order: -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin: 0; }
+  .sv .big { color: var(--gold); font-family: var(--caslon); font-size: clamp(2.6rem, 2rem + 1.6vw, 3.4rem); line-height: 1; }
+  .sv .of { color: var(--nv-muted); font-family: var(--caslon); font-size: 24px; }
+  .sv .bar { flex-basis: 100%; height: 3px; margin-top: 16px; overflow: hidden; background: var(--nv-line); }
+  .sv .bar i { display: block; width: var(--p); height: 100%; background: var(--gold); }
+  .sv dt { margin-top: 14px; color: #fff; font-size: 17px; }
+
+  .quotes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 48px; }
+  .quote { position: relative; display: flex; flex-direction: column; margin: 0; padding: 60px 32px 30px; background: var(--off); border-top: 2px solid var(--gold); }
+  .quote::before { content: "\201C"; position: absolute; top: 6px; left: 26px; color: var(--gold); font-family: var(--caslon); font-size: 88px; line-height: 1; }
+  .quote blockquote { flex: 1; margin: 0; }
+  .quote blockquote p { color: var(--ink); font-size: 19px; font-weight: 500; line-height: 1.85; }
+  .quote figcaption { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 15px; }
+  .train-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 48px; }
+
+  /* ── Process timeline ───────────────────────────────────────────────── */
+  .timeline { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; margin-top: 64px; }
+  .step { position: relative; }
+  .step::before { content: ""; position: absolute; top: 32px; left: 72px; right: -24px; height: 1px; background: var(--gold); transform-origin: left center; }
+  .step:last-child::before { display: none; }
+  .step-dot {
+    position: relative; z-index: 1; display: grid; place-items: center; width: 64px; height: 64px;
+    border: 1.5px solid var(--gold); border-radius: 50%; background: var(--navy);
+    color: var(--gold); font-family: var(--caslon); font-size: 27px; line-height: 1;
+    box-shadow: 0 0 0 7px var(--off);
+  }
+  .step h3 { margin-top: 26px; font-size: 21px; letter-spacing: .02em; }
+  .step p { margin-top: 10px; color: var(--body); font-size: 18px; line-height: 1.8; }
+  .promises { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: 64px; background: var(--rule); border: 1px solid var(--rule); }
+  .promises li { display: flex; align-items: center; gap: 14px; padding: 22px 24px; background: #fff; color: var(--ink); font-size: 18px; font-weight: 500; line-height: 1.6; }
+  .process-cta { margin-top: 40px; }
+
+  /* ── FAQ ────────────────────────────────────────────────────────────── */
+  .faq-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.3fr); gap: 48px 80px; align-items: start; }
+  .faq-list { border-top: 1px solid var(--ink); }
+  .faq-item { border-bottom: 1px solid var(--rule); }
+  .faq-item summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    min-height: 80px; padding: 18px 0; list-style: none; cursor: pointer;
+    color: var(--ink); font-size: 20px; font-weight: 700; line-height: 1.5;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-q { display: flex; align-items: baseline; gap: 16px; }
+  .faq-q b { flex: none; color: var(--gold-text); font-family: var(--caslon); font-size: 19px; font-style: italic; font-weight: 400; }
+  .faq-icon { position: relative; flex: none; width: 38px; height: 38px; border: 1px solid var(--gold); border-radius: 50%; transition: background-color .25s; }
+  .faq-icon::before, .faq-icon::after { content: ""; position: absolute; left: 50%; top: 50%; width: 13px; height: 1.5px; background: var(--gold-text); transform: translate(-50%, -50%); transition: transform .3s var(--ease); }
+  .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .faq-item[open] .faq-icon { background: var(--navy); }
+  .faq-item[open] .faq-icon::before, .faq-item[open] .faq-icon::after { background: var(--gold); }
+  .faq-item[open] .faq-icon::after { transform: translate(-50%, -50%) rotate(0deg); }
+  .faq-item summary:hover .faq-q span { color: var(--navy-raise); }
+  .faq-a { padding: 0 60px 28px 44px; }
+  .faq-a p { max-width: 34em; color: var(--body); font-size: 18px; line-height: 1.85; }
+
+  /* ── Inquiry ────────────────────────────────────────────────────────── */
+  .inquire { position: relative; isolation: isolate; overflow: clip; padding: clamp(84px, 9vw, 128px) 0; background: var(--navy); color: var(--nv-body); }
+  .inquire::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(50% 60% at 100% 0%, rgba(184, 138, 62, .14), transparent 60%),
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 10px);
+  }
+  .inquire-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px 80px; align-items: start; }
+  @media (min-width: 1000px) { .inquire-copy { position: sticky; top: 120px; } }
+  .inquire .eyebrow { color: var(--gold); }
+  .inquire h2 { color: #fff; }
+  .inquire-sub { max-width: 25em; margin-top: 22px; color: var(--nv-body); font-size: 19px; line-height: 1.85; }
+  .reply { display: flex; align-items: center; gap: 22px; margin-top: 40px; padding: 26px 0; border-block: 1px solid rgba(184, 138, 62, .4); }
+  .reply-num { color: var(--gold); font-family: var(--caslon); font-size: 64px; line-height: 1; white-space: nowrap; }
+  .reply-txt { color: #fff; font-size: 18px; font-weight: 500; line-height: 1.6; }
+  .assure { list-style: none; display: grid; gap: 14px; margin-top: 28px; }
+  .assure li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; align-items: start; color: var(--nv-body); font-size: 18px; line-height: 1.6; }
+  .assure .ck { margin-top: 2px; }
+  .proof { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--nv-line); color: var(--nv-muted); font-size: 16px; line-height: 1.8; }
+  .proof strong { display: block; margin-top: 4px; color: #fff; font-size: 18px; font-weight: 500; letter-spacing: .04em; }
+
+  .form { position: relative; display: grid; gap: 26px; padding: 40px 44px 44px; background: #fff; color: var(--body); border-top: 3px solid var(--gold); box-shadow: 0 50px 90px -50px rgba(0, 0, 0, .75); }
+  .form-title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); color: var(--ink); font-size: 21px; font-weight: 900; letter-spacing: .04em; }
+  .form-title span { color: var(--muted); font-size: 15px; font-weight: 500; letter-spacing: 0; }
+  .field { display: grid; gap: 10px; min-width: 0; margin: 0; padding: 0; border: 0; }
+  .field label, .field legend { padding: 0; color: var(--ink); font-size: 17px; font-weight: 700; }
+  .field legend { margin-bottom: 10px; }
+  .req { margin-left: 8px; color: var(--gold-text); font-size: 14px; font-weight: 700; letter-spacing: .1em; }
+  .field input[type="text"], .field input[type="email"], .field textarea {
+    width: 100%; min-height: 54px; padding: 12px 16px;
+    background: #fff; color: var(--ink); font: 400 18px/1.6 var(--sans);
+    border: 1px solid var(--rule-strong); border-radius: 2px;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .field textarea { min-height: 140px; resize: vertical; }
+  .field input::placeholder, .field textarea::placeholder { color: #6b7888; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(184, 138, 62, .42); }
+  .hint { color: var(--muted); font-size: 14px; text-align: right; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { position: relative; }
+  .chip input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .chip span {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    min-width: 92px; min-height: 50px; padding: 0 20px;
+    background: #fff; color: var(--ink); font-size: 17px; font-weight: 500;
+    border: 1px solid var(--rule-strong); border-radius: 2px;
+    transition: background-color .15s, border-color .15s, color .15s;
+  }
+  .chip input:hover + span { border-color: var(--navy); }
+  .chip input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .chip input:checked + span { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .chip input:checked + span::before { content: ""; width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); }
+  .btn-block { width: 100%; min-height: 62px; font-size: 19px; }
+  .form-msg { padding: 16px 18px; background: #fbf7ef; color: var(--ink); border: 1px solid var(--gold); border-left-width: 4px; font-size: 17px; font-weight: 500; }
+  .form-msg:focus { outline: none; }
+
+  /* ── Footer ─────────────────────────────────────────────────────────── */
+  .footer { padding: 64px 0 132px; background: var(--navy-deep); color: var(--nv-muted); border-top: 1px solid rgba(184, 138, 62, .45); }
+  .footer-grid { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 28px 40px; }
+  .footer-brand { color: #fff; font-family: var(--caslon); font-size: 26px; font-weight: 700; line-height: 1.2; }
+  .footer-title { margin-top: 8px; color: var(--gold); font-size: 16px; letter-spacing: .14em; }
+  .footer-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0 4px; margin-inline: -12px; }
+  .footer-links a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 12px; color: var(--nv-body); font-size: 16px; text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom { margin-top: 36px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, .1); font-size: 15px; }
+
+  /* ── Motion (only when JS is on; content is visible without it) ─────── */
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes underline { from { background-size: 0% .09em; } to { background-size: 100% .09em; } }
+
+  html.js .hero-frame { animation: fade 1.4s ease .05s both; }
+  html.js .kicker { animation: rise .7s var(--ease) .1s both; }
+  html.js .hero h1 .line:nth-child(1) { animation: rise .8s var(--ease) .2s both; }
+  html.js .hero h1 .line:nth-child(2) { animation: rise .8s var(--ease) .34s both; }
+  html.js .hero h1 .u { animation: underline 1s var(--ease) 1s both; }
+  html.js .hero-sub { animation: rise .8s var(--ease) .5s both; }
+  html.js .hero-ctas { animation: rise .8s var(--ease) .62s both; }
+  html.js .hero-note { animation: fade .8s ease .85s both; }
+  html.js .advisor { animation: slide-in 1s var(--ease) .4s both; }
+  html.js .creds li { animation: rise .6s var(--ease) both; }
+  html.js .creds li:nth-child(1) { animation-delay: .9s; }
+  html.js .creds li:nth-child(2) { animation-delay: .98s; }
+  html.js .creds li:nth-child(3) { animation-delay: 1.06s; }
+  html.js .creds li:nth-child(4) { animation-delay: 1.14s; }
+  html.js .stats { animation: rise .9s var(--ease) .75s both; }
+
+  html.js [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--d, 0) * 100ms); }
+  html.js [data-reveal].is-in { opacity: 1; transform: none; }
+  html.js .sec-head h2::after, html.js .inquire h2::after { transform: scaleX(0); transition: transform 1s var(--ease) .35s; }
+  html.js .is-in h2::after { transform: scaleX(1); }
+  html.js .sv .bar i { width: 0; transition: width 1.4s var(--ease) .35s; }
+  html.js .survey.is-in .bar i { width: var(--p); }
+  html.js .step::before { transform: scaleX(0); transition: transform .8s var(--ease); transition-delay: calc(var(--d, 0) * 220ms + 400ms); }
+  html.js .timeline.is-in .step::before { transform: scaleX(1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    html.js *, html.js *::before, html.js *::after { animation: none !important; transition: none !important; }
+    html.js [data-reveal] { opacity: 1; transform: none; }
+    html.js .sec-head h2::after, html.js .inquire h2::after, html.js .step::before { transform: none; }
+    html.js .sv .bar i { width: var(--p); }
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────────────── */
+  @media (max-width: 1099px) {
+    .nav-toggle {
+      display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 16px;
+      background: transparent; color: #fff; border: 1px solid rgba(255, 255, 255, .38); border-radius: 2px;
+      font: 500 16px var(--sans); letter-spacing: .1em; cursor: pointer;
+    }
+    .nav-toggle .bars { position: relative; width: 18px; height: 12px; border-block: 1.5px solid currentColor; }
+    .nav-toggle .bars::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; margin-top: -.75px; background: currentColor; }
+    .nav-toggle[aria-expanded="true"] .bars { border-color: transparent; }
+    .nav-toggle[aria-expanded="true"] .bars::before,
+    .nav-toggle[aria-expanded="true"] .bars::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; margin-top: -.75px; background: currentColor; transform: rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] .bars::after { transform: rotate(-45deg); }
+    html.js .nav-links {
+      position: absolute; left: calc(var(--pad) * -1); right: calc(var(--pad) * -1); top: 100%;
+      display: none; flex-direction: column; align-items: stretch; gap: 0;
+      padding: 6px var(--pad) 26px; background: var(--navy);
+      border-bottom: 1px solid rgba(184, 138, 62, .4); box-shadow: 0 30px 40px -24px rgba(0, 0, 0, .55);
+    }
+    html.js .nav-links.is-open { display: flex; }
+    html.js .nav-links a:not(.btn) { min-height: 58px; padding: 0 2px; border-bottom: 1px solid rgba(255, 255, 255, .08); font-size: 18px; }
+    html.js .nav-links .btn { margin: 20px 0 0; min-height: 56px; font-size: 18px; }
+    html:not(.js) .nav-inner { flex-wrap: wrap; padding-block: 12px; }
+    html:not(.js) .nav-links { flex-wrap: wrap; }
+
+    .hero-grid { grid-template-columns: minmax(0, 1fr); }
+    .advisor { justify-self: start; max-width: 560px; }
+  }
+  @media (max-width: 999px) {
+    .tiers { grid-template-columns: minmax(0, 1fr); max-width: 640px; }
+    .tier-primary { transform: none; }
+    .tier-lede { min-height: 0; }
+    .quotes { grid-template-columns: minmax(0, 1fr); }
+    .inquire-grid { grid-template-columns: minmax(0, 1fr); }
+    .faq-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 1023px) {
+    .venues-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 899px) {
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .case { grid-template-columns: minmax(0, 1fr); padding: 34px 28px; }
+    .survey-stats { grid-template-columns: minmax(0, 1fr); }
+    .survey { padding: 36px 30px 40px; }
+    .timeline { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .step { display: grid; grid-template-columns: 64px minmax(0, 1fr); column-gap: 22px; padding-bottom: 40px; }
+    .step:last-child { padding-bottom: 0; }
+    .step-dot { grid-row: 1 / span 2; }
+    .step h3 { margin-top: 14px; }
+    .step::before { top: 64px; bottom: 0; left: 32px; right: auto; width: 1px; height: auto; transform-origin: center top; }
+    html.js .step::before { transform: scaleY(0); }
+    html.js .timeline.is-in .step::before { transform: scaleY(1); }
+    .promises { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 767px) {
+    .pain-grid { grid-template-columns: minmax(0, 1fr); }
+    .pain { grid-template-columns: 50px minmax(0, 1fr); gap: 6px 18px; padding: 28px 22px 30px; }
+    .pain-icon { width: 50px; height: 50px; }
+    .pain-icon svg { width: 38px; height: 38px; }
+    .pain-close { padding: 28px 24px; }
+    .train-photos { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 17px; }
+    .hero { padding-bottom: 168px; }
+    .hero-frame { top: 12px; bottom: 120px; width: calc(100% - 16px); }
+    .hero-frame::before { display: none; }
+    .kicker { font-size: 15px; letter-spacing: .08em; }
+    .kicker::before { width: 24px; }
+    .hero-ctas .btn { width: 100%; }
+    .advisor { padding: 24px 22px 26px; }
+    .advisor-top { grid-template-columns: 104px minmax(0, 1fr); gap: 18px; }
+    .advisor-name { font-size: 24px; }
+    .stat { padding: 24px 20px 22px; }
+    .stat dt { font-size: 15px; }
+    .venues { padding: 52px 0 60px; }
+    .venues-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .venues-list li { min-height: 68px; font-size: 17px; }
+    .venues-title { letter-spacing: .16em; gap: 14px; }
+    .venues-title::before, .venues-title::after { width: 28px; }
+    .sec-sub, .hero-sub, .inquire-sub { font-size: 18px; }
+    .pain p, .quote blockquote p { font-size: 18px; }
+    .pain-close .btn, .train-ctas .btn, .process-cta .btn { width: 100%; }
+    .case { padding: 30px 22px; }
+    .case-rows > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+    .case-no b { font-size: 44px; }
+    .tier { padding: 36px 24px 28px; }
+    .train-scale { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; padding: 0; background: var(--rule); border-block: 0; font-size: 17px; }
+    .train-scale span { padding: 16px 8px; background: #fff; }
+    .train-scale span + span::before { display: none; }
+    .survey-meta span { display: block; }
+    .survey-meta span + span::before { display: none; }
+    .quote { padding: 56px 24px 26px; }
+    .faq-item summary { font-size: 18px; min-height: 72px; }
+    .faq-a { padding: 0 0 24px; }
+    .reply-num { font-size: 52px; }
+    .form { padding: 30px 20px 32px; }
+    .chips { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); gap: 8px; }
+    .chip span { width: 100%; min-width: 0; padding: 0 4px; font-size: 16px; }
+  }
+  @media (max-width: 420px) {
+    .nav-inner { gap: 12px; }
+    .nav-toggle { padding: 0 14px; gap: 8px; }
+    .stat { padding: 22px 16px 20px; }
+    .num { font-size: 2.5rem; }
+  }
+  @media (max-width: 400px) {
+    .brand-sep, .brand-sub { display: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-check" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10.4" fill="none" stroke="currentColor" stroke-width="1.3"/>
+    <path d="M7.6 12.3l3 3 5.8-6.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="Dawson Wang · AI 導入顧問，回到頁首">
+      <span class="brand-name">Dawson Wang</span>
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-sub">AI 導入顧問</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+      <span class="bars" aria-hidden="true"></span>選單
+    </button>
+    <nav class="nav-links" id="nav-links" aria-label="主選單">
+      <a href="#services">服務內容</a>
+      <a href="#cases">客戶案例</a>
+      <a href="#training">企業內訓</a>
+      <a href="#process">合作流程</a>
+      <a href="https://dawsonwang.com/days">實作文章</a>
+      <a class="btn btn-gold btn-sm" href="#inquire">預約諮詢 <span class="arr" aria-hidden="true">→</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <!-- ── Hero ──────────────────────────────────────────────────────── -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="kicker">中小企業 AI 導入顧問 · 企業內訓講師</p>
+        <h1 id="hero-title">
+          <span class="line">把雜事交給 AI，</span>
+          <span class="line"><span class="u">把時間留給客戶</span>。</span>
+        </h1>
+        <p class="hero-sub"><span class="nw">每天在 LINE、Excel、Email</span> <span class="nw">之間重複做的事，</span><span class="nw">我幫你找出</span><span class="nw">哪些能交給 AI，</span><span class="nw">再陪團隊</span><span class="nw">一路用到上手。</span></p>
+        <div class="hero-ctas">
+          <a class="btn btn-gold" href="#inquire">預約 30 分鐘諮詢 <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-line-light" href="#cases">先看客戶案例 <span class="arr arr-down" aria-hidden="true">↓</span></a>
+        </div>
+        <p class="hero-note">填表後 1–2 個工作日內回覆</p>
+      </div>
+
+      <aside class="advisor" aria-label="負責顧問">
+        <p class="advisor-label">負責顧問</p>
+        <div class="advisor-top">
+          <figure class="portrait">
+            <img src="assets/dawson.webp" alt="Dawson Wang 正式形象照" width="640" height="800">
+          </figure>
+          <div>
+            <p class="advisor-name">Dawson Wang</p>
+            <p class="advisor-title">AI 導入顧問</p>
+            <p class="advisor-meta">中小企業 AI 導入<br>企業內訓講師</p>
+          </div>
+        </div>
+        <ul class="creds">
+          <li>
+            <svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg>
+            <span><strong>iPAS AI 應用規劃師（中級）</strong><small>經濟部產業發展署發證</small></span>
+          </li>
+          <li>
+            <svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg>
+            <span><strong>9 年新創軟體開發經驗</strong></span>
+          </li>
+          <li>
+            <svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg>
+            <span><strong>醫院與學校內訓講師</strong></span>
+          </li>
+          <li>
+            <svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg>
+            <span><strong>已協助旅遊業把 AI 接進日常業務</strong></span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="stats-wrap" aria-label="重點數字">
+    <div class="wrap">
+      <dl class="stats" data-observe>
+        <div class="stat">
+          <dt>每天公開一篇 AI 實作</dt>
+          <dd><span class="num" data-count="267">267</span><span class="unit">天</span></dd>
+        </div>
+        <div class="stat">
+          <dt>醫院與學校內訓</dt>
+          <dd><span class="num" data-count="9">9</span><span class="unit">場</span></dd>
+        </div>
+        <div class="stat">
+          <dt>累積學員</dt>
+          <dd><span class="num" data-count="250" data-suffix="+">250+</span><span class="unit">人次</span></dd>
+        </div>
+        <div class="stat">
+          <dt><span class="nw">近兩場課後</span><span class="nw">匿名問卷平均</span><small>共 33 份</small></dt>
+          <dd><span class="num" data-count="4.82" data-decimals="2">4.82</span><span class="unit-lat">/ 5</span></dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ── Venues ────────────────────────────────────────────────────── -->
+  <section class="venues" aria-labelledby="venues-title">
+    <div class="wrap" data-reveal>
+      <h2 class="venues-title" id="venues-title">曾受邀授課的單位</h2>
+      <ul class="venues-list">
+        <li>奇美醫院總院</li>
+        <li>柳營奇美醫院</li>
+        <li>佳里奇美醫院</li>
+        <li>部立臺南醫院</li>
+        <li>臺南新樓醫院</li>
+        <li>高雄市立中正高工</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Pain points ───────────────────────────────────────────────── -->
+  <section class="sec sec-off" aria-labelledby="pains-title">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-num">01</span>常見狀況</p>
+        <h2 id="pains-title"><span class="nw">這些狀況，</span><span class="nw">你公司是不是也有？</span></h2>
+      </header>
+
+      <ol class="pain-grid">
+        <li class="pain" data-reveal style="--d:0">
+          <span class="pain-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 10h22a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H17l-6 5v-5H8a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z"/>
+              <path d="M37 17h3a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2v5l-6-5h-9a3 3 0 0 1-3-3v-1"/>
+              <path d="M11 16.5h14M11 21h9"/>
+            </svg>
+          </span>
+          <span class="pain-no">01</span>
+          <p><span class="nw">客戶需求、</span><span class="nw">改來改去的細節，</span><span class="nw">全散在 LINE 群組裡，</span><span class="nw">要回頭找得翻半天。</span></p>
+        </li>
+        <li class="pain" data-reveal style="--d:1">
+          <span class="pain-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="7" width="14" height="11" rx="1.5"/>
+              <rect x="29" y="7" width="14" height="11" rx="1.5"/>
+              <rect x="5" y="30" width="14" height="11" rx="1.5"/>
+              <rect x="29" y="30" width="14" height="11" rx="1.5"/>
+              <path d="M19 12.5h10M12 18v12M36 18v12M19 35.5h10" stroke-dasharray="2 3"/>
+            </svg>
+          </span>
+          <span class="pain-no">02</span>
+          <p><span class="nw">同一個案子分散在</span> <span class="nw">Excel、LINE、Email、</span><span class="nw">雲端檔案，</span><span class="nw">資料一直複製貼上。</span></p>
+        </li>
+        <li class="pain" data-reveal style="--d:2">
+          <span class="pain-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 6h15l8 8v24a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>
+              <path d="M30 6v8h8"/>
+              <path d="M9 12v29a2 2 0 0 0 2 2h21"/>
+              <path d="M18 21h14M18 26h14M18 31h9"/>
+            </svg>
+          </span>
+          <span class="pain-no">03</span>
+          <p><span class="nw">SOP、規範一改版</span><span class="nw">就是一大疊，</span><span class="nw">員工看不完，</span><span class="nw">要用的時候又找不到。</span></p>
+        </li>
+        <li class="pain" data-reveal style="--d:3">
+          <span class="pain-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 33a17 17 0 0 1 34 0"/>
+              <path d="M24 33l-9-8"/>
+              <circle cx="24" cy="33" r="2.2"/>
+              <path d="M11.5 22.5l2 1.6M24 16v2.5M36.5 22.5l-2 1.6"/>
+              <path d="M9 40h30"/>
+            </svg>
+          </span>
+          <span class="pain-no">04</span>
+          <p><span class="nw">公司買了 AI 帳號，</span><span class="nw">大家卻只拿來翻譯、改錯字。</span></p>
+        </li>
+      </ol>
+
+      <div class="pain-close" data-reveal>
+        <p><strong>不用砍掉重練。</strong><span class="nw">把 AI 接進你原本就在做的流程，</span><span class="nw">從最花時間的那件雜事開始。</span></p>
+        <a class="btn btn-gold" href="#inquire">預約 30 分鐘諮詢 <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Cases ─────────────────────────────────────────────────────── -->
+  <section class="sec" id="cases" aria-labelledby="cases-title">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-num">02</span>客戶案例</p>
+        <h2 id="cases-title"><span class="nw">他們本來卡在哪裡，</span><span class="nw">後來怎麼動起來。</span></h2>
+      </header>
+
+      <div class="cases">
+        <article class="case" data-reveal>
+          <div class="case-head">
+            <p class="case-label">案例報告</p>
+            <p class="case-no">Case<b>01</b></p>
+            <h3><span class="nw">把厚厚的 SOP，</span><span class="nw">變成看診時查得到的決策樹</span></h3>
+            <a class="link-arrow" href="https://dawsonwang.com/day/96">看完整案例 <span aria-hidden="true">→</span></a>
+          </div>
+          <dl class="case-rows">
+            <div><dt>類別</dt><dd>醫療</dd></div>
+            <div><dt>客戶</dt><dd>診所主治醫師</dd></div>
+            <div><dt>挑戰</dt><dd><span class="nw">每位病人只有 2–3 分鐘，</span><span class="nw">療程選項卻很複雜；</span><span class="nw">國際 SOP 每 3 個月更新一次，</span><span class="nw">看完一版又出兩版。</span></dd></div>
+            <div class="is-key"><dt>解決方式</dt><dd><span class="nw">把 PDF 版的 SOP</span> <span class="nw">拆成可以直接查詢的決策樹，</span><span class="nw">看診時能當場帶病人</span><span class="nw">看懂有哪些選項。</span></dd></div>
+          </dl>
+        </article>
+
+        <article class="case" data-reveal>
+          <div class="case-head">
+            <p class="case-label">案例報告</p>
+            <p class="case-no">Case<b>02</b></p>
+            <h3><span class="nw">一個案子橫跨 5 個工具，</span><span class="nw">重新設計整條流程</span></h3>
+            <a class="link-arrow" href="https://dawsonwang.com/day/99">看完整案例 <span aria-hidden="true">→</span></a>
+          </div>
+          <dl class="case-rows">
+            <div><dt>類別</dt><dd>行銷 · KOL 經紀</dd></div>
+            <div><dt>客戶</dt><dd>科技大廠的 KOL 合作社群經理</dd></div>
+            <div><dt>挑戰</dt><dd><span class="nw">預算在試算表、</span><span class="nw">跟代理商用 LINE 溝通，</span><span class="nw">再加上 Email、檔案來回傳、</span><span class="nw">社群平台發文——</span><span class="nw">一個案子橫跨 5 個以上的工具。</span></dd></div>
+            <div class="is-key"><dt>解決方式</dt><dd><span class="nw">找出「會用 AI」跟「用得好」</span><span class="nw">之間的落差，</span><span class="nw">重新設計整條工作流程。</span></dd></div>
+          </dl>
+        </article>
+
+        <article class="case" data-reveal>
+          <div class="case-head">
+            <p class="case-label">案例報告</p>
+            <p class="case-no">Case<b>03</b></p>
+            <h3><span class="nw">讓 AI 直接讀 LINE 對話，</span><span class="nw">不用再自己慢慢翻</span></h3>
+            <a class="link-arrow" href="https://dawsonwang.com/day/98">看完整案例 <span aria-hidden="true">→</span></a>
+          </div>
+          <dl class="case-rows">
+            <div><dt>類別</dt><dd>用 LINE 管工作的團隊</dd></div>
+            <div><dt>客戶</dt><dd>把工作群開在 LINE 的老闆、PM</dd></div>
+            <div><dt>挑戰</dt><dd><span class="nw">對話散在各個群組和私訊，</span><span class="nw">每次要回顧某一段，</span><span class="nw">都得自己慢慢往上翻。</span></dd></div>
+            <div class="is-key"><dt>解決方式</dt><dd><span class="nw">讓 AI 直接讀取電腦裡的</span> <span class="nw">LINE 對話幫你整理——</span><span class="nw">不用申請 API，</span><span class="nw">也不用開發者帳號。</span></dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Services ──────────────────────────────────────────────────── -->
+  <section class="sec sec-off" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-num">03</span>服務內容</p>
+        <h2 id="services-title"><span class="nw">三種合作方式，</span><span class="nw">看你想走多深。</span></h2>
+        <p class="sec-sub"><span class="nw">每個方案的成果都交到你們手上，</span><span class="nw">沒有黑盒子，</span><span class="nw">看得到、驗收得了。</span></p>
+      </header>
+
+      <div class="tiers">
+        <article class="tier tier-primary" data-reveal style="--d:0">
+          <p class="tier-tag">主推方案</p>
+          <p class="tier-no">方案<b>01</b></p>
+          <h3>AI 導入落地</h3>
+          <p class="tier-lede"><span class="nw">從試做、上線，</span><span class="nw">到交接給你的團隊。</span></p>
+          <ul class="tier-list">
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">把散在 LINE、Email、Excel 的</span><span class="nw">流程串起來</span></span></li>
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">把 PDF、SOP、手冊變成</span><span class="nw">查得到答案的資料</span></span></li>
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">幫團隊設定好專屬的 AI 工具</span><span class="nw">和自動化流程</span></span></li>
+          </ul>
+          <div class="tier-foot">
+            <p class="tier-price"><span>費用</span>預約討論後報價</p>
+            <a class="btn btn-gold" href="#inquire">聊聊合作 <span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article class="tier" data-reveal style="--d:1">
+          <p class="tier-no">方案<b>02</b></p>
+          <h3>團隊培訓</h3>
+          <p class="tier-lede">幫團隊養成持續使用 AI 的習慣。</p>
+          <ul class="tier-list">
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">團隊工作坊</span><span class="nw">（半天／一天）</span></span></li>
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">1 對 1 教練</span><span class="nw">（從個人工具出發）</span></span></li>
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">長期顧問陪跑</span><span class="nw">（每週同步）</span></span></li>
+          </ul>
+          <div class="tier-foot">
+            <p class="tier-price"><span>費用</span>預約討論後報價</p>
+            <a class="btn btn-line" href="#inquire">了解培訓 <span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article class="tier" data-reveal style="--d:2">
+          <p class="tier-no">方案<b>03</b></p>
+          <h3>演講／顧問諮詢</h3>
+          <p class="tier-lede">受邀演講、企業內訓、單次諮詢。</p>
+          <ul class="tier-list">
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">企業內訓</span><span class="nw">（AI 工作流現況／導入路線圖）</span></span></li>
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">線上活動／</span><span class="nw">Podcast 受訪</span></span></li>
+            <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span>1 小時單次諮詢</span></li>
+          </ul>
+          <div class="tier-foot">
+            <p class="tier-price"><span>費用</span>預約討論後報價</p>
+            <a class="btn btn-line" href="#inquire">邀請演講 <span class="arr" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Training ──────────────────────────────────────────────────── -->
+  <section class="sec" id="training" aria-labelledby="training-title">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-num">04</span>企業內訓實績</p>
+        <h2 id="training-title"><span class="nw">聽完覺得有收穫不算，</span><span class="nw">要帶著成品離開教室。</span></h2>
+        <p class="sec-sub"><span class="nw">課程以實作為主。</span><span class="nw">實作時間我會走到每個人座位旁，</span><span class="nw">一個一個確認進度——</span><span class="nw">很多卡點，</span><span class="nw">只有看到操作畫面才說得清楚。</span></p>
+      </header>
+
+      <div class="train-photos">
+        <figure class="photo" data-reveal style="--d:0">
+          <div class="photo-frame">
+            <img src="assets/speaking/ccvs-2026-helping.webp" alt="Dawson Wang 站在中正高工電腦教室一位老師的座位旁，協助她完成 AI 實作" width="1600" height="1200">
+          </div>
+          <figcaption>高雄市立中正高工 · 走到座位旁協助實作</figcaption>
+        </figure>
+        <figure class="photo" data-reveal style="--d:1">
+          <div class="photo-frame">
+            <img src="assets/speaking/qimei-main-0627-02.webp" alt="奇美醫院總院講堂內，Dawson Wang 面對多排醫事人員講解 AI 工具演進" width="1477" height="1108">
+          </div>
+          <figcaption>奇美醫院總院 · 講解 AI 工具演進</figcaption>
+        </figure>
+      </div>
+
+      <p class="train-scale" data-reveal><span>9 場授課</span><span>6 個單位</span><span>250+ 人次</span><span>醫療與教育</span></p>
+
+      <div class="survey" data-reveal>
+        <div class="survey-head">
+          <h3>兩場匿名課後問卷</h3>
+          <p class="survey-meta"><span>2026 年 9 月</span><span>佳里奇美、柳營奇美</span><span>共 33 份</span></p>
+        </div>
+        <dl class="survey-stats">
+          <div class="sv">
+            <dt>平均評分</dt>
+            <dd><span class="big">4.82</span><span class="of">/ 5</span><span class="bar" aria-hidden="true"><i style="--p:96.4%"></i></span></dd>
+          </div>
+          <div class="sv">
+            <dt>完成六步實作</dt>
+            <dd><span class="big">29</span><span class="of">/ 33</span><span class="bar" aria-hidden="true"><i style="--p:87.9%"></i></span></dd>
+          </div>
+          <div class="sv">
+            <dt>會或應該會用在工作上</dt>
+            <dd><span class="big">31</span><span class="of">/ 33</span><span class="bar" aria-hidden="true"><i style="--p:93.9%"></i></span></dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="quotes">
+        <figure class="quote" data-reveal style="--d:0">
+          <blockquote><p><span class="nw">感謝講師細心的指導</span> <span class="nw">我聽得懂</span> <span class="nw">也做得出來</span> <span class="nw">超讚的</span></p></blockquote>
+          <figcaption>專業群科教師 · 中正高工</figcaption>
+        </figure>
+        <figure class="quote" data-reveal style="--d:1">
+          <blockquote><p><span class="nw">教學準備充足，</span><span class="nw">能從學生的角度思考其需求，</span><span class="nw">讚！</span></p></blockquote>
+          <figcaption>語文／社會科教師 · 中正高工</figcaption>
+        </figure>
+        <figure class="quote" data-reveal style="--d:2">
+          <blockquote><p><span class="nw">對ai的認識有更系統化的理解，</span><span class="nw">除了教導大家做出成品，</span><span class="nw">還具體説明是如何做出來，</span><span class="nw">這部份講解的很清楚。</span></p></blockquote>
+          <figcaption>數學／自然科教師 · 中正高工</figcaption>
+        </figure>
+      </div>
+
+      <div class="train-ctas" data-reveal>
+        <a class="btn btn-navy" href="#inquire">邀請到公司內訓 <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn btn-line" href="https://dawsonwang.com/speaking">看所有授課場次 <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Process ───────────────────────────────────────────────────── -->
+  <section class="sec sec-off" id="process" aria-labelledby="process-title">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-num">05</span>合作流程</p>
+        <h2 id="process-title">合作怎麼開始？</h2>
+      </header>
+
+      <ol class="timeline" data-observe>
+        <li class="step" style="--d:0">
+          <span class="step-dot" aria-hidden="true">1</span>
+          <h3>填表</h3>
+          <p>告訴我你想用 AI 解決什麼。</p>
+        </li>
+        <li class="step" style="--d:1">
+          <span class="step-dot" aria-hidden="true">2</span>
+          <h3>1–2 個工作日內回覆</h3>
+          <p><span class="nw">合適會附上預約連結，</span><span class="nw">不合適也會直接說。</span></p>
+        </li>
+        <li class="step" style="--d:2">
+          <span class="step-dot" aria-hidden="true">3</span>
+          <h3>30 分鐘聊聊</h3>
+          <p><span class="nw">了解你的團隊，</span><span class="nw">和最花時間的那件事。</span></p>
+        </li>
+        <li class="step" style="--d:3">
+          <span class="step-dot" aria-hidden="true">4</span>
+          <h3>第二輪對話後報價</h3>
+          <p><span class="nw">先把範圍談清楚，</span><span class="nw">再談價格。</span></p>
+        </li>
+      </ol>
+
+      <ul class="promises" data-reveal>
+        <li><svg class="ck" width="24" height="24" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">沒有電子報，</span><span class="nw">不會自動把你加進群組</span></span></li>
+        <li><svg class="ck" width="24" height="24" aria-hidden="true"><use href="#i-check"/></svg><span>所有對話內容保密</span></li>
+        <li><svg class="ck" width="24" height="24" aria-hidden="true"><use href="#i-check"/></svg><span>報價在第二輪對話後才給</span></li>
+      </ul>
+
+      <div class="process-cta" data-reveal>
+        <a class="btn btn-navy" href="#inquire">預約 30 分鐘諮詢 <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ───────────────────────────────────────────────────────── -->
+  <section class="sec" id="faq" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-num">06</span>常見問題</p>
+        <h2 id="faq-title"><span class="nw">合作前，</span><span class="nw">你可能想先問的事。</span></h2>
+      </header>
+
+      <div class="faq-list" data-reveal>
+        <details class="faq-item" open>
+          <summary><span class="faq-q"><b>Q1</b><span><span class="nw">我們公司沒有工程師，</span><span class="nw">也能導入嗎？</span></span></span><span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-a"><p><span class="nw">可以。</span><span class="nw">醫院課程的學員多數不是工程背景；</span><span class="nw">中正高工的課也不預設</span><span class="nw">任何一門專業知識。</span><span class="nw">重點是從你們每天在做的事開始。</span></p></div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="faq-q"><b>Q2</b><span>要換掉現在用的系統嗎？</span></span><span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-a"><p><span class="nw">不用砍掉重練。</span><span class="nw">我做的是把 AI 接進</span><span class="nw">你原本就在做的那條流程。</span></p></div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="faq-q"><b>Q3</b><span>費用怎麼算？</span></span><span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-a"><p><span class="nw">看範圍而定。</span><span class="nw">第一次先了解狀況，</span><span class="nw">第二輪對話後才報價；</span><span class="nw">表單上的預算量級</span><span class="nw">只是幫我抓方向。</span></p></div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="faq-q"><b>Q4</b><span>公司資料交給 AI 安全嗎？</span></span><span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-a"><p><span class="nw">所有諮詢對話都會保密。</span><span class="nw">課程裡也會教資安意識——</span><span class="nw">工具教了，</span><span class="nw">煞車要在同一堂課教完。</span></p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Inquiry ───────────────────────────────────────────────────── -->
+  <section class="inquire" id="inquire" aria-labelledby="inquire-title">
+    <div class="wrap inquire-grid">
+      <div class="inquire-copy" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-num">07</span>預約諮詢</p>
+        <h2 id="inquire-title"><span class="nw">告訴我，</span><span class="nw">你想用 AI 解決什麼。</span></h2>
+        <p class="inquire-sub"><span class="nw">填表後 1–2 個工作日內回覆。</span><span class="nw">合適會附上預約連結；</span><span class="nw">不合適會直接說。</span></p>
+        <div class="reply">
+          <span class="reply-num">1–2</span>
+          <span class="reply-txt">個工作日內<br>回覆你的需求</span>
+        </div>
+        <ul class="assure">
+          <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span><span class="nw">沒有電子報，</span><span class="nw">不會自動把你加進群組</span></span></li>
+          <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span>所有對話內容保密</span></li>
+          <li><svg class="ck" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg><span>報價在第二輪對話後才給</span></li>
+        </ul>
+        <p class="proof">最近諮詢的客戶來自<strong>旅遊 · 醫療 · KOL 經紀 · 自媒體</strong></p>
+      </div>
+
+      <form class="form" id="inquiry-form" action="#" method="post" data-reveal style="--d:1">
+        <p class="form-title">預約諮詢表單<span>以下欄位皆為必填</span></p>
+
+        <div class="field">
+          <label for="f-name">姓名<span class="req">必填</span></label>
+          <input id="f-name" name="name" type="text" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="f-email">Email<span class="req">必填</span></label>
+          <input id="f-email" name="email" type="email" required autocomplete="email" inputmode="email">
+        </div>
+        <div class="field">
+          <label for="f-company">公司 / 組織<span class="req">必填</span></label>
+          <input id="f-company" name="company" type="text" required maxlength="150" autocomplete="organization">
+        </div>
+        <div class="field">
+          <label for="f-goal">想用 AI 做什麼？<span class="req">必填</span></label>
+          <textarea id="f-goal" name="goal" rows="4" maxlength="300" required placeholder="例如：每天要從 LINE 群組整理客戶需求，很花時間⋯"></textarea>
+          <p class="hint"><span id="goal-count">0</span> / 300 字</p>
+        </div>
+
+        <fieldset class="field">
+          <legend>團隊規模<span class="req">必填</span></legend>
+          <div class="chips" style="--cols:4">
+            <label class="chip"><input type="radio" name="team_size" value="1-5" required><span>1–5</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="6-30"><span>6–30</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="31-100"><span>31–100</span></label>
+            <label class="chip"><input type="radio" name="team_size" value="100+"><span>100+</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field">
+          <legend>預算量級（新台幣）<span class="req">必填</span></legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="budget" value="lt100k" required><span>10 萬以下</span></label>
+            <label class="chip"><input type="radio" name="budget" value="100k-300k"><span>10–30 萬</span></label>
+            <label class="chip"><input type="radio" name="budget" value="300k-800k"><span>30–80 萬</span></label>
+            <label class="chip"><input type="radio" name="budget" value="gt800k"><span>80 萬以上</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field">
+          <legend>時程<span class="req">必填</span></legend>
+          <div class="chips" style="--cols:3">
+            <label class="chip"><input type="radio" name="timeline" value="this_month" required><span>本月內</span></label>
+            <label class="chip"><input type="radio" name="timeline" value="this_quarter"><span>本季</span></label>
+            <label class="chip"><input type="radio" name="timeline" value="exploring"><span>只是先了解</span></label>
+          </div>
+        </fieldset>
+
+        <button class="btn btn-navy btn-block" type="submit">送出 <span class="arr" aria-hidden="true">→</span></button>
+        <p class="form-msg" id="form-msg" role="status" tabindex="-1" hidden>這是設計預覽，表單不會真的送出。</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="footer-brand">Dawson Wang</p>
+      <p class="footer-title">AI 導入顧問</p>
+    </div>
+    <nav aria-label="頁尾連結">
+      <ul class="footer-links">
+        <li><a href="#services">服務內容</a></li>
+        <li><a href="#cases">客戶案例</a></li>
+        <li><a href="#training">企業內訓</a></li>
+        <li><a href="https://dawsonwang.com/days">實作文章</a></li>
+        <li><a href="https://dawsonwang.com/privacy.html">隱私權政策</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap">
+    <p class="footer-bottom">© 2026 Dawson Wang</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Mobile menu
+    var toggle = document.querySelector('.nav-toggle');
+    var menu = document.getElementById('nav-links');
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('is-open', open);
+    }
+    toggle.addEventListener('click', function () { setOpen(toggle.getAttribute('aria-expanded') !== 'true'); });
+    menu.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
+    });
+
+    // Count the hero stats up once they're on screen (they keep their final
+    // text in the HTML, so no-JS and reduced-motion visitors see real numbers).
+    function countUp(el, delay) {
+      if (reduce || el.dataset.done) return;
+      el.dataset.done = '1';
+      var finalText = el.textContent;
+      var target = parseFloat(el.dataset.count);
+      var dec = parseInt(el.dataset.decimals || '0', 10);
+      var suffix = el.dataset.suffix || '';
+      el.textContent = (0).toFixed(dec) + suffix;
+      setTimeout(function () {
+        var start = performance.now();
+        function frame(now) {
+          var p = Math.min(1, (now - start) / 1500);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = p < 1 ? (target * eased).toFixed(dec) + suffix : finalText;
+          if (p < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }, delay);
+    }
+
+    var targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal], [data-observe]'));
+    function reveal(el) {
+      el.classList.add('is-in');
+      el.querySelectorAll('.num[data-count]').forEach(function (n) { countUp(n, 650); });
+    }
+    if (reduce || !('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-in'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { reveal(entry.target); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      targets.forEach(function (el) { io.observe(el); });
+    }
+
+    // Character counter for the goal field
+    var goal = document.getElementById('f-goal');
+    var count = document.getElementById('goal-count');
+    goal.addEventListener('input', function () { count.textContent = goal.value.length; });
+
+    // Design preview: never actually submit
+    var form = document.getElementById('inquiry-form');
+    var msg = document.getElementById('form-msg');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      msg.hidden = false;
+      msg.focus();
+    });
+  })();
+</script>
+<script src="_switcher.js" defer></script>
+</body>
+</html>
