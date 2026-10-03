@@ -486,7 +486,7 @@ if (!existsSync(outDir)) {
   assertLocaleStack(speaking, '/speaking');
   assertNonArticleSharedLayoutContract(speaking, '/speaking', '/speaking');
   assertDescriptionStack(speaking, '/speaking');
-  assertIncludes(speaking, `<meta property="og:image" content="${siteUrl}/speaking/ccvs-teaching.webp"`, '/speaking og:image WebP');
+  assertIncludes(speaking, `<meta property="og:image" content="${siteUrl}/speaking/ccvs-2026-helping.webp"`, '/speaking og:image WebP');
   assertIncludes(speaking, '<meta property="og:image:width" content="1600"', '/speaking og:image:width');
   assertIncludes(speaking, '<meta property="og:image:height" content="1200"', '/speaking og:image:height');
   assertIncludes(speaking, 'id="lecture-sessions"', '/speaking per-lecture photo records');
@@ -509,7 +509,7 @@ if (!existsSync(outDir)) {
   const speakingWebpImages = Array.from(speaking.matchAll(/<img[^>]+src="(\/speaking\/[^"]+\.webp)"[^>]*>/g));
   const lecturePhotoFigures = speaking.match(/<figure class="sp-shot"[^>]*>/g) ?? [];
   if (lecturePhotoFigures.length !== 18) fail(`/speaking renders ${lecturePhotoFigures.length} lecture photo figures instead of 18`);
-  assertIncludes(speaking, '<img src="/speaking/ccvs-teaching.webp"', '/speaking hero photo');
+  assertIncludes(speaking, '<img src="/speaking/ccvs-2026-helping.webp"', '/speaking hero photo');
   for (const match of speakingWebpImages) {
     const imageTag = match[0];
     const imageSrc = match[1] ?? 'unknown';
@@ -520,7 +520,7 @@ if (!existsSync(outDir)) {
   const speakingJsonLd = extractJsonLdScript(speaking, '/speaking');
   assertRootEntityGraph(speakingJsonLd, '/speaking');
   assertJsonLdInLanguage(speakingJsonLd, 'ProfilePage', '/speaking');
-  assertMatch(speakingJsonLd, /"@type":"ProfilePage"[\s\S]*?"primaryImageOfPage":"https:\/\/dawsonwang\.com\/speaking\/ccvs-teaching\.webp"/, '/speaking ProfilePage primary image WebP');
+  assertMatch(speakingJsonLd, /"@type":"ProfilePage"[\s\S]*?"primaryImageOfPage":"https:\/\/dawsonwang\.com\/speaking\/ccvs-2026-helping\.webp"/, '/speaking ProfilePage primary image WebP');
   assertMatch(speakingJsonLd, /"@type":"Event"[\s\S]*?"startDate":"2026-08-04"/, '/speaking Event startDate preserved');
   assertIncludes(speakingJsonLd, `"@id":"${siteUrl}/speaking#breadcrumb"`, '/speaking BreadcrumbList @id');
   assertMatch(speakingJsonLd, new RegExp(`"@type":"ProfilePage"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/speaking#breadcrumb"\\}`), '/speaking ProfilePage breadcrumb → #breadcrumb graph link');
