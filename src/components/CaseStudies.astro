@@ -13,7 +13,6 @@ for (const entry of CASE_STUDIES) {
   }
 }
 const featured = CASE_STUDIES.filter(entry => entry.featured);
-const more = CASE_STUDIES.filter(entry => !entry.featured);
 ---
 <section class="sec" id="cases" aria-labelledby="cases-title">
   <div class="wrap">
@@ -25,12 +24,9 @@ const more = CASE_STUDIES.filter(entry => !entry.featured);
     <div class="case-grid">
       {featured.map((entry, index) => <CaseStudyCard entry={entry} index={index} />)}
     </div>
-    <details class="cases-more">
-      <summary>再看 {more.length} 個案例 <span aria-hidden="true">＋</span></summary>
-      <div class="case-grid">
-        {more.map((entry, index) => <CaseStudyCard entry={entry} index={index} />)}
-      </div>
-    </details>
+    <div class="cases-more">
+      <a class="btn btn-soft" href="/cases">看全部 {CASE_STUDIES.length} 個案例 <span aria-hidden="true">→</span></a>
+    </div>
     <div class="cases-footer">
       <a class="text-link" href="/days">看全部 {days.length} 篇實作 <span aria-hidden="true">→</span></a>
       <a class="text-link" href="/search">找我寫過的主題 <span aria-hidden="true">→</span></a>
@@ -39,11 +35,6 @@ const more = CASE_STUDIES.filter(entry => !entry.featured);
 </section>
 
 <style>
-  .cases-more { margin-top: 34px; }
-  .cases-more summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 420px; margin-inline: auto; padding: 16px 24px; border: 2px solid var(--rule); border-radius: 20px; background: var(--paper); color: var(--persimmon-text); font-weight: 700; cursor: pointer; list-style: none; }
-  .cases-more summary::-webkit-details-marker { display: none; }
-  .cases-more summary span { font-size: 1.4rem; }
-  .cases-more[open] summary span { transform: rotate(45deg); }
-  .cases-more .case-grid { margin-top: 28px; }
+  .cases-more { margin-top: 34px; text-align: center; }
   .cases-footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 34px; }
 </style>

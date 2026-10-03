@@ -8,6 +8,12 @@ interface Props {
 const { entry, index } = Astro.props;
 ---
 <article class="case reveal" id={`case-${entry.slug}`} data-reveal style={`--i:${index % 3}`}>
+  <figure class="case-visual">
+    <a href={`/day/${entry.dayNumber}`} class="case-image-link" aria-label={`${entry.headline}：看完整分享`}>
+      <img src={entry.image.src} alt={entry.image.alt} width={entry.image.width} height={entry.image.height} loading="lazy" decoding="async" style={entry.image.position ? `object-position:${entry.image.position}` : undefined} />
+    </a>
+    <figcaption>{entry.image.caption}</figcaption>
+  </figure>
   <p class="case-tag"><svg class="icon" aria-hidden="true"><use href={`#${entry.icon}`}/></svg>{entry.category}</p>
   <h3>{entry.headline}</h3>
   <p class="case-who"><span>適合</span>{entry.audience}</p>
@@ -30,6 +36,10 @@ const { entry, index } = Astro.props;
 
 <style>
   .case { min-width: 0; scroll-margin-top: 110px; }
+  .case-visual { margin: -14px -12px 18px; }
+  .case-image-link { display: block; border-radius: 18px; overflow: hidden; background: var(--cream); border: 1px solid var(--rule); }
+  .case-visual img { display: block; width: 100%; height: auto; aspect-ratio: 20 / 13; object-fit: cover; }
+  .case-visual figcaption { margin-top: 6px; text-align: right; font-size: .76rem; line-height: 1.5; color: var(--muted); }
   .case-note { margin-top: 14px; font-size: .92rem; line-height: 1.7; color: var(--muted); }
   .case-links { display: grid; gap: 10px; margin-top: auto; padding-top: 20px; }
   .case-related { color: var(--muted); font-size: .88rem; line-height: 1.7; }

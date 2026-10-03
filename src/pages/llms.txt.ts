@@ -15,6 +15,7 @@ export async function GET() {
     '',
     '## Core pages',
     `- [Home](${SITE_URL}/): AI 工具落地服務、作品證明、預約諮詢`,
+    `- [Case collection](${SITE_URL}/cases): practical AI examples with illustrations, results, limits, article links, and live demos`,
     `- [Projects](${SITE_URL}/projects): portfolio — side projects built during the Day 1–${latest[0]?.data.dayNumber ?? days.length} build log (MCP servers, Claude Code plugins, a macOS driver, automation bots, web apps, most with public source) plus the public-record reach charts`,
     `- [Speaking](${SITE_URL}/speaking): AI lecturer profile — hospital staff training, vocational high school teacher workshops, and Ministry of Health-supported AI courses, with public slide decks`,
     `- [Business registration guide](${SITE_URL}/business-registration): Taiwan sole proprietorship setup timeline with sanitized field notes, costs, lead times, tax obligations, and common pitfalls`,

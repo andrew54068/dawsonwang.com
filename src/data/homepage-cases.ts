@@ -13,12 +13,14 @@ export interface CaseStudy {
   note?: string;
   demoHref?: string;
   demoLabel?: string;
+  image: { src: string; alt: string; width: number; height: number; caption: string; position?: string };
   featured: boolean;
 }
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: 'mac-card-reader',
+    image: {"src":"/cases/mac-card-reader.svg","alt":"Mac 與讀卡機相連，螢幕顯示讀得到的勾號。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 183,
     relatedDays: [184],
     category: '日常疑難排解',
@@ -33,6 +35,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'ipas-quiz',
+    image: {"src":"/cases/ipas-quiz.svg","alt":"題庫作答介面與解析筆記，示意刷題後回頭補知識。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 162,
     relatedDays: [134],
     category: '學習與考試',
@@ -48,6 +51,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'subsidy-finder',
+    image: {"src":"/cases/subsidy-finder.svg","alt":"輸入條件後，結果分成可申請、待確認與不符合三類。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 225,
     category: '資訊查詢',
     icon: 'i-files',
@@ -62,6 +66,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'line-project-context',
+    image: {"src":"/cases/line-project-context.svg","alt":"兩段 LINE 對話整理成同一份可核對的需求清單。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 175,
     relatedDays: [98, 172],
     category: '工作對話整理',
@@ -77,6 +82,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'headshot-vote',
+    image: {"src":"/cases/headshot-vote.webp","alt":"第一輪形象照票選頁：五張照片並排，可逐張留下意見。","width":1200,"height":1356,"caption":"第一輪照片票選畫面","position":"50% 85%"},
     dayNumber: 255,
     relatedDays: [271],
     category: '生活小工具',
@@ -91,6 +97,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'invoice-assistant',
+    image: {"src":"/cases/invoice-assistant.svg","alt":"AI 填寫發票資料，再交由本人確認後開立。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 257,
     relatedDays: [256],
     category: '行政工作自動化',
@@ -102,7 +109,24 @@ export const CASE_STUDIES: CaseStudy[] = [
     featured: true,
   },
   {
+    slug: 'social-publishing',
+    image: { src: '/cases/social-publishing.svg', alt: '一份原稿經本人確認後，發布成 Threads、Facebook、LinkedIn 三份平台內容。', width: 800, height: 520, caption: '流程示意' },
+    dayNumber: 226,
+    relatedDays: [208, 143],
+    category: '社群內容工作流',
+    icon: 'i-mega',
+    headline: '寫一次文章，確認後發到三個社群平台',
+    audience: '創作者、店家與公司小編',
+    pain: '文章寫完，還要每天重複複製貼上到 Threads、Facebook、LinkedIn，逐份檢查內容與格式。',
+    outcome: '把自己的發文流程整理成開源工具：一份原稿產出三份平台草稿，對照原稿、校對，再由我看過後發布。',
+    note: '預設只驗證與預覽，發布前需要人工確認；在別人的機器上仍可能需要調整設定。',
+    demoHref: 'https://github.com/dawson54068/social-publish-kit',
+    demoLabel: '看開源發文流程',
+    featured: false,
+  },
+  {
     slug: 'personal-knowledge',
+    image: {"src":"/cases/personal-knowledge.svg","alt":"多份筆記透過搜尋，找回與當前問題相關的經驗。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 105,
     relatedDays: [71, 180],
     category: '個人知識管理',
@@ -115,6 +139,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'speech-to-text',
+    image: {"src":"/cases/speech-to-text.svg","alt":"同一段錄音交給六個模型，對照各自的辨識結果。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 269,
     relatedDays: [159, 230, 275],
     category: '錄音與逐字稿',
@@ -128,6 +153,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'event-calendar',
+    image: {"src":"/cases/event-calendar.svg","alt":"從活動公告抽出名稱、時間與地點，確認後加進日曆。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 194,
     category: '日程整理',
     icon: 'i-quiz',
@@ -140,6 +166,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'interactive-quote',
+    image: {"src":"/cases/interactive-quote.svg","alt":"勾選報價項目，右側依選擇加總並排出工期。","width":800,"height":520,"caption":"流程示意"},
     dayNumber: 254,
     category: '業務溝通',
     icon: 'i-files',
@@ -151,6 +178,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'recording-to-knowledge',
+    image: {"src":"/cases/recording-to-knowledge.webp","alt":"HiDock Hub 的錄音整理列表，會議與人名已替換為示意文字。","width":1280,"height":800,"caption":"已公開的錄音整理畫面"},
     dayNumber: 273,
     relatedDays: [270, 275],
     category: '會議到後續行動',

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520">
+  <rect width="800" height="520" rx="28" fill="#fbf5ec"/>
+  <circle cx="760" cy="52" r="65" fill="#f7e3d0" opacity=".55"/>
+  <circle cx="47" cy="461" r="79" fill="#e6f1e6" opacity=".75"/>
+  <style>text{font-family:'PingFang TC','Microsoft JhengHei',sans-serif;font-weight:600}</style>
+  <text x="40" y="61" font-size="31" fill="#2e231c">寫一次，確認後再發布</text>
+  <g stroke="#ead8c4" stroke-width="3" fill="#fffdf8">
+    <rect x="42" y="167" width="189" height="214" rx="18"/>
+    <rect x="283" y="199" width="208" height="149" rx="18" fill="#e6f1e6"/>
+    <rect x="574" y="131" width="186" height="76" rx="18"/>
+    <rect x="574" y="236" width="186" height="76" rx="18"/>
+    <rect x="574" y="341" width="186" height="76" rx="18"/>
+  </g>
+  <g fill="#2e231c" font-size="24">
+    <text x="77" y="216">一份原稿</text>
+    <text x="307" y="244" fill="#2f6646">本人確認</text>
+    <text x="667" y="178" text-anchor="middle">Threads</text>
+    <text x="667" y="283" text-anchor="middle">Facebook</text>
+    <text x="667" y="388" text-anchor="middle">LinkedIn</text>
+  </g>
+  <g stroke="#ead8c4" stroke-width="7" stroke-linecap="round">
+    <path d="M76 251h118M76 283h101M76 315h115M76 347h81"/>
+  </g>
+  <path d="m348 287 16 17 34-39" fill="none" stroke="#2f6646" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="none" stroke="#b4501f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M244 275h26m-13-11 13 11-13 11"/>
+    <path d="M505 275h27m0-106v211m0-211h29m-13-11 13 11-13 11m-16 94h29m-13-11 13 11-13 11m-16 94h29m-13-11 13 11-13 11"/>
+  </g>
+  <text x="400" y="478" text-anchor="middle" font-size="22" fill="#65564b">原稿 → 平台草稿 → 檢查確認 → 發布</text>
+</svg>
