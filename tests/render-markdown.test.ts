@@ -141,3 +141,37 @@ test('renders plain CJK prose with a dayNumber (url tokenizer fallback path)', (
 test('renders an email autolink with a dayNumber without throwing', () => {
   expect(() => renderMarkdown('寫信給 me@example.com 謝謝', { dayNumber: 1 })).not.toThrow();
 });
+
+// Day 282: a video embedded like a photo must play on the day page. 100Days'
+// publish guard looks for a <video src> naming the file before it lets a
+// video day deploy.
+const videoSrcs = (html: string) => [...html.matchAll(/<video[^>]*\ssrc="([^"]*)"/g)].map(m => m[1]);
+
+test('renders an embedded mp4 as a playable <video> with an absolute src', () => {
+  const html = renderMarkdown('![現場](attachments/clip.mp4)', { dayNumber: 282 });
+  expect(videoSrcs(html)).toEqual(['/content/day282/attachments/clip.mp4']);
+  expect(html).toMatch(/<video[^>]*\scontrols[\s>]/);
+  expect(html).toContain('playsinline');
+  expect(html).not.toContain('<img');
+});
+
+test('treats an upper-case .MP4 embed as a video', () => {
+  const html = renderMarkdown('![x](./attachments/CLIP.MP4)', { dayNumber: 282 });
+  expect(videoSrcs(html)).toEqual(['/content/day282/attachments/CLIP.MP4']);
+});
+
+test('puts the video alt into an escaped aria-label', () => {
+  const html = renderMarkdown('![a & "b" <c>](attachments/clip.mp4)', { dayNumber: 282 });
+  expect(html).toContain('aria-label="a &amp; &quot;b&quot; &lt;c&gt;"');
+});
+
+test('URL-encodes a space in the video src', () => {
+  const html = renderMarkdown('![x](<attachments/a b.mp4>)', { dayNumber: 282 });
+  expect(videoSrcs(html)).toEqual(['/content/day282/attachments/a%20b.mp4']);
+});
+
+test('keeps rendering photos as <img> beside a video', () => {
+  const html = renderMarkdown('![v](attachments/clip.mp4)\n\n![p](attachments/p.png)', { dayNumber: 282 });
+  expect(srcs(html)).toEqual(['/content/day282/attachments/p.png']);
+  expect(videoSrcs(html)).toEqual(['/content/day282/attachments/clip.mp4']);
+});

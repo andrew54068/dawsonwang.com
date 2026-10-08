@@ -2,7 +2,7 @@ import { test, expect, beforeEach, afterEach } from 'vitest';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import { copyDayAssets } from '../src/lib/copy-day-assets';
+import { copyDayAssets, referencedAttachments } from '../src/lib/copy-day-assets';
 
 let tmp: string;
 let src: string;
@@ -175,4 +175,28 @@ test('copies nested subdirectories of slides without a markdown reference', asyn
   await fs.writeFile(path.join(src, 'slides', 'raw', 'deep.png'), 'png');
   await copyDayAssets(src, dest);
   expect(await exists(path.join(dest, 'slides', 'raw', 'deep.png'))).toBe(true);
+});
+
+// Day 282: source.md embeds a video the same way it embeds a photo. 100Days'
+// publish guard asks referencedAttachments() whether the build ships it.
+test('copies an mp4 embedded by source.md', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'clip.mp4'), 'mp4');
+  await fs.writeFile(path.join(src, 'source.md'), '![現場](attachments/clip.mp4)');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'clip.mp4'))).toBe(true);
+});
+
+test('lists an embedded mp4 among the referenced attachments', () => {
+  expect(referencedAttachments('![a](attachments/a.png)\n\n![v](./attachments/clip.MP4)')).toEqual([
+    'a.png',
+    'clip.MP4',
+  ]);
+});
+
+test('does not publish the platform original kept beside an embedded video', async () => {
+  await fs.writeFile(path.join(src, 'attachments', 'clip.mp4'), 'mp4');
+  await fs.writeFile(path.join(src, 'attachments', 'clip.original.MOV'), 'mov');
+  await fs.writeFile(path.join(src, 'source.md'), '![現場](attachments/clip.mp4)');
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'attachments', 'clip.original.MOV'))).toBe(false);
 });

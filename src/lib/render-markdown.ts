@@ -86,6 +86,38 @@ md.use({
   },
 });
 
+// A video is embedded the same way, ![現場](attachments/clip.mp4), and has to
+// play: 100Days' publish guard won't deploy a video day without a <video src>
+// for it. marked has no video tag, so this one renderer is hand-rolled — and
+// escapes alt/title itself and encodes the src the way marked's cleanUrl does.
+// Returning false hands every non-video image back to marked's own renderer.
+const VIDEO_SRC_RE = /\.mp4$/i;
+
+function escapeAttr(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+md.use({
+  renderer: {
+    image({ href, title, text }: Tokens.Image): string | false {
+      if (!VIDEO_SRC_RE.test(href.split(/[?#]/, 1)[0] ?? href)) return false;
+      let src: string;
+      try {
+        src = encodeURI(href).replace(/%25/g, '%');
+      } catch {
+        return false;
+      }
+      const titleAttr = title ? ` title="${escapeAttr(title)}"` : '';
+      return `<video src="${escapeAttr(src)}" controls playsinline preload="metadata" aria-label="${escapeAttr(text)}"${titleAttr}></video>`;
+    },
+  },
+});
+
 export function renderMarkdown(body: string, opts?: { dayNumber?: number }): string {
   currentDayNumber = opts?.dayNumber;
   try {
