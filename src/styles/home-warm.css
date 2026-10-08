@@ -1045,6 +1045,7 @@ html:not([data-theme="stripe"]) .home-warm .polaroid { background: #f3ebe0; }
 .home-warm .w-prose blockquote { padding: 18px 24px; border-radius: 24px 24px 24px 8px; background: var(--bubble); }
 .home-warm .w-prose blockquote > * + * { margin-top: .8em; }
 .home-warm .w-prose img { margin-inline: auto; border-radius: 20px; box-shadow: var(--shadow-sm); }
+.home-warm .w-prose video { display: block; max-width: 100%; max-height: 80vh; height: auto; margin-inline: auto; border-radius: 20px; box-shadow: var(--shadow-sm); background: #000; }
 .home-warm .w-prose hr { border: 0; border-top: 1.5px dashed var(--rule); margin-block: 2.4em; }
 .home-warm .w-prose table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; font-size: .98rem; }
 .home-warm .w-prose th, .home-warm .w-prose td { padding: 10px 14px; border-bottom: 1.5px dashed var(--rule); text-align: left; vertical-align: top; }

@@ -23,6 +23,9 @@ import path from 'node:path';
  */
 
 const IMAGE_RE = /\.(png|jpe?g|webp)$/i;
+// Embedded videos render as <video> (render-markdown.ts). Only the share
+// version is ever embedded; its <stem>.original.<ext> twin is never referenced.
+const VIDEO_RE = /\.mp4$/i;
 const SHARE_RE = /\.(mp4|gif)$/i;
 const ATTACHMENTS_DIR = 'attachments';
 const SOURCE_MARKDOWN = 'source.md';
@@ -52,7 +55,7 @@ async function readIfPresent(filePath: string) {
   }
 }
 
-/** Every attachments/-relative image path the day's markdown embeds, deduped. */
+/** Every attachments/-relative image or video path the day's markdown embeds, deduped. */
 export function referencedAttachments(markdown: string): string[] {
   const refs = new Set<string>();
   for (const match of markdown.matchAll(ATTACHMENT_REF_RE)) {
@@ -64,7 +67,7 @@ export function referencedAttachments(markdown: string): string[] {
     } catch {
       rel = raw; // a stray % that isn't an escape — take the path verbatim
     }
-    if (!IMAGE_RE.test(rel)) continue;
+    if (!IMAGE_RE.test(rel) && !VIDEO_RE.test(rel)) continue;
     // Keep the copy confined to the day's own attachments/ tree.
     const normalized = path.normalize(rel);
     if (normalized.startsWith('..') || path.isAbsolute(normalized)) continue;
