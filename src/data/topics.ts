@@ -30,6 +30,7 @@ export const TOPICS: Topic[] = [
 // Every day loaded from 100days/content must appear here with at least one slug —
 // tests/topics.test.ts enforces that, so tag new days as they land.
 export const DAY_TOPICS: Record<number, string[]> = {
+  282: ['cases', 'dev-tooling'],
   281: ['cases'],
   280: ['cases', 'beginner', 'token-cost'],
   279: ['security', 'agents', 'dev-tooling'],
