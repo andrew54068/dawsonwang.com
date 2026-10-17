@@ -118,10 +118,20 @@ md.use({
   },
 });
 
+// source.md ends with its sources after the last --- rule: one "label：url" per line, no
+// blank lines between them. marked merges consecutive lines into one paragraph, which
+// crammed every link into a single block (Day 290), so only that tail keeps its line
+// breaks. The rule must follow a blank line; directly under text it is a setext heading.
+const LAST_RULE_RE = /\n[ \t]*\n---[ \t]*\n(?![\s\S]*\n---[ \t]*\n)/;
+
 export function renderMarkdown(body: string, opts?: { dayNumber?: number }): string {
   currentDayNumber = opts?.dayNumber;
   try {
-    return md.parse(body) as string;
+    const rule = LAST_RULE_RE.exec(body);
+    if (!rule) return md.parse(body) as string;
+    const head = body.slice(0, rule.index);
+    const tail = body.slice(rule.index);
+    return (md.parse(head) as string) + (md.parse(tail, { breaks: true }) as string);
   } finally {
     currentDayNumber = undefined;
   }
