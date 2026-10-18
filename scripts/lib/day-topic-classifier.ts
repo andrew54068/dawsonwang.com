@@ -76,6 +76,11 @@ export const FALLBACK_SLUG = 'ai-trends';
 // need no word boundaries; Latin terms use them so `RAG` does not match
 // `dragging` and `IDE` does not match `video`.
 export const TOPIC_RULES: TopicRule[] = [
+  { slug: 'model-fundamentals', strong: [/模型原理/, /量化/, /\bKV\s*cache\b/i, /\battention\b/i, /模型權重/], weak: [/推論/, /參數量/, /位元/, /機率/], damp: 1 },
+  { slug: 'prompt-context', strong: [/提示詞/, /上下文/, /\bfew-shot\b/i, /\bone-shot\b/i, /\bcontext\s*engineering\b/i], weak: [/\bprompt\b/i, /對話長度/, /範例/], damp: 1 },
+  { slug: 'speech', strong: [/逐字稿/, /語音辨識/, /語音轉文字/, /\bWhisper\b/i, /\bASR\b/], weak: [/錄音/, /音檔/, /辨識錯字/], damp: 1 },
+  { slug: 'business', strong: [/接案/, /報價/, /需求對齊/, /創業/, /合約/, /商業模式/], weak: [/客戶/, /產品/, /服務/, /成本取捨/], damp: 1 },
+  { slug: 'learning', strong: [/備課/, /教材/, /教學/, /學習方法/, /學習路徑/, /內訓/], weak: [/學員/, /老師/, /課程/, /學習/], damp: 1 },
   {
     slug: 'beginner',
     strong: [/零技術/, /沒有技術背景/, /不會寫程式/, /新手/, /小白/, /手把手/, /第一次用/, /完全不懂/, /從零開始/],

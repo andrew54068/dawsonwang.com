@@ -68,7 +68,7 @@ const topicBreadcrumbJsonLd = breadcrumbJsonLd([
       <p class="hero-sub">{topic.blurb}</p>
       <p class="page-links">
         <a class="text-link" href="/topics"><span aria-hidden="true">←</span> 所有主題</a>
-        <a class="text-link" href="/days">看所有文章 <span aria-hidden="true">→</span></a>
+        <a class="text-link" href={`/days?topic=${topic.slug}`}>在此主題加選類型與時效 <span aria-hidden="true">→</span></a>
       </p>
     </div>
   </section>

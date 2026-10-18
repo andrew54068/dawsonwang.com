@@ -9,6 +9,7 @@ import MetricsBlock from '../../components/MetricsBlock.astro';
 import ExternalLinks from '../../components/ExternalLinks.astro';
 import { isTopPerformer } from '../../lib/metrics';
 import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
+import { classificationLinksForDay } from '../../lib/article-taxonomy';
 import { SITE_URL, cleanDescription, breadcrumbJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_WIDTH, DEFAULT_OG_IMAGE_HEIGHT } from '../../lib/seo';
 
 export async function getStaticPaths() {
@@ -35,6 +36,7 @@ const shareArtifact = squareVideo ?? shareFiles.find(f => f.isVideo) ?? shareFil
 const bodyHtml = renderMarkdown(day.data.body, { dayNumber: day.data.dayNumber });
 const topicSlugs = topicsForDay(day.data.dayNumber);
 const topics = topicSlugs.map(s => ({ slug: s, title: topicBySlug(s)?.title ?? s, variant: chipVariantFor(s) }));
+const classificationLinks = classificationLinksForDay(day.data.dayNumber);
 
 const otherDays = allDays
   .filter((d: any) => d.data.dayNumber !== day.data.dayNumber)
@@ -121,7 +123,7 @@ const articleJsonLd = {
   datePublished: publishDate ?? undefined,
   dateModified: publishDate ?? undefined,
   image: articleImage,
-  keywords: topics.map(t => t.title),
+  keywords: [...topics.map(t => t.title), ...classificationLinks.map(t => t.title)],
   ...(topics.length > 0 ? { about: topics.map(t => ({ '@id': `${SITE_URL}/topics/${t.slug}#term` })) } : {}),
   wordCount: articleWordCount,
   ...(primarySection ? { articleSection: primarySection } : {}),
@@ -141,6 +143,7 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
         <header class="day-head">
           <p class="kicker" data-pagefind-ignore><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Day {String(day.data.dayNumber).padStart(3, '0')}{publishDate ? ` · ${publishDate.slice(0, 10)}` : ''}</p>
           <h1>{day.data.subtitle || `Day ${day.data.dayNumber}`}</h1>
+          {classificationLinks.length > 0 && <nav class="tags day-tags" aria-label="文章類型與時效性" data-pagefind-ignore>{classificationLinks.map(t => <a class={`tag tag-${t.axis === 'type' ? 'brick' : 'outline'}`} href={t.href} title={t.blurb}>{t.title}</a>)}</nav>}
           {topics.length > 0 && (
             <div class="tags day-tags" data-pagefind-ignore>
               {topics.map(t => (

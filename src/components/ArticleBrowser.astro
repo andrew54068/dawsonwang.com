@@ -1,0 +1,85 @@
+---
+import { ARTICLE_TYPES, FRESHNESS } from '../lib/article-taxonomy';
+import { topicsWithPosts } from '../lib/topics';
+
+interface Props { dayNumbers: number[] }
+const { dayNumbers } = Astro.props;
+const topics = topicsWithPosts(dayNumbers).filter(t => !['beginner', 'cases'].includes(t.slug));
+---
+<div class="article-browser" data-article-browser>
+  <form action="/days" method="get" class="article-filters" aria-label="篩選文章">
+    <div class="filter-heading">
+      <div><p class="kicker">找到現在想讀的</p><h2>從觀念到實作，選一條路。</h2></div>
+      <a href="/days?type=fundamentals&freshness=evergreen" class="text-link">先讀長期適用的基本觀念 →</a>
+    </div>
+    <fieldset>
+      <legend>文章類型 <span>你想從這篇得到什麼？</span></legend>
+      <div class="filter-options type-options">
+        {ARTICLE_TYPES.map(t => <label title={t.blurb}><input type="checkbox" name="type" value={t.slug} /><span>{t.title}</span></label>)}
+      </div>
+    </fieldset>
+    <details class="topic-options">
+      <summary>內容主題 <span>可再選主題，縮小範圍</span></summary>
+      <fieldset>
+        <legend class="sr-only">內容主題</legend>
+        <div class="filter-options">
+          {topics.map(t => <label title={t.blurb}><input type="checkbox" name="topic" value={t.slug} /><span>{t.title}</span></label>)}
+          <label><input type="checkbox" name="topic" value="beginner" /><span>新手入門</span></label>
+          <label><input type="checkbox" name="topic" value="cases" /><span>案例與現場</span></label>
+        </div>
+      </fieldset>
+    </details>
+    <fieldset>
+      <legend>時效性 <span>原理與版本資訊可能同時存在</span></legend>
+      <div class="filter-options">
+        {FRESHNESS.map(t => <label title={t.blurb}><input type="checkbox" name="freshness" value={t.slug} /><span>{t.title}</span></label>)}
+      </div>
+    </fieldset>
+    <div class="filter-search">
+      <label for="article-query">找標題或 Day 編號<input id="article-query" name="q" type="search" maxlength="200" placeholder="例如：量化、上下文、186" autocomplete="off" /></label>
+      <button class="btn btn-sm" type="submit">套用篩選</button>
+      <button class="text-link" type="button" data-clear-filters>清除篩選</button>
+    </div>
+    <p class="filter-hint">同一組任選符合一項即可，不同組需同時符合。「長期參考」指核心價值較持久，細節仍可能需要更新。</p>
+  </form>
+  <noscript><p>啟用 JavaScript 可組合篩選；以下仍列出所有文章，也可以從<a href="/topics">分類索引</a>依主題閱讀。</p></noscript>
+  <div class="filter-results"><p data-result-count role="status" aria-live="polite">共 {dayNumbers.length} 篇文章</p><p data-filter-summary></p></div>
+  <div data-filter-results><slot /></div>
+  <div class="filter-empty" data-filter-empty hidden><h3>目前沒有符合的文章。</h3><p>試著少選一組條件，或換個標題關鍵字。</p><button class="text-link" type="button" data-clear-filters>清除篩選，看看全部文章 →</button></div>
+</div>
+<script>
+  import { setupArticleBrowser } from '../lib/article-browser';
+  document.querySelectorAll<HTMLElement>('[data-article-browser]').forEach(setupArticleBrowser);
+</script>
+<style>
+  .article-browser { min-width: 0; }
+  .article-filters { padding: clamp(20px, 4vw, 36px); border: 1.5px solid var(--rule); border-radius: 28px; background: var(--white); }
+  .filter-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+  .filter-heading h2 { font-size: clamp(1.45rem, 2.5vw, 1.9rem); margin-top: 5px; }
+  .filter-heading a { max-width: 15em; flex-shrink: 0; }
+  fieldset { min-width: 0; border: 0; padding: 0; margin: 0 0 22px; }
+  legend, summary { font-weight: 700; margin-bottom: 12px; }
+  legend span, summary span { font-size: .88rem; font-weight: 400; color: var(--muted); margin-left: 8px; }
+  .filter-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter-options label { position: relative; display: inline-flex; max-width: 100%; cursor: pointer; }
+  .filter-options input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .filter-options span { display: flex; align-items: center; min-height: 44px; padding: 8px 16px; border: 1.5px solid var(--rule); border-radius: 999px; color: var(--ink); line-height: 1.4; }
+  .type-options span { font-weight: 600; }
+  .filter-options input:checked + span { background: var(--bubble); border-color: var(--leaf-text); color: var(--leaf-text); }
+  .filter-options input:checked + span::before { content: '✓'; margin-right: 6px; }
+  .filter-options input:focus-visible + span { outline: 3px solid var(--persimmon); outline-offset: 3px; }
+  .topic-options { padding-block: 16px 0; border-block: 1px dashed var(--rule); margin-bottom: 22px; }
+  summary { cursor: pointer; padding-bottom: 5px; }
+  .filter-search { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
+  .filter-search label { flex: 1 1 250px; min-width: 0; font-size: .9rem; color: var(--muted); }
+  .filter-search input { display: block; margin-top: 7px; min-height: 48px; width: 100%; border: 1.5px solid var(--rule); border-radius: 12px; background: var(--cream); padding: 10px 14px; font: inherit; color: var(--ink); }
+  .filter-search button { min-height: 48px; cursor: pointer; }
+  .filter-hint { margin-top: 18px; color: var(--muted); font-size: .85rem; line-height: 1.8; }
+  .filter-results { display: flex; gap: 12px; justify-content: space-between; flex-wrap: wrap; margin: 28px 4px 14px; }
+  .filter-results > :first-child { font-weight: 700; }
+  [data-filter-summary] { color: var(--muted); font-size: .9rem; }
+  .filter-empty { padding: 40px 24px; background: var(--white); border-radius: 24px; text-align: center; }
+  .filter-empty p { margin: 10px 0 20px; color: var(--muted); }
+  [hidden] { display: none !important; }
+  @media (max-width: 650px) { .filter-heading { flex-direction: column; } .filter-heading a { max-width: none; } legend span, summary span { display: block; margin: 5px 0 0; } .filter-options span { padding-inline: 12px; font-size: .92rem; } }
+</style>

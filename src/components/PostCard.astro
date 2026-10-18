@@ -1,5 +1,6 @@
 ---
 import { chipVariantFor, topicBySlug } from '../lib/topics';
+import { classificationForDay, classificationLinksForDay } from '../lib/article-taxonomy';
 
 interface Props {
   dayNumber: number;
@@ -9,16 +10,29 @@ interface Props {
 }
 const { dayNumber, subtitle, topicSlugs, isTopPerformer = false } = Astro.props;
 const topics = topicSlugs.map(s => ({ slug: s, title: topicBySlug(s)?.title ?? s, variant: chipVariantFor(s) }));
+const classification = classificationForDay(dayNumber);
+const links = classificationLinksForDay(dayNumber);
+const filterRecord = { dayNumber, title: subtitle, topics: topicSlugs, types: classification?.types ?? [], freshness: classification?.freshness ?? [] };
 ---
-<a href={`/day/${dayNumber}`} class="post-row">
+<div class="post-row classified-post" data-article-row={JSON.stringify(filterRecord)}>
   <span class="post-num">{String(dayNumber).padStart(3, '0')}</span>
-  <span class="post-title">
+  <a href={`/day/${dayNumber}`} class="post-title">
     {subtitle}
     {isTopPerformer && <span class="tag tag-brick post-hot">熱門</span>}
-  </span>
+  </a>
   {topics.length > 0 && (
     <span class="post-tags">
-      {topics.map(t => <span class={`tag tag-${t.variant}`}>{t.title}</span>)}
+      {links.filter(t => t.axis === 'type').map(t => <a class="tag tag-brick" href={t.href}>{t.title}</a>)}
+      {topics.filter(t => !['beginner', 'cases'].includes(t.slug)).map(t => <a class={`tag tag-${t.variant}`} href={`/topics/${t.slug}`}>{t.title}</a>)}
+      {links.filter(t => t.axis === 'freshness').map(t => <a class="tag tag-outline" href={t.href} title={t.blurb}>{t.title}</a>)}
     </span>
   )}
-</a>
+</div>
+<style>
+  .classified-post { grid-template-columns: 4.4rem minmax(0, 1fr) minmax(0, .85fr) !important; }
+  .post-title { text-decoration: none; }
+  .post-tags { min-width: 0; }
+  .post-tags .tag { white-space: normal; }
+  [hidden] { display: none !important; }
+  @media (max-width: 760px) { .classified-post { grid-template-columns: 3rem minmax(0, 1fr) !important; } .post-tags { grid-column: 2; justify-content: flex-start !important; } }
+</style>

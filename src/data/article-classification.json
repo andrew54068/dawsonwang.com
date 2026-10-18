@@ -1,0 +1,3257 @@
+{
+  "1": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "以失業與 AI 焦慮為起點，交代百日分享挑戰及轉向行銷與個人品牌的動機，主要是個人計畫公告。",
+    "sourceHash": "bbc62742eeee4eaad71c7d9856514fef36491f74dfc7a608aacb4040e4a4678d"
+  },
+  "2": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以確定性、工具調用與漸進揭露比較 Agent、MCP、Skills 的定位，提供是否替換的判斷及權限風險提醒；具體功能依版本而變。",
+    "sourceHash": "aba252228bcea0db1b8ab563d842bb2a31e0f5951bd9d1c067ab09bfb8f15249"
+  },
+  "3": {
+    "types": [
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 Antigravity-Manager 代理設定，並討論模型無狀態、歷史上下文與開新對話的成本取捨；產品額度及品質比較具版本性。",
+    "sourceHash": "1f29d5731755140d376a527a03fd90d3aa75b5b0ccc01b676324d27587101692"
+  },
+  "4": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "從投資泡沫、工作可標準化程度與需求能力推演工程師轉型，兼有可反思的職涯框架與當年度預測。",
+    "sourceHash": "a451ea6ebecf9d8fb01cd8f71c0fc7a537a3ec8dc1eaaa3147b7f314ddd99d4d"
+  },
+  "5": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以 git-committer 的實際使用說明 SubAgent 分工、原子提交及最小權限，再比較角色與 Skills 的觸發方式。",
+    "sourceHash": "4f420c6123e9633c0c84babbb54619d827f28b8aa0055bbe7acf14c649841778"
+  },
+  "6": {
+    "types": [
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "本文僅有分享 Agent Skills 的開頭、MCP 載入說明佔用上下文的未完敘述與外部連結，屬內容不完整的工具筆記。",
+    "sourceHash": "79a6506a713a7b57588d646a7f7ee5f3ffd5d4116d322b0fc8792df814c20d4b"
+  },
+  "7": {
+    "types": [
+      "cases",
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄 Permission Guardian 從反覆授權痛點、方案取捨到框架白名單 MVP 的實作，並提供安裝方式與審查提醒。",
+    "sourceHash": "7e980c7abbaed7b76b4ee50f64da1f406d0fa95a54cb04354790d6ed5a5b3c48"
+  },
+  "8": {
+    "types": [
+      "methods",
+      "tutorials"
+    ],
+    "freshness": [
+      "evergreen",
+      "timely",
+      "versioned"
+    ],
+    "reason": "解說面試惡意專案與 VS Code 任務攻擊，提供 Dev Containers 隔離操作及掛載範圍原則；威脅近況與介面步驟另具時效與版本性。",
+    "sourceHash": "02f8bd206549d7dd959ca564b3d30bcc30eabfcd6423209386a42261b05faa29"
+  },
+  "9": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以 Manus 新聞引入檔案外置記憶，介紹 Planning with Files 三檔模式並比較 Plan Mode、Spec Kit 的規劃角色；工具能力與新聞敘述需按當時版本理解。",
+    "sourceHash": "66841e795490e1d71a5195b72b1a2147dbe6766481ec48934cf20e4c26d53413"
+  },
+  "10": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "整理 Hinton 對智能、自保與科研的預測，再以壽命與理想生活提問反思人生意義；預測年限與風險數字具時效。",
+    "sourceHash": "9f32fb4aef63fa6ed5551588b383f78773127ac9a5fda5e3be75a946082b6c30"
+  },
+  "11": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "分享家用 Pro、隨身 Air 與手機透過 Tailscale、Happy 接力開發的實際配置，含遠端操作、語音及授權取捨；操作能力依產品版本。",
+    "sourceHash": "94aed91aaf3102214c56223263feed039688f5ad3bfbcea5ee4de1c368854a37"
+  },
+  "12": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "將每日 Threads 取材與發文拆成六個步驟，劃分人工、AI 與程式責任，再規劃以 Telegram Bot 作為跨裝置 MVP 介面。",
+    "sourceHash": "6758dbdf3b4a88d191d85441f2a2f1c4a7d74664d9e11cfbcab309ecd35d5240"
+  },
+  "13": {
+    "types": [
+      "methods",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從 AI 改壞既有功能與需求歧義出發，解釋 SDD、BDD、TDD 如何以具體行為與測試縮小誤差，尚屬方法導入而非完成實作。",
+    "sourceHash": "7a1243f85a596d2e172b76b47b9b211ce34f67f764dd26859fcca855046b3cd3"
+  },
+  "14": {
+    "types": [
+      "methods",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以 Threads 掃描功能的 Gherkin 範例說明 Given／When／Then，將需求轉為可執行驗收標準並串接 TDD。",
+    "sourceHash": "8cf317ee1df1b5cc5a294fa91228688d6ef2da019b89531aa18ec39d275acfba"
+  },
+  "15": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "解釋測試與 TDD 的紅燈、綠燈、重構循環，說明小步實作與可執行規格如何提升 AI 開發穩定度。",
+    "sourceHash": "9ff70d42a2b12bb1417fa5aef60af2dce1b390830c0350bb8771ee32a03c2b03"
+  },
+  "16": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄 API 申請受阻後改用登入憑證模擬瀏覽器，以及 Gherkin 配合 TDD 的開發嘗試；帳號規則與代理模型能力具版本性。",
+    "sourceHash": "2e940e95cdc230323bda63bfbf44f7385a3b619d66ae984e160702d1698082fb"
+  },
+  "17": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "由 any 注入造成的實際錯誤整理 Feature-First 修復決策樹，區分規格缺失、實作錯誤與設定問題，維持文件與測試一致。",
+    "sourceHash": "1ae4fc57765f3ee3a285b4f51f82afa723f01f40e42873c9d13a5ae924dd3f4e"
+  },
+  "18": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄以 Puppeteer、匯入 Cookie 及容器截圖驗證 Threads 爬蟲，已取得貼文欄位並入庫；GraphQL 尚待嘗試。",
+    "sourceHash": "834757fd1718914acd475a40d165e94bdbfd7754f02364e90136097ba3f32f13"
+  },
+  "19": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "為用盡多帳號模型額度，改造 Antigravity Manager 的策略池及 fallback 設定，提供當時分支與配置；翌日仍需驗證設定效果。",
+    "sourceHash": "252a138a36450956be0a52b210d4521a16324b2e753591b966ae15dc26cfae93"
+  },
+  "20": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "修正前日無效的模型策略設定，加入降級開關與請求佇列並發布 Maximizer 版本；具體模型映射、錯誤及安裝均依版本。",
+    "sourceHash": "3b3950a488d9bfea2266b5b9ea0e80d7aa7e1f69054e542aa8dc8ee2ec727f99"
+  },
+  "21": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄 Ralph Loop 缺少停止條件與 API 線索而空轉，再以認證請求研究完成 Threads GraphQL 抓取；呈現迭代控制與提供證據的重要性。",
+    "sourceHash": "947da847b936c1d846e5d5463269eb98e7016f932fd9115b5269fd67972c0603"
+  },
+  "22": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "由 Threads Bot 實作復盤外部可行性、規格粒度、架構與範圍四項落差，提出先研究、介面先行及分域管理的調整。",
+    "sourceHash": "c514c7f86102984e36c5025fb2cbc00e0c4df7a30f70966592aa8a197f9e5059"
+  },
+  "23": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "追查 Telegram 容器中 curl 與 Node fetch 表現不同的連線問題，換 Debian 後恢復，並反省未堅持 git bisect；DNS 機制部分是文中採用的 AI 推測。",
+    "sourceHash": "f7d12a5ab2d522d29043f2e1f13588721a70a01107fa4e6d87119189b71f9c5d"
+  },
+  "24": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen",
+      "timely"
+    ],
+    "reason": "區分模型能力與外部知識供給，連結 RAG、上下文管理及職涯競爭，主張累積可調用知識；工作取代比例及產業預測具時效與推論性。",
+    "sourceHash": "d46029ab418aa77fe0a7b3c08bec27a192eec6024c2d342e3c64f40ebf658e3b"
+  },
+  "25": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "保留 Ralph Loop 測試補齊任務的指令與未完成卻停止的輸出，記錄實際失敗現象；原因仍未定位。",
+    "sourceHash": "1e6fb7986d4b7b58236e8c7e4bb86b2a7984858c763512c0d3c67c64a754d20a"
+  },
+  "26": {
+    "types": [
+      "reflections",
+      "tools"
+    ],
+    "freshness": [
+      "versioned",
+      "timely"
+    ],
+    "reason": "依安裝體驗與自身遠端需求質疑 Clawdbot 熱潮，比較 n8n、Happy 與 Claude Code 定位；整合能力與熱度判斷受當時版本影響。",
+    "sourceHash": "2b112e64e004a594b4f35d4278a63ca500d312a9bdba8e60c55282a7382aece8"
+  },
+  "27": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "提供 Chrome DevTools MCP 設定及提示範例，透過實際網頁操作錄製 API 再以 TDD 實作，完成 Threads 發刪文自動化。",
+    "sourceHash": "b9ad6c83d861ff366d114403ae6b73e7cf4d3abd004154f02e8896971603e1fa"
+  },
+  "28": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "規劃定時抓文、以本地 LLM 篩選、摘要並推送 Telegram 的個人資訊流程，說明不用固定關鍵字的理由及當時 Osaurus 模型選擇。",
+    "sourceHash": "b3e6ad8715ce643771c50c24445e9225933384d62b9cd04b8fd59d398b2e995e"
+  },
+  "29": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以 SDD 文件維護介紹 Foam 的雙向連結、重構與圖譜，連結拆檔及單一知識來源；GitHub 相容功能實測失效後提出 hook 替代。",
+    "sourceHash": "1241f9a63c1c71748d6da845c6dcb7a12bd98c61d87e21333756261a9d171e7f"
+  },
+  "30": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從版控與寫作外包反思思考能力、品味訓練及產品風格，提出價值與路線選擇應由人保有的判斷。",
+    "sourceHash": "7bda4e9cbe098ec19303563f2668cb4cf23b966e6d74e2f18bfe2ac6841a8ada"
+  },
+  "31": {
+    "types": [
+      "tutorials",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "由外部語音自主處理故事改變對 OpenClaw 的評價，提供 Antigravity 代理模型、Telegram 配對及版本驗證修正；案例來源與推測不等於自身實測。",
+    "sourceHash": "7327e861aea761d3f6123a6dd6f7cfb820de117edd98baff4438ad4142a508b7"
+  },
+  "32": {
+    "types": [
+      "tutorials",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "按 Gateway 暴露、配對、沙箱、憑證、指令授權及提權逐項檢查 OpenClaw，提供設定與連線驗證；文中明示沙箱停用及防護未完整。",
+    "sourceHash": "ada0a8f1d24949aa4b8cbe5f7c01b179a18cfb42a19d90db95fe9b92f6624a32"
+  },
+  "33": {
+    "types": [
+      "fundamentals",
+      "tutorials"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從 OpenClaw 記憶搜尋失敗解釋 RAG、切塊與 Embedding 的相關性檢索，並提供改用本地 Embedding 的設定及額度經驗。",
+    "sourceHash": "099201001961ca59284d4289cd49ead298c2108b98af6393abb4ad41bd9ff2c1"
+  },
+  "34": {
+    "types": [
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "解說 OpenClaw 分層記憶、自動保存、對話修剪及搜尋讀取工具，並介紹尚未設定成功的 QMD；具體行為與成本機制依版本。",
+    "sourceHash": "5ac141b2901e2d5464f00fcb1d306452a568833ccc49b75cf3a9bbd81c4f8306"
+  },
+  "35": {
+    "types": [
+      "methods",
+      "tutorials"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "區分持久 Agent 與暫時 Sub-agent，以社群瀏覽代理示範獨立工作區、沙箱及傳話權限設定，也記錄改用確定性指令解決設定失敗。",
+    "sourceHash": "9d6e0398e66d36aa7687861740b66c7a46b2771d09ece61fb11df754bc04a03f"
+  },
+  "36": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以 Moltbook 代理成功連線及收到陌生指令的經驗，解釋容器掛載、唯讀憑證與互動授權；明示可讀取憑證仍有外洩風險。",
+    "sourceHash": "03c89b0faff68cac921a192638a36803779e704e21c1d241e7904875496636d8"
+  },
+  "37": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄 OpenClaw 授權視窗未出現、逾時後仍執行 curl 的現象，推測與既有授權及 HEARTBEAT 有關，尚未釐清原因。",
+    "sourceHash": "88d76a3cbcce59624d4dc97fcb95248e46fad9c45603e55b7a1cfd772ca3aef9"
+  },
+  "38": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "復盤將 Threads 收藏匯入知識庫時遇到 SSR、登入及多種媒體格式，指出可行性研究與人工線索無法單靠 SDD 取代。",
+    "sourceHash": "533a656636de2dffd7c7b2fd9c6e64269e7d7e1dc3711557157c60cd511cb74c"
+  },
+  "39": {
+    "types": [
+      "methods",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從收藏未內化反思知識整理，規劃每日知識卡與每週回顧，附影片的 AI 學習法摘要；文中已提醒摘要資訊未必正確。",
+    "sourceHash": "2478d1523ec428864cf8172c2e9a2c961875c5eb232821d674c6130541d3492f"
+  },
+  "40": {
+    "types": [
+      "updates",
+      "methods"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "整理 ClawHub 惡意 Skill 投遞竊密程式的近期案例，說明 Markdown 指令也能繞過工具邊界，提出來源查核與隔離原則。",
+    "sourceHash": "8f06a4b97f5492b872cc4162f4083d916409ebab0a83729229b04e0240bc73e8"
+  },
+  "41": {
+    "types": [
+      "reflections",
+      "updates"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "記錄聚會中的 Heptabase 知識卡分享，反思知識提煉、第二大腦與服務化價值，並區分記筆記與語言複習的用途。",
+    "sourceHash": "0a5b30c1d6fa1bd2d85ab12ef3af7b40ba57196c1182297e70d27bd3f5a0ec6d"
+  },
+  "42": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned",
+      "timely"
+    ],
+    "reason": "記錄 Gemini 帳號被鎖後回到 Claude Code，介紹提前 Warm Up 對齊五小時額度重置的策略，亦指出週額度削弱其效益。",
+    "sourceHash": "735124f0647259237492177ec51cae217948f30eda296b4ac28bbdede80d71a4"
+  },
+  "43": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從不同職能的理解差異解釋 Spec、BDD 與 Living Documentation 的用途，說明以共同語言和行為範例約束 AI 的方法。",
+    "sourceHash": "c702d60bd3973d2a4def1f364cb912c96a831ad3377d8386bf7ae65fc937331a"
+  },
+  "44": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "回應近期 AI 衝擊文章，討論技術擴散與個人焦慮，提出掌握方法論及建立可回饋自動化、第二大腦的應對方向。",
+    "sourceHash": "ddaf0d07396f66769c8a98dfb39b6de9a0fe3458f07e36debd2dbc4eb4cc9ee5"
+  },
+  "45": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以 Gherkin 規則膨脹為例，提出精簡提示、先生成再用 Linter 回饋修正的兩階段流程，將可確定驗證的規則移交工具。",
+    "sourceHash": "c0570ee60f30b44f7e99eadcbb45e8f0d6eb29e645d41b156076dd090bda5940"
+  },
+  "46": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 SDD.os 的 VAR、CAS、TIME 與通用步驟定義，解釋如何處理測試資料傳遞、斷言及相對時間；符號與入會方式屬專案版本內容。",
+    "sourceHash": "2223e2bccf8288aa6df1afdbe2a15c9752a6cb54fc1383af1b9534ad99ec016e"
+  },
+  "47": {
+    "types": [
+      "methods",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "釐清 Linter 只能接手合法性細則，提示仍須保留自訂語法與代表範例，並反思規格驅動對未知研究路徑的侷限。",
+    "sourceHash": "ec0773ce6ce54a07988e871b90f5f99630cb3eb5e239a7bb261fbf3e016aabdf"
+  },
+  "48": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "透過 pi-mono 原始碼及官方文字研究訂閱 OAuth 串接風險，區分客戶端偽裝、API Key 與 setup-token；帳號封鎖原因及暗門可用性仍是推測。",
+    "sourceHash": "8cddcacc0eebf5e5d5444fd1f510020b10512142b556ba41a5dc4d89d524d1b9"
+  },
+  "49": {
+    "types": [
+      "tools",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "比較 OpenClaw、ZeroClaw 與 OpenViking 的記憶儲存、混合檢索及分層載入，對照原始碼並分析後端整合；具體成熟度與整合成果依當時狀態。",
+    "sourceHash": "64455b5ec815c10383292777924257f3501e7fd6a7db72085806e7b3bbf6e49a"
+  },
+  "50": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從課程心得整理 Skill 語意描述與按痛點迭代，展示 ralph-expert 遭遇跳脫問題後改用暫存提示檔；技能數量門檻與機制含經驗性判斷。",
+    "sourceHash": "14c998801c4db79eecefea2c977573473bfc909024b58ef1d1bbda4ac94261b6"
+  },
+  "51": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "由 Secretary 與 Ralph Loop 衝突追到外掛快取及並行 Stop hooks，補充模型跳過簡易測試的經驗，強調先釐清載入與執行機制。",
+    "sourceHash": "60fd7454a7d25bfc60044d93aeb352bd12ea978d6b2a0d65adeac29f3fead43d"
+  },
+  "52": {
+    "types": [
+      "fundamentals",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以實際場景與程式碼解釋 Cucumber 如何在執行期把 Gherkin 配對 Step Definitions，再透過真實應用與資料庫驗證行為。",
+    "sourceHash": "859521305f61d8da0d586102dac4dc7b35c05b63bc2f929d57e1e6a1ac644bd3"
+  },
+  "53": {
+    "types": [
+      "tutorials",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "示範以測試或 dry-run 產生 Cucumber step snippets，再搬入檔案填寫實作，釐清產生骨架不等於自動產生完整測試。",
+    "sourceHash": "0b86a0da9961ab8345067081291275c8552ed2527dc177983fe5fc11050f0c1c"
+  },
+  "54": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "完整介紹 BDD 的 Discovery、Formulation、Automation，包含 Example Mapping、Three Amigos 與 BRIEF，強調協作共識本身的價值。",
+    "sourceHash": "2572591ad650f89639914a9af1f32d07d53f651a05a9344e461561d6ff26c83f"
+  },
+  "55": {
+    "types": [
+      "methods",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋工具輸出污染主上下文的原因，提出以 Sub-agent 隔離中間過程，區分 Skill、前背景代理及截斷壓縮；具體限制依版本。",
+    "sourceHash": "9dd08dcdb3399456eb6bcc38ddd633772266fcc6915be30767bc20e12b666253"
+  },
+  "56": {
+    "types": [
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "逐項介紹 macOS Claude Code 的暫存、Rewind、游標移動、輸入復原與歷史搜尋快捷鍵，並說明回溯對話管理上下文的用法。",
+    "sourceHash": "cd4bb794132037ebc563e1d8a2a359cd1572af5adf49293422cb6aa672efdaaa"
+  },
+  "57": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "介紹自製 Security Scan 以六個唯讀代理平行檢查外洩、憑證、注入、檔案與供應鏈，說明不信任受掃內容的隔離設計及分析限制。",
+    "sourceHash": "f537b8d8ed3c762ca2482f07b8f17d8b55a84b4bd9abc40e07467df906e4319d"
+  },
+  "58": {
+    "types": [
+      "reflections",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "比較 Plan 與 BDD 定義需求的優勢與限制，聚焦非功能需求、工程經驗及文件自動驗證之間尚未解決的取捨。",
+    "sourceHash": "21c6a5d9c72fa10d6aeb75f898a7530e0dc46ec4da16c6cc87957f5644f11314"
+  },
+  "59": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "由詢問實際可見 Agent 描述修正全文預載的假設，說明 metadata 與內容分層載入，提出依專案連結代理以減少初始占用。",
+    "sourceHash": "9c870b76796d88af032c0d7b7d1f37fb8ceee2ac4e58999f725a4602c96442d7"
+  },
+  "60": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "整理跨 Session 進度檔、邏輯斷點壓縮、動態提示與生命週期 hooks，再連結自身 Obsidian 審閱流程；命令與 hook 行為依版本。",
+    "sourceHash": "3332bb37a6f9a38c3e63eca0d5d6f5be06bc016ae1c570a6dd8c225cedadfaaf"
+  },
+  "61": {
+    "types": [
+      "methods",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "整理用 hooks 與 learn 指令保存跨對話教訓，詳細比較完整 Skill 與原子 Instinct 的觀察、信心、演化及專案隔離設計。",
+    "sourceHash": "45c005e8827fd16749ab5a61d067a1a5a3fd0a771d8943b8da23e8ef3e57672e"
+  },
+  "62": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從任務模型分配、可比較 benchmark、工具輸出與模組化程式碼提出成本優化，並討論按需載入；價格、模型與節省比例依版本。",
+    "sourceHash": "a9402e2127d14045d38227d8ffd6d49fe0e821c5fa3cbdfa3aabe0f819c9e3e1"
+  },
+  "63": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "區分階段與持續驗證、三種評級及 pass@k／pass^k，提供以真實失敗建立評測與 worktree 比較流程的路線。",
+    "sourceHash": "7fa07fb1da8b9d4827f927022bfeaaf66043734e87020c0cb4aec35dd13e4500"
+  },
+  "64": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "說明少量實例的研究與實作分工、worktree 隔離與新專案雙軌開局，主張累積可重用流程；命令及文件工具屬版本內容。",
+    "sourceHash": "ae9e09694283f8477f85c757aa9995d37fc90f0960b9b9f9cd625f076a9e69b4"
+  },
+  "65": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以目標加查詢、有限輪追問與檔案交接改善代理摘要落差，並分級選擇協作複雜度，補充 MCP 延遲載入後的 CLI 取捨。",
+    "sourceHash": "7900b96a432eb2f557a4df01c641cb4f6fa906ca9e702edd52df6c6700735a04"
+  },
+  "66": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "彙整 1M 上下文限流、遠端控制參數錯誤、雙安裝路徑及 statusline 處理，附具體設定與驗證；均屬當時產品問題和配置。",
+    "sourceHash": "cd5b9c32f25759f3496ec194b04829008224d7227fad121b227a3a4efd19298e"
+  },
+  "67": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "以 2028 經濟危機情境推演討論智慧稀缺、就業與 SaaS 的連鎖影響，再用輸入法嘗試說明 Know How 與資料的累積價值。",
+    "sourceHash": "c494bad886847707ea55686a0d1fca2947045e7487c2d00b4dc522144c65465a"
+  },
+  "68": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以 browser-mcp-selector 改造及載入行數實測說明 context: fork，提供設定範例並分析參數傳遞、對話歷史缺失及適用條件。",
+    "sourceHash": "31a2015f42b9ab8cef058554fc57b415737f722ddccb875e7e26907a83b8caff"
+  },
+  "69": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 claude-trace 的攔截原理、安裝與報告檢視，從實際請求辨識額度探測及快取欄位，建立用數據檢查上下文成本的方法。",
+    "sourceHash": "ff2bff981a8eb98f2921c2eb15a95666141ea0fedf0c4e36f82ea8ef08d6c378"
+  },
+  "70": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "將頻繁壓縮視為流程回饋，以查表、重度 MCP 與分階段交接示範子代理分流，判斷後續是否需要中間過程。",
+    "sourceHash": "467e6e90601e263ec5abaf7367877698c4ef085423515fcf1c8149528dbc8261"
+  },
+  "71": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "記錄將 103 個 Arc 分頁轉為 92 則 Obsidian 筆記，涵蓋內部清單讀取、代理分工、API 寫入與失敗保留標記，最後封裝可重用 Skill。",
+    "sourceHash": "6b112eec7b7c576f6eafb2de727a646d10dfc489ab76cd4f4f6860af6ec8e155"
+  },
+  "72": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "以三種瀏覽工具在公開與登入頁面的輸出量實測比較成本與可用性，歸納按登入狀態選工具的方法；平台阻擋及能力結論依當時環境。",
+    "sourceHash": "0f204c64cddbf951c5c07265f3881dcba949b1046be4251f5061d3cd96ca833a"
+  },
+  "73": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "整理 Claude Code Meetup 的驗證迴圈與評測心得，連結模型更新後的穩定性問題，另記錄新工具與下一場活動資訊。",
+    "sourceHash": "fd127845e10d84a5d34978e098a8f2d9397ff1d7221a45bca0b2b5797f271357"
+  },
+  "74": {
+    "types": [
+      "cases",
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "修正先前對 Agent Browser 登入限制的判斷，示範專用 Chrome profile 與 CDP 自動操作 Gemini 生圖、下載及背景執行，並討論憑證隔離。",
+    "sourceHash": "9462e0460eb32ad8c28e63adfe4ae8c2c1d9f90c436ca4a617648b2e30af5123"
+  },
+  "75": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "描述手機截圖、樣板比對與 Claude 視覺備援的雙層自動化，將成功識別回存為樣板；99% 命中、不被偵測與合法性宣稱未附驗證證據。",
+    "sourceHash": "9ecf845615d1d9800263c3e165564894a4ec8e2d2a44588cbafed312aceae0b3"
+  },
+  "76": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "將封面插畫生成與中文文字渲染拆開，以 sharp、SVG 和本機字型完成自動疊標題，呈現生成與確定性處理分工的方法。",
+    "sourceHash": "0958447ef6b4075e150d8a2b8ea5e8adb28691b8a24ee28828853a5f48e9a240"
+  },
+  "77": {
+    "types": [
+      "fundamentals",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen",
+      "timely"
+    ],
+    "reason": "用三階段與駕車比喻區分 Prompt、Context、Harness Engineering 的範圍與組件，兼有可重用概念及 2023–2026 產業發展敘事。",
+    "sourceHash": "e9294aadcbb3832ebcf3bab18197e3c74c716984278259b7e00f6603f4016f6d"
+  },
+  "78": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄攔截 Antigravity 與 Claude Code 請求的技術過程，比較提示、工具、上下文預算及快取；具體數字與推論限於當時版本及實驗。",
+    "sourceHash": "d7429b3942884cc5abc7a30aec45b2aae69997a800894d298bda0bdc299011ff"
+  },
+  "79": {
+    "types": [
+      "tutorials",
+      "tools"
+    ],
+    "freshness": [
+      "versioned",
+      "timely"
+    ],
+    "reason": "依當日 Channels Research Preview 提供 Telegram 安裝、更新及配對排障，解釋 MCP 事件橋接、允許名單與 OpenClaw 差異。",
+    "sourceHash": "107d828a6636df2c3b9906d5889b52188cc5c9e2b2481ba1c41b973a445a8e74"
+  },
+  "80": {
+    "types": [
+      "updates"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "公告限額免費 AI 工作流諮詢，交代接案探索動機、報名期間、會談準備及去識別化案例分享條件。",
+    "sourceHash": "575ba62ee9bf9cc261be756f1870dd5e1ad8003d0e08eb8c117939d3d863780d"
+  },
+  "81": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以辦公室比喻介紹 Agent Teams 的共享任務與成員互傳，對照 Subagent 的生命週期和協調成本，補充實驗限制與實際召喚失敗。",
+    "sourceHash": "49f22242e7ae86552acefa9af2def2599e356b7928f7a619d9e502f725d5d9c1"
+  },
+  "82": {
+    "types": [
+      "tutorials",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "提供本地 Whisper 安裝與中文轉錄指令，示範將課程、會議等逐字稿轉為可追問素材及方法論 Skill 的再利用流程。",
+    "sourceHash": "5b418b8e51ff365d115c84ae9848f7449b860b6ddd26bc67e2790cdaf7ed441a"
+  },
+  "83": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄 dream 選項可見但指令尚無法使用，再根據外部挖掘提示說明記憶去重、更新與索引流程；設計推測與實測狀態分開。",
+    "sourceHash": "29dea559026ea416f406b520323f54b87f120724008bfd203610c0b023deb0ae"
+  },
+  "84": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "整理 OpenClaw 聚會中的 CRM、健身、機器犬與記憶應用，反思應聚焦商業價值，另提及自身訂閱串接分享。",
+    "sourceHash": "5a53fc8441f3911fcd26a6c8c7c6bb172a577ce415c029b99733900000f9f36e"
+  },
+  "85": {
+    "types": [
+      "tutorials",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "對照 Pi Mono 客戶端偽裝與 Agent SDK，提供基本呼叫程式及替換範圍；訂閱授權解讀、封號原因與安全程度仍受政策及證據限制。",
+    "sourceHash": "9b45dca65b66a0769063352ca30dc8ef193b325ee056e5f729dcaaa9a813f128"
+  },
+  "86": {
+    "types": [
+      "reflections",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "反思只累積 Skill 未形成複利，提出定期淘汰知識、搜尋再利用與回授閉環，並檢討人工審閱筆記成為瓶頸。",
+    "sourceHash": "035390c8f356485e40940750fd6af057a61eb1a68579f33ac175f7ffa230818c"
+  },
+  "87": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以生日選禮及卡片諮詢示範從既有 Telegram 對話匯出素材，再交 AI 或 NotebookLM 找線索，強調上下文來自真實互動。",
+    "sourceHash": "9cdc162f23cb39188c3c8cda2dadfab27b082fa75574e81d894e8c6e2ddef250"
+  },
+  "88": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 Paperclip 的組織、Issue、心跳與預算管理，透過缺少平台帳號而阻塞的實測評估人工成本及適用規模，區分願景與現況。",
+    "sourceHash": "d1306b315b44e5fa2f17a683b20e3a768363c1319c4b9a60acb403dd91cc8b4e"
+  },
+  "89": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以加法函式示例解釋 TDD 紅綠重構，聚焦先最小通過測試再整理的節奏，釐清綠燈不必一次完成優雅實作。",
+    "sourceHash": "239645dd3b3f945128d737e6b48adeb0cd78fdb212acadb1fe21121f91df7dbb"
+  },
+  "90": {
+    "types": [
+      "fundamentals",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從 KV Cache、Attention 與量化原理解釋長對話記憶體壓力，再介紹 TurboQuant 實測、模型格式及本地部署路徑；支援進度與數字依版本。",
+    "sourceHash": "d4b800bfd4c4fde4973aa844db001c61a81a94d1a35424cd536ca3737afc9fb7"
+  },
+  "91": {
+    "types": [
+      "reflections",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "timely"
+    ],
+    "reason": "藉 Claude Code 原始碼外洩話題區分讀成品與建立自身 Harness，提出定義問題、約束、驗證、記憶及依失敗迭代的實踐路徑。",
+    "sourceHash": "82c4f7afc73e72bcdfaf326fb9cd7a403e3683b82fed2fe6560c728a94c5b1ae"
+  },
+  "92": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "針對從聊天轉向檔案操作的新使用者說明權限、資料、Skill 與供應鏈風險，提供掃描安裝方式並要求查核包括作者自身在內的來源。",
+    "sourceHash": "990adb641a60f2c809dc0a663862ca894829f557d4549a2b879248a139f74297"
+  },
+  "93": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "彙整八家科技公司的裁員與 AI 投資報導，再推論工作邊界、Know How 及資料的職涯影響；數字、事件狀態與因果判斷需依當時來源理解。",
+    "sourceHash": "8ddc4fcaa9a68aecd2899e814c7184db2f9291f9df7d0a9e9cf029981664a255"
+  },
+  "94": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely",
+      "versioned"
+    ],
+    "reason": "整理第三方 Harness 訂閱計費變動與限期額度補償，修正 SDK 依賴方向，並討論自製工具界線；OpenClaw 改接 SDK 可用的結論仍屬解讀。",
+    "sourceHash": "f4d20e4c09476409668d0bca8cdffd3bc56b0c4d6558b4514138a4f004d05d60"
+  },
+  "95": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄即使走 Agent SDK 仍遭拒絕、移除請求中的 openclaw 字樣後可通的單次實驗；關鍵字是唯一封鎖機制及改名可行仍未證實。",
+    "sourceHash": "5d3900a33ef461e749802696fd4b25a68f7dfc0416861c6cacd81f8c52faa339"
+  },
+  "96": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以醫師 SOP 流程圖擷取諮詢比較 LlamaParse 與 PyMuPDF，提出用確定性解析、人工正解與文字連結斷言建立可回歸的改善迴圈。",
+    "sourceHash": "d0cb992773b3d9bbe3ef3d3e7785fe3d8da2dfb587ce1043e4daa5670439ab3f"
+  },
+  "97": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄協助 YouTuber 完成截圖貼入文件的諮詢，從精確線索、HTML 編排與適當工具選擇，歸納先探索再封裝 Skill 的工作方法。",
+    "sourceHash": "21cbb3c7480920734c51232b85ff1b4562291c518f93b8ad2842746b5cd38b1a"
+  },
+  "98": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 LINE Desktop MCP 的介面操作原理、依賴與設定，對照 Claude Code 和 Cowork 的實際速度及權限問題；不會封號的保證未附證據。",
+    "sourceHash": "1ccec60f3c490c81fa4387d1e73e546481331006b1aefe6995598cf555108064"
+  },
+  "99": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從 KOL 合作諮詢整理資訊分散、長對話成本與工具鏈落差，提出階段交接、本地處理與探索後腳本化；速度、40% 門檻等依環境或經驗。",
+    "sourceHash": "cae57ab52555f125efa2930abce12691e93fc357b12d3f9e4321e6e4476d8158"
+  },
+  "100": {
+    "types": [
+      "methods",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "總結百日經驗，提供從痛點提問、辨認重複、先做再改與理解工具目的的入門學習路線，兼記錄挑戰成果與持續分享計畫。",
+    "sourceHash": "c11784801e236dddda074f66d4edd9d1c54394c848e48cc49f517f9ad7add53f"
+  },
+  "101": {
+    "types": [
+      "tools",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "實測 Open Island 如何集中呈現多個 coding agent 的等待狀態，並分析常駐工具靠近使用者注意力的介面設計；支援清單隨版本變動。",
+    "sourceHash": "db9bf7c6f598a1d68907a530e83d7028b2345d1bcc118ba05643f2ba09d0ff77"
+  },
+  "102": {
+    "types": [
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "從 Hermes 原始碼拆解技能回顧、模型切換與執行迴路，說明移植 Claude Agent SDK 的具體架構障礙；能力與限制依當時實作。",
+    "sourceHash": "096844da041694c5d2356137db4bfe759b02f3a673b70bff5d6e5b3619c20412"
+  },
+  "103": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以自製 claude-evolver 說明如何從對話失敗訊號產生技能改版、對照評估並由人審核，呈現尚待磨合的設計與實作經驗。",
+    "sourceHash": "7ebfd1acc0f6fbf7b5129d7bbce52d65afcfcc265910b0d53afcc9d583cc2ecb"
+  },
+  "104": {
+    "types": [
+      "fundamentals",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "比較 LLM Wiki 與 RAG 在資料規模、脈絡完整性及知識維護上的適用範圍，拆解檢索與矛盾處理的限制。",
+    "sourceHash": "8c68329c763adfdbd54d6e3da358ceee8bfa529bebe9ccb024ae7ead1a92a808"
+  },
+  "105": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "公開個人筆記的關鍵字預取、按需語意檢索與寫入守門三層流程，交代延遲、脈絡成本及誤觸發取捨；hook 與 MCP 細節依工具版本。",
+    "sourceHash": "4555a544e968fc686f0cdb09bf924ab430ac0b62ce5167fc15195e9d087af50b"
+  },
+  "106": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "說明子代理如何隔離主對話脈絡，並整理 skill、MCP、hook 的組合策略與對照實驗；內建代理、繼承規則與設定欄位具版本限制。",
+    "sourceHash": "9c5816e369974697149dd66fdd978ff195bdc8773b74f02f88de54ab28b677c9"
+  },
+  "107": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "提供雙 Mac 透過 Tailscale、Ollama、Raycast 與搜尋 MCP 串接的指令及驗證方式，並說明網路暴露邊界與主從分工取捨。",
+    "sourceHash": "35a91be22dbbf71b03f4db0f71ca54408c007f3814eb3c41271643fd805ee2c7"
+  },
+  "108": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "以自己的中文示範影片實測 video-use，交代剪輯結果、字幕錯誤及費用，並提煉以結構化文字代理視覺決策的工作流。",
+    "sourceHash": "b4759d082f041633050dc550f48114f009f5b7152efcc99c7daaab6ac675b2c6"
+  },
+  "109": {
+    "types": [
+      "tutorials",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋 localhost 與反向通道原理，提供 Quick Tunnel 指令、安全邊界及不同分享需求的選擇；產品限制與方案價格會變。",
+    "sourceHash": "25601b3f7c8556855d288deb4a8f12cd8f64dfc0262ba7b10797e50167199808"
+  },
+  "110": {
+    "types": [
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以可直接貼給 AI 的提示詞帶非工程背景讀者分享本機工具，補充 localhost 的白話解釋及 demo 後關閉、安全與串流限制。",
+    "sourceHash": "d662a1dc8778c0e797b264ef708c23488e5c372810e5fae5252bd9f9a9d4acf2"
+  },
+  "111": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄從 Ollama 改用 oMLX 後的長脈絡體驗、API 驗證與 Raycast 自訂 provider 設定，聚焦實際踩過的介接問題。",
+    "sourceHash": "1691b03638e63614ba780c20b6eeecfbf2859f4707f25b6e25c51c1595637ddf"
+  },
+  "112": {
+    "types": [
+      "updates"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "徵求 AI 新手實體讀書會意願，說明目標對象與可討論的實戰場景；場地與活動安排尚未確定。",
+    "sourceHash": "e76ea2295835991646a901f45f80ad0662fd9fee714027244012d0c5c7622e2a"
+  },
+  "113": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "以 2026 Q1 職缺、裁員及薪資數據修正先前職涯判斷，討論工程師角色轉變；主要依據具明確時間性。",
+    "sourceHash": "fdd634c4fef0cb02fa2a80e99ba83bf968d438ddcee8ffdb96d9ee6e56f22a59"
+  },
+  "114": {
+    "types": [
+      "fundamentals",
+      "tutorials"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "用新手問答區分聊天與代理工具的資料及刪檔風險，提供權限禁令、hook 與隔離的防線；具體設定與產品支援需隨版本核對。",
+    "sourceHash": "af48d811cda3bc03723890680372ecdd59b0b08f3e4820bea3fe719dabb7e6b0"
+  },
+  "115": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "從移植 ralph-loop 的疑問追查 plugin hook 註冊與 Stop 攔截流程，說明狀態檔如何控制循環及如何查看生效鉤子。",
+    "sourceHash": "a3855db87bd6987b7a0d80970db70243274aa780b3de34f7b410a4ad4645b57b"
+  },
+  "116": {
+    "types": [
+      "tools",
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "比較 Codex 自製 Stop hook 與 CodexPotter 的檔案、跨輪記憶及停止條件，附啟動方式；主要價值是當時工具路線與設定差異。",
+    "sourceHash": "5fd341374270dd4ee728d9c883d580546e3053521009e88ec498f6df646af1a2"
+  },
+  "117": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "整理 Claude Code 轉用 Codex 的設定與功能差異，分享以 bullpen 和軟連結維護共用技能的混用策略。",
+    "sourceHash": "803543f7b2bca682370e2f424f1d51a2dfcf52632619f38b4f2b0753182629e7"
+  },
+  "118": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "拆解一份聲稱來自 Claude Design 的系統提示，提煉角色關係、失敗禁令、設計規範與 SOP 寫法；產品提示來源及細節屬當時材料。",
+    "sourceHash": "e541d72c86f6002253b0eb19471d79471dcfa9165d03d501af859af244cfe2cb"
+  },
+  "119": {
+    "types": [
+      "tutorials",
+      "tools"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "提供 skills-manager 的安裝、規則與遷移步驟，說明單一技能原檔配軟連結的啟用管理及檔案系統即狀態的設計。",
+    "sourceHash": "6527069037c1c2d6ed77ebf4d18f83b5913d230933f383d88157964db277a746"
+  },
+  "120": {
+    "types": [
+      "methods",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "比較雙工具分攤訂閱與單邊高階方案的額度、備援及交叉審查取捨，給出依工作集中程度判斷的策略；價格與能力比較具時效。",
+    "sourceHash": "2404a019cd2472c367af76be2d23431037c40b6ee0eb5652a5002a3421f67904"
+  },
+  "121": {
+    "types": [
+      "tutorials",
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "示範在 Claude Code 安裝 Codex plugin，整理任務接力、對抗審查及產圖用途，附卡住任務的實例與登入、額度限制。",
+    "sourceHash": "165a8c0b19504431df43f0e284b0b1d581d5630c0c032bab47cbc2c6d567d92d"
+  },
+  "122": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "用 Python 轉 TypeScript 的遷移需求展示分階段生成、跨模型批評與子代理調度，坦白以審查取代對照測試的品質取捨；指令依 plugin 版本。",
+    "sourceHash": "f5c6bdbb36044fbebe849bc1bd08a42d41d67de72b318a0803591c6cde46ed3e"
+  },
+  "123": {
+    "types": [
+      "updates"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "為指定日期工作坊座談募集 Claude 新手的真實卡關問題，主體是活動參與與議題蒐集。",
+    "sourceHash": "96a628539e7c0cf2493ab4c98990d030c37e215ae7b0cecf832b23f5521bf40f"
+  },
+  "124": {
+    "types": [
+      "fundamentals",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從 Spark 無法呼叫產圖工具的失敗區分模型輸出能力與 runtime 配發工具，說明提示詞不能憑空增加工具；Spark 限制屬版本資訊。",
+    "sourceHash": "e39096b5048e14430429ac681d424513d513c559ceeb9ecc7f50050bebd1c2e7"
+  },
+  "125": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "用 Tailscale、Mosh 和 tmux 維持遠端 Claude 長任務，提供重接與離開操作，並復盤非互動 shell 的 PATH 問題。",
+    "sourceHash": "fbede07d374cdeba3b5288be177f64405c0771b707f9d3d8ef3f971e69c5d25b"
+  },
+  "126": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以 Threads 互動者抽樣分析核對目標受眾，呈現分類覆蓋不足與語言偏差，提供創作者檢查讀者定位的實例。",
+    "sourceHash": "e7cbc84f43fe503d8207b813a2ab64b52025c53bc1180143f8fdf6c83eb313b8"
+  },
+  "127": {
+    "types": [
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "比較 Cowork 與 Claude Code 在技能安裝、代理協作和 hook 的差異，說明不同介面的學習門檻與適用工作。",
+    "sourceHash": "01b07a951ec0d16d4ecca702d463c24cf279014d5b328a22ef76d28746b2c184"
+  },
+  "128": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以 gws-forms 有無技能的對照實驗說明過期操作手冊可能降低正確率，提出依任務及維護成本驗證技能價值的決策方式。",
+    "sourceHash": "e5ee9c643a7984b7f581ce33d75494695e3c011f91ee3bb25194966a188ff573"
+  },
+  "129": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "記錄 Cowork 新手活動的分享與見聞，反思把既定流程寫成 skill 及讓 AI 主導實作的人類角色。",
+    "sourceHash": "428a50f403c33fac568ea8104ebacd177378f3ba5e5b1aaf005c499d38c55790"
+  },
+  "130": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以顧問案背景調查展示本地需求、題目草稿到 gws 建立 Google 表單的流程，附安裝授權與人工檢查環節。",
+    "sourceHash": "d050427523ade92aacde14a7c9484c274d2950f43bdb570c496fddae85ae5ee2"
+  },
+  "131": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "區分 MCP、skill、CLI 在資料存取、操作知識及工具封裝的角色，以工作場景說明如何組合選用；演進敘述帶有當時產品背景。",
+    "sourceHash": "c733e1533b165876ea82c7f9dcd5e658bdc50637ffd7d63649573ae9e4a44761"
+  },
+  "132": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "整理 Mark Cuban 訪談中的 AI 學習、企業應用及職涯觀點，包含可借鏡的反覆追問方式，也包含當時產業投資判斷。",
+    "sourceHash": "07e3a4022f68361aa173be5aa15691bd411fd847f4df3676d074424e3204ffa7"
+  },
+  "133": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "復盤向高爾夫專業朋友諮詢陌生開發的經過，區分共同興趣累積信任與直接獲客，呈現進入新圈子的成本取捨。",
+    "sourceHash": "3a06a5d81f7e5365da0070e1c2f3cae8ca4a18a2829dee005d5db3ab5b9d6cad"
+  },
+  "134": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹為 iPAS 備考自製的考題練習站及驗答、解析、弱點追蹤功能，展示從考題反推教材的學習需求如何轉成工具。",
+    "sourceHash": "b35616dcfc6b8599785b40845cce945527d666575bb7aef57da0c5f34b36f1ee"
+  },
+  "135": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely",
+      "evergreen"
+    ],
+    "reason": "整理 AI 裁員後回聘與投資回報的當期報導，延伸出量真實工作流、計入回補成本與理解隱性知識的管理反思。",
+    "sourceHash": "06bf957a00101d9a1dd3d2dd869ea00432655232697bdd995c8f68a5b1683660"
+  },
+  "136": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "論證 AI 降低製作 demo 門檻後，理解用戶痛點、訪談與商業驗證更重要，提醒避免把功能完整當成市場價值。",
+    "sourceHash": "23a3869032f8bff24cce971d3e98b336f46197e45c354f5e658f2f3318a6efac"
+  },
+  "137": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "按個人網站的穩定網址、內容設計與詢問追蹤需求解釋技術選型，附成本和建置順序；框架、免費方案與價格依當時版本。",
+    "sourceHash": "1ddc3afdd6481e1621ce04a3b7dc1e499438f1eeeb2f3e366cfc54364001ad57"
+  },
+  "138": {
+    "types": [
+      "tutorials",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "教讀者用 Vercel 與 Cloudflare 掛子網域，解釋 DNS 記錄及辨認釣魚網址的基本結構；授權介面、方案與部署流程具版本依賴。",
+    "sourceHash": "ee82aed298480c7e5fd042455e12b7c7bbc4a814c9f93366b983b5c3bde5b72f"
+  },
+  "139": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以文章找不到的問題展示個人站語意搜尋的建置流程，說明預算向量、瀏覽器比對與小規模免資料庫的取捨；模型與免費額度需更新。",
+    "sourceHash": "09746f3762d0c2c2a9f1cc2a9d8e123ad7fff038bea10d31bebc3721fc9f3040"
+  },
+  "140": {
+    "types": [
+      "tools",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以 Cua 與操作示範解釋 accessibility 元素操作與全域滑鼠模擬的差異，附 Claude Code MCP 安裝；產品實作和 Spark 能力屬當時資訊。",
+    "sourceHash": "7df0d50252657133a76473f7496d49212ba72dc84088dad70d85a7b9f32ea6f4"
+  },
+  "141": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄讓 Hermes 自架 Vexa 並加入真實 Meet 會議的過程與產物，比較雲端會議筆記的費用、資料位置和維護門檻。",
+    "sourceHash": "24d988c31fef7992177dd545e9cb2a9c669d16e01d837a928f1fe4ff3904fb78"
+  },
+  "142": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "timely",
+      "versioned"
+    ],
+    "reason": "分享 MiMo 免費額度申請的實際時程、申請信結構與 API 驗證步驟；主體有明確截止日，額度、模型及端點亦會變動。",
+    "sourceHash": "9a4bb4dafc4dd93ab499b2e29e2b4ebd9df84da55b2c32986aa59c6fd266af21"
+  },
+  "143": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋以 submodule、冪等比對及接收端輪詢同步兩個 repo 的設計，拿實際排程紀錄揭露延遲，並區分現況與待改成本機觸發的方案。",
+    "sourceHash": "a33efd598f73e47ee1f55ce7e3187f464d6d1a89162242761aacae1b990e17dc"
+  },
+  "144": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "分享 Hermes 多 profile 在 Discord 與 GitHub 接力修 SEO 的配置、分工和故障經驗，提供持續代理工作流的實例及當時限制。",
+    "sourceHash": "8ed08f6b805b82b5f0c54d62d8207323e97c13d794f447f6e41c5c0a5f2b06c1"
+  },
+  "145": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "提出逐字稿先清理辨識雜訊、再依場景保留講者資訊的素材流程，附提示詞與場景表；特定模型及 Vexa 能力須依版本確認。",
+    "sourceHash": "e0dd85aabc1facba5c656c45fcbe208d7c34a5a5533e1f1219a1168df410ebf1"
+  },
+  "146": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從朋友的工作與副專案效率落差分析需求約束、審核和非功能性要求，提醒不能直接把 demo 的加速倍數套進公司交付。",
+    "sourceHash": "2d9bd317b4931237e9ce2e633e09a6a94516f62213de11f061969aa9cb0259e3"
+  },
+  "147": {
+    "types": [
+      "updates",
+      "tools"
+    ],
+    "freshness": [
+      "timely",
+      "versioned"
+    ],
+    "reason": "更新 MiMo 額度重置與多代理使用體感，討論純 API 路徑的穩定性；後段訂閱偵測及繞行僅是作者猜測與有限嘗試。",
+    "sourceHash": "92f695d3f7342e3cb97b6afd479b5f8e42d1bd315de2f31f69b4c4831c340f7b"
+  },
+  "148": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以四天自動 SEO 修改的前後成果檢視代理分工，列出 Lighthouse 分數、測試及未解問題，明確區分實驗室檢查與搜尋排名。",
+    "sourceHash": "8adaf1d461ca7dae8fe15e3b24f1b00dee45d798e00377006e2faba3d598a163"
+  },
+  "149": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以內容管線的人工確認點比較 skill 與 Workflow 的主控、脈絡及背景編排取捨；預覽功能限制與 Ultracode 細節依版本，部分實測解釋尚未確認。",
+    "sourceHash": "b2100a8d84fb7ea67823a2d502f26efcba05cf8ca1bc51ff3829a11e2190c184"
+  },
+  "150": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以遊戲專案的實跑與其他測試數字介紹 Ultracode 的自動工作流及對抗查證，衡量高用量代價與適合的大任務；effort、模型和方案限制具版本性。",
+    "sourceHash": "84a2bc08052b05fe06e457e2628a187b996bae83baccea47d803c9bd0dd55d72"
+  },
+  "151": {
+    "types": [
+      "tutorials",
+      "tools"
+    ],
+    "freshness": [
+      "timely",
+      "versioned"
+    ],
+    "reason": "教新手把當年度官方稅務文件包匯入 NotebookLM，提供具體情境並對照來源；主體是產品操作，且混有報稅期限、年度規定及銀行優惠。",
+    "sourceHash": "95b6c517c82ca01e1724c52eaa3f213ded746170713ae1b268cd532e147bc321"
+  },
+  "152": {
+    "types": [
+      "tools",
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 OpenUsage 集中查看訂閱額度、用量節奏與本機 API，說明安裝及 Claude 用量來源；支援服務與 OAuth 介面依版本。",
+    "sourceHash": "38c1db579b0d9d77eed75137dd44e73cbc3cac51649bec0f500e5b719ac2da01"
+  },
+  "153": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄額度見底時用 cc-switch 將 Claude Code 接到 MiMo 的設定及 API 格式差異，區分已跑通的流程與未做對照的 harness 品質假設。",
+    "sourceHash": "9c1b5d76197cfa3839be49b313aceea027099c952d4d930b7e1ca85df4250982"
+  },
+  "154": {
+    "types": [
+      "fundamentals",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "用 Claude Code 訂閱登入解釋 OAuth 的 access、refresh token 與 PKCE，再拆解儲存位置、續期故障和驗證來源優先序；產品細節需版本核對。",
+    "sourceHash": "ca46f5a5c8a05562d934cfea636cd008048bb573ebd5ca971e2338e14f5ba8e7"
+  },
+  "155": {
+    "types": [
+      "tools",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "拆解 cc-gateway 統一裝置指紋與 OAuth 的運作，討論隱私、防濫用及規避偵測的界線；封號動機主要沿用作者敘述，alpha 實作易變。",
+    "sourceHash": "5539a741042ce9dbb45f75047a9bb193b5713fc425653f8008ac9ab173ba984f"
+  },
+  "156": {
+    "types": [
+      "cases",
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄 ant CLI 使用訂閱 token 時的身分關卡、429 訊息與排查結果，附當時可行的呼叫方式；主要是特定後端驗證問題的實驗紀錄。",
+    "sourceHash": "fe2d10a240fb894d505f495d7cf7b4706664ad3927cf1b0f157531f95b0aa29c"
+  },
+  "157": {
+    "types": [
+      "reflections",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從多專案等待 AI 的經驗分析注意力切換與狀態重建成本，說明 DevTown 視覺化與限制作業數的設計動機，尚未驗證解法。",
+    "sourceHash": "5d68a2b5b3dddefc670f497abec2c26b196130a0c69337a545fb11077be95264"
+  },
+  "158": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以中文怪搭配說明生成語言與有限禁詞清單的落差，提出 few-shot、跨模型檢查及人工把關的分層做法與限制。",
+    "sourceHash": "f4d16565ef1149fd52f322049ae306b5196ba22da6b7a9152ae289d602247399"
+  },
+  "159": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "用自己的中英混講會議比較七種本地辨識模型，將準確度、部署相容與即時餘裕一起衡量；排名限於單一片段且缺人工標準答案，評估方法可重用。",
+    "sourceHash": "fe5c7930d0e47a56b185bc813403d75fc04ecefe2e0c05b169300d91cb32a6a8"
+  },
+  "160": {
+    "types": [
+      "tools",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋低價模型中轉的來源與資料、工具呼叫風險，分享保留 Claude Code 工作流的 gateway 選擇；案例與優惠價值依當時來源及服務狀態。",
+    "sourceHash": "392fd20a4edc488174f6b80c36135025127d302ba1268da537a18a3fe91fbd67"
+  },
+  "161": {
+    "types": [
+      "updates",
+      "tools"
+    ],
+    "freshness": [
+      "timely",
+      "versioned"
+    ],
+    "reason": "整理 Fable 5 發布、與 Mythos 的關係、fallback 及 benchmark，重點是限時訂閱使用窗口和後續按量費用，時效非常明確。",
+    "sourceHash": "e25994fc0fd2a97cfc9b39c34b0db2035b0a12cbc2edcf5e793c766f250b29d8"
+  },
+  "162": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以通過 iPAS 中級的準備經驗說明刷題後補弱點的 top-down 方法，交代需要既有基礎；考科、費用與題型依當次制度。",
+    "sourceHash": "580c0612646f00c01cb92e0841ec58470dd7837db3ac6854b05b8e742554ade5"
+  },
+  "163": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "整理非技術品牌的 AI 圖像與公司資料分析實例，從創業者分享提煉先明確目標、選擇工具與理性取捨的重要性。",
+    "sourceHash": "e8a5635db5aba7332eac20469b45f480fc7ef4201cd523639ed9a6e556b753bd"
+  },
+  "164": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄在外用手機透過 Discord 指派 Hermes 加題、開 PR 和審查的經過，列出常開主機、GitHub 與自動部署前提。",
+    "sourceHash": "418f5ef7a64f097bd9a8547ec30e78e80bad4b9b0bcf77eefb97addba33b6392"
+  },
+  "165": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "設計多路策略在獨立 worktree 實作與獨立評審的 AI 黑客松流程，避免單一路線過早收斂；訂閱重置與限流是配置背景，尚未提供實跑結果。",
+    "sourceHash": "8aaf6400399e6409efb147c6f2e1a4dfd0d3d994c581047d0e10eeb6f3da58f5"
+  },
+  "166": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "從未預期出現的技能資料夾追查 Fable 提示詞，討論可用技能描述與使用者脈絡控制權；安裝因果及不會再出現的判斷沿用作者推論。",
+    "sourceHash": "fe1db4ca497b1f2f1010ae64f2fd8c524df48e302431b586d9cda399bb7cdb62"
+  },
+  "167": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "記錄刪減一份外流系統提示及改用自身偏好的取捨，主張檢查源頭避免規則互相矛盾；未提供改版品質的對照驗證。",
+    "sourceHash": "4fba9fa5501311ef9fc0f11dc338b59224b8283c14c7276d6cc0a19e8a5f78ba"
+  },
+  "168": {
+    "types": [
+      "reflections",
+      "updates"
+    ],
+    "freshness": [
+      "evergreen",
+      "timely"
+    ],
+    "reason": "以近期聚會帶來合作與顧問案的經驗分析線下交流價值，末段募集雙北 AI 讀書會意願，活動仍是構想。",
+    "sourceHash": "ccb8f9defebe03e80110e4bc446eb868ccf75e2980a3dbb601eecb0f43a42b2b"
+  },
+  "169": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "把轉錄 skill 的重運算移到常開 Mac，說明共用常駐模型、三層降級與音檔只走自有機器的架構，避免隨身裝置資源被耗盡。",
+    "sourceHash": "88c1e2740e5896e2fc50af4d50f2c82ea4bd504f4b4a9250e7e056a79df15d62"
+  },
+  "170": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以醫院內訓備課說明素材、萃取、結構、視覺與輸出的簡報迭代流程，聚焦受眾及決策目的，並用換對象重製呈現省時價值。",
+    "sourceHash": "e488cad13c72d12340757979f7a53f839dfea03ff431770737b8669784694347"
+  },
+  "171": {
+    "types": [
+      "tools",
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 open-slide 將每頁簡報做成 React 檔的功能，附起始指令、畫面標註修改和輸出用途，適用既有 coding agent 使用者。",
+    "sourceHash": "bd44272ddc97937e11fede32cfd4d485ec88da1957a756ede27c7b1fea489a1d"
+  },
+  "172": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "復盤重寫 LINE 自動化以避免搶焦點，對比 GUI 模擬與 Accessibility 元件操作，交代讀訊息仍需剪貼簿變通的限制。",
+    "sourceHash": "2cf599f4df8710a34c7abc5b4385e1c25f3732efd0f89ee3ab390f27568de322"
+  },
+  "173": {
+    "types": [
+      "cases",
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "追蹤 Vexa 無法進入 Meet 的具體症狀與登入 profile 的修復，說明自架會議 bot 的持續維護成本及替代錄音路徑；反自動化規則會變。",
+    "sourceHash": "b364714f15a2e88193ec5fa5995d96fe0f3df4f146f82ebec0a4eb3a233883a7"
+  },
+  "174": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "展示多裝置透過單一 gateway 集中憑證與裝置身分的架構，含 Hermes 格式轉接和對照組，說明單點故障及訂閱邊界取捨。",
+    "sourceHash": "b1eb3dcadacd74f1d70b523ddcd2ce08726985c345cfab575297fa86603c6d63"
+  },
+  "175": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "展示 line-cua-mcp 及 line-sync 把客戶完整對話帶進專案作為需求依據，區分讀取、草稿與送出界線，並交代實驗性工具限制。",
+    "sourceHash": "bc7087caea1bfa37aac5c30925ed760d217a6c6140824c0250e1d373e4dc7e0b"
+  },
+  "176": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以拔除 Smart Connections 的經過分析使用方式轉變如何讓原本有用的功能失去位置，主張先問需求是否還在，再決定是否修工具。",
+    "sourceHash": "4a914ab5d52075882212fb303b4e7cbbc9245a66124e51b34863f1fb1ded984d"
+  },
+  "177": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "以三天 Headroom 儀表板數據比較宣稱與實際壓縮率，衡量品質及維護代價；清楚區分已量測節省與未做對照的品質體感。",
+    "sourceHash": "306bf67c9a65f3926a0189f54ee9cfe15ccbd4f10aed9519980b3e01bcdbc990"
+  },
+  "178": {
+    "types": [
+      "fundamentals",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "區分工具靜態 harness 與外部測試、CI、完成條件的回饋迴圈，反思 loop engineering 對 verifier 的重視及自己的使用習慣。",
+    "sourceHash": "42f5a768d0116daa720896dd021bbc6a4cc3dbc750f0fc04dc32d7373d910f06"
+  },
+  "179": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從醫院內訓整理錯誤、空泛、AI 味及長對話退化四個痛點，以作者自訂的 AI 分層說明教學必須貼近學員現有流程。",
+    "sourceHash": "7ddd8736ffe2d01e9baf72958dd9f8bd92821028a0fef80d431077df7d2c89a9"
+  },
+  "180": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以 151 則 Obsidian 筆記搬入 OKF 的經驗說明索引導覽、metadata 與可攜結構，附同題讀取比較；格式規則依 v0.1 規格。",
+    "sourceHash": "7289e37e5f5e1d6e1cc0617e0e08975ac9256a625fa4d866fa1935222311e8cb"
+  },
+  "181": {
+    "types": [
+      "fundamentals",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋 open core 如何以免費核心換採用及生態，再分析雲端競爭、授權與維護成本；公司授權沿革與現況是版本相關例證。",
+    "sourceHash": "b3eddcbef2e1f5dd040b8fe0cddea8106b1f3516fe759f2e2440768ea80270ca"
+  },
+  "182": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "討論 AI 文的定義與讀者反感來源，主張以內容實質和正確性評估作品，並從社群傳播角度解讀負面留言。",
+    "sourceHash": "25e82e65568d50c0ec8aec8ce64d39e422e0cd82aa4306fcf6492f1859864cd3"
+  },
+  "183": {
+    "types": [
+      "cases",
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "復盤 EZ100PU 在 Apple Silicon 的驅動衝突、載入與簽章問題，附開源修補安裝及自我檢測方式，呈現從 log 找根因到防復發的經驗。",
+    "sourceHash": "06c220f340b65067144d103c5d8441c4bc84d0bbc961959a8ad83c6a0e62f712"
+  },
+  "184": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以讀卡機故障說明清楚目標、現場證據與外部收斂條件如何形成驗證迴圈，區分人需協助的操作與 AI 自主找路，列出適用範圍。",
+    "sourceHash": "e920073e2b8ba3b3552451a3e40c621a082089683d5112e7a02dfbcafc580c96"
+  },
+  "185": {
+    "types": [
+      "updates"
+    ],
+    "freshness": [
+      "timely",
+      "versioned"
+    ],
+    "reason": "公告 Pioneer Pro 早鳥轉標準方案的日期、七月每日過渡額度及自動模型限制，主要價值依賴指定月份與價格。",
+    "sourceHash": "666b7de913314fa5c15f01c43169c76a5afe258f8af008ad750043754b921bf5"
+  },
+  "186": {
+    "types": [
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋量化如何以權重精度交換體積、速度與記憶體，提供容量粗估及選擇思路；GGUF 命名、格式支援及 K_M 建議具實作依賴。",
+    "sourceHash": "58302454f64bbd18930691842cce4c74ce11f6f0779b40f83b505de93e9b0cc7"
+  },
+  "187": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從兩場醫院內訓提煉混合程度受眾的教學方法，包括問卷調整、實作巡場與把常見問題納入下場教材，反思專家盲點。",
+    "sourceHash": "d9b9f5df372361936c28d22b82842788bcd7374410ea2cb1f38083a363414dcf"
+  },
+  "188": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "展示 DevTown 已有的狀態及啟動代理畫面，並具體分析空間位置記憶與降低回看成本的設計理由；排程及詳細追蹤仍未完成。",
+    "sourceHash": "330c48c728351432d9588aa33b0e63257a6cd3adfa1e2b58260fe5f10ddb4aac"
+  },
+  "189": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "回顧失業後每日內容挑戰的動機、追蹤成長與工作機會，分享以長期累積應對職涯焦慮的個人觀點。",
+    "sourceHash": "c5f885e9b3dde5f062a360b4e40ff72801f13fbfec6f9cc5c47861d71c1582bd"
+  },
+  "190": {
+    "types": [
+      "reflections",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "從聽演講錄音整理的手動流程提煉即時轉錄與跨裝置存檔需求，提供 NotebookLM 過渡做法；自製軟體及通話收音仍在構想。",
+    "sourceHash": "2cf3f4f94fea531daef24d006a5a359781168cdbec30b21c3112046fcccbdd7a"
+  },
+  "191": {
+    "types": [
+      "fundamentals",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋長文字圖片化利用視覺編碼節省輸入的機制，區分論文與 pxpipe 數字，整理品質、密度、模型及計費限制並附啟動方式。",
+    "sourceHash": "98bfbad279900a084eef9c4828544000fb6950bc5901b243a4cab41fd5b5452b"
+  },
+  "192": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以付費使用經驗比較 AI 訂閱、免費備援及後端模型接力定位，價格、額度與推薦依當時狀態，多項品質比較明示為體感。",
+    "sourceHash": "f2dd6d01310492631f7dd966b1ae06592d382bf11707f0f766c22a30accd9a2c"
+  },
+  "193": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "復盤 pxpipe 圖片壓縮後大量 429 的查因與身分字串修正，以 log 和壓圖請求檢查修復；實際行為依 Claude Code 與後端驗證版本。",
+    "sourceHash": "5302faa6e55c15ed66664d189a59d230ee5f0bfd0ed155c8b77dcb869894cba8"
+  },
+  "194": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "展示自製 Event Sidekick 從活動素材抽欄位、查日曆衝突到人工確認的流程，交代暫訂、最小權限、SSRF 防護與尚存風險；擴充仍為私用版本。",
+    "sourceHash": "34dec484c89f0c1fd4d47db7f5882667913389b9996f95ad713c8182df3abc2f"
+  },
+  "195": {
+    "types": [
+      "tutorials",
+      "tools"
+    ],
+    "freshness": [
+      "versioned",
+      "timely"
+    ],
+    "reason": "說明 Codex 用量窗口與限期重置額度，教讀者透過 OpenUsage 或內部 API 查詢到期時間；包含暫停五小時限制的限時政策更新。",
+    "sourceHash": "a1a2ae83c402a5e7d66731cd74daa0b4caf446837417c514335e149c76ed6f93"
+  },
+  "196": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "比較 CLIProxyAPI 與 cc-switch 把 GPT 接進 Claude Code 的設定負擔，簡述格式轉換必要性，按自架多用戶閘道需求提供工具選擇；主要依當時整合能力。",
+    "sourceHash": "fe04c2c45b0a7c93486d037ea54a33c14b58d6a72c36a45fe382060fc0b12f0a"
+  },
+  "197": {
+    "types": [
+      "tutorials",
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "提供 ChatGPT 連接 Canva 做局部圖像編輯的替代步驟，強調轉圖層後校對中文、人物與數字；入口變動未確認，功能及額度依帳號。",
+    "sourceHash": "6f3b21b6586caacf2795505aba98a3365e99a80fe196ca256c861d6258a9361e"
+  },
+  "198": {
+    "types": [
+      "reflections",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以近期 Codex 壓縮與大量分身的負面體感提出主力加備援策略，明示品質退化及算力調整原因未經量測，只能作為個人經驗。",
+    "sourceHash": "517ff531874cc5531eebf77d41ac6ca5329d10124f7dc5bf17c5a78cf2843471"
+  },
+  "199": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "解釋長脈絡中段資訊較難被利用的現象，提供按任務分對話、先摘要再接續及主動提供背景的方法，提醒記憶功能不能取代輸入管理。",
+    "sourceHash": "2daad616da6640894157ce836e8e329ac21cf3745740cb66314dfc689cf22061"
+  },
+  "200": {
+    "types": [
+      "reflections",
+      "updates"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "記錄 iPAS 聚會中的人脈交流與代理媒合構想，提出串接 CRM 的方向；尚無可操作的方法或驗證成果，格式、溝通與隱私都未落地。",
+    "sourceHash": "e2d325526fa19f28616482a18f4ea5cdf1566641bc9461ceb898bb990e994586"
+  },
+  "201": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以人格與情境的關係反思自我狀態和人際互動，提供進場提示與調整溝通的思考方向；AI prompt 主要是比喻。",
+    "sourceHash": "da7591a8d53c8e034a4df8aa94aeee82b04a58b2d96ab4658cbb74e7e4d948b6"
+  },
+  "202": {
+    "types": [
+      "methods",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "整理開源前的文件、金鑰歷史與權利檢查，以及自動化和不可逆操作的界線；附自製 skill 安裝方式。",
+    "sourceHash": "f29bd1487d2b1b7bf471adb897b11eeef1704d5a1b3ee301d9b94d2f05c19c2f"
+  },
+  "203": {
+    "types": [
+      "cases",
+      "tools"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "以同專案 session 紀錄比較壓縮次數及上下文累積，提出大視窗與分工策略；模型行為推論與數值受實測版本限制。",
+    "sourceHash": "7162e3261ee25dca7b90905c9621ef048d50ee914afb961ff0da00c65152ec03"
+  },
+  "204": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從修改 PDF 反覆驗收的失敗，歸納明確標準與做、驗、修迴圈，讓驗證成為可指派任務。",
+    "sourceHash": "4e463693332b01b8cdf90fc31c5dc10a13c3d627c65a881938c723cc6a38a3db"
+  },
+  "205": {
+    "types": [
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "比較三家桌面 AI 的本機操作與開發定位，協助按工作情境選入口；成熟度與能力判斷依產品當時版本。",
+    "sourceHash": "6a2878b3507000c8231989e6cd29e3ec10694eb71e9deeb3ddf0c01c81a1bc9c"
+  },
+  "206": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "介紹 i-have-adhd 規則、安裝與對照實測，指出主要改善答案結構而非字數，並示範以文字規範調整 AI 回覆。",
+    "sourceHash": "98c9bc37224912ebdcea36094a5611fb63abbd895257056bf09ca1d5a8cc60cc"
+  },
+  "207": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "以六類程式查詢比較兩款索引工具的 token 與正確率，示範把錯答補救成本納入評估；排名限於指定版本、專案及模式。",
+    "sourceHash": "173f1ca3217106804654b56afc99b8549d3f7a5aff73302b6e0702768e98da37"
+  },
+  "208": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "拆解私有 Studio 如何遙控現有 CLI 完成發文，包含輸入驗證、決策標記與 macOS 登入 session 除錯；實作依賴當時工具行為。",
+    "sourceHash": "ee38803d32eb5247c9e17b5a6bc8fba25f91eccf2c85ed5bf30a4f3af92c8640"
+  },
+  "209": {
+    "types": [
+      "tools",
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "提供 Drop 靜態網站上傳與認領步驟、限制及踩雷，並釐清和 Quick Tunnel、正式部署的用途差異。",
+    "sourceHash": "e2dfffeb1a7a4d5c9ea6a696bcbf89d246f84bf4d5470a11cd2721bbed091675"
+  },
+  "210": {
+    "types": [
+      "methods",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從官方 context 建議反思 skill 與 harness 的壽命，提出對照 eval 和結果驗證；產品指令、模型建議及既有實測帶有版本前提。",
+    "sourceHash": "0dd587f31466c7778a9da7ed94b0c4ef78e1d92cb257d24cb32edcaa426d0f0a"
+  },
+  "211": {
+    "types": [
+      "updates"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "公告第一場 AI 小聚的時間、報名與交流形式，說明面對面分享工作實務及預先 agent 媒合的構想。",
+    "sourceHash": "2945489e7d83432b77fc34c172f9e50a74887d8f12745e396cebf02b08e3802f"
+  },
+  "212": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "記錄工廠痛點媒合活動的講者重點，並以大小教堂比喻反思社群定位；活動預告具有時效性。",
+    "sourceHash": "75a506f84633a22c9707db88004857ad5359b4f394d3598478485636e4fcf37a"
+  },
+  "213": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "根據正式演講製作經驗評估 OpenSlides 的改稿與微調障礙，指出視覺工具最後調整的直接操作需求。",
+    "sourceHash": "714310013873ab4b5fa0f0f24d450b78cde3e863d98f9e2bb876be079d24a35a"
+  },
+  "214": {
+    "types": [
+      "methods",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "拆解 Codex 調度 ChatGPT Pro 寫碼再驗收的分工，分析節省額度、適用任務及瀏覽器操作限制；品質比較仍有限。",
+    "sourceHash": "3ed5e105fa85535ef93563a4831bcf17cec143bd0ee80b404966a193ee52ea74"
+  },
+  "215": {
+    "types": [
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以問答、固定流程、開發代理三種任務比較 Gemini 相關入口；Spark 名稱與 skill 支援仍是文中待確認前提。",
+    "sourceHash": "54987e6a5ce0b549cc7375a17f88fec60a1f241da013c0c23a955e0356e05692"
+  },
+  "216": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "解釋 RPA 與 API 的差異、維護限制，並以自動發文說明讓 AI 探路後固定成腳本的流程。",
+    "sourceHash": "5907bb5e90730bc3580c267eda8ef6589da956341f2417ae2d3b0e1645f9f6c1"
+  },
+  "217": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以社群取樣偏差與教學現場觀察反思 AI 焦慮和知識落差；統計及作者估計各有時間與樣本限制。",
+    "sourceHash": "39ded7319e237f881d4b51481e6336c38d807e1a3cce8977dfe888e27a0378b2"
+  },
+  "218": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從取得 iPAS 的經驗分析證照對不同受眾的信任訊號、商業與社群價值，對加薪效果保留未知。",
+    "sourceHash": "23085282daa90d83d68dc0c6897258ef884627ba1af79bd197d786122d88f9e6"
+  },
+  "219": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "復盤教師工作坊的實作、痛點串接與成果驗收設計，說明工具拒答、資安教學及混合授課的現場限制。",
+    "sourceHash": "b23d5c5af340cff1e17df62fb4bbb2b3b04e77293b87003271aa55ea9340c418"
+  },
+  "220": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從證書個資險些公開的事件，整理遮蔽後回讀、清除原檔與發布前檢查，反思把偶發好表現固化成流程。",
+    "sourceHash": "481e94e179a805eb38bc97ebc2414d5692d473b9346ca1a1260bceff2f5ff20d"
+  },
+  "221": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 DevSpace 以 MCP 連接本地專案的角色與安裝，提出 sandbox、最小權限及可觀察的測試方式；尚未深度實測。",
+    "sourceHash": "de5ae07d734cd942d1b84c91cf44c20510f81b41b29946189ce83b79d6965cbb"
+  },
+  "222": {
+    "types": [
+      "reflections",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以聲紋疑慮討論語音輸入的風險與可用性取捨，提出本機處理、資料篩選和服務信任的判斷原則。",
+    "sourceHash": "103113b124b6a235a847a1600f12537ea6b812194b2c5ddd598acad0e832f9f1"
+  },
+  "223": {
+    "types": [
+      "tools",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹並試玩 Promptasy 的 prompt 遊戲化學習體驗，區分流暢感受與尚未證實的學習成效、受眾適配。",
+    "sourceHash": "07feba8583f96850b47ab0c098fc5001c6a7cfec1733a7b71e95a99a0b31b263"
+  },
+  "224": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "復盤小聚的 agent 社交媒合實驗、資料卡流程與現場回饋，保留真實性、安全判斷及技術債的未解問題。",
+    "sourceHash": "9f34bb8ca921f9140f79fb5150014a0a8c1eff192ab694c8f4484847777a7ca0"
+  },
+  "225": {
+    "types": [
+      "cases",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以自製補助查詢站說明資格規則、待確認分類與人工備註，呈現可複用的判定設計；方案涵蓋與條件會更新。",
+    "sourceHash": "013813d1368373714efde821c2306e50741176a36448567b40d014022755fd62"
+  },
+  "226": {
+    "types": [
+      "tools",
+      "tutorials"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "提供社群發布套件的安裝與預覽指令，拆解單一原稿、內容核對、發布閘門及移除個人設定的可攜設計。",
+    "sourceHash": "22703abbd1157c74d911f0be83d649eb94fbb1b4b135fd1d7d63e72b0779db60"
+  },
+  "227": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從朋友學程式的動機與自身商案經驗，主張掌握需求、拆解與取捨的工程思維可另尋建立方式。",
+    "sourceHash": "fb95a61908079af1ba2aae6f61e265d8a880fc736d2f30a2ea9455ff10658555"
+  },
+  "228": {
+    "types": [
+      "methods",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "解釋隱性知識與顯性流程的差別，提出讓 AI 追問、整理與歸納經驗，再補上各步驟判斷準則。",
+    "sourceHash": "5e4597e0f8fc59af1b124f8b4a1c70def6d08e80caa83ac2777902624e603273"
+  },
+  "229": {
+    "types": [
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋文字取樣浮水印、圖檔來源資訊與偵測限制，區分溯源訊號和作者誠信判定；Claude 上線範圍與工具狀態有時點性。",
+    "sourceHash": "9cf72bfcb18d3cf29efe75ad18b4c54899f20f87c683d3728aaea2b406fe1323"
+  },
+  "230": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "比較同場長錄音的代管與本機轉錄、速度和語者分離，整理切段、快取及 LLM 後處理的選擇流程。",
+    "sourceHash": "29c4a5d132c55a199ff47304a3096a269bcab4bcac088e18d7c45c43415bdc52"
+  },
+  "231": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "由自製用詞表改用 OpenCC 的經驗介紹轉換指令與領域例外，反思既有 skill 可能遮住成熟解法。",
+    "sourceHash": "b3b19253a55c429e84944c1fa8ee658631051911e8a951b5d39107a209936993"
+  },
+  "232": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "用點飲料比喻說明規格缺漏與生成不確定性，提供 PTCF 四面向及完整提示詞範例。",
+    "sourceHash": "dd2bd4596a7bf08f73712020b4dd128c182eec93e31494818028fe6628fdb7ca"
+  },
+  "233": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "實測 herdr 的常駐 pane、工作狀態與 agent 調度，釐清斷線和重開機的恢復差異；遠端仍未實測。",
+    "sourceHash": "3dae50a192ae234f69820580950761d838bc517be22cf21c1112d21d09162fe6"
+  },
+  "234": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "介紹 firstmate 的隔離分工、bash 監督及離席權限，從實用瓶頸分析單一主視窗與跨專案的限制。",
+    "sourceHash": "30f1f3d8a9778829ae72b25557a70019e541e39798bd01734e8bc433b77113eb"
+  },
+  "235": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "以當時排行榜與開放權重新聞討論競爭、授權算力門檻及去拒答的兩面性；部分模型判斷於次日更正。",
+    "sourceHash": "158ab0cfdd78c893e6ae43ca1534d5fd94857e430dc0a7a7ec91ceaadc26f2c6"
+  },
+  "236": {
+    "types": [
+      "reflections",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "重新查證並更正開源追趕的數據與模型混淆，分析移動基準、RL 蒸餾、評測及實際維護成本的判讀限制。",
+    "sourceHash": "c8e004b20def934614ee4668b047e503fe202db1d2adee7dcab00219cfcd1dc8"
+  },
+  "237": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹並試用 herdr 手機 relay 的通知、核准與連線選擇，交代加密及配對安全，指出長對話回看限制。",
+    "sourceHash": "327ba6f0ddd54803b4c5625cebe4349f41bc49ac86018c1439d8567ed7ec1b9a"
+  },
+  "238": {
+    "types": [
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 Bunca 刷卡建議的使用方式，細讀頁面資料蒐集、導購商業模式及排序條款差異，標出回饋計算的限制。",
+    "sourceHash": "af8e2b706c52a1ef28456df29c1627b69bfd408e5ee40941b640011aa17ab625"
+  },
+  "239": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "拆解 Prelude 的獨立上下文、反諂媚評分、短名單與身份取捨，實測隔離設定如何減少 CLI 配對固定成本。",
+    "sourceHash": "7a9b93ca7d4c7472b08c8ee5a8ea91f927f618820265a0a7c3854c8d4d456930"
+  },
+  "240": {
+    "types": [
+      "tutorials",
+      "methods"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "提供關閉 ChatGPT 訓練的操作，釐清訓練、留存與法律保全的差別，並比較其他服務設定及資料分級原則。",
+    "sourceHash": "21be94fae2b6ee2d147a2bcd8b9cf6115920eed3f73d55c8cc1bd95289e482bc"
+  },
+  "241": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "整理小聚對 skill 分層載入、確定性腳本與模型分工的討論，提出縮短說明、切細任務及先備環境的做法；部分行為依工具版本。",
+    "sourceHash": "69d855377cc36fa9daa0e89cedee86ba31f56f5fb7eee3e731bf399cbac7d717"
+  },
+  "242": {
+    "types": [
+      "methods",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "timely"
+    ],
+    "reason": "因 Zeabur 事件介紹止血、留證、專案盤點與遷移 skill，強調撤憑證及資料庫切換的正確順序。",
+    "sourceHash": "adc4bc7c4f210d503db633a2ed6e964b451a46261bf0928431b15c4127a2b10a"
+  },
+  "243": {
+    "types": [
+      "methods",
+      "tutorials"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "提供按用途拆分金鑰、限制權限及額度的防損步驟，並用支付端設定補最後防線；實際選項依服務與銀行而異。",
+    "sourceHash": "127576087c08e2f53cd03482302f1dedb093d7ef91d8e0e3c9b6fd444e458e5e"
+  },
+  "244": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解釋 WIF 的短期權杖、OIDC 信任鏈和規則，分析適用環境及失效條件；供應商效期與 GitHub subject 格式有版本差異。",
+    "sourceHash": "eb6192cf59ccb896bdae50ddb4dbf703f571bad8eeef70aab0ce2d70174bab4b"
+  },
+  "245": {
+    "types": [
+      "tools",
+      "tutorials"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "介紹自製工具量測 skill 啟動與觸發成本，提供 scan、doctor 及分層整理流程；數值估算、路徑和限制依實作版本。",
+    "sourceHash": "544bbd909cae602f9725c2bb49fd7060ee354bbb16022746fda5a0580930ba46"
+  },
+  "246": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "根據文件日期復盤行號設立到收款開票的依賴與並行步驟，辨識自己的空窗和銀行等待；行政條件與費用限於個案。",
+    "sourceHash": "3690dc094641021ef182d83e085d636ecb0fd143f3c7f58e8392c4005f6b0520"
+  },
+  "247": {
+    "types": [
+      "fundamentals",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "釐清 WebMCP 的頁面工具宣告與 MCP server 差異，整理草案支援、安全邊界與先做只讀工具的判斷。",
+    "sourceHash": "43b625a150a6a3859cc72af8b6c756d7fc56438e7e9cd49e70ffb1813bc21474"
+  },
+  "248": {
+    "types": [
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "從分眾、學員成果、定價及陪伴需求分析 AI 課程價值，質疑用技術深度直接評判市場與教學。",
+    "sourceHash": "2e54951d3b040685396a3ca59f4b0cd4e4e0fea38021ebbc094e2d88cb3e343a"
+  },
+  "249": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以客戶諮詢拆解備援需求、失敗判定與自動切換，先分即時與可等待工作，再依能力和資料敏感性選模型。",
+    "sourceHash": "ab426b044befde42f19b2a7e07ff664681dae053f3fde22b18004d2682e8814b"
+  },
+  "250": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹跨 session 傳訊、同機與遠端路徑及權限限制，以貼錯視窗的實際交接說明用途，其他協作場景仍是構想。",
+    "sourceHash": "2b1bb6231254cf441951d6f229d4d56b6ed01221fde750452c1a273b861c53cd"
+  },
+  "251": {
+    "types": [
+      "updates"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "預告第三場小聚的報名、收費與流程，以日常抱怨找產品題目，邀請交流做出產品到商業價值的落差。",
+    "sourceHash": "558419373abfa7a77a23913f490f48fa692dbc0e985e7109e40e792620f2722a"
+  },
+  "252": {
+    "types": [
+      "methods",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "解讀 AgentOpt 各角色模型配置、成本與未派工失敗，提出依任務測組合的原則；模型、價格與 advisor 介面有版本期限。",
+    "sourceHash": "73686b32c53dca90f3ad3a4531fca4a37ae54c011c05ec772ce996a5e7828c94"
+  },
+  "253": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "整理實際語音外撥系統的延遲、輕量模型、對話護欄及受眾音色選擇，並記錄個案的電信申請限制。",
+    "sourceHash": "d17f0c1332759f50a088e178d45a31f2adef6ede43d4ee72d1928f161ce3af76"
+  },
+  "254": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以真實報價把總價拆為可選項、階段與常見組合，說明編號、價差不確定性、範圍邊界和折扣時機。",
+    "sourceHash": "364ef54d82df9433f9fa1ff8bc6be80af50773f4a545045d85f041c7b9b0d014"
+  },
+  "255": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以形象照票選頁示範按用途詢問回饋、蒐集未選理由及降低整理成本，呈現小型客製工具的實用價值。",
+    "sourceHash": "f52e53f89943dbc2f986012378070a1e6ef34540bfaeac24ca99354cb0c90c70"
+  },
+  "256": {
+    "types": [
+      "tutorials",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄首次電子發票的資格、字軌、憑證與開立步驟，將學過的操作整理成 skill；平台、稅務期限及規定需按時點看待。",
+    "sourceHash": "3a059ccd6edf254be909f7e8ad230707e58ed65b23ef649137de03642f0d90a3"
+  },
+  "257": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹並以開發票實測 ego 的 Space 與人機交接，對照 CDP 分頁歸屬問題，列出遷移、效能及隱私待驗項。",
+    "sourceHash": "e5dca164e665e66d2123a80fcd1e54675dc7c9d8f7677e971b5d1dfa5f1231ea"
+  },
+  "258": {
+    "types": [
+      "cases",
+      "tools"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "記錄 Astra 生成互動角色素材時的跨圖失敗，將問題拆成視角與配色一致性，反思模型能力和完整製作流程的距離。",
+    "sourceHash": "08979bc94718dca27f32e560888d40c0a16cc27f82bfd302e5629a7fbf7d1604"
+  },
+  "259": {
+    "types": [
+      "fundamentals",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以詐騙敘述釐清端對端加密與端點安全，實測連結裝置刪除同步並列出其他假說；原案未經鑑識。",
+    "sourceHash": "e657e7dc071a128ec7664a8676e445099a845acff1a4e113b031b8484f1e1499"
+  },
+  "260": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從效能需求拆出隨身與重載兩台機器的遠端分工，交代可用性和限制；新硬體與出貨資訊有時點性。",
+    "sourceHash": "1de6eabe4652e5efa40e861c64c4d2ebece19d247b2f0e4407067bdd52cfd01f"
+  },
+  "261": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "拆解雙 Mac 單向圖片剪貼簿同步的輪詢、SSH 與 launchd，記錄文字分工和螢幕共享衝突的修正。",
+    "sourceHash": "cb0a4d8257caaed31916de8d5ec21ab29230438d77eb68db754680955234767b"
+  },
+  "263": {
+    "types": [
+      "cases",
+      "tutorials"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "由高鐵 Wi-Fi 除錯提供先退出 VPN 再登入的操作，解釋 captive portal、DNS 與 Tailscale 的衝突；部分證據為事後重現。",
+    "sourceHash": "ebd68e13d21564aa0185b7857b0292b10959d9e716ddb8e48e6a49c6b750e750"
+  },
+  "264": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "說明 Jev 分類器的能力範圍，以重跑公開題檢查成本、門檻與評分標準，示範如何質疑宣傳倍數與不完整評測。",
+    "sourceHash": "bc7329d3574f576a51c8611d93d610519cd15f58cf3304ede46fbb356b688ced"
+  },
+  "265": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "以雙 Mac 與 75 場遊戲測試比較 Laya、Jev，拆出硬體網路、並行及規則的影響，區分單題分類和連續決策。",
+    "sourceHash": "5bf697be25970c1f8dbf0052fcee24f81282da9c5d373da91045457970e5155e"
+  },
+  "266": {
+    "types": [
+      "methods",
+      "fundamentals"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "用六項白話清單說明金鑰、授權、前端信任、輸入與供應鏈風險，提供兩帳號互測和限制 agent 範圍等上線前檢查。",
+    "sourceHash": "f9f58b43bd863bdd33e1e08c6c47eb754b5638c059bd62534bc27fe4a3e9c903"
+  },
+  "267": {
+    "types": [
+      "tutorials",
+      "tools"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "提供桌面全域聽寫的設定及熱鍵操作，區分逐字輸入與改句工具，整理熱鍵改版及 Codex 額度的使用者回報。",
+    "sourceHash": "3137530a123f95bbdd06426aa3cf27fb90642dbbc3e02229c6d9e4c16550a4a7"
+  },
+  "268": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "記錄 GitHub 停權到解封的時間線、申訴漏送與回信驗證，區分官方安全說明和自行猜測的原因。",
+    "sourceHash": "8065c59cba4bb2d608271896ae7082a32e4c50ce8155de8b5292936ca32314de"
+  },
+  "269": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned",
+      "evergreen"
+    ],
+    "reason": "以相同錄音與合成題比較六款本機 STT 的速度、記憶體與錯誤，分清無人工標準的觀察和可量評測，保留未確認內容。",
+    "sourceHash": "abaddae7b0ea6e9f7d0309533ae6906d7648dc65e3df299d8e7f8cff87ef0521"
+  },
+  "270": {
+    "types": [
+      "reflections",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "從現有轉錄流程和 HiDock 體驗提出錄音到知識庫的整合需求，區分已用工具與尚未實現的自動歸檔構想。",
+    "sourceHash": "c85682d7f235f125195cf4a9cb174f95f42a86ed67159e790bf618c534598f6f"
+  },
+  "271": {
+    "types": [
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "展示一次提示產出形象照動畫的實作與驗證界線，拆解程式畫面、合成音樂和時間軸，反思模糊需求如何影響滿意度。",
+    "sourceHash": "ef60a82f622af46d3aadeccd1b176ef4669540bd3c9181b07e2a7a230bdc0068"
+  },
+  "272": {
+    "types": [
+      "reflections",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "由 Studio 影片發布補功能的延誤反思原型到穩定使用的成本，提出自製與購買現成工具應計入維護和時間。",
+    "sourceHash": "3d2be40ba27b7a7653940ac9f67f8e40791b2df3252df9c890c8c07a9115adbd"
+  },
+  "273": {
+    "types": [
+      "cases",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "介紹 hidock-hub 已接通的錄音、轉錄到知識庫流程，說明聲紋寧分勿併、分享篩選及本機音訊與雲端摘要的取捨。",
+    "sourceHash": "352501a95f1d87acaa6b78c5ec002cb691cf21498eafd29f8cf5b4310a036e0a"
+  },
+  "274": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "記錄申請活動時對 Paxel 安裝指令的唯讀審查，釐清對話片段上傳和遠端評分依賴，提出先限範圍再交資料的做法。",
+    "sourceHash": "b590644773c368bdbc69760c0b5317c7d7a475eb670060aaf9e822b14fec3713"
+  },
+  "275": {
+    "types": [
+      "cases",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "以 Breeze 快取編碼特徵與局部量化的實測展示加速，固定亂數並回聽差異，區分輸出變動和準確度證據。",
+    "sourceHash": "98a6ac184b923ef98f96c6784e584b58f71780772bc38e547660ca15b0b3662c"
+  },
+  "276": {
+    "types": [
+      "fundamentals",
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "釐清 shot 是範例數而非一次成功，解釋上下文學習與訓練差異，提供零、一、少樣本提示的選擇情境。",
+    "sourceHash": "c9d5876a93e9869d5252ed7530df5e68cdb7462bdf8e809576e5b4013e9d2e2c"
+  },
+  "277": {
+    "types": [
+      "tools",
+      "methods"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "釐清 Mods 和設定 hooks 的事件、狀態及介面差異，提出圖片與草稿預覽的可實作構想，明確標示尚未完成及權限限制。",
+    "sourceHash": "96f10b12e4e9564251811a9170fcf4695961247ea3e81c065d6eada81c0076d6"
+  },
+  "278": {
+    "types": [
+      "updates",
+      "reflections"
+    ],
+    "freshness": [
+      "timely",
+      "versioned"
+    ],
+    "reason": "整理 Decisions API 與 Clef 進場對 Jev 的競爭影響，討論固定選項決策何時該自行串接；價格與對照準確度未定。",
+    "sourceHash": "f3ba540a40eac7fa4aa263f6641f627559b4e7fd0d88c85c8b67a8a3fd4bcf23"
+  },
+  "279": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "以 kcwho 原型呈現 Keychain 授權來源追查需求，區分系統工具名稱、呼叫線索與未證實的當次請求者。",
+    "sourceHash": "2a87bd1c3ad063959bd87c6248447f2beb9d889f93963468383d48427e69dd4d"
+  },
+  "280": {
+    "types": [
+      "methods",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "整理接案成本與價值定價，主張按受眾用白話建立信任並先問預算，減少行話和價格競爭造成的溝通落差。",
+    "sourceHash": "808d6aae2b1a225e567ffab15f65dae4fd7a53705a16d68fa553f8e90037f9e6"
+  },
+  "281": {
+    "types": [
+      "methods"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以講座句型和現場練習整理可調整的自我介紹，聚焦協助對象、解決問題、具體證據及轉介紹邀請。",
+    "sourceHash": "baf1b1cd5d0a9f4ac9306d7d3a89814d162eb9b38f8df1b148bdd4019993fb59"
+  },
+  "282": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "記錄擔任 vibe coding 助教面對多系統現場除錯的經驗，反思帶學員完成的教學專業，並附補助課程報名資訊。",
+    "sourceHash": "f485eeebb5f92d25e512029c153ed693965e7880cba8a09b42609615fb3c4506"
+  },
+  "283": {
+    "types": [
+      "tools",
+      "cases"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹自製 cc-preview 的遠端圖片傳送與 mosh 字元 fallback，記錄除錯和實測邊界，附安裝與面板操作。",
+    "sourceHash": "b2e98051bf54d566b0b8239bddaaaec7f28503026d1f8c16abb1b58fc9fca16f"
+  },
+  "284": {
+    "types": [
+      "cases",
+      "tools"
+    ],
+    "freshness": [
+      "evergreen",
+      "versioned"
+    ],
+    "reason": "從不同 bind 搶走相同 port 的事件介紹 portman 預約與程序管理，示範用規則和 hook 阻擋 agent 誤停既有服務。",
+    "sourceHash": "f60e9ef31fc5d830f6a322da51eda0259e579f09693cce793926886311e008b3"
+  },
+  "285": {
+    "types": [
+      "methods",
+      "cases"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "由難讀的行為規格改用可操作介面逐條確認需求，再將畫面與清單作合約附件，降低範圍歧見。",
+    "sourceHash": "bb44575f99e9a5937854995e442ebb8dd73c9feea9238d84e746d905c9db91fa"
+  },
+  "286": {
+    "types": [
+      "cases",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "重新讀 herdr 文件後以原生遠端功能取代 mosh 低畫質預覽，反思先查既有支援可避免多餘開發。",
+    "sourceHash": "1dbfd6b04d032bad3514286e49a5fd9f09fc1f1dacd36ee928c8a35d99d70d00"
+  },
+  "287": {
+    "types": [
+      "tools",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 REA 還原家電協定的工具鏈，以他人冷氣與眼鏡示範討論自製控制介面及安全面；示範者未證實使用 REA。",
+    "sourceHash": "f42c94bfa9b4530e0cfbc762647a6540f6a72eb28b1d9679b1b5b38abefcf2ab"
+  },
+  "288": {
+    "types": [
+      "updates"
+    ],
+    "freshness": [
+      "timely"
+    ],
+    "reason": "公告接案人生研究所 AI 分享的時間、流程、邀請審核和費用，預告以接案實際案例交流效率做法。",
+    "sourceHash": "48f55683d4b2957220868cc0c3e2608ded023c27ac644ece5e6f99186c858df4"
+  },
+  "289": {
+    "types": [
+      "tools",
+      "reflections"
+    ],
+    "freshness": [
+      "versioned"
+    ],
+    "reason": "介紹 ArtCraft 的早期 Adobe 替代工具，從試用與缺陷反思常用功能、專業穩定性和訂閱費換回時間的取捨。",
+    "sourceHash": "2c0a72096db20bb887372f862bd411b676beb71dbc9e5a528c5d6284921a0902"
+  },
+  "290": {
+    "types": [
+      "tools",
+      "updates"
+    ],
+    "freshness": [
+      "versioned",
+      "timely"
+    ],
+    "reason": "記錄受邀發表會的現場模型速度與機身觀察，介紹 RTX Spark 的 CUDA、統一記憶體及 Arm 相容性，規格價格與效能受配置時點限制。",
+    "sourceHash": "59b0478c9867ea6a5fe6c99e9426375027fe0800b42fe50ff203d347f91bbe2a"
+  },
+  "291": {
+    "types": [
+      "methods",
+      "reflections"
+    ],
+    "freshness": [
+      "evergreen"
+    ],
+    "reason": "以生成機率及影片、簡報例子說明複雜任務分段與逐步驗證的價值，將偶爾一次成功和可重複達標分開。",
+    "sourceHash": "9e32876cc62ed8a84276743fc2413f81afd6557c36eaeb5dc34d0f44cedb172e"
+  }
+}

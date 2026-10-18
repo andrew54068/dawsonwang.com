@@ -17,6 +17,8 @@
     "check:seo": "tsx scripts/check-seo-output.ts",
     "preview": "astro preview",
     "categorize": "tsx scripts/categorize-days.ts",
+    "taxonomy:audit": "tsx scripts/audit-article-taxonomy.ts",
+    "taxonomy:verify-browser": "tsx scripts/verify-article-browser.ts",
     "deploy": "tsx scripts/deploy-local.ts",
     "deploy:daily-install": "scripts/setup-daily-deploy-launchd.sh install",
     "deploy:daily-uninstall": "scripts/setup-daily-deploy-launchd.sh uninstall",
