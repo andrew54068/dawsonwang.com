@@ -37,20 +37,20 @@ test('daysForTopic sorts newest-first', () => {
 
 test('daysForTopic can restrict results to real loaded day numbers', () => {
   expect(daysForTopic('claude-code', [121])).toEqual([121]);
-  expect(daysForTopic('agents', [121])).toEqual([]);
+  expect(daysForTopic('security', [121])).toEqual([]);
 });
 
 test('topicsWithPosts excludes zero-post topics from crawlable topic surfaces', () => {
-  // Day 121 is claude-code + dev-tooling; day 120 adds token-cost.
+  // Day 121 covers Claude Code / Codex collaboration; day 120 adds cost strategy.
   const topicSlugs = topicsWithPosts([120, 121]).map(topic => topic.slug);
   expect(topicSlugs).toEqual(expect.arrayContaining(['claude-code', 'dev-tooling', 'token-cost']));
-  expect(topicSlugs).toHaveLength(3);
+  expect(topicSlugs).toHaveLength(4);
 });
 
 test('topicsWithPosts only returns topics backed by tagged loaded days', () => {
   const validDayNumbers = [121];
   const topics = topicsWithPosts(validDayNumbers);
-  expect(topics.map(topic => topic.slug)).toEqual(['claude-code', 'dev-tooling']);
+  expect(topics.map(topic => topic.slug)).toEqual(['claude-code', 'agents', 'dev-tooling']);
   expect(topics.every(topic => daysForTopic(topic.slug, validDayNumbers).length > 0)).toBe(true);
 });
 

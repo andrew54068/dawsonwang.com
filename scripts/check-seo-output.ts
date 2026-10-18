@@ -648,7 +648,7 @@ if (!existsSync(outDir)) {
   assertNonArticleSharedLayoutContract(topicsIndex, '/topics', 'topics index');
   assertDescriptionStack(topicsIndex, 'topics index');
   assertDefaultSocialCardStack(topicsIndex, '/topics');
-  assertMatch(topicsIndex, new RegExp(`<meta name="description" content="依主題瀏覽 Dawson Wang 的 ${activeTopics.length} 個 AI 工具落地分類：[^\"]+。"\\s*\\/?\\s*>`), 'topics index meta description');
+  assertMatch(topicsIndex, new RegExp(`<meta name="description" content="依文章類型、主題與時效性瀏覽 Dawson Wang 的 ${sourceDayNumberSet.size} 篇文章，涵蓋 ${activeTopics.length} 個主題。[^\"]+。"\\s*\\/?\\s*>`), 'topics index meta description');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"CollectionPage".*"@type":"ItemList".*<\/script>/s, 'topics index JSON-LD');
   assertMatch(topicsIndex, /<script type="application\/ld\+json"[^>]*>.*"@type":"BreadcrumbList".*<\/script>/s, '/topics BreadcrumbList JSON-LD');
   assertJsonLdInLanguage(topicsIndex, 'DefinedTermSet', '/topics');

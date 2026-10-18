@@ -1,4 +1,7 @@
 import { test, expect } from 'vitest';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import {
   classifyDay,
   scoreTopics,
@@ -7,7 +10,7 @@ import {
   MAX_SLUGS,
   type TopicRule,
 } from '../scripts/lib/day-topic-classifier';
-import { upsertEntries, type DayTags } from '../scripts/categorize-days';
+import { classifyUntagged, upsertEntries, type DayTags } from '../scripts/categorize-days';
 import { TOPICS } from '../src/data/topics';
 
 // --- classifier -------------------------------------------------------------
@@ -80,6 +83,18 @@ test('slugs below FLOOR are dropped even when they matched something', () => {
 });
 
 // --- topics.ts writer -------------------------------------------------------
+
+test('daily categorization preserves reviewed topics unless retag is explicitly requested', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'taxonomy-preserve-'));
+  try {
+    mkdirSync(path.join(dir, 'day186'));
+    writeFileSync(path.join(dir, 'day186/source.md'), 'Day 186 Changed title\n\n完全不同的內容');
+    expect(classifyUntagged(dir)).toEqual([]);
+    expect(classifyUntagged(dir, { retag: true })).toHaveLength(1);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
 
 const FIXTURE = `export const DAY_TOPICS: Record<number, string[]> = {
   226: ['content-workflow', 'dev-tooling'],
