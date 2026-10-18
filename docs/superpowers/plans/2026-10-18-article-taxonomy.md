@@ -31,7 +31,7 @@
 - [x] 全測試、Astro 檢查、完整 build、SEO 驗證；修正實際問題。
 - [x] 獨立 review，修正重要問題。舊 topic=cases 入口遺失條件問題經瀏覽器 RED→GREEN。
 - [x] Tailscale 私人服務；實際建置的 HTTP、同來源素材及 16 項瀏覽器檢查通過，保留服務。
-- [ ] MacBook Air 端 HTTP 驗證：裝置離線，SSH 連線逾時，尚未驗證。
+- [x] MacBook Air 端 HTTP 驗證：裝置恢復連線後，經 SSH 從 Air 讀取分類頁正文，文章索引、Day 186、Pagefind 與 CSS／JavaScript 素材均回傳 200。
 
 ## 完成證據
 
@@ -39,4 +39,4 @@
 - 33 個 Vitest 檔案、292 項測試通過；Astro check 0 errors、0 warnings，既有 RSS 未使用 import 留有 1 hint。
 - 完整離線 build、290/290 文章頁、20/20 主題頁、SEO 檢查通過。
 - 實際建置產物：16 項瀏覽器互動與 390px / 1280px 無水平溢出檢查通過；深淺主題經畫面檢視。
-- 本機私人預覽可用；未公開發佈。Air 離線的跨裝置檢查不算完成。
+- 私人預覽已從 MacBook Air 驗證頁面及素材可讀取；瀏覽器互動測試在提供服務的機器執行，未宣稱 Air 瀏覽器端互動驗證。未公開發佈。
