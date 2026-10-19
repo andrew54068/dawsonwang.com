@@ -8,7 +8,12 @@ import path from 'node:path';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://dawsonwang.com',
+  // Canonical served host = www. Mirror of `SITE_URL` in src/lib/seo.ts.
+  // Vercel currently serves www as the primary domain and 301-redirects apex
+  // (see vercel.json `redirects` block). Astro uses `site` to render absolute
+  // URLs in built artifacts (e.g. RSS feed `<link>`, generated `view-transitions`
+  // routing). Must stay in lockstep with SITE_URL.
+  site: 'https://www.dawsonwang.com',
   adapter: vercel(),
   vite: {
     plugins: [tailwindcss()],
