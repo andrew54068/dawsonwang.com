@@ -232,12 +232,29 @@ function readPngDimensionsFromAssetUrl(assetUrl: string) {
     const { pathname } = new URL(assetUrl);
     const imagePath = path.join(root, 'public', pathname.replace(/^\/+/, ''));
     const imageBytes = readFileSync(imagePath);
-    if (imageBytes.length < 24 || imageBytes.toString('ascii', 1, 4) !== 'PNG') return undefined;
-
-    return {
-      width: imageBytes.readUInt32BE(16),
-      height: imageBytes.readUInt32BE(20),
-    };
+    if (imageBytes.length >= 24 && imageBytes.toString('ascii', 1, 4) === 'PNG') {
+      return { width: imageBytes.readUInt32BE(16), height: imageBytes.readUInt32BE(20) };
+    }
+    // JPEG: walk marker segments to the frame header (SOF0–SOF15, excluding the
+    // non-frame C4/C8/CC markers) and read its 16-bit height/width.
+    if (imageBytes.length >= 4 && imageBytes[0] === 0xff && imageBytes[1] === 0xd8) {
+      let offset = 2;
+      while (offset + 9 < imageBytes.length) {
+        if (imageBytes[offset] !== 0xff) { offset++; continue; }
+        const marker = imageBytes[offset + 1]!;
+        if (marker === 0xd8 || marker === 0xd9 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) {
+          offset += 2;
+          continue;
+        }
+        const segmentLength = imageBytes.readUInt16BE(offset + 2);
+        const isFrameHeader = marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc;
+        if (isFrameHeader) {
+          return { height: imageBytes.readUInt16BE(offset + 5), width: imageBytes.readUInt16BE(offset + 7) };
+        }
+        offset += 2 + segmentLength;
+      }
+    }
+    return undefined;
   } catch {
     return undefined;
   }

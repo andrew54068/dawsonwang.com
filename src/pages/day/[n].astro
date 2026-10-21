@@ -70,40 +70,70 @@ const repoRoot = process.cwd();
 
 function pngDimensionsForPublicPath(publicPath: string) {
   const normalizedPath = publicPath.replace(/^\/+/, '');
-  if (!normalizedPath.toLowerCase().endsWith('.png')) return undefined;
+  const lower = normalizedPath.toLowerCase();
+  if (!/\.(png|jpe?g)$/.test(lower)) return undefined;
 
   try {
     const imageBytes = readFileSync(path.join(repoRoot, 'public', normalizedPath));
-    if (imageBytes.length < 24 || imageBytes.toString('ascii', 1, 4) !== 'PNG') return undefined;
-
-    return {
-      width: imageBytes.readUInt32BE(16),
-      height: imageBytes.readUInt32BE(20),
-    };
+    if (imageBytes.length >= 24 && imageBytes.toString('ascii', 1, 4) === 'PNG') {
+      return { width: imageBytes.readUInt32BE(16), height: imageBytes.readUInt32BE(20) };
+    }
+    // JPEG: walk the marker segments to the frame header (SOF0–SOF15, excluding
+    // the non-frame C4/C8/CC markers) and read its 16-bit height/width.
+    if (imageBytes.length >= 4 && imageBytes[0] === 0xff && imageBytes[1] === 0xd8) {
+      let offset = 2;
+      while (offset + 9 < imageBytes.length) {
+        if (imageBytes[offset] !== 0xff) { offset++; continue; }
+        const marker = imageBytes[offset + 1]!;
+        if (marker === 0xd8 || marker === 0xd9 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) {
+          offset += 2;
+          continue;
+        }
+        const segmentLength = imageBytes.readUInt16BE(offset + 2);
+        const isFrameHeader = marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc;
+        if (isFrameHeader) {
+          return { height: imageBytes.readUInt16BE(offset + 5), width: imageBytes.readUInt16BE(offset + 7) };
+        }
+        offset += 2 + segmentLength;
+      }
+    }
+    return undefined;
   } catch {
     return undefined;
   }
 }
 
-const primaryOgImage = slides[0]?.src ?? DEFAULT_OG_IMAGE;
+// Social-card preference: an explicit og.jpg/og.png for the day wins; otherwise
+// the first slide; otherwise the site default. A day with photos but no slide
+// deck (e.g. an event writeup) ships its own card via og.jpg.
+const ogOverride = day.data.ogImage
+  ? `/content/day${dayPad}/${(day.data.ogImage as string).split('/').pop()}`
+  : undefined;
+const primaryOgImage = ogOverride ?? slides[0]?.src ?? DEFAULT_OG_IMAGE;
 const primaryOgImageDimensions = pngDimensionsForPublicPath(primaryOgImage)
   ?? (primaryOgImage === DEFAULT_OG_IMAGE
     ? { width: DEFAULT_OG_IMAGE_WIDTH, height: DEFAULT_OG_IMAGE_HEIGHT }
     : undefined);
-// Primary Article image: og-default with known dimensions to qualify for the large-image
-// Article rich result (Google guidance: declare width/height, prefer ≥1200px). Slide images
-// from content/dayNN are added as secondary string entries when present — we don't have
-// reliable dimensions for them at build time, so the typed primary is the dimension anchor.
-const fallbackImage = {
-  '@type': 'ImageObject',
-  url: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
-  width: DEFAULT_OG_IMAGE_WIDTH,
-  height: DEFAULT_OG_IMAGE_HEIGHT,
-};
+// An explicit og.jpg is a real photo of the day, so give the card a descriptive
+// alt built from the headline rather than the bare page title BaseLayout defaults to.
+const ogImageAlt = ogOverride ? `Day ${day.data.dayNumber} ${day.data.subtitle || ''}`.trim() : undefined;
+// Primary Article image: a typed ImageObject with known width/height to qualify for
+// the large-image Article rich result (Google guidance: declare dimensions, prefer
+// ≥1200px). This is the og.jpg override when present, else og-default. Slide images
+// from content/dayNN are added as secondary string entries when present — we don't
+// have reliable dimensions for them at build time, so the typed primary is the anchor.
+const primaryImageObject = (ogOverride && primaryOgImageDimensions)
+  ? { '@type': 'ImageObject', url: `${SITE_URL}${ogOverride}`, width: primaryOgImageDimensions.width, height: primaryOgImageDimensions.height }
+  : {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+      width: DEFAULT_OG_IMAGE_WIDTH,
+      height: DEFAULT_OG_IMAGE_HEIGHT,
+    };
 const slideImageUrls = slides.map(s => `${SITE_URL}${s.src}`);
 const articleImage: unknown = slideImageUrls.length > 0
-  ? [fallbackImage, ...slideImageUrls]
-  : fallbackImage;
+  ? [primaryImageObject, ...slideImageUrls]
+  : primaryImageObject;
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -135,7 +165,7 @@ const dayBreadcrumbJsonLd = breadcrumbJsonLd([
   { name: `Day ${day.data.dayNumber} ${day.data.subtitle ?? ''}`.trim(), url: `/day/${day.data.dayNumber}` },
 ], dayUrl);
 ---
-<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={primaryOgImage} ogImageWidth={primaryOgImageDimensions?.width} ogImageHeight={primaryOgImageDimensions?.height} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)}>
+<BaseLayout title={`Day ${day.data.dayNumber} ${day.data.subtitle}`} description={articleDescription} type="article" ogImage={primaryOgImage} ogImageWidth={primaryOgImageDimensions?.width} ogImageHeight={primaryOgImageDimensions?.height} ogImageAlt={ogImageAlt} structuredData={[articleJsonLd, dayBreadcrumbJsonLd]} publishedTime={publishDate ?? undefined} modifiedTime={publishDate ?? undefined} articleAuthorUrl={`${SITE_URL}/#person`} articleTags={topics.map(t => t.title)}>
   <article class="day-article" data-pagefind-body data-pagefind-meta={`day:${day.data.dayNumber}`}>
     <div class="wrap day-grid">
 

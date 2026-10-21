@@ -112,8 +112,21 @@ export async function copyDayAssets(dayRoot: string, dayDest: string) {
 
   await copyReferencedAttachments(dayRoot, dayDest);
 
-  // Share artifacts (MP4/GIF) live at the day root, not in a subdirectory.
+  // Share artifacts (MP4/GIF) and the explicit social-card image live at the day
+  // root, not in a subdirectory.
   const rootEntries = await fs.readdir(dayRoot, { withFileTypes: true });
+
+  // Explicit per-day social-card image (og.jpg/og.jpeg/og.png). A day with no
+  // slide deck otherwise shares the site-wide og-default.png; this gives one post
+  // its own card. Only this exact basename ships — no other day-root image is
+  // published. JPG/PNG only (LINE/Facebook crawlers skip WebP OG images).
+  const OG_RE = /^og\.(jpe?g|png)$/i;
+  const ogEntry = rootEntries.find((e) => e.isFile() && OG_RE.test(e.name));
+  if (ogEntry) {
+    await fs.mkdir(dayDest, { recursive: true });
+    await fs.copyFile(path.join(dayRoot, ogEntry.name), path.join(dayDest, ogEntry.name));
+  }
+
   const shareFiles = rootEntries.filter((e) => e.isFile() && SHARE_RE.test(e.name));
   if (shareFiles.length > 0) {
     await fs.mkdir(dayDest, { recursive: true });

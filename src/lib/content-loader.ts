@@ -8,6 +8,7 @@ export interface DayEntry extends ParsedSource {
   slideFiles: string[];           // Absolute paths to slide PNGs
   shareFiles: string[];           // Absolute paths to share artifacts (MP4/GIF) in day root
   coverImage?: string;            // Absolute path to cover.png if present
+  ogImage?: string;               // Absolute path to og.{jpg,png} if present — explicit social-card override
   contentDir: string;             // Absolute path to content/dayNN/
 }
 
@@ -92,5 +93,22 @@ async function loadOne(dir: string): Promise<DayEntry | null> {
     }
   }
 
-  return { ...parsed, manifest, slideFiles, shareFiles, coverImage, contentDir: dir };
+  // Explicit social-card override. A day with no slide deck otherwise falls back
+  // to the site-wide og-default.png; dropping an og.jpg/og.png in the day dir
+  // gives that post its own share image. JPG/PNG only — LINE and Facebook's
+  // crawlers don't reliably render WebP OG images, and the dimension readers
+  // (day page + check-seo) parse PNG/JPEG headers, not WebP.
+  let ogImage: string | undefined;
+  for (const candidate of ['og.jpg', 'og.jpeg', 'og.png']) {
+    const p = path.join(dir, candidate);
+    try {
+      await fs.access(p);
+      ogImage = p;
+      break;
+    } catch {
+      continue;
+    }
+  }
+
+  return { ...parsed, manifest, slideFiles, shareFiles, coverImage, ogImage, contentDir: dir };
 }
