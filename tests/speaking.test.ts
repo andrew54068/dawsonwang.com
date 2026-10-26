@@ -45,6 +45,18 @@ describe('speaking proof content', () => {
     expect(pageSource).toContain('data-lecture-session');
   });
 
+  test('records the October community talk and updated attendance floor', () => {
+    const talk = ENGAGEMENTS.find(engagement => engagement.slug === 'freelancer-lab');
+    expect(talk?.start).toBe('2026-10-22');
+    expect(talk?.format).toContain('40+ 人');
+    expect(talk?.days).toEqual([299]);
+
+    const pageSource = readFileSync(path.join(process.cwd(), 'src/pages/speaking.astro'), 'utf8');
+    expect(pageSource).toContain('const venueCount = 7;');
+    expect(pageSource).toContain('const sessionCount = 9;');
+    expect(pageSource).toContain("const attendeeTotal = '290+';");
+  });
+
   test('keeps engagement slugs unique for resolved testimonial and slide joins', () => {
     expect(engagementSlugs.size).toBe(ENGAGEMENTS.length);
   });
@@ -79,7 +91,7 @@ describe('speaking proof content', () => {
     }
   });
 
-  test('maps three to five unique optimized photos to each lecture, except the two-photo Tainan Hospital session', async () => {
+  test('maps unique optimized photos to each lecture, retaining two-photo source sets', async () => {
     const speaking = await import('../src/data/speaking') as SpeakingModule;
     const sessions = speaking.LECTURE_SESSIONS;
 
@@ -96,6 +108,7 @@ describe('speaking proof content', () => {
       '2026-09-07',
       '2026-09-17',
       '2026-09-21',
+      '2026-10-22',
     ]);
 
     const ids = new Set(sessions.map(session => session.id));
@@ -107,7 +120,7 @@ describe('speaking proof content', () => {
       expect(session.id).toMatch(/^[a-z0-9-]+$/);
       expect(session.venue.trim().length).toBeGreaterThan(3);
       expect(session.title.trim().length).toBeGreaterThan(5);
-      if (session.id === 'tainan-hospital-0731') {
+      if (['tainan-hospital-0731', 'freelancer-lab-1022'].includes(session.id)) {
         expect(session.photos).toHaveLength(2);
       } else {
         expect(session.photos.length).toBeGreaterThanOrEqual(3);
