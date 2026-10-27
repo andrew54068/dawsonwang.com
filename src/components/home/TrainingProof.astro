@@ -1,5 +1,8 @@
 ---
-import { RECENT_HOSPITAL_SURVEY, TESTIMONIALS } from '../../data/speaking';
+import { ENGAGEMENTS, RECENT_HOSPITAL_SURVEY, TESTIMONIALS } from '../../data/speaking';
+
+const teacherWorkshop = ENGAGEMENTS.find(engagement => engagement.slug === 'ccvs');
+const workshopResults = teacherWorkshop?.decks.find(deck => deck.segment === '學員作品');
 
 // Split "4.82 / 5" → ["4.82", "5"] so we can render the big number + small unit
 // like the design, while keeping the source string in speaking.ts canonical.
@@ -31,7 +34,15 @@ const photos = [
       <div class="sec-head">
         <p class="eyebrow">企業內訓</p>
         <h2 id="training-title">聽完覺得有收穫不算，<br>要帶著成品離開教室。</h2>
-        <p class="sec-sub">課程以實作為主。實作時間我會走到每個人座位旁，一個一個確認進度——很多卡點，只有看到操作畫面才說得清楚。</p>
+        <p class="sec-sub">
+          課程以實作為主。
+          {teacherWorkshop && workshopResults && (
+            <>
+              以{teacherWorkshop.venue}的「{teacherWorkshop.title}」為例，老師們練習製作可編輯的 Word 補救教材，也把實作成果放上網，讓別人可以打開瀏覽。
+              <a class="text-link" href={workshopResults.url}>看公開成果牆 <span aria-hidden="true">→</span></a>
+            </>
+          )}
+        </p>
       </div>
       <ul class="scale-pills" aria-label="授課規模">
         <li><b>8</b> 場授課</li>

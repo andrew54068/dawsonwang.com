@@ -32,7 +32,8 @@ describe('production-critical website flows', () => {
     expect(home).toContain('<Hero />');
     expect(home).toContain('<ServiceExplainer />');
     expect(home).toContain('<InquiryForm />');
-    expect(home).toContain('Dawson Wang 幫台灣團隊把 AI 工具落地到實際工作流');
+    expect(home).toContain('title="中小企業 AI 導入顧問・企業內訓"');
+    expect(home).toContain('協助台灣中小企業整理 LINE、Excel、Email 與 SOP 工作流程');
 
     expect(inquiryForm).toContain('id="inquire"');
     expect(inquiryForm).toMatch(/<form[^>]+action="\/api\/inquiry"[^>]+method="POST"/s);

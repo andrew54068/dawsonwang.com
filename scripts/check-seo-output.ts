@@ -4,7 +4,7 @@ import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 import { PROJECTS } from '../src/data/projects';
 import { SERVICES } from '../src/data/services';
 import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../src/data/profiles';
-import { LECTURE_SESSIONS } from '../src/data/speaking';
+import { ENGAGEMENTS, LECTURE_SESSIONS } from '../src/data/speaking';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -356,17 +356,24 @@ if (!existsSync(outDir)) {
   }
 
   const home = readGenerated('index.html');
-  const expectedHomeTitle = 'Dawson Wang — AI 工具落地實踐者';
+  const expectedHomeTitle = '中小企業 AI 導入顧問・企業內訓 | Dawson Wang';
+  const expectedHomeDescription = '協助台灣中小企業整理 LINE、Excel、Email 與 SOP 工作流程，從 AI 導入評估、工具落地到團隊內訓。預約 30 分鐘諮詢，先釐清最值得改善的工作。';
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
   assertCanonicalOgUrlParity(home, 'home');
   assertLocaleStack(home, 'home');
   assertNonArticleSharedLayoutContract(home, '/', 'home');
   assertTitleStack(home, expectedHomeTitle, 'home');
   assertDescriptionStack(home, 'home');
+  assertIncludes(home, `<meta name="description" content="${escapeHtml(expectedHomeDescription)}"`, 'home expected description');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   const homeJsonLd = extractJsonLdScript(home, 'home');
+  assertMatch(
+    homeJsonLd,
+    new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"description":"${escapeRegExp(escapeJsonString(expectedHomeDescription))}"`),
+    'home ProfessionalService description matches meta description'
+  );
   assertRootEntityGraph(homeJsonLd, 'home');
   assertJsonLdInLanguage(home, 'WebSite', 'home');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
@@ -415,6 +422,16 @@ if (!existsSync(outDir)) {
       new RegExp(`"itemOffered":\\{"@type":"Service","name":"${escapeRegExp(escapedTitle)}"[\\s\\S]*?"provider":\\{"@id":"${siteUrl}/#person"\\},"areaServed":"Taiwan"`),
       `home OfferCatalog itemOffered areaServed Taiwan for ${service.title}`
     );
+  }
+  const teacherWorkshop = ENGAGEMENTS.find(engagement => engagement.slug === 'ccvs');
+  const workshopResults = teacherWorkshop?.decks.find(deck => deck.segment === '學員作品');
+  if (teacherWorkshop && workshopResults) {
+    assertIncludes(home, escapeHtml(teacherWorkshop.venue), 'home training example venue');
+    assertIncludes(home, escapeHtml(teacherWorkshop.title), 'home training example title');
+    assertIncludes(home, 'Word 補救教材', 'home training example deliverable');
+    assertIncludes(home, `href="${escapeHtml(workshopResults.url)}"`, 'home training example public results');
+  } else {
+    fail('home training example source or public results link is missing');
   }
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
@@ -516,8 +533,8 @@ if (!existsSync(outDir)) {
   assertIncludes(speaking, '4.82 / 5', '/speaking recent hospital survey average score');
   assertIncludes(speaking, '29 / 33', '/speaking recent hospital survey hands-on completion');
   assertIncludes(speaking, '31 / 33', '/speaking recent hospital survey work intent');
-  assertIncludes(speaking, '>8</dd>', '/speaking verified session count');
-  assertIncludes(speaking, '>250+</dd>', '/speaking conservative attendee total');
+  assertIncludes(speaking, '>9</dd>', '/speaking verified session count');
+  assertIncludes(speaking, '>290+</dd>', '/speaking conservative attendee total');
   for (const session of ['06/27 奇美醫院總院', '07/04 奇美醫院總院', '07/16 柳營奇美醫院', '07/31 部立臺南醫院', '09/07 臺南新樓醫院', '09/17 佳里奇美醫院', '09/21 柳營奇美醫院']) {
     assertIncludes(speaking, session, `/speaking hospital session ${session}`);
   }
@@ -736,15 +753,15 @@ if (!existsSync(outDir)) {
   const sitemapTopicCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/topics\/[^<]+<\/loc>/g)).length;
   if (sitemapTopicCount !== activeTopics.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${activeTopics.length}`);
   assertIncludes(sitemap, `<loc>${siteUrl}/search</loc>`, 'sitemap');
-  if (latestPublishedAt) {
-    assertSitemapEntry(sitemap, '/', '1.0', 'weekly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/projects', '0.9', 'weekly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/business-registration', '0.7', 'yearly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/days', '0.9', 'daily', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/topics', '0.7', 'weekly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/search', '0.5', 'monthly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/rss.xml', '0.6', 'daily', latestPublishedAt);
-  }
+  assertSitemapEntry(sitemap, '/', '1.0', 'weekly');
+  assertSitemapEntry(sitemap, '/cases', '0.9', 'weekly');
+  assertSitemapEntry(sitemap, '/projects', '0.9', 'weekly');
+  assertSitemapEntry(sitemap, '/speaking', '0.9', 'weekly');
+  assertSitemapEntry(sitemap, '/business-registration', '0.7', 'yearly');
+  assertSitemapEntry(sitemap, '/search', '0.5', 'monthly');
+  assertSitemapEntry(sitemap, '/days', '0.9', 'daily', latestPublishedAt);
+  assertSitemapEntry(sitemap, '/topics', '0.7', 'weekly', latestPublishedAt);
+  assertSitemapEntry(sitemap, '/rss.xml', '0.6', 'daily', latestPublishedAt);
   for (const [slug, publishedAt] of topicPublishedAtBySlug.entries()) {
     assertSitemapEntry(sitemap, `/topics/${slug}`, '0.7', 'weekly', publishedAt);
   }

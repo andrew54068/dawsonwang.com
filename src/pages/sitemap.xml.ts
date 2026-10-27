@@ -28,22 +28,21 @@ export async function GET() {
   const days = await getCollection('days');
   const validDayNumbers = days.map(day => day.data.dayNumber);
   const topics = topicsWithPosts(validDayNumbers);
-  const now = new Date().toISOString();
   const dayPublishedAtByNumber = new Map(days.map(day => [day.data.dayNumber, publishedAtForManifest(day.data.manifest)]));
-  const latestPublishedAt = latestDefinedPublishedAt(dayPublishedAtByNumber.values()) ?? now;
+  const latestPublishedAt = latestDefinedPublishedAt(dayPublishedAtByNumber.values());
   const topicPublishedAt = (slug: string) => latestDefinedPublishedAt(
     daysForTopic(slug, validDayNumbers).map(dayNumber => dayPublishedAtByNumber.get(dayNumber))
   );
 
   const urls = [
-    entry('/', '1.0', 'weekly', latestPublishedAt),
-    entry('/cases', '0.9', 'weekly', latestPublishedAt),
-    entry('/projects', '0.9', 'weekly', latestPublishedAt),
-    entry('/speaking', '0.9', 'weekly', latestPublishedAt),
-    entry('/business-registration', '0.7', 'yearly', latestPublishedAt),
+    entry('/', '1.0', 'weekly'),
+    entry('/cases', '0.9', 'weekly'),
+    entry('/projects', '0.9', 'weekly'),
+    entry('/speaking', '0.9', 'weekly'),
+    entry('/business-registration', '0.7', 'yearly'),
     entry('/days', '0.9', 'daily', latestPublishedAt),
     entry('/topics', '0.7', 'weekly', latestPublishedAt),
-    entry('/search', '0.5', 'monthly', latestPublishedAt),
+    entry('/search', '0.5', 'monthly'),
     entry('/rss.xml', '0.6', 'daily', latestPublishedAt),
     ...topics.map(topic => entry(`/topics/${topic.slug}`, '0.7', 'weekly', topicPublishedAt(topic.slug))),
     ...days
