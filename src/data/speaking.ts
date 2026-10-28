@@ -121,6 +121,25 @@ export const ENGAGEMENTS: Engagement[] = [
     ],
     days: [179, 187],
   },
+  {
+    slug: 'freelancer-lab',
+    venue: '接案人生研究所 Vol.3',
+    title: '接案大小事，AI 可以幫你多少？',
+    when: '2026 年 10 月 22 日',
+    start: '2026-10-22',
+    format: '一小時分享與交流 · 實體 40+ 人',
+    attendance: 'offline',
+    audience: '自由工作者與接案工作者',
+    outline: [
+      '把客戶文件、LINE 對話與會議紀錄收進同一個專案資料夾',
+      '用 AI 協助溝通、報價、開發票、填表單與修改 PDF',
+      '從自己的開發工作出發，分享 AI 協作與自動化流程',
+      '敏感資料先去識別化，送出前保留人工確認',
+    ],
+    takeaway: '從最花時間、最不想做的一件事開始，先整理背景資料，再讓 AI 協助處理；重要資訊與送出動作仍由人確認。',
+    decks: [],
+    days: [299],
+  },
 ];
 
 // Anonymous post-course responses from the 2026-09-17 佳里 and 2026-09-21
@@ -250,8 +269,8 @@ export interface LectureSession {
 }
 
 // Three to four deliberate photos per delivered lecture establish the teacher,
-// room scale, and participation without shipping raw Drive galleries. The
-// 2026-07-31 session keeps its only two available source photos.
+// room scale, and participation without shipping raw Drive galleries. Sessions
+// with only two available source photos keep both.
 export const LECTURE_SESSIONS: LectureSession[] = [
   {
     id: 'qimei-main-0627',
@@ -375,5 +394,17 @@ export const LECTURE_SESSIONS: LectureSession[] = [
       { src: '/speaking/qimei-liuying-2026-03.webp', alt: '柳營奇美醫院教室側面全景，Dawson Wang 在投影幕前授課，多位醫事人員圍桌使用筆電實作', width: 900, height: 1600 },
     ],
     decks: [{ url: 'https://slide.dawsonwang.com/0921-qimei-liuying', title: '把雜事交給 AI，把時間留給病人', segment: '完整簡報' }],
+  },
+  {
+    id: 'freelancer-lab-1022',
+    date: '2026-10-22',
+    venue: '接案人生研究所 Vol.3',
+    title: '接案大小事，AI 可以幫你多少？',
+    summary: '40+ 位參與者到場。從整理客戶資料開始，分享 AI 如何協助接案溝通、報價與日常行政，並交流資安與實際使用上的問題。',
+    photos: [
+      { src: '/speaking/freelancer-lab-1022-speaker.webp', alt: 'Dawson Wang 在接案人生研究所拿著麥克風講解，指向 AI 講師與顧問的投影片，參與者在長桌前聆聽', width: 1600, height: 900 },
+      { src: '/speaking/freelancer-lab-1022-audience.webp', alt: '接案人生研究所 Vol.3 分享結束後，Dawson Wang 與參與者在活動教室內一起合照', width: 1600, height: 900 },
+    ],
+    decks: [],
   },
 ];

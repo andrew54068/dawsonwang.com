@@ -2,7 +2,7 @@ import { test, expect } from 'vitest';
 import { loadAllDays } from '../src/lib/content-loader';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, rm, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -45,6 +45,24 @@ test('skips directories with empty source.md', async () => {
     const days = await loadAllDays(tmp);
     expect(days.length).toBe(1);
     expect(days[0].dayNumber).toBe(2);
+  } finally {
+    await rm(tmp, { recursive: true, force: true });
+  }
+});
+
+test('OG selection accepts regular files, not directories or symlinks', async () => {
+  const tmp = await mkdtemp(path.join(tmpdir(), 'content-og-'));
+  const dayRoot = path.join(tmp, 'day01');
+  try {
+    await mkdir(path.join(dayRoot, 'og.jpg'), { recursive: true });
+    await writeFile(path.join(dayRoot, 'source.md'), 'Day 1 分享卡片\n\n公開文章內容。');
+    await writeFile(path.join(tmp, 'private.jpeg'), 'private');
+    await symlink(path.join(tmp, 'private.jpeg'), path.join(dayRoot, 'og.jpeg'));
+    await writeFile(path.join(dayRoot, 'og.png'), 'png');
+
+    expect((await loadAllDays(tmp))[0].ogImage).toBe(path.join(dayRoot, 'og.png'));
+    await rm(path.join(dayRoot, 'og.png'));
+    expect((await loadAllDays(tmp))[0].ogImage).toBeUndefined();
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }

@@ -13,7 +13,7 @@ import InquiryForm from '../components/InquiryForm.astro';
 import { SITE_URL } from '../lib/seo';
 import { SERVICES } from '../data/services';
 
-const homeDescription = 'Dawson Wang 幫台灣團隊把 AI 工具落地到實際工作流：Claude Code、客製 skills、MCP server、agent 工作流、團隊培訓與顧問陪跑。';
+const homeDescription = '協助台灣中小企業整理 LINE、Excel、Email 與 SOP 工作流程，從 AI 導入評估、工具落地到團隊內訓。預約 30 分鐘諮詢，先釐清最值得改善的工作。';
 const inquireUrl = `${SITE_URL}/#inquire`;
 const serviceJsonLd = {
   '@context': 'https://schema.org',
@@ -65,7 +65,7 @@ const homePersonServiceGraphLinkJsonLd = {
 };
 ---
 <BaseLayout
-  title="Dawson Wang"
+  title="中小企業 AI 導入顧問・企業內訓"
   description={homeDescription}
   structuredData={[serviceJsonLd, homePersonServiceGraphLinkJsonLd]}
 >

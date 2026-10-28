@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import { copyDayAssets, referencedAttachments } from '../src/lib/copy-day-assets';
+import { loadAllDays } from '../src/lib/content-loader';
 
 let tmp: string;
 let src: string;
@@ -27,6 +28,41 @@ test('copies slides', async () => {
   await fs.writeFile(path.join(src, 'slides', '01-cover.png'), 'png');
   await copyDayAssets(src, dest);
   expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(true);
+});
+
+test('copies the loader-selected OG image and retires previous variants', async () => {
+  await fs.writeFile(path.join(src, 'source.md'), 'Day 219 分享卡片\n\n公開文章內容。');
+  await fs.writeFile(path.join(src, 'og.jpeg'), 'jpeg');
+  await fs.writeFile(path.join(src, 'og.jpg'), 'jpg');
+  await fs.writeFile(path.join(src, 'og.webp'), 'webp');
+  await fs.writeFile(path.join(src, 'private.jpg'), 'private');
+
+  const [day] = await loadAllDays(path.dirname(src));
+  expect(day.ogImage).toBe(path.join(src, 'og.jpg'));
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'og.jpg'))).toBe(true);
+  expect(await exists(path.join(dest, 'og.jpeg'))).toBe(false);
+  expect(await exists(path.join(dest, 'og.webp'))).toBe(false);
+  expect(await exists(path.join(dest, 'private.jpg'))).toBe(false);
+
+  await fs.rm(path.join(src, 'og.jpg'));
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'og.jpg'))).toBe(false);
+  expect(await exists(path.join(dest, 'og.jpeg'))).toBe(true);
+});
+
+test.each(['missing', 'empty', 'blank'])('does not publish OG images with %s source.md', async (source) => {
+  if (source !== 'missing') {
+    await fs.writeFile(path.join(src, 'source.md'), source === 'empty' ? '' : '  \n');
+  }
+  await fs.writeFile(path.join(src, 'og.jpg'), 'private');
+  await fs.mkdir(dest, { recursive: true });
+  await fs.writeFile(path.join(dest, 'og.png'), 'stale');
+
+  await copyDayAssets(src, dest);
+
+  expect(await exists(path.join(dest, 'og.jpg'))).toBe(false);
+  expect(await exists(path.join(dest, 'og.png'))).toBe(false);
 });
 
 // The Day 219 gap: source.md embeds ![](./attachments/photo.jpeg), the page

@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { findOgImage } from './content-loader';
 
 /**
  * Publishes one day's binary assets into public/content/dayNNN/.
@@ -112,8 +113,26 @@ export async function copyDayAssets(dayRoot: string, dayDest: string) {
 
   await copyReferencedAttachments(dayRoot, dayDest);
 
-  // Share artifacts (MP4/GIF) live at the day root, not in a subdirectory.
+  // Share artifacts (MP4/GIF) and the explicit social-card image live at the day
+  // root, not in a subdirectory.
   const rootEntries = await fs.readdir(dayRoot, { withFileTypes: true });
+
+  // Explicit per-day social-card image (og.jpg/og.jpeg/og.png). A day with no
+  // slide deck otherwise shares the site-wide og-default.png; this gives one post
+  // its own card. Only this exact basename ships — no other day-root image is
+  // published. JPG/PNG only (LINE/Facebook crawlers skip WebP OG images).
+  const OG_RE = /^og\.(jpe?g|png)$/i;
+  // Retire stale cards before the no-source check, just like attachments.
+  await fs.mkdir(dayDest, { recursive: true });
+  for (const name of await fs.readdir(dayDest)) {
+    if (OG_RE.test(name)) await fs.rm(path.join(dayDest, name), { force: true });
+  }
+  const markdown = await readIfPresent(path.join(dayRoot, SOURCE_MARKDOWN));
+  const ogImage = markdown?.trim() ? await findOgImage(dayRoot) : undefined;
+  if (ogImage) {
+    await fs.copyFile(ogImage, path.join(dayDest, path.basename(ogImage)));
+  }
+
   const shareFiles = rootEntries.filter((e) => e.isFile() && SHARE_RE.test(e.name));
   if (shareFiles.length > 0) {
     await fs.mkdir(dayDest, { recursive: true });

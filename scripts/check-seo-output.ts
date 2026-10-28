@@ -4,7 +4,8 @@ import { TOPICS, DAY_TOPICS } from '../src/data/topics';
 import { PROJECTS } from '../src/data/projects';
 import { SERVICES } from '../src/data/services';
 import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../src/data/profiles';
-import { LECTURE_SESSIONS } from '../src/data/speaking';
+import { ENGAGEMENTS, LECTURE_SESSIONS } from '../src/data/speaking';
+import { findOgImage } from '../src/lib/content-loader';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -232,12 +233,29 @@ function readPngDimensionsFromAssetUrl(assetUrl: string) {
     const { pathname } = new URL(assetUrl);
     const imagePath = path.join(root, 'public', pathname.replace(/^\/+/, ''));
     const imageBytes = readFileSync(imagePath);
-    if (imageBytes.length < 24 || imageBytes.toString('ascii', 1, 4) !== 'PNG') return undefined;
-
-    return {
-      width: imageBytes.readUInt32BE(16),
-      height: imageBytes.readUInt32BE(20),
-    };
+    if (imageBytes.length >= 24 && imageBytes.toString('ascii', 1, 4) === 'PNG') {
+      return { width: imageBytes.readUInt32BE(16), height: imageBytes.readUInt32BE(20) };
+    }
+    // JPEG: walk marker segments to the frame header (SOF0–SOF15, excluding the
+    // non-frame C4/C8/CC markers) and read its 16-bit height/width.
+    if (imageBytes.length >= 4 && imageBytes[0] === 0xff && imageBytes[1] === 0xd8) {
+      let offset = 2;
+      while (offset + 9 < imageBytes.length) {
+        if (imageBytes[offset] !== 0xff) { offset++; continue; }
+        const marker = imageBytes[offset + 1]!;
+        if (marker === 0xd8 || marker === 0xd9 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) {
+          offset += 2;
+          continue;
+        }
+        const segmentLength = imageBytes.readUInt16BE(offset + 2);
+        const isFrameHeader = marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc;
+        if (isFrameHeader) {
+          return { height: imageBytes.readUInt16BE(offset + 5), width: imageBytes.readUInt16BE(offset + 7) };
+        }
+        offset += 2 + segmentLength;
+      }
+    }
+    return undefined;
   } catch {
     return undefined;
   }
@@ -339,17 +357,24 @@ if (!existsSync(outDir)) {
   }
 
   const home = readGenerated('index.html');
-  const expectedHomeTitle = 'Dawson Wang — AI 工具落地實踐者';
+  const expectedHomeTitle = '中小企業 AI 導入顧問・企業內訓 | Dawson Wang';
+  const expectedHomeDescription = '協助台灣中小企業整理 LINE、Excel、Email 與 SOP 工作流程，從 AI 導入評估、工具落地到團隊內訓。預約 30 分鐘諮詢，先釐清最值得改善的工作。';
   assertIncludes(home, `<link rel="canonical" href="${siteUrl}/"`, 'home');
   assertCanonicalOgUrlParity(home, 'home');
   assertLocaleStack(home, 'home');
   assertNonArticleSharedLayoutContract(home, '/', 'home');
   assertTitleStack(home, expectedHomeTitle, 'home');
   assertDescriptionStack(home, 'home');
+  assertIncludes(home, `<meta name="description" content="${escapeHtml(expectedHomeDescription)}"`, 'home expected description');
   assertMatch(home, /<meta name="description" content="[^"]{40,200}"\s*\/?\s*>/, 'home');
   assertDefaultSocialCardStack(home, 'home');
   assertMatch(home, /<script type="application\/ld\+json"[^>]*>.*"@type":"Person".*"@type":"WebSite".*<\/script>/s, 'home JSON-LD');
   const homeJsonLd = extractJsonLdScript(home, 'home');
+  assertMatch(
+    homeJsonLd,
+    new RegExp(`"@type":"ProfessionalService"[\\s\\S]*?"description":"${escapeRegExp(escapeJsonString(expectedHomeDescription))}"`),
+    'home ProfessionalService description matches meta description'
+  );
   assertRootEntityGraph(homeJsonLd, 'home');
   assertJsonLdInLanguage(home, 'WebSite', 'home');
   assertMatch(home, /"@type":"Person"[^}]*"description":"/, 'home Person description');
@@ -398,6 +423,16 @@ if (!existsSync(outDir)) {
       new RegExp(`"itemOffered":\\{"@type":"Service","name":"${escapeRegExp(escapedTitle)}"[\\s\\S]*?"provider":\\{"@id":"${siteUrl}/#person"\\},"areaServed":"Taiwan"`),
       `home OfferCatalog itemOffered areaServed Taiwan for ${service.title}`
     );
+  }
+  const teacherWorkshop = ENGAGEMENTS.find(engagement => engagement.slug === 'ccvs');
+  const workshopResults = teacherWorkshop?.decks.find(deck => deck.segment === '學員作品');
+  if (teacherWorkshop && workshopResults) {
+    assertIncludes(home, escapeHtml(teacherWorkshop.venue), 'home training example venue');
+    assertIncludes(home, escapeHtml(teacherWorkshop.title), 'home training example title');
+    assertIncludes(home, 'Word 補救教材', 'home training example deliverable');
+    assertIncludes(home, `href="${escapeHtml(workshopResults.url)}"`, 'home training example public results');
+  } else {
+    fail('home training example source or public results link is missing');
   }
   assertIncludes(home, 'Dawson Wang', 'home');
   assertIncludes(home, 'AI 工具落地', 'home');
@@ -499,8 +534,8 @@ if (!existsSync(outDir)) {
   assertIncludes(speaking, '4.82 / 5', '/speaking recent hospital survey average score');
   assertIncludes(speaking, '29 / 33', '/speaking recent hospital survey hands-on completion');
   assertIncludes(speaking, '31 / 33', '/speaking recent hospital survey work intent');
-  assertIncludes(speaking, '>8</dd>', '/speaking verified session count');
-  assertIncludes(speaking, '>250+</dd>', '/speaking conservative attendee total');
+  assertIncludes(speaking, '>9</dd>', '/speaking verified session count');
+  assertIncludes(speaking, '>290+</dd>', '/speaking conservative attendee total');
   for (const session of ['06/27 奇美醫院總院', '07/04 奇美醫院總院', '07/16 柳營奇美醫院', '07/31 部立臺南醫院', '09/07 臺南新樓醫院', '09/17 佳里奇美醫院', '09/21 柳營奇美醫院']) {
     assertIncludes(speaking, session, `/speaking hospital session ${session}`);
   }
@@ -556,6 +591,21 @@ if (!existsSync(outDir)) {
     if (/<meta property="article:modified_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:modified_time is an empty string`);
     assertRootEntityGraph(dayJsonLd, label);
     assertDayArticleOwnershipTrustCluster(dayHtml, day.number, label);
+    const ogImage = await findOgImage(path.dirname(day.sourcePath));
+    const overrideUrl = ogImage
+      ? `${siteUrl}/content/day${String(day.number).padStart(2, '0')}/${path.basename(ogImage)}`
+      : undefined;
+    const overrideDimensions = overrideUrl ? readPngDimensionsFromAssetUrl(overrideUrl) : undefined;
+    if (overrideUrl) {
+      assertIncludes(dayHtml, `<meta property="og:image" content="${escapeHtml(overrideUrl)}"`, `${label} OG override`);
+      if (!overrideDimensions) fail(`${label} OG override dimensions unreadable for ${overrideUrl}`);
+    }
+    const imageUrl = overrideUrl && overrideDimensions ? overrideUrl : defaultOgImageUrl;
+    assertMatch(
+      dayJsonLd,
+      new RegExp(`"image":(?:\\[)?\\{"@type":"ImageObject","url":"${escapeRegExp(imageUrl)}","width":${overrideDimensions?.width ?? 1200},"height":${overrideDimensions?.height ?? 630}`),
+      `${label} Article primary ImageObject`
+    );
   }
   note(`day Article ownership/trust cluster asserted across ${generatedDayPages.length} generated pages`);
 
@@ -575,9 +625,6 @@ if (!existsSync(outDir)) {
     assertMatch(dayHtml, new RegExp(`"@type":"Article"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/day/${latestDay}#breadcrumb"\\}`), `day ${latestDay} Article breadcrumb → #breadcrumb graph link`);
     // Keep richer latest-day assertions for representative-page details that are not part of the full-collection ownership/trust ratchet.
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
-    // image promoted to typed ImageObject with declared dimensions (large-image rich-result eligibility).
-    // Primary image is always the og-default fallback (1200x630) so dimensions are stable across days.
-    assertMatch(dayHtml, /"image":(\[\{|\{)"@type":"ImageObject","url":"https:\/\/dawsonwang\.com\/og-default\.png","width":1200,"height":630/, `day ${latestDay} Article image ImageObject`);
     // Latest-day pages may legitimately omit article dates when the source day has no publish timestamp.
     if (latestDayPublishedAt) {
       assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
@@ -602,8 +649,16 @@ if (!existsSync(outDir)) {
         assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
       }
     }
-    if (dayHtml.includes(`alt="Day ${latestDay} slide 1"`)) fail(`day ${latestDay} slide alt regressed to generic Day N slide M pattern`);
-    assertIncludes(dayHtml, `alt="${latestDayHeadline} — 投影片 1"`, `day ${latestDay} first slide alt`);
+    let latestSlides: string[] = [];
+    try {
+      latestSlides = readdirSync(path.join(path.dirname(days.at(-1)!.sourcePath), 'slides'));
+    } catch {
+      // A valid photo/text article may have no slide deck.
+    }
+    if (latestSlides.some(name => /\.(png|jpe?g|webp)$/i.test(name))) {
+      if (dayHtml.includes(`alt="Day ${latestDay} slide 1"`)) fail(`day ${latestDay} slide alt regressed to generic Day N slide M pattern`);
+      assertIncludes(dayHtml, `alt="${latestDayHeadline} — 投影片 1"`, `day ${latestDay} first slide alt`);
+    }
   }
 
   if (latestGeneratedDayWithPublishedAt) {
@@ -719,15 +774,15 @@ if (!existsSync(outDir)) {
   const sitemapTopicCount = Array.from(sitemap.matchAll(/<loc>https:\/\/dawsonwang\.com\/topics\/[^<]+<\/loc>/g)).length;
   if (sitemapTopicCount !== activeTopics.length) fail(`Sitemap topic URL count mismatch: ${sitemapTopicCount}/${activeTopics.length}`);
   assertIncludes(sitemap, `<loc>${siteUrl}/search</loc>`, 'sitemap');
-  if (latestPublishedAt) {
-    assertSitemapEntry(sitemap, '/', '1.0', 'weekly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/projects', '0.9', 'weekly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/business-registration', '0.7', 'yearly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/days', '0.9', 'daily', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/topics', '0.7', 'weekly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/search', '0.5', 'monthly', latestPublishedAt);
-    assertSitemapEntry(sitemap, '/rss.xml', '0.6', 'daily', latestPublishedAt);
-  }
+  assertSitemapEntry(sitemap, '/', '1.0', 'weekly');
+  assertSitemapEntry(sitemap, '/cases', '0.9', 'weekly');
+  assertSitemapEntry(sitemap, '/projects', '0.9', 'weekly');
+  assertSitemapEntry(sitemap, '/speaking', '0.9', 'weekly');
+  assertSitemapEntry(sitemap, '/business-registration', '0.7', 'yearly');
+  assertSitemapEntry(sitemap, '/search', '0.5', 'monthly');
+  assertSitemapEntry(sitemap, '/days', '0.9', 'daily', latestPublishedAt);
+  assertSitemapEntry(sitemap, '/topics', '0.7', 'weekly', latestPublishedAt);
+  assertSitemapEntry(sitemap, '/rss.xml', '0.6', 'daily', latestPublishedAt);
   for (const [slug, publishedAt] of topicPublishedAtBySlug.entries()) {
     assertSitemapEntry(sitemap, `/topics/${slug}`, '0.7', 'weekly', publishedAt);
   }
