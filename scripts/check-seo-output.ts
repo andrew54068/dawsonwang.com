@@ -5,6 +5,7 @@ import { PROJECTS } from '../src/data/projects';
 import { SERVICES } from '../src/data/services';
 import { PERSON_SAME_AS_URLS, PERSON_X_URL } from '../src/data/profiles';
 import { ENGAGEMENTS, LECTURE_SESSIONS } from '../src/data/speaking';
+import { findOgImage } from '../src/lib/content-loader';
 
 const root = process.cwd();
 const configuredSiteDir = process.env.SEO_SITE_DIR;
@@ -590,6 +591,21 @@ if (!existsSync(outDir)) {
     if (/<meta property="article:modified_time" content=""\s*\/?>/.test(dayHtml)) fail(`${label} article:modified_time is an empty string`);
     assertRootEntityGraph(dayJsonLd, label);
     assertDayArticleOwnershipTrustCluster(dayHtml, day.number, label);
+    const ogImage = await findOgImage(path.dirname(day.sourcePath));
+    const overrideUrl = ogImage
+      ? `${siteUrl}/content/day${String(day.number).padStart(2, '0')}/${path.basename(ogImage)}`
+      : undefined;
+    const overrideDimensions = overrideUrl ? readPngDimensionsFromAssetUrl(overrideUrl) : undefined;
+    if (overrideUrl) {
+      assertIncludes(dayHtml, `<meta property="og:image" content="${escapeHtml(overrideUrl)}"`, `${label} OG override`);
+      if (!overrideDimensions) fail(`${label} OG override dimensions unreadable for ${overrideUrl}`);
+    }
+    const imageUrl = overrideUrl && overrideDimensions ? overrideUrl : defaultOgImageUrl;
+    assertMatch(
+      dayJsonLd,
+      new RegExp(`"image":(?:\\[)?\\{"@type":"ImageObject","url":"${escapeRegExp(imageUrl)}","width":${overrideDimensions?.width ?? 1200},"height":${overrideDimensions?.height ?? 630}`),
+      `${label} Article primary ImageObject`
+    );
   }
   note(`day Article ownership/trust cluster asserted across ${generatedDayPages.length} generated pages`);
 
@@ -609,9 +625,6 @@ if (!existsSync(outDir)) {
     assertMatch(dayHtml, new RegExp(`"@type":"Article"[\\s\\S]*?"breadcrumb":\\{"@id":"${siteUrl}/day/${latestDay}#breadcrumb"\\}`), `day ${latestDay} Article breadcrumb → #breadcrumb graph link`);
     // Keep richer latest-day assertions for representative-page details that are not part of the full-collection ownership/trust ratchet.
     assertMatch(dayHtml, /"wordCount":\d+/, `day ${latestDay} Article wordCount`);
-    // image promoted to typed ImageObject with declared dimensions (large-image rich-result eligibility).
-    // Primary image is always the og-default fallback (1200x630) so dimensions are stable across days.
-    assertMatch(dayHtml, /"image":(\[\{|\{)"@type":"ImageObject","url":"https:\/\/dawsonwang\.com\/og-default\.png","width":1200,"height":630/, `day ${latestDay} Article image ImageObject`);
     // Latest-day pages may legitimately omit article dates when the source day has no publish timestamp.
     if (latestDayPublishedAt) {
       assertMatch(dayHtml, /<meta property="article:published_time" content="[^"]+"/, `day ${latestDay} article:published_time`);
@@ -636,8 +649,16 @@ if (!existsSync(outDir)) {
         assertIncludes(dayHtml, `<meta property="og:image:height" content="${latestDayOgImageDimensions.height}"`, `day ${latestDay} og:image:height`);
       }
     }
-    if (dayHtml.includes(`alt="Day ${latestDay} slide 1"`)) fail(`day ${latestDay} slide alt regressed to generic Day N slide M pattern`);
-    assertIncludes(dayHtml, `alt="${latestDayHeadline} — 投影片 1"`, `day ${latestDay} first slide alt`);
+    let latestSlides: string[] = [];
+    try {
+      latestSlides = readdirSync(path.join(path.dirname(days.at(-1)!.sourcePath), 'slides'));
+    } catch {
+      // A valid photo/text article may have no slide deck.
+    }
+    if (latestSlides.some(name => /\.(png|jpe?g|webp)$/i.test(name))) {
+      if (dayHtml.includes(`alt="Day ${latestDay} slide 1"`)) fail(`day ${latestDay} slide alt regressed to generic Day N slide M pattern`);
+      assertIncludes(dayHtml, `alt="${latestDayHeadline} — 投影片 1"`, `day ${latestDay} first slide alt`);
+    }
   }
 
   if (latestGeneratedDayWithPublishedAt) {

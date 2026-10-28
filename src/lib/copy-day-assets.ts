@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { findOgImage } from './content-loader';
 
 /**
  * Publishes one day's binary assets into public/content/dayNNN/.
@@ -121,10 +122,15 @@ export async function copyDayAssets(dayRoot: string, dayDest: string) {
   // its own card. Only this exact basename ships — no other day-root image is
   // published. JPG/PNG only (LINE/Facebook crawlers skip WebP OG images).
   const OG_RE = /^og\.(jpe?g|png)$/i;
-  const ogEntry = rootEntries.find((e) => e.isFile() && OG_RE.test(e.name));
-  if (ogEntry) {
-    await fs.mkdir(dayDest, { recursive: true });
-    await fs.copyFile(path.join(dayRoot, ogEntry.name), path.join(dayDest, ogEntry.name));
+  // Retire stale cards before the no-source check, just like attachments.
+  await fs.mkdir(dayDest, { recursive: true });
+  for (const name of await fs.readdir(dayDest)) {
+    if (OG_RE.test(name)) await fs.rm(path.join(dayDest, name), { force: true });
+  }
+  const markdown = await readIfPresent(path.join(dayRoot, SOURCE_MARKDOWN));
+  const ogImage = markdown?.trim() ? await findOgImage(dayRoot) : undefined;
+  if (ogImage) {
+    await fs.copyFile(ogImage, path.join(dayDest, path.basename(ogImage)));
   }
 
   const shareFiles = rootEntries.filter((e) => e.isFile() && SHARE_RE.test(e.name));

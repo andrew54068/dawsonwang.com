@@ -26,6 +26,14 @@ export async function loadAllDays(contentRoot: string): Promise<DayEntry[]> {
   return results.sort((a, b) => a.dayNumber - b.dayNumber);
 }
 
+export async function findOgImage(dir: string): Promise<string | undefined> {
+  for (const candidate of ['og.jpg', 'og.jpeg', 'og.png']) {
+    const filePath = path.join(dir, candidate);
+    if (await fs.lstat(filePath).then(entry => entry.isFile(), () => false)) return filePath;
+  }
+  return undefined;
+}
+
 async function loadOne(dir: string): Promise<DayEntry | null> {
   const sourcePath = path.join(dir, 'source.md');
   let raw: string;
@@ -98,17 +106,7 @@ async function loadOne(dir: string): Promise<DayEntry | null> {
   // gives that post its own share image. JPG/PNG only — LINE and Facebook's
   // crawlers don't reliably render WebP OG images, and the dimension readers
   // (day page + check-seo) parse PNG/JPEG headers, not WebP.
-  let ogImage: string | undefined;
-  for (const candidate of ['og.jpg', 'og.jpeg', 'og.png']) {
-    const p = path.join(dir, candidate);
-    try {
-      await fs.access(p);
-      ogImage = p;
-      break;
-    } catch {
-      continue;
-    }
-  }
+  const ogImage = await findOgImage(dir);
 
   return { ...parsed, manifest, slideFiles, shareFiles, coverImage, ogImage, contentDir: dir };
 }
