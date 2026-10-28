@@ -129,7 +129,7 @@ export const ENGAGEMENTS: Engagement[] = [
     start: '2026-10-22',
     format: '一小時分享與交流 · 實體 40+ 人',
     attendance: 'offline',
-    audience: '自由工作者與接案工作者；主辦為陽光雪人',
+    audience: '自由工作者與接案工作者',
     outline: [
       '把客戶文件、LINE 對話與會議紀錄收進同一個專案資料夾',
       '用 AI 協助溝通、報價、開發票、填表單與修改 PDF',
@@ -400,7 +400,7 @@ export const LECTURE_SESSIONS: LectureSession[] = [
     date: '2026-10-22',
     venue: '接案人生研究所 Vol.3',
     title: '接案大小事，AI 可以幫你多少？',
-    summary: '陽光雪人主辦，40+ 位參與者到場。從整理客戶資料開始，分享 AI 如何協助接案溝通、報價與日常行政，並交流資安與實際使用上的問題。',
+    summary: '40+ 位參與者到場。從整理客戶資料開始，分享 AI 如何協助接案溝通、報價與日常行政，並交流資安與實際使用上的問題。',
     photos: [
       { src: '/speaking/freelancer-lab-1022-speaker.webp', alt: 'Dawson Wang 在接案人生研究所拿著麥克風講解，指向 AI 講師與顧問的投影片，參與者在長桌前聆聽', width: 1600, height: 900 },
       { src: '/speaking/freelancer-lab-1022-audience.webp', alt: '接案人生研究所 Vol.3 分享結束後，Dawson Wang 與參與者在活動教室內一起合照', width: 1600, height: 900 },

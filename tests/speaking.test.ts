@@ -49,6 +49,7 @@ describe('speaking proof content', () => {
     const talk = ENGAGEMENTS.find(engagement => engagement.slug === 'freelancer-lab');
     expect(talk?.start).toBe('2026-10-22');
     expect(talk?.format).toContain('40+ 人');
+    expect(talk?.audience).toBe('自由工作者與接案工作者');
     expect(talk?.days).toEqual([299]);
 
     const pageSource = readFileSync(path.join(process.cwd(), 'src/pages/speaking.astro'), 'utf8');
