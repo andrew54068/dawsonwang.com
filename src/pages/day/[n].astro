@@ -10,6 +10,7 @@ import ExternalLinks from '../../components/ExternalLinks.astro';
 import { isTopPerformer } from '../../lib/metrics';
 import { topicsForDay, chipVariantFor, topicBySlug } from '../../lib/topics';
 import { classificationLinksForDay } from '../../lib/article-taxonomy';
+import { publishedSlideName, SLIDE_OG_NAME } from '../../lib/slide-assets';
 import { SITE_URL, cleanDescription, breadcrumbJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_WIDTH, DEFAULT_OG_IMAGE_HEIGHT } from '../../lib/seo';
 
 export async function getStaticPaths() {
@@ -20,7 +21,7 @@ export async function getStaticPaths() {
 const { day, allDays } = Astro.props;
 const slideAltBase = `Day ${day.data.dayNumber} ${day.data.subtitle || ''}`.trim();
 const slides = day.data.slideFiles.map((p: string, i: number) => ({
-  src: `/content/day${String(day.data.dayNumber).padStart(2, '0')}/slides/${p.split('/').pop()}`,
+  src: `/content/day${String(day.data.dayNumber).padStart(2, '0')}/slides/${publishedSlideName(p.split('/').pop()!)}`,
   alt: `${slideAltBase} — 投影片 ${i + 1}`,
 }));
 
@@ -109,7 +110,9 @@ function pngDimensionsForPublicPath(publicPath: string) {
 const ogOverride = day.data.ogImage
   ? `/content/day${dayPad}/${(day.data.ogImage as string).split('/').pop()}`
   : undefined;
-const primaryOgImage = ogOverride ?? slides[0]?.src ?? DEFAULT_OG_IMAGE;
+// Slides ship as WebP, which LINE/Facebook skip; the first slide's card is a JPG twin.
+const slideOgImage = slides.length > 0 ? `/content/day${dayPad}/${SLIDE_OG_NAME}` : undefined;
+const primaryOgImage = ogOverride ?? slideOgImage ?? DEFAULT_OG_IMAGE;
 const primaryOgImageDimensions = pngDimensionsForPublicPath(primaryOgImage)
   ?? (primaryOgImage === DEFAULT_OG_IMAGE
     ? { width: DEFAULT_OG_IMAGE_WIDTH, height: DEFAULT_OG_IMAGE_HEIGHT }
