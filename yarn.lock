@@ -5155,7 +5155,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:^0.34.0":
+"sharp@npm:^0.34.0, sharp@npm:^0.34.5":
   version: 0.34.5
   resolution: "sharp@npm:0.34.5"
   dependencies:
@@ -5286,6 +5286,7 @@ __metadata:
     marked: "npm:^18.0.3"
     pagefind: "npm:^1.5.2"
     resend: "npm:^6.12.2"
+    sharp: "npm:^0.34.5"
     tailwindcss: "npm:^4.2.4"
     tsx: "npm:^4.21.0"
     typescript: "npm:^6.0.3"

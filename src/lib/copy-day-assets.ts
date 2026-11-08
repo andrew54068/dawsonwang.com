@@ -1,11 +1,18 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import sharp from 'sharp';
 import { findOgImage } from './content-loader';
+import { publishedSlideName, SLIDE_OG_NAME } from './slide-assets';
 
 /**
  * Publishes one day's binary assets into public/content/dayNNN/.
  *
- * slides/ ships wholesale — the carousel renders every slide.
+ * slides/ ships wholesale — the carousel renders every slide — but re-encoded
+ * as WebP. The source decks are 1–2 MB PNGs each; shipped as-is they were ~1 GB
+ * of every deployment and blew through Vercel's Deployment Storage quota. The
+ * first slide is also the day's default social card, and LINE/Facebook skip
+ * WebP OG images, so it additionally ships as a JPG (SLIDE_OG_NAME).
  *
  * attachments/ does NOT. source.md embeds attachments as
  * ![](./attachments/photo.jpeg), which the rendered page turns into an
@@ -37,14 +44,36 @@ const SOURCE_MARKDOWN = 'source.md';
 // assets and there is nothing on disk to copy for them.
 const ATTACHMENT_REF_RE = /(?<![\w:/-])(?:\.\/)?attachments\/([^\s)"'<>\]]+)/g;
 
-async function copyDir(src: string, dest: string) {
+const SLIDE_WEBP_QUALITY = 85;
+const SLIDE_OG_JPEG_QUALITY = 85;
+
+// Encoding ~1000 slides takes minutes, and the deploy worktree rebuilds
+// public/content/ from scratch every run, so encoded output is cached by source
+// content hash. Same bytes in -> same file out; nothing to invalidate.
+const ENCODE_CACHE = path.resolve(import.meta.dirname, '../../node_modules/.cache/slide-encode');
+
+async function encodeCached(src: string, dest: string, format: 'webp' | 'jpeg') {
+  const bytes = await fs.readFile(src);
+  const key = crypto.createHash('sha1').update(bytes).digest('hex');
+  const cached = path.join(ENCODE_CACHE, `${key}.${format}`);
+  if (!(await fs.access(cached).then(() => true, () => false))) {
+    const img = sharp(bytes);
+    const out = format === 'webp'
+      ? await img.webp({ quality: SLIDE_WEBP_QUALITY }).toBuffer()
+      : await img.flatten({ background: '#ffffff' }).jpeg({ quality: SLIDE_OG_JPEG_QUALITY, mozjpeg: true }).toBuffer();
+    await fs.mkdir(ENCODE_CACHE, { recursive: true });
+    await fs.writeFile(cached, out);
+  }
+  await fs.copyFile(cached, dest);
+}
+
+async function copySlides(src: string, dest: string) {
   await fs.mkdir(dest, { recursive: true });
   const entries = await fs.readdir(src, { withFileTypes: true });
   for (const e of entries) {
     const s = path.join(src, e.name);
-    const d = path.join(dest, e.name);
-    if (e.isDirectory()) await copyDir(s, d);
-    else if (IMAGE_RE.test(e.name)) await fs.copyFile(s, d);
+    if (e.isDirectory()) await copySlides(s, path.join(dest, e.name));
+    else if (IMAGE_RE.test(e.name)) await encodeCached(s, path.join(dest, publishedSlideName(e.name)), 'webp');
   }
 }
 
@@ -108,7 +137,10 @@ async function copyReferencedAttachments(dayRoot: string, dayDest: string) {
 export async function copyDayAssets(dayRoot: string, dayDest: string) {
   const slides = path.join(dayRoot, 'slides');
   if (await fs.access(slides).then(() => true, () => false)) {
-    await copyDir(slides, path.join(dayDest, 'slides'));
+    await copySlides(slides, path.join(dayDest, 'slides'));
+    // Same pick as content-loader's slideFiles[0]: top-level images, sorted.
+    const first = (await fs.readdir(slides)).filter((f) => IMAGE_RE.test(f)).sort()[0];
+    if (first) await encodeCached(path.join(slides, first), path.join(dayDest, SLIDE_OG_NAME), 'jpeg');
   }
 
   await copyReferencedAttachments(dayRoot, dayDest);
