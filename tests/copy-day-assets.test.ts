@@ -4,6 +4,10 @@ import path from 'node:path';
 import os from 'node:os';
 import { copyDayAssets, referencedAttachments } from '../src/lib/copy-day-assets';
 import { loadAllDays } from '../src/lib/content-loader';
+import sharp from 'sharp';
+
+// Slides are re-encoded, so slide fixtures must be real images.
+const png = () => sharp({ create: { width: 4, height: 4, channels: 4, background: '#f80' } }).png().toBuffer();
 
 let tmp: string;
 let src: string;
@@ -25,9 +29,10 @@ const exists = async (p: string) =>
   await fs.access(p).then(() => true, () => false);
 
 test('copies slides', async () => {
-  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), 'png');
+  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), await png());
   await copyDayAssets(src, dest);
-  expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(true);
+  expect(await exists(path.join(dest, 'slides', '01-cover.webp'))).toBe(true);
+  expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(false);
 });
 
 test('copies the loader-selected OG image and retires previous variants', async () => {
@@ -83,7 +88,7 @@ test('copies an attachment referenced without the leading ./', async () => {
 });
 
 test('copies both slides and attachments in one pass', async () => {
-  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), 'png');
+  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), await png());
   await fs.writeFile(path.join(src, 'attachments', 'a.jpg'), 'jpg');
   await fs.writeFile(path.join(src, 'attachments', 'b.webp'), 'webp');
   await fs.writeFile(
@@ -91,7 +96,7 @@ test('copies both slides and attachments in one pass', async () => {
     '![a](./attachments/a.jpg)\n\n![b](./attachments/b.webp)',
   );
   await copyDayAssets(src, dest);
-  expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(true);
+  expect(await exists(path.join(dest, 'slides', '01-cover.webp'))).toBe(true);
   expect(await exists(path.join(dest, 'attachments', 'a.jpg'))).toBe(true);
   expect(await exists(path.join(dest, 'attachments', 'b.webp'))).toBe(true);
 });
@@ -156,11 +161,11 @@ test('removes already-published attachments when the day loses its source.md', a
 test('leaves published slides alone while pruning attachments', async () => {
   await fs.mkdir(path.join(dest, 'slides'), { recursive: true });
   await fs.writeFile(path.join(dest, 'slides', '01-cover.png'), 'png');
-  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), 'png');
+  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), await png());
 
   await copyDayAssets(src, dest);
 
-  expect(await exists(path.join(dest, 'slides', '01-cover.png'))).toBe(true);
+  expect(await exists(path.join(dest, 'slides', '01-cover.webp'))).toBe(true);
 });
 
 // day03/source.md points at ./attachments/day3.jpg while the file on disk is
@@ -206,11 +211,26 @@ test('copies nested subdirectories of attachments', async () => {
   expect(await exists(path.join(dest, 'attachments', 'raw', 'deep.png'))).toBe(true);
 });
 
+test('ships the first slide as a JPG social card', async () => {
+  await fs.writeFile(path.join(src, 'slides', '02-body.png'), await png());
+  await fs.writeFile(path.join(src, 'slides', '01-cover.png'), await png());
+  await copyDayAssets(src, dest);
+  const card = await sharp(path.join(dest, 'og-slide.jpg')).metadata();
+  expect(card.format).toBe('jpeg');
+  const slide = await sharp(path.join(dest, 'slides', '02-body.webp')).metadata();
+  expect(slide.format).toBe('webp');
+});
+
+test('ships no slide social card for a day without slides', async () => {
+  await copyDayAssets(src, dest);
+  expect(await exists(path.join(dest, 'og-slide.jpg'))).toBe(false);
+});
+
 test('copies nested subdirectories of slides without a markdown reference', async () => {
   await fs.mkdir(path.join(src, 'slides', 'raw'), { recursive: true });
-  await fs.writeFile(path.join(src, 'slides', 'raw', 'deep.png'), 'png');
+  await fs.writeFile(path.join(src, 'slides', 'raw', 'deep.png'), await png());
   await copyDayAssets(src, dest);
-  expect(await exists(path.join(dest, 'slides', 'raw', 'deep.png'))).toBe(true);
+  expect(await exists(path.join(dest, 'slides', 'raw', 'deep.webp'))).toBe(true);
 });
 
 // Day 282: source.md embeds a video the same way it embeds a photo. 100Days'
