@@ -42,14 +42,16 @@ const resolved: ResolvedEngagement[] = ENGAGEMENTS.map(engagement => ({
 
 const principles = PRINCIPLES.map(p => ({ ...p, href: dayHref(p.day, `principle "${p.title}"`) }));
 
-// Seven host units: six physical teaching sites plus 接案人生研究所.
+// Eight host units: six physical teaching sites, 接案人生研究所, and 資策會.
 // A grouped engagement is not the same thing as a host unit.
-const venueCount = 7;
+const venueCount = 8;
 // Seven hospital sessions, the two-day 中正高工 workshop (one engagement),
-// and the 2026-10-22 community talk.
-const sessionCount = 9;
+// the 2026-10-22 community talk, and the two 資策會 talks (11/05, 11/13).
+const sessionCount = 11;
 // Conservative existing floor of 250+, plus 40+ at 接案人生研究所
 // (attendance supplied by the speaker, not an inferred count from photos).
+// 資策會 headcounts are not recorded yet (11/05 had 9 on-site sign-ups plus a
+// livestream), so they do not raise the floor.
 const attendeeTotal = '290+';
 
 const speakingTitle = 'AI 講師 · 企業內訓與教師研習';
@@ -170,7 +172,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
             <div><dt>授課單位</dt><dd>{venueCount}</dd></div>
             <div><dt>授課場次</dt><dd class="accent">{sessionCount}</dd></div>
             <div><dt>累積人次</dt><dd>{attendeeTotal}</dd></div>
-            <div><dt>授課領域</dt><dd class="sp-stat-text">醫療 · 教育 · 接案</dd></div>
+            <div><dt>授課領域</dt><dd class="sp-stat-text">醫療 · 教育 · 接案 · 顧問</dd></div>
           </dl>
         </div>
       </section>
@@ -251,7 +253,7 @@ const speakingBreadcrumbJsonLd = breadcrumbJsonLd([
                   <div><dt>帶走什麼</dt><dd class="sp-takeaway">{engagement.takeaway}</dd></div>
                 </dl>
                 {engagement.decks.length > 0 && <div class="sp-decks"><span>簡報（公開可看）</span>{engagement.decks.map(deck => <a href={deck.url} rel="noopener" class="text-link">{deck.title} · {deck.segment} <span aria-hidden="true">↗</span></a>)}</div>}
-                <div class="sp-days"><span>現場記錄</span>{dayRefs.map(ref => ref.href ? <a href={ref.href} class="text-link">Day {String(ref.dayNumber).padStart(3, '0')}</a> : <span class="sp-day-flat">Day {String(ref.dayNumber).padStart(3, '0')}</span>)}</div>
+                {dayRefs.length > 0 && <div class="sp-days"><span>現場記錄</span>{dayRefs.map(ref => ref.href ? <a href={ref.href} class="text-link">Day {String(ref.dayNumber).padStart(3, '0')}</a> : <span class="sp-day-flat">Day {String(ref.dayNumber).padStart(3, '0')}</span>)}</div>}
               </article>
             ))}
           </div>

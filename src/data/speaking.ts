@@ -140,6 +140,33 @@ export const ENGAGEMENTS: Engagement[] = [
     decks: [],
     days: [299],
   },
+  {
+    slug: 'iii-consultant-exchange',
+    venue: '資策會',
+    title: '數位轉型顧問交流會',
+    when: '2026 年 11 月 · 2 場',
+    // 11/05 at 民生科服大樓 (shared with Bogi, livestreamed); 11/13 solo talk.
+    // Dates come from the organiser's LINE thread and the deck's Q&A log.
+    start: '2026-11-05',
+    end: '2026-11-13',
+    format: '分享加現場 Q&A · 實體與直播',
+    attendance: 'mixed',
+    audience: '資策會培訓中的數位轉型顧問，輔導資通訊、電子資訊、金屬製造等產業的企業',
+    outline: [
+      '把客戶訪談、LINE 對話與報價表交給 AI，先讀背景再整理需求',
+      '交給 AI 之前先問一句：這件事是「變」，還是「不變」？',
+      '現場小測驗：IG 貼文、運費計算、詢價回覆，各該交給誰',
+      '一件工作拆成幾步：讀需求、寫回覆交給 AI，算價格、寄出記錄交給程式',
+      '不變的部分請 AI 寫成程式，先用真實資料核對結果',
+    ],
+    takeaway: '變的交給 AI，不變的交給程式；程式也交給 AI 寫。從一件每週重複的工作開始，把每一步標上「變」或「不變」。',
+    sessions: [
+      '11/05 Context 與需求釐清（與 Bogi 共同分享）',
+      '11/13 變與不變：什麼交給 AI，什麼交給程式',
+    ],
+    decks: [],
+    days: [],
+  },
 ];
 
 // Anonymous post-course responses from the 2026-09-17 佳里 and 2026-09-21

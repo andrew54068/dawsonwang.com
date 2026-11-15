@@ -53,8 +53,8 @@ describe('speaking proof content', () => {
     expect(talk?.days).toEqual([299]);
 
     const pageSource = readFileSync(path.join(process.cwd(), 'src/pages/speaking.astro'), 'utf8');
-    expect(pageSource).toContain('const venueCount = 7;');
-    expect(pageSource).toContain('const sessionCount = 9;');
+    expect(pageSource).toContain('const venueCount = 8;');
+    expect(pageSource).toContain('const sessionCount = 11;');
     expect(pageSource).toContain("const attendeeTotal = '290+';");
   });
 
