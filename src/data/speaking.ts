@@ -5,7 +5,7 @@
 // number fails the build rather than shipping a dead link.
 
 export interface Deck {
-  /** Public deck URL — these are live open-slide deployments. */
+  /** Public deck URL — a live deployment (open-slide, Vercel, or a Cloudflare Worker). */
   url: string;
   /** Deck title as it appears on the deck itself. */
   title: string;
@@ -137,7 +137,7 @@ export const ENGAGEMENTS: Engagement[] = [
       '敏感資料先去識別化，送出前保留人工確認',
     ],
     takeaway: '從最花時間、最不想做的一件事開始，先整理背景資料，再讓 AI 協助處理；重要資訊與送出動作仍由人確認。',
-    decks: [],
+    decks: [{ url: 'https://sharing.dawsonwang.com/talks/zqRfUpFmdveAvOR9tixCPg/', title: '接案大小事，AI 可以幫你多少？', segment: '完整簡報' }],
     days: [299],
   },
   {
@@ -164,7 +164,11 @@ export const ENGAGEMENTS: Engagement[] = [
       '11/05 Context 與需求釐清（與 Bogi 共同分享）',
       '11/13 變與不變：什麼交給 AI，什麼交給程式',
     ],
-    decks: [],
+    // 11/05 is a shared deck with Bogi; #28 opens Dawson's Context segment.
+    decks: [
+      { url: 'https://iii-talk.andrew0424718012-8f5.workers.dev/#28', title: '導入 AI，先從一個點開始', segment: '11/05 Context 段落' },
+      { url: 'https://iii-talk-dawson.andrew0424718012-8f5.workers.dev/', title: '變與不變｜什麼交給 AI，什麼交給程式', segment: '11/13' },
+    ],
     days: [],
   },
 ];
@@ -432,6 +436,6 @@ export const LECTURE_SESSIONS: LectureSession[] = [
       { src: '/speaking/freelancer-lab-1022-speaker.webp', alt: 'Dawson Wang 在接案人生研究所拿著麥克風講解，指向 AI 講師與顧問的投影片，參與者在長桌前聆聽', width: 1600, height: 900 },
       { src: '/speaking/freelancer-lab-1022-audience.webp', alt: '接案人生研究所 Vol.3 分享結束後，Dawson Wang 與參與者在活動教室內一起合照', width: 1600, height: 900 },
     ],
-    decks: [],
+    decks: [{ url: 'https://sharing.dawsonwang.com/talks/zqRfUpFmdveAvOR9tixCPg/', title: '接案大小事，AI 可以幫你多少？', segment: '完整簡報' }],
   },
 ];
