@@ -77,6 +77,22 @@ describe('production-critical website flows', () => {
     expect(daysPage).toContain('共 {days.length} 篇，依日期倒序。');
   });
 
+  test('every day page shows its calendar date below the title and before the body', () => {
+    const dayPage = source('src/pages/day/[n].astro');
+    const header = dayPage.slice(dayPage.indexOf('<header class="day-head">'), dayPage.indexOf('</header>'));
+
+    expect(dayPage).toContain("import { calendarDateForDay } from '../../lib/day-date';");
+    expect(dayPage).toContain('const dayDate = calendarDateForDay(day.data.dayNumber);');
+    expect(header).toContain('<time class="day-date" datetime={dayDate}');
+    expect(header).toContain(">{dayDate.replaceAll('-', '/')}</time>");
+    expect(header.indexOf('<time')).toBeGreaterThan(header.indexOf('</h1>'));
+    expect(dayPage.indexOf('</header>')).toBeLessThan(dayPage.indexOf('set:html={bodyHtml}'));
+    expect(header.match(/<time\b/g)).toHaveLength(1);
+    expect(header).not.toContain('publishDate');
+    expect(header).not.toMatch(/&&\s*<time/);
+    expect(dayPage).toMatch(/\.day-date\s*\{[^}]*color: var\(--muted\)/);
+  });
+
   test('search page supports both keyword and semantic search modes', () => {
     const searchPage = source('src/pages/search.astro');
 
